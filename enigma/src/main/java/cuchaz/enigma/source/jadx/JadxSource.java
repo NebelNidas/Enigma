@@ -1,5 +1,6 @@
 package cuchaz.enigma.source.jadx;
 
+import java.util.LinkedHashMap;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
@@ -115,14 +116,17 @@ public class JadxSource implements Source {
 			} else {
 				index.addReference(token, methodEntryOf(mth), classEntryOf(mth.getParentClass()));
 			}
-		} else if (ann instanceof VarNode var) {
-			if (!var.getMth().collectArgNodes().contains(var)) return;
-			Token token = new Token(pos, pos + var.getName().length(), var.getName());
+		} else if (ann instanceof VarNode local) {
+			if (getMethodArgs(local.getMth(), codeInfo).containsKey(local)) {
+				Token token = new Token(pos, pos + local.getName().length(), local.getName());
+				LocalVariableEntry localEntry = paramEntryOf(local, codeInfo);
+				if (localEntry == null) return;
 
-			if (pos == var.getDefPosition()) {
-				index.addDeclaration(token, paramEntryOf(var, codeInfo));
-			} else {
-				index.addReference(token, paramEntryOf(var, codeInfo), methodEntryOf(var.getMth()));
+				if (pos == local.getDefPosition()) {
+					index.addDeclaration(token, localEntry);
+				} else {
+					index.addReference(token, localEntry, methodEntryOf(local.getMth()));
+				}
 			}
 		} else if (ann instanceof VarRef varRef) {
 			processAnnotatedElement(pos, codeInfo.getCodeMetadata().getAt(varRef.getRefPos()), codeInfo);
@@ -141,7 +145,12 @@ public class JadxSource implements Source {
 		return jadxHelper.methodEntryOf(mth);
 	}
 
+	@Nullable
 	private LocalVariableEntry paramEntryOf(VarNode param, ICodeInfo codeInfo) {
 		return jadxHelper.paramEntryOf(param, codeInfo);
+	}
+
+	private LinkedHashMap<VarNode, Integer> getMethodArgs(MethodNode mth, ICodeInfo codeInfo) {
+		return jadxHelper.getMethodArgs(mth, codeInfo);
 	}
 }

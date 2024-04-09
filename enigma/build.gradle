@@ -3,28 +3,28 @@ configurations {
 }
 
 dependencies {
-	implementation 'org.ow2.asm:asm:9.6'
-	implementation 'org.ow2.asm:asm-commons:9.6'
-	implementation 'org.ow2.asm:asm-tree:9.6'
-	implementation 'org.ow2.asm:asm-util:9.6'
+	implementation "org.ow2.asm:asm:${asm_version}"
+	implementation "org.ow2.asm:asm-commons:${asm_version}"
+	implementation "org.ow2.asm:asm-tree:${asm_version}"
+	implementation "org.ow2.asm:asm-util:${asm_version}"
 
-	implementation 'org.bitbucket.mstrobel:procyon-compilertools:0.6.0'
-	implementation 'net.fabricmc:cfr:0.2.2'
-	implementation 'org.vineflower:vineflower:1.10.0'
+	implementation "org.bitbucket.mstrobel:procyon-compilertools:${procyon_version}"
+	implementation "net.fabricmc:cfr:${fabric_cfr_version}"
+	implementation "org.vineflower:vineflower:${vineflower_version}"
 
-	implementation ('io.github.skylot:jadx-core:1.5.0-20240408.212728-12') {
+	implementation ("io.github.skylot:jadx-core:${jadx_version}") {
 		exclude group: 'com.android.tools.build', module: 'aapt2-proto'
 		exclude group: 'com.google.protobuf', module: 'protobuf-java'
 	}
-	implementation ('io.github.skylot:jadx-java-input:1.5.0-20240408.212728-12') {
+	implementation ("io.github.skylot:jadx-java-input:${jadx_version}") {
 		exclude group: 'com.android.tools.build', module: 'aapt2-proto'
 		exclude group: 'io.github.skylot', module: 'raung-disasm'
 	}
-	implementation 'io.github.skylot:jadx-input-api:1.5.0-20240408.212728-12' // Pin version (would pull 1.5.0-SNAPSHOT otherwise)
+	implementation "io.github.skylot:jadx-input-api:${jadx_version}" // Pin version (would pull 1.5.0-SNAPSHOT otherwise)
 
-	proGuard 'com.guardsquare:proguard-base:7.4.0-beta02'
+	proGuard "com.guardsquare:proguard-base:${proguard_version}"
 
-	testImplementation 'com.google.jimfs:jimfs:1.2'
+	testImplementation "com.google.jimfs:jimfs:${jimfs_version}"
 }
 
 // Generate "version.txt" file

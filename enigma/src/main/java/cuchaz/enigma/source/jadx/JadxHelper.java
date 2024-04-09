@@ -1,11 +1,15 @@
 package cuchaz.enigma.source.jadx;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.annotation.Nullable;
 
 import jadx.api.ICodeInfo;
+import jadx.api.metadata.annotations.NodeDeclareRef;
 import jadx.api.metadata.annotations.VarNode;
 import jadx.core.codegen.TypeGen;
 import jadx.core.dex.info.MethodInfo;
@@ -25,8 +29,8 @@ class JadxHelper {
 	private Map<ClassNode, ClassEntry> classMap = new HashMap<>();
 	private Map<FieldNode, FieldEntry> fieldMap = new HashMap<>();
 	private Map<MethodNode, MethodEntry> methodMap = new HashMap<>();
-	private Map<VarNode, LocalVariableEntry> varMap = new HashMap<>();
-	private Map<MethodNode, List<VarNode>> argMap = new HashMap<>();
+	private Map<VarNode, LocalVariableEntry> localMap = new HashMap<>();
+	private Map<MethodNode, LinkedHashMap<VarNode, Integer>> jadxArgMap = new HashMap<>();
 
 	private String internalNameOf(ClassNode cls) {
 		return internalNames.computeIfAbsent(cls, (unused) -> cls.getClassInfo().makeRawFullName().replace('.', '/'));
@@ -50,15 +54,61 @@ class JadxHelper {
 		});
 	}
 
+	@Nullable
 	LocalVariableEntry paramEntryOf(VarNode param, ICodeInfo codeInfo) {
-		return varMap.computeIfAbsent(param, (unused) -> {
+		return localMap.computeIfAbsent(param, (unused) -> {
 			MethodEntry owner = methodEntryOf(param.getMth());
-			int index = param.getMth().collectArgsWithoutLoading().indexOf(param); // FIXME: This is just a placeholder (and obviously wrong), fix later
-			return new LocalVariableEntry(owner, index, param.getName(), true, null);
+			Integer index = getMethodArgs(param.getMth(), codeInfo).get(param);
+
+			if (index == null) {
+				System.err.println("Parameter node not found: " + param);
+			}
+
+			return index == null || index < 0 ? null : new LocalVariableEntry(owner, index, param.getName(), true, null);
 		});
 	}
 
-	boolean isRecord(jadx.core.dex.nodes.ClassNode cls) {
+	LinkedHashMap<VarNode, Integer> getMethodArgs(MethodNode mth, ICodeInfo codeInfo) {
+		return jadxArgMap.computeIfAbsent(mth, (unused) -> {
+			int mthDefPos = mth.getDefPosition();
+			LinkedHashMap<VarNode, Integer> args = new LinkedHashMap<>();
+			AtomicInteger doneCount = new AtomicInteger(0);
+
+			codeInfo.getCodeMetadata().searchDown(mthDefPos, (pos, ann) -> {
+				if (ann instanceof NodeDeclareRef ref && ref.getNode() instanceof VarNode varNode) {
+					if (varNode.getName().equals("entrypoint")) {
+						int i = 0;
+					}
+
+					if (!varNode.getMth().equals(mth)) {
+						// Stop if we've gone too far and have entered a different method
+						return Boolean.TRUE;
+					}
+
+					if (varNode.getReg() >= mth.getArgsStartReg()) {
+						// Skip if we've not reached the arguments yet
+						return Boolean.FALSE;
+					}
+
+					if (!varNode.getType().equals(mth.getArgTypes().get(doneCount.get()))) {
+						// Stop if the type doesn't match
+						System.err.println("Type mismatch: " + varNode.getType() + " != " + mth.getArgTypes().get(doneCount.get()));
+						return Boolean.TRUE;
+					}
+
+					Integer lvIndex = varNode.getReg() - mth.getArgsStartReg();
+					args.put(varNode, lvIndex);
+					doneCount.incrementAndGet();
+				}
+
+				return Boolean.TRUE;
+			});
+
+			return args;
+		});
+	}
+
+	boolean isRecord(ClassNode cls) {
 		if (cls.getSuperClass() == null || !cls.getSuperClass().isObject()) {
 			return false;
 		}
