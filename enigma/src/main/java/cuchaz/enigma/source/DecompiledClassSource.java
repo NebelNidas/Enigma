@@ -70,7 +70,7 @@ public class DecompiledClassSource {
 
 				if (proposedName.isPresent()) {
 					target.add(RenamableTokenType.PROPOSED, movedToken);
-					return proposedName.get();
+					return formatProposedNameForSource(entry, proposedName.get());
 				}
 
 				if (isUnobfuscated(project, entry)) {
@@ -99,6 +99,14 @@ public class DecompiledClassSource {
 
 			return resolved.stream().map(e -> nameProposalService.proposeName(e, mapper)).filter(Optional::isPresent).map(Optional::get);
 		}).findFirst();
+	}
+
+	public static String formatProposedNameForSource(Entry<?> entry, String proposedName) {
+		if (entry instanceof ClassEntry classEntry) {
+			return classEntry.withName(proposedName).getSourceRemapName();
+		}
+
+		return proposedName;
 	}
 
 	private static boolean isUnobfuscated(EnigmaProject project, Entry<?> entry) {

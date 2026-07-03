@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -93,8 +94,10 @@ public class StructureTreeNode extends DefaultMutableTreeNode {
 		if (translateResult.isObfuscated()) {
 			if (!this.nameProposalServices.isEmpty()) {
 				for (NameProposalService service : this.nameProposalServices) {
-					if (service.proposeName(this.entry, this.mapper).isPresent()) {
-						result = service.proposeName(this.entry, this.mapper).get();
+					Optional<String> proposedName = service.proposeName(this.entry, this.mapper);
+
+					if (proposedName.isPresent()) {
+						result = formatProposedNameForTree(this.entry, proposedName.get());
 					}
 				}
 			}
@@ -149,6 +152,14 @@ public class StructureTreeNode extends DefaultMutableTreeNode {
 		}
 
 		return "<i>" + String.join(" ", modifiers) + "</i> " + toString();
+	}
+
+	static String formatProposedNameForTree(ParentedEntry<?> entry, String proposedName) {
+		if (entry instanceof ClassEntry classEntry) {
+			return classEntry.withName(proposedName).getSimpleName();
+		}
+
+		return proposedName;
 	}
 
 	private String parseArgs(List<TypeDescriptor> args) {

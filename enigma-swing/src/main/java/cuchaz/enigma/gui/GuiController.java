@@ -11,6 +11,7 @@
 
 package cuchaz.enigma.gui;
 
+import java.awt.Component;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
@@ -149,6 +150,35 @@ public class GuiController implements ClientPacketHandler, GuiView, DataInvalida
 		JEditorPane editor = new JEditorPane();
 		EditorPanel.customizeEditor(editor);
 		return editor;
+	}
+
+	@Override
+	public void addStatusComponent(Component component) {
+		this.gui.addStatusComponent(component);
+	}
+
+	@Override
+	public void removeStatusComponent(Component component) {
+		this.gui.removeStatusComponent(component);
+	}
+
+	@Override
+	public boolean applyRename(EntryView entry, String newName) {
+		if (project == null || !(entry instanceof Entry<?> target)) {
+			return false;
+		}
+
+		ValidationContext vc = new ValidationContext();
+		vc.setActiveElement(PrintValidatable.INSTANCE);
+		EntryChange<?> change = EntryChange.modify(target).withDeobfName(newName);
+		this.validateChange(vc, change);
+
+		if (!vc.canProceed()) {
+			return false;
+		}
+
+		this.applyChange(vc, change);
+		return vc.canProceed();
 	}
 
 	public boolean isDirty() {
@@ -374,6 +404,13 @@ public class GuiController implements ClientPacketHandler, GuiView, DataInvalida
 	@Nullable
 	public EntryView getCursorDeclaration() {
 		return gui.getCursorDeclaration();
+	}
+
+	@Override
+	@Nullable
+	public ClassEntry getActiveClass() {
+		EditorPanel activeEditor = gui.getActiveEditor();
+		return activeEditor == null || activeEditor.getClassHandle() == null ? null : activeEditor.getClassHandle().getRef();
 	}
 
 	/**

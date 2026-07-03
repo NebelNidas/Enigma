@@ -12,6 +12,7 @@
 package cuchaz.enigma.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -240,6 +241,18 @@ public class Gui {
 
 	public JFrame getFrame() {
 		return this.mainWindow.frame();
+	}
+
+	void addStatusComponent(Component component) {
+		this.mainWindow.statusBar().addComponent(component);
+		this.mainWindow.statusBar().getUi().revalidate();
+		this.mainWindow.statusBar().getUi().repaint();
+	}
+
+	void removeStatusComponent(Component component) {
+		this.mainWindow.statusBar().removeComponent(component);
+		this.mainWindow.statusBar().getUi().revalidate();
+		this.mainWindow.statusBar().getUi().repaint();
 	}
 
 	public GuiController getController() {

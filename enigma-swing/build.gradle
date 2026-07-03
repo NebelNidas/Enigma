@@ -13,6 +13,7 @@ def flatLafNatives = [
 dependencies {
 	implementation project(':enigma')
 	implementation project(':enigma-server')
+	runtimeOnly project(':enigma-llm-plugin')
 
 	implementation 'net.sf.jopt-simple:jopt-simple:6.0-alpha-3'
 	implementation 'com.formdev:flatlaf:3.2.5'

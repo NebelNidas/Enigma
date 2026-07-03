@@ -1,0 +1,27 @@
+dependencies {
+	implementation project(':enigma')
+
+	implementation 'org.ow2.asm:asm:9.9.1'
+	implementation 'org.ow2.asm:asm-tree:9.9.1'
+}
+
+tasks.register('runEvaluation', JavaExec) {
+	group = 'verification'
+	description = 'Runs the LLM name suggestion evaluation JSONL harness.'
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = 'cuchaz.enigma.llm.LlmEvaluationHarness'
+	args = [
+			project.findProperty('cases') ?: "${project.projectDir}/evaluation/sample-cases.jsonl",
+			project.findProperty('out') ?: "${project.buildDir}/llm-evaluation/results.jsonl"
+	]
+}
+
+tasks.register('compareContextBackends', JavaExec) {
+	group = 'verification'
+	description = 'Runs a small owner-vs-graph context backend comparison against the configured LLM endpoint.'
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = 'cuchaz.enigma.llm.LlmContextBackendComparisonHarness'
+	args = [
+			project.findProperty('out') ?: "${project.buildDir}/llm-evaluation/context-backend-comparison.jsonl"
+	]
+}
