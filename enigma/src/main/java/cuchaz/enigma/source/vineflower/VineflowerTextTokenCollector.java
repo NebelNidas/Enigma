@@ -64,7 +64,7 @@ class VineflowerTextTokenCollector extends TextTokenVisitor {
 		super.visitMethod(range, declaration, className, name, descriptor);
 		Token token = getToken(range);
 
-		if (token.text.equals("new")) {
+		if (token != null && token.text.equals("new")) {
 			return;
 		}
 
@@ -125,17 +125,31 @@ class VineflowerTextTokenCollector extends TextTokenVisitor {
 	}
 
 	private Token getToken(TextRange range) {
-		return new Token(range.start, range.start + range.length, content.substring(range.start, range.start + range.length));
+		if (range == null || content == null) {
+			return null;
+		}
+
+		int end = range.start + range.length;
+
+		if (range.start < 0 || range.length < 0 || end < range.start || end > content.length()) {
+			return null;
+		}
+
+		return new Token(range.start, end, content.substring(range.start, end));
 	}
 
 	private void addDeclaration(Token token, Entry<?> entry) {
-		declarations.put(token, entry);
-		tokens.add(token);
+		if (token != null) {
+			declarations.put(token, entry);
+			tokens.add(token);
+		}
 	}
 
 	private void addReference(Token token, Entry<?> entry, Entry<?> context) {
-		references.put(token, Pair.of(entry, context));
-		tokens.add(token);
+		if (token != null) {
+			references.put(token, Pair.of(entry, context));
+			tokens.add(token);
+		}
 	}
 
 	public void accept(SourceIndex index) {

@@ -90,7 +90,7 @@ public class SourceIndex {
 	}
 
 	public void addDeclaration(Token token, Entry<?> deobfEntry) {
-		if (token != null) {
+		if (isIndexable(token)) {
 			EntryReference<Entry<?>, Entry<?>> reference = new EntryReference<>(deobfEntry, token.text);
 			tokenToReference.put(token, reference);
 			referenceToTokens.computeIfAbsent(reference, key -> new ArrayList<>())
@@ -134,12 +134,20 @@ public class SourceIndex {
 	}
 
 	public void addReference(Token token, Entry<?> deobfEntry, Entry<?> deobfContext) {
-		if (token != null) {
+		if (isIndexable(token)) {
 			EntryReference<Entry<?>, Entry<?>> deobfReference = new EntryReference<>(deobfEntry, token.text, deobfContext);
 			tokenToReference.put(token, deobfReference);
 			referenceToTokens.computeIfAbsent(deobfReference, key -> new ArrayList<>())
 					.add(token);
 		}
+	}
+
+	private boolean isIndexable(Token token) {
+		return token != null
+				&& token.text != null
+				&& token.hasValidRange()
+				&& token.length() == token.text.length()
+				&& (source == null || token.isValidFor(source));
 	}
 
 	public void resolveReferences(EntryResolver resolver) {

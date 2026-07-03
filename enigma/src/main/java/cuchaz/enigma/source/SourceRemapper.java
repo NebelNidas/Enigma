@@ -19,7 +19,15 @@ public class SourceRemapper {
 		int accumulatedOffset = 0;
 
 		for (Token token : tokens) {
+			if (!canRemap(source, token)) {
+				continue;
+			}
+
 			Token movedToken = token.move(accumulatedOffset);
+
+			if (!canRemap(remappedSource, movedToken)) {
+				continue;
+			}
 
 			String remappedName = remapper.remap(token, movedToken);
 
@@ -34,6 +42,13 @@ public class SourceRemapper {
 		}
 
 		return new Result(remappedSource.toString(), remappedTokens);
+	}
+
+	private static boolean canRemap(CharSequence source, Token token) {
+		return token != null
+				&& token.text != null
+				&& token.length() == token.text.length()
+				&& token.isValidFor(source);
 	}
 
 	public static class Result {

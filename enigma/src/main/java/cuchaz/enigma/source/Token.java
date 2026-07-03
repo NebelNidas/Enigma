@@ -30,6 +30,14 @@ public class Token implements Comparable<Token> {
 		return to.length() - this.length();
 	}
 
+	public boolean hasValidRange() {
+		return start >= 0 && end >= start;
+	}
+
+	public boolean isValidFor(CharSequence source) {
+		return hasValidRange() && source != null && end <= source.length();
+	}
+
 	public void rename(StringBuffer source, String to) {
 		int oldEnd = this.end;
 		this.text = to;
@@ -50,7 +58,7 @@ public class Token implements Comparable<Token> {
 
 	@Override
 	public int compareTo(Token other) {
-		return start - other.start;
+		return Integer.compare(start, other.start);
 	}
 
 	@Override
@@ -64,7 +72,7 @@ public class Token implements Comparable<Token> {
 	}
 
 	public boolean equals(Token other) {
-		return start == other.start && end == other.end && text.equals(other.text);
+		return start == other.start && end == other.end && java.util.Objects.equals(text, other.text);
 	}
 
 	@Override

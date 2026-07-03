@@ -85,7 +85,13 @@ class VineflowerSource implements Source {
 		}
 
 		decompiler.decompileContext();
-		tokenCollector.get().accept(index);
+		if (!isFailedDecompile(index.getSource()) && tokenCollector.get() != null) {
+			tokenCollector.get().accept(index);
+		}
+	}
+
+	static boolean isFailedDecompile(String source) {
+		return source != null && source.contains("$VF: Unable to decompile class");
 	}
 
 	private class ResultSaver implements IResultSaver {
