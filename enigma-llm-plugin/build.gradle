@@ -1,8 +1,63 @@
+import net.fabricmc.loom.util.download.Download
+
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url = 'https://maven.fabricmc.net/' }
+	}
+	dependencies {
+		// Reuse FabricMC/Loom's battle-tested downloader (sha1 verification, ETag
+		// caching, retries) instead of hand-rolling HTTP. MIT-licensed; used here as a
+		// plain library on the buildscript classpath, NOT applied as a Gradle plugin.
+		// Pinned to the last 1.6.x release, which still targets Java 17 (the JVM this
+		// build uses). Newer loom (1.8+) hard-requires Java 21; bumping the whole build's
+		// toolchain just for a download helper would be a risky cross-cutting change.
+		classpath 'net.fabricmc:fabric-loom:1.6.12'
+	}
+}
+
 dependencies {
 	implementation project(':enigma')
 
 	implementation 'org.ow2.asm:asm:9.9.1'
 	implementation 'org.ow2.asm:asm-tree:9.9.1'
+}
+
+// Ground-truth OSS corpus for the Hybrid 1.1 deobfuscation round-trip benchmark.
+// The jars ship real, human-authored names; the obfuscation pipeline renames them to
+// opaque tokens and the LLM is scored on how well it recovers the originals. Jars are
+// downloaded on demand (git-ignored, never committed) and pinned by sha1 so a matching
+// local copy is reused without re-downloading. Fame is deliberately mixed to separate
+// genuine context recovery from memorization of well-known APIs; results are reported
+// per-jar for exactly that reason.
+def corpusDir = file("${project.projectDir}/evaluation/corpus")
+def corpus = [
+		[name: 'gson-2.11.0.jar',
+		 url : 'https://repo1.maven.org/maven2/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar',
+		 sha1: '527175ca6d81050b53bdd4c457a6d6e017626b0e'],
+		[name: 'commons-lang3-3.14.0.jar',
+		 url : 'https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.14.0/commons-lang3-3.14.0.jar',
+		 sha1: '1ed471194b02f2c6cb734a0cd6f6f107c673afae'],
+		[name: 'xz-1.9.jar',
+		 url : 'https://repo1.maven.org/maven2/org/tukaani/xz/1.9/xz-1.9.jar',
+		 sha1: '1ea4bec1a921180164852c65006d928617bd2caf'],
+]
+
+tasks.register('downloadCorpus') {
+	group = 'verification'
+	description = 'Downloads the OSS ground-truth corpus jars for the deobfuscation benchmark (git-ignored).'
+	outputs.files(corpus.collect { new File(corpusDir, it.name) })
+	doLast {
+		corpusDir.mkdirs()
+		corpus.each { entry ->
+			def target = new File(corpusDir, entry.name).toPath()
+			Download.create(entry.url)
+					.sha1(entry.sha1)
+					.maxRetries(3)
+					.downloadPath(target)
+			logger.lifecycle("corpus: ${entry.name} ready (${java.nio.file.Files.size(target)} bytes)")
+		}
+	}
 }
 
 def rootRelativePath = { Object value ->

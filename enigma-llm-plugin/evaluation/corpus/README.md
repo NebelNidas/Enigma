@@ -13,11 +13,13 @@ context-based recovery from possible memorization of well-known APIs:
 | commons-lang3-3.14.0.jar   | org.apache.commons:commons-lang3:3.14.0  | high   | very idiomatic, larger surface         |
 | xz-1.9.jar                 | org.tukaani:xz:1.9                        | niche  | LZMA/XZ codec, unlikely memorized      |
 
-The jars themselves are git-ignored (binaries, reproducible). Re-fetch with:
+The jars themselves are git-ignored (binaries, reproducible). Fetch them with the
+Gradle task, which uses FabricMC/Loom's downloader (sha1 verification + retries) and is
+idempotent — a local copy whose sha1 already matches is reused, nothing re-downloads:
 
 ```sh
-b=https://repo1.maven.org/maven2
-curl -fsSL -o gson-2.11.0.jar          $b/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar
-curl -fsSL -o commons-lang3-3.14.0.jar $b/org/apache/commons/commons-lang3/3.14.0/commons-lang3-3.14.0.jar
-curl -fsSL -o xz-1.9.jar               $b/org/tukaani/xz/1.9/xz-1.9.jar
+./gradlew :enigma-llm-plugin:downloadCorpus
 ```
+
+The coordinates and pinned sha1 hashes live in `enigma-llm-plugin/build.gradle`
+(`downloadCorpus` task). To add or swap a jar, edit that list, not this file.
