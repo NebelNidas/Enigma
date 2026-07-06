@@ -33,6 +33,12 @@ export ENIGMA_LLM_BENCH_SEED="${ENIGMA_LLM_BENCH_SEED:-1234567}"
 export ENIGMA_LLM_BASE_URL="$BASE_URL"
 export ENIGMA_LLM_API_KEY="${ENIGMA_LLM_API_KEY:-lm-studio}"
 export ENIGMA_LLM_TIMEOUT_SECONDS="${ENIGMA_LLM_TIMEOUT_SECONDS:-120}"
+# Primary run is reproducible: temperature=0 (deterministic scoring), wider response budget so a chatty
+# reasoning field never truncates the strict JSON (finish_reason=length would deflate recovery). The
+# interactive product keeps its 0.2 / 384 defaults -- these override only the sweep. A small temp=0.2
+# stability slice is run separately afterwards to quantify run-to-run jitter.
+export ENIGMA_LLM_TEMPERATURE="${ENIGMA_LLM_TEMPERATURE:-0}"
+export ENIGMA_LLM_MAX_TOKENS="${ENIGMA_LLM_MAX_TOKENS:-512}"
 
 # Most-important-first so an early abort still leaves the essential models done.
 ROSTER=(
@@ -44,7 +50,8 @@ ROSTER=(
 )
 
 echo "=== obfuscation sweep: ${#ROSTER[@]} models ==="
-echo "endpoint=$BASE_URL ctx=$SWITCH_CTX caps: api=$ENIGMA_LLM_BENCH_API pkg=$ENIGMA_LLM_BENCH_PACKAGE priv=$ENIGMA_LLM_BENCH_PRIVATE pres=$ENIGMA_LLM_BENCH_PRESERVATION seed=$ENIGMA_LLM_BENCH_SEED"
+echo "endpoint=$BASE_URL ctx=$SWITCH_CTX temp=$ENIGMA_LLM_TEMPERATURE max_tokens=$ENIGMA_LLM_MAX_TOKENS"
+echo "caps: api=$ENIGMA_LLM_BENCH_API pkg=$ENIGMA_LLM_BENCH_PACKAGE priv=$ENIGMA_LLM_BENCH_PRIVATE pres=$ENIGMA_LLM_BENCH_PRESERVATION seed=$ENIGMA_LLM_BENCH_SEED"
 sweep_start=$(date +%s)
 
 for model in "${ROSTER[@]}"; do

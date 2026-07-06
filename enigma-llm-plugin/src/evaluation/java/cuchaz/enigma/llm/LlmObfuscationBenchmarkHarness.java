@@ -272,9 +272,12 @@ public final class LlmObfuscationBenchmarkHarness {
 			LlmProjectIndex index, GroundTruthSymbol symbol, boolean online) {
 		EntryKey key = keyFor(symbol);
 		boolean resolved = index.entry(key).isPresent();
+		// AUTO resolves per-target to graph or simple context; tag it per row so the api headline can be
+		// split by backend post-hoc (otherwise one model can look better only because it drew richer contexts).
+		String contextBackend = LlmPromptBuilder.resolveBackend(key, index, config.contextBackend()).configValue();
 
 		if (!online) {
-			return TargetScore.structural(symbol, resolved);
+			return TargetScore.structural(symbol, resolved, contextBackend);
 		}
 
 		String suggested = null;
@@ -291,7 +294,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			error = ex.getClass().getSimpleName() + (ex.getMessage() == null ? "" : ": " + ex.getMessage());
 		}
 
-		return TargetScore.scored(symbol, resolved, suggested, alternatives, confidence, error);
+		return TargetScore.scored(symbol, resolved, contextBackend, suggested, alternatives, confidence, error);
 	}
 
 	private static EntryKey keyFor(GroundTruthSymbol symbol) {
@@ -524,18 +527,18 @@ public final class LlmObfuscationBenchmarkHarness {
 
 	/** The outcome of one target: structural resolution plus (if online) the scored suggestion. */
 	private record TargetScore(GroundTruthSymbol symbol, boolean resolvedInIndex, boolean attempted,
-			String suggested, List<String> alternatives, double confidence, String error,
+			String contextBackend, String suggested, List<String> alternatives, double confidence, String error,
 			boolean exact, boolean normalized, boolean usable) {
-		static TargetScore structural(GroundTruthSymbol symbol, boolean resolved) {
-			return new TargetScore(symbol, resolved, false, null, List.of(), 0.0, null, false, false, false);
+		static TargetScore structural(GroundTruthSymbol symbol, boolean resolved, String contextBackend) {
+			return new TargetScore(symbol, resolved, false, contextBackend, null, List.of(), 0.0, null, false, false, false);
 		}
 
-		static TargetScore scored(GroundTruthSymbol symbol, boolean resolved, String suggested,
+		static TargetScore scored(GroundTruthSymbol symbol, boolean resolved, String contextBackend, String suggested,
 				List<String> alternatives, double confidence, String error) {
 			boolean exact = suggested != null && symbol.acceptableRealNames().contains(suggested);
 			boolean normalized = suggested != null && matchesNormalized(symbol.acceptableRealNames(), suggested);
 			boolean usable = exact || normalized || matchesAny(symbol.acceptableRealNames(), alternatives);
-			return new TargetScore(symbol, resolved, true, suggested, alternatives, confidence, error,
+			return new TargetScore(symbol, resolved, true, contextBackend, suggested, alternatives, confidence, error,
 					exact, normalized, usable);
 		}
 
@@ -576,6 +579,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			this.symbol.acceptableRealNames().forEach(acceptable::add);
 			object.add("acceptable", acceptable);
 			object.addProperty("resolvedInIndex", this.resolvedInIndex);
+			object.addProperty("contextBackend", this.contextBackend);
 			object.addProperty("attempted", this.attempted);
 			object.addProperty("suggested", this.suggested);
 			JsonArray alternatives = new JsonArray();

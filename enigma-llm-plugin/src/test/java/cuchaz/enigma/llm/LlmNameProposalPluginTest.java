@@ -1133,6 +1133,8 @@ public class LlmNameProposalPluginTest {
 
 			JsonObject request = JsonParser.parseString(server.lastRequestBody).getAsJsonObject();
 			assertThat(request.get("max_tokens").getAsInt(), equalTo(384));
+			// Interactive product defaults stay put; only the evaluation harness overrides these via env.
+			assertThat(request.get("temperature").getAsDouble(), equalTo(0.2));
 			JsonObject responseFormat = request.getAsJsonObject("response_format");
 			assertThat(responseFormat.get("type").getAsString(), equalTo("json_schema"));
 			JsonObject schema = responseFormat.getAsJsonObject("json_schema").getAsJsonObject("schema");

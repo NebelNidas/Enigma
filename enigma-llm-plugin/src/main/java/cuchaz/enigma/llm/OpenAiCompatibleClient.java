@@ -19,7 +19,10 @@ import com.google.gson.JsonParser;
 class OpenAiCompatibleClient {
 	private static final Gson GSON = new Gson();
 	// Tuned for the default non-thinking interactive path. Reasoning/deep-analysis modes need a separate, larger response budget.
-	private static final int MAX_RESPONSE_TOKENS = 384;
+	// Both knobs are env/property-overridable so the offline evaluation harness can pin temperature=0 (a
+	// reproducible measurement) and widen the response budget without touching the interactive product defaults.
+	private static final double TEMPERATURE = envDouble("ENIGMA_LLM_TEMPERATURE", "enigma.llm.temperature", 0.2);
+	private static final int MAX_RESPONSE_TOKENS = envInt("ENIGMA_LLM_MAX_TOKENS", "enigma.llm.maxTokens", 384);
 
 	private final LlmConfig config;
 	private final HttpClient client;
@@ -35,7 +38,7 @@ class OpenAiCompatibleClient {
 	LlmSuggestion suggestName(EntryKind kind, String obfuscatedName, String prompt) throws IOException, InterruptedException {
 		JsonObject body = new JsonObject();
 		body.addProperty("model", this.config.model());
-		body.addProperty("temperature", 0.2);
+		body.addProperty("temperature", TEMPERATURE);
 		body.addProperty("max_tokens", MAX_RESPONSE_TOKENS);
 		body.add("response_format", suggestionResponseFormat());
 
@@ -232,6 +235,7 @@ class OpenAiCompatibleClient {
 				If the evidence is weak or only suggests a broad category, choose a conservative descriptive name and set confidence below 0.50.
 				The confidence field is a rough model self-assessment score for ranking suggestions, not a calibrated probability.
 				Generate 2-4 alternatives before choosing the best suggestion.
+				Keep the reasoning field to at most two short sentences so the JSON always fits within the response budget.
 				Respond only with valid JSON: {"reasoning":"string","alternatives":["string"],"suggestedName":"string","confidence":0.0}
 				""";
 
@@ -395,5 +399,46 @@ class OpenAiCompatibleClient {
 
 	private static boolean isString(JsonElement element) {
 		return element != null && element.isJsonPrimitive() && element.getAsJsonPrimitive().isString();
+	}
+
+	private static double envDouble(String env, String property, double fallback) {
+		String value = envOrProperty(env, property);
+
+		if (value == null) {
+			return fallback;
+		}
+
+		try {
+			double parsed = Double.parseDouble(value);
+			return parsed >= 0.0 ? parsed : fallback;
+		} catch (NumberFormatException ignored) {
+			return fallback;
+		}
+	}
+
+	private static int envInt(String env, String property, int fallback) {
+		String value = envOrProperty(env, property);
+
+		if (value == null) {
+			return fallback;
+		}
+
+		try {
+			int parsed = Integer.parseInt(value);
+			return parsed > 0 ? parsed : fallback;
+		} catch (NumberFormatException ignored) {
+			return fallback;
+		}
+	}
+
+	private static String envOrProperty(String env, String property) {
+		String value = System.getenv(env);
+
+		if (value != null && !value.isBlank()) {
+			return value.strip();
+		}
+
+		value = System.getProperty(property);
+		return value == null || value.isBlank() ? null : value.strip();
 	}
 }
