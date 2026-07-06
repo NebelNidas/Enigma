@@ -76,14 +76,22 @@ public final class LlmObfuscationBenchmarkHarness {
 
 		Path obfuscatedDir = Path.of(args[0]);
 		Path resultsDir = args.length >= 2 ? Path.of(args[1]) : obfuscatedDir.resolve("benchmark");
-		Files.createDirectories(resultsDir);
 
 		int limit = readLimit();
 		LlmConfig config = LlmConfig.load();
 		boolean online = config.isConfigured();
 
 		if (online) {
-			System.out.printf("Endpoint: %s model=%s%n", config.baseUrl(), config.model());
+			// Route each model's results into its own subdir so a multi-model sweep never overwrites
+			// itself (the per-jar/-track file names carry no model identifier). Offline structural
+			// runs stay at the top level, unchanged.
+			resultsDir = resultsDir.resolve(sanitizeModel(config.model()));
+		}
+
+		Files.createDirectories(resultsDir);
+
+		if (online) {
+			System.out.printf("Endpoint: %s model=%s%n  results -> %s%n", config.baseUrl(), config.model(), resultsDir);
 		} else {
 			System.out.println("Endpoint not configured -- running structural check only (open + index + resolve).");
 		}
@@ -446,6 +454,12 @@ public final class LlmObfuscationBenchmarkHarness {
 
 	private static String stripSuffix(String value, String suffix) {
 		return value.endsWith(suffix) ? value.substring(0, value.length() - suffix.length()) : value;
+	}
+
+	/** Turn a model id (may contain {@code @ / : .}) into a safe single path segment for the results dir. */
+	private static String sanitizeModel(String model) {
+		String cleaned = model.strip().replaceAll("[^A-Za-z0-9._-]+", "_");
+		return cleaned.isEmpty() ? "model" : cleaned;
 	}
 
 	private static String normalize(String value) {
