@@ -32,6 +32,17 @@ record ObfuscatedSymbol(
 		return kind == EntryKind.CLASS || Modifier.isPublic(access) || Modifier.isProtected(access);
 	}
 
+	/**
+	 * A copy marked as a preservation control: the real name is kept as the obfuscated identity (only
+	 * the descriptor types stay remapped, since the classes they reference are still renamed), and the
+	 * {@link #obfuscated} flag is cleared. Scored in a separate bucket — did the model recognise the
+	 * name is already meaningful and leave it alone?
+	 */
+	ObfuscatedSymbol asPreserved() {
+		return new ObfuscatedSymbol(kind, obfOwner, realName, obfDesc, realOwner, realName,
+				acceptableRealNames, access, false);
+	}
+
 	String visibility() {
 		if (Modifier.isPublic(access)) {
 			return "public";

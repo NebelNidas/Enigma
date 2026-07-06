@@ -328,7 +328,8 @@ public final class LlmObfuscationBenchmarkHarness {
 			total.recovery.printByKind();
 
 			if (total.preservation.attempted > 0) {
-				System.out.println("Preservation control (kept-unchanged, all jars): " + total.preservation.describe());
+				System.out.println("Preservation control (kept-unchanged, all jars): "
+						+ total.preservation.describePreservation());
 			}
 		}
 	}
@@ -483,6 +484,17 @@ public final class LlmObfuscationBenchmarkHarness {
 					this.attempted, this.resolved, this.exact, this.normalized, matched, this.usable, this.errors);
 		}
 
+		/**
+		 * Preservation-bucket view: for a kept-unchanged symbol the only meaningful outcomes are
+		 * {@code left_unchanged} (the model returned the real name verbatim — exact) and
+		 * {@code unnecessary_rename} (it proposed anything else); errors are counted apart.
+		 */
+		String describePreservation() {
+			int renamed = this.attempted - this.exact - this.errors;
+			return String.format("n=%d resolved=%d left_unchanged=%d unnecessary_rename=%d err=%d",
+					this.attempted, this.resolved, this.exact, renamed, this.errors);
+		}
+
 		void printByKind() {
 			this.byKind.forEach((kind, counts) ->
 					System.out.printf("  %-9s n=%d matched=%d%n", kind, counts[0], counts[1]));
@@ -520,7 +532,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			}
 
 			String preservationPart = this.preservation.attempted > 0
-					? "  preservation[" + this.preservation.describe() + "]" : "";
+					? "  preservation[" + this.preservation.describePreservation() + "]" : "";
 			return String.format("%-28s recovery[%s]%s", this.base, this.recovery.describe(), preservationPart);
 		}
 	}
