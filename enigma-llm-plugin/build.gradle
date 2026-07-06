@@ -92,6 +92,24 @@ tasks.register('obfuscateCorpus', JavaExec) {
 	]
 }
 
+tasks.register('benchmarkObfuscation', JavaExec) {
+	group = 'verification'
+	description = 'Phase A: drives the real suggestion engine over the obfuscated corpus and scores name recovery vs ground truth.'
+	dependsOn 'obfuscateCorpus'
+	classpath = sourceSets.evaluation.runtimeClasspath
+	mainClass = 'cuchaz.enigma.llm.LlmObfuscationBenchmarkHarness'
+	args = [
+			file("${project.buildDir}/llm-evaluation/obfuscated").path,
+			file("${project.buildDir}/llm-evaluation/benchmark").path
+	]
+	// Sample N targets per jar (deterministic stride) for a cheap smoke run: -Plimit=25.
+	// The engine reads its endpoint/model from ENIGMA_LLM_* env vars; with none set the harness
+	// still runs the structural half (open + index + resolve every key).
+	if (project.hasProperty('limit')) {
+		environment 'ENIGMA_LLM_BENCH_LIMIT', project.property('limit')
+	}
+}
+
 def rootRelativePath = { Object value ->
 	value == null ? null : rootProject.file(value.toString()).path
 }

@@ -82,8 +82,14 @@ final class TinyRemapperObfuscator implements Obfuscator {
 			mappings.add(Mapping.forClass(internalName, names.classToken(internalName)));
 		}
 
+		// Parent = platform loader (JDK only), NOT the app classpath. The plugin itself bundles gson,
+		// so delegating to the app loader would resolve e.g. com.google.gson classes from the plugin's
+		// gson instead of the corpus jar under test — silently mixing a different library version's
+		// members into the ground truth. Platform-first isolation forces every corpus class to load
+		// from inputJar; anything that then fails to link (a missing external dep) is caught below and
+		// simply left unscored. Our corpus jars are self-contained (JDK-only deps), so this is safe.
 		try (URLClassLoader loader = new URLClassLoader(new URL[] {inputJar.toUri().toURL()},
-				TinyRemapperObfuscator.class.getClassLoader())) {
+				ClassLoader.getPlatformClassLoader())) {
 			for (String internalName : renamedClasses) {
 				if (isUnscoredClass(internalName)) {
 					continue;
