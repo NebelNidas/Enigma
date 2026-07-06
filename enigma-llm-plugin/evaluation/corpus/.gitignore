@@ -1,0 +1,2 @@
+# Corpus jars are binaries, reproducible from the coordinates in README.md
+*.jar
