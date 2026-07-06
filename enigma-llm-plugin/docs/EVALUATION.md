@@ -23,6 +23,15 @@ Custom input/output:
 The same command works with other OpenAI-compatible providers by changing `ENIGMA_LLM_BASE_URL`, `ENIGMA_LLM_MODEL`, and optionally `ENIGMA_LLM_API_KEY`.
 
 The JSONL harness evaluates prompts stored directly in the case file. It is useful for reproducible model comparisons, but it does not rebuild prompts from Enigma state.
+See `MODEL_SELECTION.md` for the current local and remote model candidates by hardware class.
+Use hosted/commercial providers only with `evaluation/sample-cases.jsonl` or other synthetic/cleared cases. Keep live Enigma prompts and real decompiled Minecraft context on local endpoints.
+
+Existing result files can be summarized again without calling an LLM:
+
+```sh
+./gradlew :enigma-llm-plugin:summarizeEvaluation \
+  -Presults=enigma-llm-plugin/evaluation/results/qwen2.5-coder-1.5b-q4km-2026-07-03.jsonl
+```
 
 For live context-strategy comparison, run Enigma with the same JAR/model/targets and switch:
 
@@ -59,12 +68,31 @@ Each JSONL line contains:
 The harness writes one JSON object per case with:
 
 - model and case id
-- suggested name, alternatives, confidence, reasoning
+- suggested name, alternatives, numeric confidence, reasoning
 - `accepted`: endpoint returned parseable output
 - `exact`: primary suggestion equals `expected`
 - `usable`: primary or alternative is in the acceptable set
 - latency in milliseconds
-- error message if the request failed
+- `errorCategory` and error message if the request failed
+
+The summary tool reports `invalidJson` separately. This bucket matters for
+strict JSON-schema runs because a response can be cut off by the configured
+response-token budget and fail parsing even when the model started with a
+reasonable answer. If `invalidJson` is non-zero for a model, inspect the saved
+error messages and consider rerunning with a larger response budget before
+judging the prompt or context backend.
+
+The current schema stores numeric model-reported confidence because the plugin
+uses it for batch preselection, duplicate-name conflict resolution, and
+tie-breaks. Treat this number as an uncalibrated heuristic score, not as a
+probability. For report discussion, use exact/usable/failure metrics, latency,
+and concrete examples as the real evidence; confidence is supporting context
+only.
+
+Before recommending any automatic threshold, compare this model score against
+`exact` and `usable` outcomes in the JSONL results. If the score does not
+correlate with accepted quality for a model, keep it as a display/sorting hint
+only and do not use that model's score as evidence for reliable auto-apply.
 
 ## Initial Test Set
 

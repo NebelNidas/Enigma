@@ -31,6 +31,7 @@ import cuchaz.enigma.api.service.DecompilerInputTransformerService;
 import cuchaz.enigma.api.service.NameProposalService;
 import cuchaz.enigma.api.service.ObfuscationTestService;
 import cuchaz.enigma.api.view.ProjectView;
+import cuchaz.enigma.api.view.RenameValidationResult;
 import cuchaz.enigma.api.view.entry.EntryView;
 import cuchaz.enigma.bytecode.translators.TranslationClassVisitor;
 import cuchaz.enigma.classprovider.ClassProvider;
@@ -54,6 +55,8 @@ import cuchaz.enigma.translation.representation.entry.Entry;
 import cuchaz.enigma.translation.representation.entry.LocalVariableEntry;
 import cuchaz.enigma.translation.representation.entry.MethodEntry;
 import cuchaz.enigma.utils.I18n;
+import cuchaz.enigma.utils.validation.ParameterizedMessage;
+import cuchaz.enigma.utils.validation.ValidationContext;
 
 public class EnigmaProject implements ProjectView {
 	private final Enigma enigma;
@@ -418,6 +421,18 @@ public class EnigmaProject implements ProjectView {
 	@Nullable
 	public ClassNode getBytecode(String className) {
 		return classProvider.get(className);
+	}
+
+	@Override
+	public RenameValidationResult validateRename(EntryView entry, String newName) {
+		if (!(entry instanceof Entry<?> target)) {
+			return RenameValidationResult.invalid("Entry cannot be renamed by this project.");
+		}
+
+		ValidationContext vc = new ValidationContext();
+		this.mapper.getValidator().validateRename(vc, target, newName);
+		return new RenameValidationResult(vc.canProceed(),
+				vc.getMessages().stream().map(ParameterizedMessage::getText).toList());
 	}
 
 	@Override

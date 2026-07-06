@@ -32,6 +32,13 @@ public interface ProjectView {
 	@Nullable
 	ClassNode getBytecode(String className);
 
+	/**
+	 * Validates a deobfuscated name using Enigma's normal rename rules without mutating mappings.
+	 */
+	default RenameValidationResult validateRename(EntryView entry, String newName) {
+		return RenameValidationResult.ok();
+	}
+
 	void addDataInvalidationListener(DataInvalidationListener listener);
 
 	default void invalidateData(DataInvalidationEvent.InvalidationType type) {

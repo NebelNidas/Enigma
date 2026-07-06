@@ -17,7 +17,15 @@ class LlmNameValidator {
 	}
 
 	boolean isValid(EntryKey key, String name) {
-		if (!isValid(key.kind(), name, key.kind() != EntryKind.CLASS || !key.owner().contains("$"))) {
+		return isValid(key, name, false);
+	}
+
+	boolean isValid(EntryKey key, String name, boolean constantField) {
+		if (constantField && key.kind() != EntryKind.FIELD) {
+			return false;
+		}
+
+		if (!isValid(key.kind(), name, key.kind() != EntryKind.CLASS || !key.owner().contains("$"), constantField)) {
 			return false;
 		}
 
@@ -29,13 +37,18 @@ class LlmNameValidator {
 	}
 
 	private boolean isValid(EntryKind kind, String name, boolean allowClassPackageName) {
+		return isValid(kind, name, allowClassPackageName, false);
+	}
+
+	private boolean isValid(EntryKind kind, String name, boolean allowClassPackageName, boolean constantField) {
 		if (name == null || name.isBlank() || name.contains(".") || name.contains("$")) {
 			return false;
 		}
 
 		return switch (kind) {
 		case CLASS -> isValidClassName(name, allowClassPackageName);
-		case FIELD, METHOD, PARAMETER -> isLowerCamelIdentifier(name);
+		case FIELD -> constantField ? isUpperSnakeIdentifier(name) : isLowerCamelIdentifier(name);
+		case METHOD, PARAMETER -> isLowerCamelIdentifier(name);
 		};
 	}
 
@@ -87,6 +100,39 @@ class LlmNameValidator {
 		}
 
 		return true;
+	}
+
+	private static boolean isUpperSnakeIdentifier(String name) {
+		if (!isValidIdentifier(name) || !Character.isUpperCase(name.charAt(0))) {
+			return false;
+		}
+
+		boolean lastUnderscore = false;
+		boolean hasLetter = false;
+
+		for (int i = 0; i < name.length(); i++) {
+			char c = name.charAt(i);
+
+			if (c == '_') {
+				if (i == 0 || lastUnderscore) {
+					return false;
+				}
+
+				lastUnderscore = true;
+			} else {
+				if (Character.isLetter(c)) {
+					hasLetter = true;
+
+					if (!Character.isUpperCase(c)) {
+						return false;
+					}
+				}
+
+				lastUnderscore = false;
+			}
+		}
+
+		return hasLetter && !lastUnderscore;
 	}
 
 	private static String simpleClassName(String name) {

@@ -1,6 +1,7 @@
 package cuchaz.enigma.llm;
 
 import java.io.IOException;
+import java.net.http.HttpTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 public final class LlmEvaluationHarness {
@@ -35,8 +37,8 @@ public final class LlmEvaluationHarness {
 		}
 
 		EvaluationSummary summary = run(config, Path.of(args[0]), Path.of(args[1]));
-		System.out.printf(Locale.ROOT, "Evaluated %d cases: accepted=%d exact=%d usable=%d failed=%d avgLatencyMs=%.1f%n",
-				summary.total, summary.accepted, summary.exact, summary.usable, summary.failed, summary.averageLatencyMillis());
+		System.out.printf(Locale.ROOT, "Evaluated %d cases: accepted=%d exact=%d usable=%d failed=%d invalidJson=%d avgLatencyMs=%.1f%n",
+				summary.total, summary.accepted, summary.exact, summary.usable, summary.failed, summary.invalidJson, summary.averageLatencyMillis());
 	}
 
 	static EvaluationSummary run(LlmConfig config, Path casesPath, Path resultsPath) throws IOException, InterruptedException {
@@ -105,15 +107,50 @@ public final class LlmEvaluationHarness {
 	record EvaluationCase(String id, EntryKind kind, String targetName, String prompt, String expected, Set<String> acceptable) {
 	}
 
-	record EvaluationResult(String model, String id, EntryKind kind, String targetName, String expected, String suggestedName, List<String> alternatives, double confidence, String reasoning, boolean accepted, boolean exact, boolean usable, long latencyMillis, String error) {
+	static String errorCategory(Exception error) {
+		if (containsCause(error, JsonParseException.class)
+				|| message(error).contains("not valid OpenAI-compatible suggestion JSON")) {
+			return "invalid_json";
+		}
+
+		if (containsCause(error, HttpTimeoutException.class)) {
+			return "timeout";
+		}
+
+		if (message(error).startsWith("LLM endpoint returned HTTP")) {
+			return "http";
+		}
+
+		return "other";
+	}
+
+	private static boolean containsCause(Throwable error, Class<? extends Throwable> causeType) {
+		Throwable current = error;
+
+		while (current != null) {
+			if (causeType.isInstance(current)) {
+				return true;
+			}
+
+			current = current.getCause();
+		}
+
+		return false;
+	}
+
+	private static String message(Throwable error) {
+		return error.getMessage() == null ? error.getClass().getSimpleName() : error.getMessage();
+	}
+
+	record EvaluationResult(String model, String id, EntryKind kind, String targetName, String expected, String suggestedName, List<String> alternatives, double confidence, String reasoning, boolean accepted, boolean exact, boolean usable, long latencyMillis, String errorCategory, String error) {
 		static EvaluationResult success(String model, EvaluationCase testCase, LlmSuggestion suggestion, Duration latency) {
 			boolean exact = testCase.expected.equals(suggestion.suggestedName());
 			boolean usable = testCase.acceptable.contains(suggestion.suggestedName()) || suggestion.alternatives().stream().anyMatch(testCase.acceptable::contains);
-			return new EvaluationResult(model, testCase.id, testCase.kind, testCase.targetName, testCase.expected, suggestion.suggestedName(), suggestion.alternatives(), suggestion.confidence(), suggestion.reasoning(), true, exact, usable, latency.toMillis(), "");
+			return new EvaluationResult(model, testCase.id, testCase.kind, testCase.targetName, testCase.expected, suggestion.suggestedName(), suggestion.alternatives(), suggestion.confidence(), suggestion.reasoning(), true, exact, usable, latency.toMillis(), "", "");
 		}
 
 		static EvaluationResult failure(String model, EvaluationCase testCase, Exception error, Duration latency) {
-			return new EvaluationResult(model, testCase.id, testCase.kind, testCase.targetName, testCase.expected, "", List.of(), 0.0, "", false, false, false, latency.toMillis(), error.getMessage() == null ? error.getClass().getSimpleName() : error.getMessage());
+			return new EvaluationResult(model, testCase.id, testCase.kind, testCase.targetName, testCase.expected, "", List.of(), 0.0, "", false, false, false, latency.toMillis(), LlmEvaluationHarness.errorCategory(error), message(error));
 		}
 
 		String toJson() {
@@ -133,6 +170,7 @@ public final class LlmEvaluationHarness {
 			json.addProperty("exact", this.exact);
 			json.addProperty("usable", this.usable);
 			json.addProperty("latencyMillis", this.latencyMillis);
+			json.addProperty("errorCategory", this.errorCategory);
 			json.addProperty("error", this.error);
 			return GSON.toJson(json);
 		}
@@ -144,6 +182,7 @@ public final class LlmEvaluationHarness {
 		int exact;
 		int usable;
 		int failed;
+		int invalidJson;
 		long latencyMillis;
 
 		void add(EvaluationResult result) {
@@ -154,6 +193,10 @@ public final class LlmEvaluationHarness {
 				this.accepted++;
 			} else {
 				this.failed++;
+
+				if (result.errorCategory.equals("invalid_json")) {
+					this.invalidJson++;
+				}
 			}
 
 			if (result.exact) {

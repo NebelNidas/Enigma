@@ -10,6 +10,7 @@
 - Fabric-Enigma plugin/service architecture.
 - Difference between cached name proposals and explicit LLM requests.
 - Provider-independent OpenAI-compatible API design, with LM Studio as local reference.
+- Optional subscription-backed providers through local sidecar bridges: Enigma keeps the stable `/v1/models` and `/v1/chat/completions` contract, while provider-specific tools such as Codex own their login/session handling.
 
 ## 3. Implementation
 
@@ -45,4 +46,4 @@
 
 - Prototype demonstrates feasibility of LLM-assisted Enigma naming with local model support.
 - Upstream path requires API review, UX polishing, and larger evaluation.
-- Future work: inline editor suggestions, richer data-flow/call-site context, better model selection, and team/user study.
+- Future work: inline editor suggestions, richer data-flow/call-site context, better model selection, Codex/OpenCode-style subscription bridges, and team/user study.

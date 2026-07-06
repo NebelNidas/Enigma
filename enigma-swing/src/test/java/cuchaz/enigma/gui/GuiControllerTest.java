@@ -28,6 +28,7 @@ import cuchaz.enigma.api.service.GuiService;
 import cuchaz.enigma.api.service.JarIndexerService;
 import cuchaz.enigma.api.service.NameProposalService;
 import cuchaz.enigma.api.service.ProjectService;
+import cuchaz.enigma.api.view.RenameValidationResult;
 import cuchaz.enigma.translation.mapping.EntryChange;
 import cuchaz.enigma.translation.mapping.EntryUtil;
 import cuchaz.enigma.translation.representation.MethodDescriptor;
@@ -64,6 +65,18 @@ public class GuiControllerTest {
 
 		assertFalse(controller.applyRename(entry, "not a valid class name"));
 
+		assertThat(project.getMapper().getDeobfMapping(entry).targetName(), nullValue());
+	}
+
+	@Test
+	public void projectValidateRenameReportsInvalidNameWithoutMutatingMappings() throws Exception {
+		EnigmaProject project = Enigma.create().openJar(createTestJar(), List.of(), ProgressListener.none());
+		ClassEntry entry = new ClassEntry("a");
+
+		RenameValidationResult result = project.validateRename(entry, "not a valid class name");
+
+		assertFalse(result.valid());
+		assertFalse(result.messages().isEmpty());
 		assertThat(project.getMapper().getDeobfMapping(entry).targetName(), nullValue());
 	}
 

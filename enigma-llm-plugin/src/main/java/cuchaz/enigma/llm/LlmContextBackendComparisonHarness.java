@@ -37,6 +37,7 @@ import cuchaz.enigma.api.view.index.JarIndexView;
 
 public final class LlmContextBackendComparisonHarness {
 	private static final Gson GSON = new Gson();
+	private static final List<LlmContextBackend> EXPLICIT_BACKENDS = List.of(LlmContextBackend.OWNER, LlmContextBackend.GRAPH);
 
 	private LlmContextBackendComparisonHarness() {
 	}
@@ -67,7 +68,7 @@ public final class LlmContextBackendComparisonHarness {
 		Files.createDirectories(resultsPath.toAbsolutePath().getParent());
 
 		for (ComparisonCase testCase : fixture.cases()) {
-			for (LlmContextBackend backend : List.of(LlmContextBackend.OWNER, LlmContextBackend.GRAPH)) {
+			for (LlmContextBackend backend : EXPLICIT_BACKENDS) {
 				String prompt = promptBuilder.build(testCase.key(), new EvaluationProjectView(testCase.mappings()), fixture.index(), backend);
 				long startNanos = System.nanoTime();
 				ComparisonResult result;
@@ -89,7 +90,7 @@ public final class LlmContextBackendComparisonHarness {
 	}
 
 	private static void printSummary(List<ComparisonResult> results) {
-		for (LlmContextBackend backend : LlmContextBackend.values()) {
+		for (LlmContextBackend backend : EXPLICIT_BACKENDS) {
 			List<ComparisonResult> backendResults = results.stream()
 					.filter(result -> result.backend == backend)
 					.toList();
@@ -190,15 +191,16 @@ public final class LlmContextBackendComparisonHarness {
 	record ComparisonCase(String id, EntryKey key, String expected, Set<String> acceptable, Map<EntryKey, String> mappings) {
 	}
 
-	record ComparisonResult(String model, LlmContextBackend backend, String id, EntryKind kind, String targetName, String expected, String suggestedName, List<String> alternatives, double confidence, String reasoning, boolean accepted, boolean exact, boolean usable, long latencyMillis, int promptChars, String error) {
+	record ComparisonResult(String model, LlmContextBackend backend, String id, EntryKind kind, String targetName, String expected, String suggestedName, List<String> alternatives, double confidence, String reasoning, boolean accepted, boolean exact, boolean usable, long latencyMillis, int promptChars, String errorCategory, String error) {
 		static ComparisonResult success(String model, LlmContextBackend backend, ComparisonCase testCase, LlmSuggestion suggestion, Duration latency, int promptChars) {
 			boolean exact = testCase.expected.equals(suggestion.suggestedName());
 			boolean usable = testCase.acceptable.contains(suggestion.suggestedName()) || suggestion.alternatives().stream().anyMatch(testCase.acceptable::contains);
-			return new ComparisonResult(model, backend, testCase.id, testCase.key.kind(), testCase.key.displayName(), testCase.expected, suggestion.suggestedName(), suggestion.alternatives(), suggestion.confidence(), suggestion.reasoning(), true, exact, usable, latency.toMillis(), promptChars, "");
+			return new ComparisonResult(model, backend, testCase.id, testCase.key.kind(), testCase.key.displayName(), testCase.expected, suggestion.suggestedName(), suggestion.alternatives(), suggestion.confidence(), suggestion.reasoning(), true, exact, usable, latency.toMillis(), promptChars, "", "");
 		}
 
 		static ComparisonResult failure(String model, LlmContextBackend backend, ComparisonCase testCase, Exception error, Duration latency, int promptChars) {
-			return new ComparisonResult(model, backend, testCase.id, testCase.key.kind(), testCase.key.displayName(), testCase.expected, "", List.of(), 0.0, "", false, false, false, latency.toMillis(), promptChars, error.getMessage() == null ? error.getClass().getSimpleName() : error.getMessage());
+			String message = error.getMessage() == null ? error.getClass().getSimpleName() : error.getMessage();
+			return new ComparisonResult(model, backend, testCase.id, testCase.key.kind(), testCase.key.displayName(), testCase.expected, "", List.of(), 0.0, "", false, false, false, latency.toMillis(), promptChars, LlmEvaluationHarness.errorCategory(error), message);
 		}
 
 		String toJson() {
@@ -220,6 +222,7 @@ public final class LlmContextBackendComparisonHarness {
 			json.addProperty("usable", this.usable);
 			json.addProperty("latencyMillis", this.latencyMillis);
 			json.addProperty("promptChars", this.promptChars);
+			json.addProperty("errorCategory", this.errorCategory);
 			json.addProperty("error", this.error);
 			return GSON.toJson(json);
 		}

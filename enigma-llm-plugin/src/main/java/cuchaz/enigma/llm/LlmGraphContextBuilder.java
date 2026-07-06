@@ -70,6 +70,8 @@ class LlmGraphContextBuilder {
 				.filter(dependency -> !dependency.key().owner().equals(clazz.key().owner()))
 				.forEach(dependency -> dependencies.putIfAbsent(dependency.key().owner(), dependency));
 		appendNeighborClasses(prompt, project, "Referenced classes from owner", dependencies.values().stream().toList());
+		appendMethods(prompt, project, "Methods referencing class", index.methodsReferencingClass(clazz));
+		appendFields(prompt, project, "Fields referencing class", index.fieldsReferencingClass(clazz));
 	}
 
 	private static void appendMethods(StringBuilder prompt, ProjectView project, String title, List<IndexedMethod> methods) {
@@ -91,9 +93,39 @@ class LlmGraphContextBuilder {
 				prompt.append("  calls: ").append(String.join(", ", method.calls().stream().limit(4).toList())).append('\n');
 			}
 
-			if (!method.fieldUses().isEmpty()) {
-				prompt.append("  fields: ").append(String.join(", ", method.fieldUses().stream().limit(4).toList())).append('\n');
+			if (!method.fieldReads().isEmpty()) {
+				prompt.append("  field reads: ").append(String.join(", ", method.fieldReads().stream().limit(4).toList())).append('\n');
 			}
+
+			if (!method.fieldWrites().isEmpty()) {
+				prompt.append("  field writes: ").append(String.join(", ", method.fieldWrites().stream().limit(4).toList())).append('\n');
+			}
+
+			if (!method.dynamicCalls().isEmpty()) {
+				prompt.append("  invokedynamic: ").append(String.join(", ", method.dynamicCalls().stream().limit(2).toList())).append('\n');
+			}
+
+			if (!method.literals().isEmpty()) {
+				prompt.append("  literals: ").append(String.join(", ", method.literals().stream().limit(4).toList())).append('\n');
+			}
+		});
+	}
+
+	private static void appendFields(StringBuilder prompt, ProjectView project, String title, List<IndexedField> fields) {
+		if (fields.isEmpty()) {
+			return;
+		}
+
+		prompt.append("\n=== ").append(title).append(" ===\n");
+		fields.stream().limit(MEMBER_LIMIT).forEach(field -> {
+			prompt.append("- ")
+					.append(field.key().owner())
+					.append('.')
+					.append(field.key().name())
+					.append(" : ")
+					.append(field.key().descriptor());
+			LlmPromptBuilder.appendInlineMapping(prompt, project, field.key());
+			prompt.append('\n');
 		});
 	}
 
@@ -125,6 +157,12 @@ class LlmGraphContextBuilder {
 			field.constantValue().ifPresent(value -> prompt.append(" = ").append(value));
 			LlmPromptBuilder.appendInlineMapping(prompt, project, field.key());
 			prompt.append('\n');
+
+			if (!field.initializerHints().isEmpty()) {
+				prompt.append("    init: ")
+						.append(String.join("; ", field.initializerHints().stream().limit(2).toList()))
+						.append('\n');
+			}
 		});
 
 		clazz.methods().stream()
@@ -136,6 +174,12 @@ class LlmGraphContextBuilder {
 							.append(method.key().descriptor());
 					LlmPromptBuilder.appendInlineMapping(prompt, project, method.key());
 					prompt.append('\n');
+
+					if (!method.literals().isEmpty()) {
+						prompt.append("    literals: ")
+								.append(String.join(", ", method.literals().stream().limit(3).toList()))
+								.append('\n');
+					}
 				});
 	}
 }

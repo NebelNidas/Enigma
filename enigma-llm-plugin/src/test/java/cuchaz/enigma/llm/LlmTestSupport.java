@@ -16,6 +16,7 @@ import cuchaz.enigma.api.DataInvalidationEvent;
 import cuchaz.enigma.api.DataInvalidationListener;
 import cuchaz.enigma.api.view.GuiView;
 import cuchaz.enigma.api.view.ProjectView;
+import cuchaz.enigma.api.view.RenameValidationResult;
 import cuchaz.enigma.api.view.entry.ClassEntryView;
 import cuchaz.enigma.api.view.entry.EntryReferenceView;
 import cuchaz.enigma.api.view.entry.EntryView;
@@ -51,8 +52,23 @@ final class LlmTestSupport {
 		return false;
 	}
 
+	static boolean containsText(java.awt.Container container, String text) {
+		for (java.awt.Component component : container.getComponents()) {
+			if (component instanceof javax.swing.JLabel label && label.getText().contains(text)) {
+				return true;
+			}
+
+			if (component instanceof java.awt.Container child && containsText(child, text)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	static class FakeProjectView implements ProjectView {
 		private final Map<EntryKey, String> mappedNames;
+		private final Map<EntryKey, Map<String, String>> invalidRenames;
 		private final List<DataInvalidationListener> listeners = new ArrayList<>();
 		int invalidations;
 
@@ -61,7 +77,12 @@ final class LlmTestSupport {
 		}
 
 		FakeProjectView(Map<EntryKey, String> mappedNames) {
+			this(mappedNames, Map.of());
+		}
+
+		FakeProjectView(Map<EntryKey, String> mappedNames, Map<EntryKey, Map<String, String>> invalidRenames) {
 			this.mappedNames = Map.copyOf(mappedNames);
+			this.invalidRenames = Map.copyOf(invalidRenames);
 		}
 
 		@Override
@@ -123,6 +144,14 @@ final class LlmTestSupport {
 		}
 
 		@Override
+		public RenameValidationResult validateRename(EntryView entry, String newName) {
+			return EntryKey.fromEntryView(entry)
+					.map(key -> this.invalidRenames.getOrDefault(key, Map.of()).get(newName))
+					.map(RenameValidationResult::invalid)
+					.orElseGet(RenameValidationResult::ok);
+		}
+
+		@Override
 		public void addDataInvalidationListener(DataInvalidationListener listener) {
 			this.listeners.add(listener);
 		}
@@ -154,6 +183,7 @@ final class LlmTestSupport {
 		EntryView lastEntry;
 		String lastRename;
 		Component statusComponent;
+		List<Component> statusComponents = new ArrayList<>();
 
 		FakeGuiView(ProjectView project, boolean applyResult) {
 			this.project = project;
@@ -203,6 +233,7 @@ final class LlmTestSupport {
 		@Override
 		public void addStatusComponent(Component component) {
 			this.statusComponent = component;
+			this.statusComponents.add(component);
 		}
 
 		@Override
@@ -210,6 +241,8 @@ final class LlmTestSupport {
 			if (this.statusComponent == component) {
 				this.statusComponent = null;
 			}
+
+			this.statusComponents.remove(component);
 		}
 
 		@Override

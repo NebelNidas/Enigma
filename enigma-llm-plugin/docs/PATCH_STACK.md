@@ -32,3 +32,10 @@
    - Cover service registration, prompt/context building, parsing, validation, UI helper behavior, API rename validation, and evaluation JSONL parsing/output.
    - Add a synthetic owner-vs-graph comparison task for measuring whether the Johannes-inspired backend improves suggestions for the same targets.
    - Keep README, demo route, and evaluation harness documented.
+
+6. **Optional subscription bridge**
+   - Keep the Enigma plugin's direct integration boundary OpenAI-compatible (`/v1/models` and `/v1/chat/completions`).
+   - Document subscription-backed providers as separate local sidecars rather than embedding ChatGPT/Claude/Grok web-login automation in the Swing plugin.
+   - Add the standalone `enigma-llm-bridge` subproject with `/healthz`, `/v1/models`, `/v1/chat/completions`, optional bearer-token protection, and a fake provider for contract tests.
+   - Add the Codex bridge first: the user runs `codex login`, the sidecar talks to `codex app-server`, lists models through Codex `model/list`, and Enigma keeps using its existing endpoint/model dialog.
+   - Treat Claude Code and OpenCode-style integrations as later adapters that must use documented provider/tooling behavior.

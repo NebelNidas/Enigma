@@ -5,14 +5,18 @@ dependencies {
 	implementation 'org.ow2.asm:asm-tree:9.9.1'
 }
 
+def rootRelativePath = { Object value ->
+	value == null ? null : rootProject.file(value.toString()).path
+}
+
 tasks.register('runEvaluation', JavaExec) {
 	group = 'verification'
 	description = 'Runs the LLM name suggestion evaluation JSONL harness.'
 	classpath = sourceSets.main.runtimeClasspath
 	mainClass = 'cuchaz.enigma.llm.LlmEvaluationHarness'
 	args = [
-			project.findProperty('cases') ?: "${project.projectDir}/evaluation/sample-cases.jsonl",
-			project.findProperty('out') ?: "${project.buildDir}/llm-evaluation/results.jsonl"
+			rootRelativePath(project.findProperty('cases') ?: "${project.projectDir}/evaluation/sample-cases.jsonl"),
+			rootRelativePath(project.findProperty('out') ?: "${project.buildDir}/llm-evaluation/results.jsonl")
 	]
 }
 
@@ -22,6 +26,16 @@ tasks.register('compareContextBackends', JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	mainClass = 'cuchaz.enigma.llm.LlmContextBackendComparisonHarness'
 	args = [
-			project.findProperty('out') ?: "${project.buildDir}/llm-evaluation/context-backend-comparison.jsonl"
+			rootRelativePath(project.findProperty('out') ?: "${project.buildDir}/llm-evaluation/context-backend-comparison.jsonl")
+	]
+}
+
+tasks.register('summarizeEvaluation', JavaExec) {
+	group = 'verification'
+	description = 'Summarizes an existing LLM evaluation JSONL result file.'
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = 'cuchaz.enigma.llm.LlmEvaluationSummaryTool'
+	args = [
+			rootRelativePath(project.findProperty('results') ?: "${project.buildDir}/llm-evaluation/results.jsonl")
 	]
 }

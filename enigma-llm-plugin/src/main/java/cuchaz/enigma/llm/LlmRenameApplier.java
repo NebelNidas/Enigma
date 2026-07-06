@@ -23,13 +23,15 @@ class LlmRenameApplier {
 			String rename = normalizeRename(entry, suggestion.suggestedName());
 
 			if (gui.applyRename(entry, rename)) {
-				this.plugin.getSuggestions().put(key, suggestion);
+				this.plugin.getSuggestions().remove(key);
 				this.plugin.markInternalRefreshInvalidation();
 				project.invalidateData(DataInvalidationEvent.InvalidationType.MAPPINGS);
 				return true;
 			}
 
 			this.plugin.getSuggestions().remove(key);
+			this.plugin.markInternalRefreshInvalidation();
+			project.invalidateData(DataInvalidationEvent.InvalidationType.MAPPINGS);
 			return false;
 		}).orElse(false);
 	}
@@ -68,13 +70,14 @@ class LlmRenameApplier {
 		return suggestedName;
 	}
 
-	private static String batchSelectionConflictKey(BatchSuggestion row) {
+	static String batchSelectionConflictKey(BatchSuggestion row) {
 		EntryKey key = row.key();
 
 		return switch (key.kind()) {
 		case FIELD -> "FIELD|" + key.owner() + "|" + row.suggestion().suggestedName();
+		case METHOD -> "METHOD|" + key.owner() + "|" + key.descriptor() + "|" + row.suggestion().suggestedName();
 		case PARAMETER -> "PARAMETER|" + key.owner() + "|" + key.name() + "|" + key.descriptor() + "|" + row.suggestion().suggestedName();
-		case CLASS, METHOD -> "";
+		case CLASS -> "";
 		};
 	}
 }

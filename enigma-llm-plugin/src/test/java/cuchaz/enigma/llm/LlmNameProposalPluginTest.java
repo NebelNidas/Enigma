@@ -3,6 +3,7 @@ package cuchaz.enigma.llm;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertFalse;
@@ -25,13 +26,19 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;
 import org.junit.Test;
+import org.objectweb.asm.Handle;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.InvokeDynamicInsnNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -48,6 +55,7 @@ import cuchaz.enigma.api.service.I18nService;
 import cuchaz.enigma.api.service.JarIndexerService;
 import cuchaz.enigma.api.service.NameProposalService;
 import cuchaz.enigma.api.service.ProjectService;
+import cuchaz.enigma.api.view.RenameValidationResult;
 import cuchaz.enigma.api.view.entry.ClassEntryView;
 import cuchaz.enigma.api.view.entry.FieldEntryView;
 import cuchaz.enigma.api.view.entry.LocalVariableEntryView;
@@ -100,7 +108,7 @@ public class LlmNameProposalPluginTest {
 			assertThat(translations, containsString("No LLM model configured"));
 			assertThat(translations, containsString("class, field, method, or parameter"));
 			assertThat(translations, containsString("ENIGMA_LLM_BASE_URL defaults to http://localhost:1234/v1"));
-			assertThat(translations, containsString("No confidence threshold configured"));
+			assertThat(translations, containsString("No model-score preselection threshold configured"));
 		}
 	}
 
@@ -328,7 +336,6 @@ public class LlmNameProposalPluginTest {
 		assertThat(prompt, containsString("prefer a conservative constants-style name such as AngleConstants or MathConstants"));
 		assertThat(prompt, containsString("Do not infer rendering, texture, shader, model, registry, or manager roles unless members prove them."));
 		assertThat(prompt, containsString("Owner class: example/Foo"));
-		assertThat(prompt, containsString("Top-level classes may be simple names or JVM internal names"));
 		assertThat(prompt, containsString("do not reuse an existing mapped member name for a different member"));
 	}
 
@@ -353,8 +360,14 @@ public class LlmNameProposalPluginTest {
 
 		MethodNode method = new MethodNode(Opcodes.ACC_PUBLIC, "b", "()V", null, null);
 		method.instructions = new InsnList();
+		method.instructions.add(new LdcInsnNode("rot_90_x"));
+		method.instructions.add(new InsnNode(Opcodes.ICONST_5));
 		method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD, "example/Foo", "a", "I"));
+		method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD, "example/Foo", "a", "I"));
 		method.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "example/Foo", "c", "()V", false));
+		Handle metafactory = new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory",
+				"metafactory", "()V", false);
+		method.instructions.add(new InvokeDynamicInsnNode("apply", "()Ljava/util/function/Function;", metafactory));
 		node.methods.add(method);
 
 		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
@@ -374,8 +387,31 @@ public class LlmNameProposalPluginTest {
 		assertThat(prompt, containsString("Superclass: example/Base"));
 		assertThat(prompt, containsString("Interfaces: example/Counter"));
 		assertThat(prompt, containsString("- private a : I"));
-		assertThat(prompt, containsString("fields: example/Foo.a : I"));
+		assertThat(prompt, containsString("field reads: example/Foo.a : I"));
+		assertThat(prompt, containsString("field writes: example/Foo.a : I"));
 		assertThat(prompt, containsString("calls: example/Foo.c()V"));
+		assertThat(prompt, containsString("literals: literal \"rot_90_x\", literal 5"));
+		assertThat(prompt, containsString("invokedynamic: invokedynamic apply()Ljava/util/function/Function;"));
+	}
+
+	@Test
+	public void promptTruncationKeepsResponseInstructionsForLargeContexts() {
+		String prompt = LlmPromptBuilder.truncateForContext("""
+				Target kind: METHOD
+				Target owner: example/i
+				Target name: a
+				Target descriptor: ()V
+				%s
+				Respond with JSON only:
+				{"reasoning":"short explanation","alternatives":["NameA","NameB"],"suggestedName":"BestName","confidence":0.0}
+				Names marked as mapped in the context are already assigned; do not reuse an existing mapped member name for a different member.
+				""".formatted("method context\n".repeat(1600)));
+
+		assertThat(prompt.length(), lessThanOrEqualTo(8000));
+		assertThat(prompt, containsString("[Context truncated to fit the configured local model context window.]"));
+		assertThat(prompt, containsString("Respond with JSON only:"));
+		assertThat(prompt, containsString("\"suggestedName\":\"BestName\""));
+		assertThat(prompt, containsString("Names marked as mapped in the context are already assigned"));
 	}
 
 	@Test
@@ -391,6 +427,7 @@ public class LlmNameProposalPluginTest {
 		String prompt = new LlmPromptBuilder().build(new EntryKey(EntryKind.FIELD, "example/Constants", "a", "F"), new FakeProjectView(), index);
 
 		assertThat(prompt, containsString("Target constant value: 3.1415927"));
+		assertThat(prompt, containsString("Target naming rule: return one UPPER_SNAKE_CASE constant field name without package separators."));
 		assertThat(prompt, containsString("- public static final a : F = 3.1415927"));
 		assertThat(prompt, containsString("- public static final b : F = 57.29578"));
 	}
@@ -616,6 +653,132 @@ public class LlmNameProposalPluginTest {
 	}
 
 	@Test
+	public void autoContextKeepsStaticFinalConstantsOnSimpleOwnerContext() {
+		ClassNode constants = classNode("example/MathConstants");
+		constants.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "a", "F", null, Float.valueOf(3.1415927F)));
+		constants.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "b", "F", null, Float.valueOf(57.295776F)));
+
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(constants);
+		LlmProjectIndex index = builder.build();
+
+		String prompt = new LlmPromptBuilder().build(new EntryKey(EntryKind.FIELD, "example/MathConstants", "a", "F"), new FakeProjectView(), index, LlmContextBackend.AUTO);
+
+		assertThat(prompt, containsString("Context backend: auto selected simple context"));
+		assertThat(prompt, not(containsString("Context backend: graph")));
+		assertThat(prompt, containsString("Owner class: example/MathConstants"));
+	}
+
+	@Test
+	public void autoContextUsesGraphForCompactInterfacesReferencedElsewhere() {
+		ClassNode predicate = classNode("example/CharPredicate");
+		predicate.access = Opcodes.ACC_PUBLIC | Opcodes.ACC_INTERFACE | Opcodes.ACC_ABSTRACT;
+		predicate.methods.add(new MethodNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT, "a", "(C)Z", null, null));
+		predicate.methods.add(new MethodNode(Opcodes.ACC_PUBLIC, "b", "(Lexample/CharPredicate;)Lexample/CharPredicate;", null, null));
+
+		ClassNode parser = classNode("example/Parser");
+		parser.fields.add(new FieldNode(Opcodes.ACC_PRIVATE, "p", "Lexample/CharPredicate;", null, null));
+		MethodNode accept = new MethodNode(Opcodes.ACC_PUBLIC, "accept", "(Lexample/CharPredicate;)V", null, null);
+		accept.instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, "example/CharPredicate", "a", "(C)Z", true));
+		parser.methods.add(accept);
+
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(predicate);
+		builder.accept(parser);
+		LlmProjectIndex index = builder.build();
+
+		String prompt = new LlmPromptBuilder().build(new EntryKey(EntryKind.CLASS, "example/CharPredicate", "example/CharPredicate", ""), new FakeProjectView(), index, LlmContextBackend.AUTO);
+
+		assertThat(prompt, containsString("Context backend: auto selected graph context"));
+		assertThat(prompt, containsString("Context backend: graph"));
+		assertThat(prompt, containsString("=== Methods referencing class ==="));
+		assertThat(prompt, containsString("example/Parser.accept(Lexample/CharPredicate;)V"));
+		assertThat(prompt, containsString("=== Fields referencing class ==="));
+		assertThat(prompt, containsString("example/Parser.p : Lexample/CharPredicate;"));
+	}
+
+	@Test
+	public void promptIncludesSelectedFunctionalInterfaceAnalysisHints() {
+		ClassNode predicate = classNode("example/CharPredicate");
+		predicate.access = Opcodes.ACC_PUBLIC | Opcodes.ACC_INTERFACE | Opcodes.ACC_ABSTRACT;
+		predicate.methods.add(new MethodNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT, "a", "(C)Z", null, null));
+		MethodNode combinator = new MethodNode(Opcodes.ACC_PUBLIC, "b", "(Lexample/CharPredicate;)Lexample/CharPredicate;", null, null);
+		combinator.instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, "example/CharPredicate", "a", "(C)Z", true));
+		predicate.methods.add(combinator);
+
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(predicate);
+		LlmProjectIndex index = builder.build();
+
+		String prompt = new LlmPromptBuilder().build(new EntryKey(EntryKind.CLASS, "example/CharPredicate", "example/CharPredicate", ""),
+				new FakeProjectView(), index, LlmContextBackend.AUTO, Set.of(LlmAnalysisHint.FUNCTIONAL_INTERFACE));
+
+		assertThat(prompt, containsString("Static analysis hints:"));
+		assertThat(prompt, containsString("functional interface with one abstract method a(C)Z"));
+		assertThat(prompt, containsString("takes one argument and returns boolean"));
+		assertThat(prompt, containsString("predicate combinators"));
+		assertThat(prompt, containsString("avoid generic names such as Utility"));
+	}
+
+	@Test
+	public void promptIncludesRelatedConstantsAnalysisHints() {
+		ClassNode rotation = classNode("example/Rotation");
+		rotation.access = Opcodes.ACC_PUBLIC | Opcodes.ACC_INTERFACE | Opcodes.ACC_ABSTRACT;
+		rotation.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "a", "Lexample/Rotation;", null, null));
+		rotation.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "b", "Lexample/Rotation;", null, null));
+		rotation.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "c", "Lexample/Rotation;", null, null));
+
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(rotation);
+		LlmProjectIndex index = builder.build();
+
+		String prompt = new LlmPromptBuilder().build(new EntryKey(EntryKind.FIELD, "example/Rotation", "b", "Lexample/Rotation;"),
+				new FakeProjectView(), index, LlmContextBackend.AUTO, Set.of(LlmAnalysisHint.RELATED_CONSTANTS));
+
+		assertThat(prompt, containsString("related static final fields with the same descriptor: a, b, c"));
+		assertThat(prompt, containsString("Treat these fields as a family"));
+		assertThat(prompt, containsString("different method names, arguments, signs, axes, units, directions, or inverse formulas"));
+		assertThat(prompt, containsString("Avoid placeholder sequence names made by combining a guessed prefix"));
+		assertThat(prompt, containsString("unchanged obfuscated field tokens"));
+	}
+
+	@Test
+	public void promptIncludesStaticLambdaFieldInitializerHints() {
+		ClassNode rotation = classNode("example/Rotation");
+		rotation.access = Opcodes.ACC_PUBLIC | Opcodes.ACC_INTERFACE | Opcodes.ACC_ABSTRACT;
+		rotation.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "a", "Lexample/Rotation;", null, null));
+		rotation.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "b", "Lexample/Rotation;", null, null));
+		rotation.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "c", "Lexample/Rotation;", null, null));
+
+		MethodNode lambda = new MethodNode(Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC | Opcodes.ACC_SYNTHETIC,
+				"lambda$static$0", "(F)Lorg/joml/Quaternionf;", null, null);
+		lambda.instructions.add(new InsnNode(Opcodes.FNEG));
+		lambda.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "org/joml/Quaternionf",
+				"rotationX", "(F)Lorg/joml/Quaternionf;", false));
+		rotation.methods.add(lambda);
+
+		MethodNode clinit = new MethodNode(Opcodes.ACC_STATIC, "<clinit>", "()V", null, null);
+		Handle metafactory = new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory",
+				"metafactory", "()V", false);
+		Handle implementation = new Handle(Opcodes.H_INVOKESTATIC, "example/Rotation",
+				"lambda$static$0", "(F)Lorg/joml/Quaternionf;", true);
+		clinit.instructions.add(new InvokeDynamicInsnNode("apply", "()Lexample/Rotation;", metafactory, implementation));
+		clinit.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, "example/Rotation", "a", "Lexample/Rotation;"));
+		rotation.methods.add(clinit);
+
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(rotation);
+		LlmProjectIndex index = builder.build();
+
+		String prompt = new LlmPromptBuilder().build(new EntryKey(EntryKind.FIELD, "example/Rotation", "a", "Lexample/Rotation;"),
+				new FakeProjectView(), index, LlmContextBackend.AUTO, Set.of(LlmAnalysisHint.RELATED_CONSTANTS));
+
+		assertThat(prompt, containsString("init: invokedynamic apply()Lexample/Rotation;"));
+		assertThat(prompt, containsString("impl example/Rotation.lambda$static$0(F)Lorg/joml/Quaternionf;"));
+		assertThat(prompt, containsString("impl calls org/joml/Quaternionf.rotationX(F)Lorg/joml/Quaternionf; with negated argument"));
+	}
+
+	@Test
 	public void contextBackendComparisonFixtureProducesDifferentPrompts() {
 		LlmContextBackendComparisonHarness.ComparisonFixture fixture = LlmContextBackendComparisonHarness.comparisonFixture();
 		LlmContextBackendComparisonHarness.ComparisonCase testCase = fixture.cases().get(0);
@@ -658,6 +821,29 @@ public class LlmNameProposalPluginTest {
 	}
 
 	@Test
+	public void parsesOpenAiCompatibleModelsResponse() throws Exception {
+		String body = """
+				{"object":"list","data":[{"id":"qwen2.5-coder-14b-q6k","object":"model"},{"id":"local-model"},{"object":"model"},{"id":""}]}
+				""";
+
+		List<String> models = OpenAiCompatibleClient.parseModels(body);
+
+		assertThat(models, equalTo(List.of("qwen2.5-coder-14b-q6k", "local-model")));
+	}
+
+	@Test
+	public void reportsMalformedOpenAiCompatibleModelsResponse() {
+		try {
+			OpenAiCompatibleClient.parseModels("{\"object\":\"list\"}");
+		} catch (IOException e) {
+			assertThat(e.getMessage(), containsString("models response did not contain data"));
+			return;
+		}
+
+		throw new AssertionError("Expected IOException");
+	}
+
+	@Test
 	public void parsesEvaluationCaseJsonl() {
 		LlmEvaluationHarness.EvaluationCase testCase = LlmEvaluationHarness.parseCase("{\"id\":\"field-pi\",\"kind\":\"FIELD\",\"targetName\":\"b.a : F\",\"prompt\":\"Target field\",\"expected\":\"pi\",\"acceptable\":[\"piValue\"]}");
 
@@ -683,6 +869,19 @@ public class LlmNameProposalPluginTest {
 		assertThat(json, containsString("\"exact\":false"));
 		assertThat(json, containsString("\"usable\":true"));
 		assertThat(json, containsString("\"latencyMillis\":42"));
+		assertThat(json, containsString("\"errorCategory\":\"\""));
+	}
+
+	@Test
+	public void evaluationFailureSerializesInvalidJsonCategory() {
+		LlmEvaluationHarness.EvaluationCase testCase = new LlmEvaluationHarness.EvaluationCase("field-pi", EntryKind.FIELD, "b.a : F", "Target field", "pi", Set.of("pi"));
+		IOException error = new IOException("LLM response was not valid OpenAI-compatible suggestion JSON");
+
+		String json = LlmEvaluationHarness.EvaluationResult.failure("local-model", testCase, error, Duration.ofMillis(42)).toJson();
+
+		assertThat(json, containsString("\"accepted\":false"));
+		assertThat(json, containsString("\"errorCategory\":\"invalid_json\""));
+		assertThat(json, containsString("LLM response was not valid OpenAI-compatible suggestion JSON"));
 	}
 
 	@Test
@@ -836,7 +1035,9 @@ public class LlmNameProposalPluginTest {
 				"ENIGMA_LLM_TIMEOUT_SECONDS", " 7 ",
 				"ENIGMA_LLM_AUTO_APPLY_THRESHOLD", " 0.86 ",
 				"ENIGMA_LLM_BATCH_PARALLELISM", " 4 ",
-				"ENIGMA_LLM_CONTEXT_BACKEND", " graph "
+				"ENIGMA_LLM_CONTEXT_BACKEND", " graph ",
+				"ENIGMA_LLM_PROMPT_EXTENSION", " Prefer domain terms from existing mapped names. ",
+				"ENIGMA_LLM_ANALYSIS_HINTS", " functional_interface, related_constants, accessors "
 		);
 
 		LlmConfig config = LlmConfig.load(env::get, key -> "");
@@ -849,6 +1050,25 @@ public class LlmNameProposalPluginTest {
 		assertThat(config.batchPreselectThreshold().getAsDouble(), equalTo(0.86));
 		assertThat(config.batchParallelism(), equalTo(4));
 		assertThat(config.contextBackend(), equalTo(LlmContextBackend.GRAPH));
+		assertThat(config.promptExtension(), equalTo("Prefer domain terms from existing mapped names."));
+		assertThat(config.analysisHints(), equalTo(Set.of(
+				LlmAnalysisHint.FUNCTIONAL_INTERFACE,
+				LlmAnalysisHint.RELATED_CONSTANTS,
+				LlmAnalysisHint.ACCESSORS)));
+		assertTrue(config.isConfigured());
+	}
+
+	@Test
+	public void trimsRuntimeOpenAiCompatibleEndpointAndModelOverrides() {
+		LlmConfig config = new LlmConfig(" http://localhost:1234/v1 ", " local-model ", " secret ",
+				Duration.ofSeconds(5), java.util.OptionalDouble.empty());
+
+		config = config.withBaseUrl(" http://192.168.178.120:1234/v1 ")
+				.withModel(" qwen2.5-coder-14b-q6k ");
+
+		assertThat(config.baseUrl(), equalTo("http://192.168.178.120:1234/v1"));
+		assertThat(config.model(), equalTo("qwen2.5-coder-14b-q6k"));
+		assertThat(config.apiKey(), equalTo("secret"));
 		assertTrue(config.isConfigured());
 	}
 
@@ -867,7 +1087,7 @@ public class LlmNameProposalPluginTest {
 		assertThat(config.timeout(), equalTo(Duration.ofSeconds(120)));
 		assertFalse(config.batchPreselectThreshold().isPresent());
 		assertThat(config.batchParallelism(), equalTo(2));
-		assertThat(config.contextBackend(), equalTo(LlmContextBackend.OWNER));
+		assertThat(config.contextBackend(), equalTo(LlmContextBackend.AUTO));
 
 		Map<String, String> properties = Map.of(
 				"enigma.llm.timeoutSeconds", "not-a-number",
@@ -879,6 +1099,7 @@ public class LlmNameProposalPluginTest {
 		assertThat(config.timeout(), equalTo(Duration.ofSeconds(120)));
 		assertFalse(config.batchPreselectThreshold().isPresent());
 		assertThat(config.batchParallelism(), equalTo(8));
+		assertThat(config.contextBackend(), equalTo(LlmContextBackend.AUTO));
 	}
 
 	@Test
@@ -893,7 +1114,16 @@ public class LlmNameProposalPluginTest {
 			assertThat(server.lastAccept, equalTo("application/json"));
 			assertThat(server.lastRequestBody, containsString("\"model\":\"test-model\""));
 			assertThat(server.lastRequestBody, containsString("Target field: a"));
-			assertThat(server.lastRequestBody, containsString("net/minecraft/TextureManager"));
+			assertThat(server.lastRequestBody, containsString("Default naming rules, adapted from Yarn"));
+			assertThat(server.lastRequestBody, containsString("UPPER_SNAKE_CASE"));
+
+			JsonObject request = JsonParser.parseString(server.lastRequestBody).getAsJsonObject();
+			assertThat(request.get("max_tokens").getAsInt(), equalTo(384));
+			JsonObject responseFormat = request.getAsJsonObject("response_format");
+			assertThat(responseFormat.get("type").getAsString(), equalTo("json_schema"));
+			JsonObject schema = responseFormat.getAsJsonObject("json_schema").getAsJsonObject("schema");
+			assertThat(schema.getAsJsonObject("properties").has("suggestedName"), equalTo(true));
+			assertThat(schema.getAsJsonObject("properties").has("confidence"), equalTo(true));
 		}
 	}
 
@@ -930,8 +1160,8 @@ public class LlmNameProposalPluginTest {
 
 			service.requestSuggestion(config, project, key);
 
-			assertThat(server.lastRequestBody, containsString("Target Type: PARAMETER"));
-			assertThat(server.lastRequestBody, containsString("Obfuscated Name: example/Foo.a(I)V arg 1 (p_1_)"));
+			assertThat(server.lastRequestBody, containsString("Target kind: PARAMETER"));
+			assertThat(server.lastRequestBody, containsString("Target obfuscated name: example/Foo.a(I)V arg 1 (p_1_)"));
 		}
 	}
 
@@ -986,7 +1216,7 @@ public class LlmNameProposalPluginTest {
 	}
 
 	@Test
-	public void requestSuggestionRetriesDuplicateMappedFieldNames() {
+	public void requestSuggestionRetriesEnigmaRejectedFieldRename() {
 		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
 		ClassNode node = classNode("example/Geometry");
 		EntryKey piKey = new EntryKey(EntryKind.FIELD, "example/Geometry", "a", "F");
@@ -1003,18 +1233,170 @@ public class LlmNameProposalPluginTest {
 			calls[0]++;
 			prompts.add(prompt);
 			return calls[0] == 1
-					? new LlmSuggestion("Pi", List.of(), 0.8, "copied neighboring mapped name")
-					: new LlmSuggestion("DegreesPerRadian", List.of(), 0.7, "180 divided by pi");
+					? new LlmSuggestion("PI", List.of(), 0.8, "copied neighboring mapped name")
+					: new LlmSuggestion("DEGREES_PER_RADIAN", List.of(), 0.7, "180 divided by pi");
 		});
-		FakeProjectView project = new FakeProjectView(Map.of(piKey, "pi"));
+		FakeProjectView project = new FakeProjectView(
+				Map.of(piKey, "PI"),
+				Map.of(targetKey, Map.of("PI", "Suggested name is already used by another FIELD in this context: PI")));
 		LlmConfig config = new LlmConfig("http://localhost:1/v1", "test-model", "", Duration.ofSeconds(5), java.util.OptionalDouble.empty());
 
 		LlmSuggestion suggestion = service.requestSuggestion(config, project, targetKey);
 
 		assertThat(calls[0], equalTo(2));
-		assertThat(prompts.get(1), containsString("Previous suggestion was rejected: Suggested name is already used by another FIELD in this context: pi"));
-		assertThat(suggestion.suggestedName(), equalTo("degreesPerRadian"));
-		assertThat(plugin.getSuggestions().get(targetKey).map(LlmSuggestion::suggestedName), equalTo(Optional.of("degreesPerRadian")));
+		assertThat(prompts.get(1), containsString("Previous suggestion was rejected: Suggested name is already used by another FIELD in this context: PI"));
+		assertThat(suggestion.suggestedName(), equalTo("DEGREES_PER_RADIAN"));
+		assertThat(plugin.getSuggestions().get(targetKey).map(LlmSuggestion::suggestedName), equalTo(Optional.of("DEGREES_PER_RADIAN")));
+	}
+
+	@Test
+	public void requestSuggestionRetriesEnigmaRejectedMethodRename() {
+		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
+		ClassNode node = classNode("example/CharPredicate");
+		String descriptor = "(Lexample/CharPredicate;)Lexample/CharPredicate;";
+		EntryKey combineKey = new EntryKey(EntryKind.METHOD, "example/CharPredicate", "a", descriptor);
+		EntryKey targetKey = new EntryKey(EntryKind.METHOD, "example/CharPredicate", "b", descriptor);
+		node.methods.add(new MethodNode(Opcodes.ACC_PUBLIC, "a", descriptor, null, null));
+		node.methods.add(new MethodNode(Opcodes.ACC_PUBLIC, "b", descriptor, null, null));
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(node);
+		plugin.setIndex(builder.build());
+
+		int[] calls = { 0 };
+		List<String> prompts = new ArrayList<>();
+		LlmGuiService service = new LlmGuiService(plugin, (config, kind, targetName, prompt) -> {
+			calls[0]++;
+			prompts.add(prompt);
+			return calls[0] == 1
+					? new LlmSuggestion("combine", List.of(), 0.8, "copied sibling method")
+					: new LlmSuggestion("or", List.of(), 0.7, "combines predicates with logical or");
+		});
+		FakeProjectView project = new FakeProjectView(
+				Map.of(combineKey, "combine"),
+				Map.of(targetKey, Map.of("combine", "Suggested name is already used by another METHOD in this context: combine")));
+		LlmConfig config = new LlmConfig("http://localhost:1/v1", "test-model", "", Duration.ofSeconds(5), java.util.OptionalDouble.empty());
+
+		LlmSuggestion suggestion = service.requestSuggestion(config, project, targetKey);
+
+		assertThat(calls[0], equalTo(2));
+		assertThat(prompts.get(1), containsString("Previous suggestion was rejected: Suggested name is already used by another METHOD in this context: combine"));
+		assertThat(suggestion.suggestedName(), equalTo("or"));
+		assertThat(plugin.getSuggestions().get(targetKey).map(LlmSuggestion::suggestedName), equalTo(Optional.of("or")));
+	}
+
+	@Test
+	public void requestSuggestionReplacesLowerOrEqualConfidenceCachedDuplicateName() {
+		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
+		ClassNode node = classNode("example/Geometry");
+		EntryKey targetKey = new EntryKey(EntryKind.FIELD, "example/Geometry", "a", "F");
+		EntryKey weakerKey = new EntryKey(EntryKind.FIELD, "example/Geometry", "b", "F");
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+				"a", "F", null, Float.valueOf(3.1415927F)));
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+				"b", "F", null, Float.valueOf(57.29578F)));
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(node);
+		plugin.setIndex(builder.build());
+		plugin.getSuggestions().put(weakerKey, new LlmSuggestion("PI", List.of(), 0.80, "wrong field"));
+		int[] calls = { 0 };
+		List<String> prompts = new ArrayList<>();
+		LlmGuiService service = new LlmGuiService(plugin, (config, kind, targetName, prompt) -> {
+			calls[0]++;
+			prompts.add(prompt);
+			return prompt.contains("Two cached LLM name suggestions conflict")
+					? new LlmSuggestion("CURRENT", List.of(), 0.70, "current target better matches pi")
+					: new LlmSuggestion("PI", List.of(), 0.80, "actual pi");
+		});
+		FakeProjectView project = new FakeProjectView();
+		LlmConfig config = new LlmConfig("http://localhost:1/v1", "test-model", "",
+				Duration.ofSeconds(5), java.util.OptionalDouble.empty());
+
+		LlmSuggestion suggestion = service.requestSuggestion(config, project, targetKey);
+
+		assertThat(calls[0], equalTo(2));
+		assertThat(prompts.get(1), containsString("Choose which target should keep the suggested name \"PI\""));
+		assertThat(suggestion.suggestedName(), equalTo("PI"));
+		assertThat(plugin.getSuggestions().get(targetKey).map(LlmSuggestion::suggestedName), equalTo(Optional.of("PI")));
+		assertThat(plugin.getSuggestions().get(weakerKey), equalTo(Optional.empty()));
+	}
+
+	@Test
+	public void requestSuggestionRetriesWhenTieBreakerKeepsEqualConfidenceCachedDuplicateName() {
+		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
+		ClassNode node = classNode("example/Geometry");
+		EntryKey targetKey = new EntryKey(EntryKind.FIELD, "example/Geometry", "a", "F");
+		EntryKey existingKey = new EntryKey(EntryKind.FIELD, "example/Geometry", "b", "F");
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+				"a", "F", null, Float.valueOf(3.1415927F)));
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+				"b", "F", null, Float.valueOf(57.29578F)));
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(node);
+		plugin.setIndex(builder.build());
+		LlmSuggestion existing = new LlmSuggestion("PI", List.of(), 0.80, "existing target looks like pi");
+		plugin.getSuggestions().put(existingKey, existing);
+		int[] suggestionCalls = { 0 };
+		List<String> prompts = new ArrayList<>();
+		LlmGuiService service = new LlmGuiService(plugin, (config, kind, targetName, prompt) -> {
+			prompts.add(prompt);
+
+			if (prompt.contains("Two cached LLM name suggestions conflict")) {
+				return new LlmSuggestion("EXISTING", List.of(), 0.75, "existing target is a better match");
+			}
+
+			suggestionCalls[0]++;
+			return suggestionCalls[0] == 1
+					? new LlmSuggestion("PI", List.of(), 0.80, "ambiguous pi")
+					: new LlmSuggestion("CIRCLE_CONSTANT", List.of(), 0.65, "fallback");
+		});
+		FakeProjectView project = new FakeProjectView();
+		LlmConfig config = new LlmConfig("http://localhost:1/v1", "test-model", "",
+				Duration.ofSeconds(5), java.util.OptionalDouble.empty());
+
+		LlmSuggestion suggestion = service.requestSuggestion(config, project, targetKey);
+
+		assertThat(suggestionCalls[0], equalTo(2));
+		assertThat(prompts.get(1), containsString("Existing gray suggestion:"));
+		assertThat(prompts.get(2), containsString("equal-score LLM comparison"));
+		assertThat(suggestion.suggestedName(), equalTo("CIRCLE_CONSTANT"));
+		assertThat(plugin.getSuggestions().get(existingKey), equalTo(Optional.of(existing)));
+		assertThat(plugin.getSuggestions().get(targetKey).map(LlmSuggestion::suggestedName),
+				equalTo(Optional.of("CIRCLE_CONSTANT")));
+	}
+
+	@Test
+	public void requestSuggestionRetriesHigherConfidenceCachedDuplicateName() {
+		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
+		ClassNode node = classNode("example/Geometry");
+		EntryKey targetKey = new EntryKey(EntryKind.FIELD, "example/Geometry", "a", "F");
+		EntryKey strongerKey = new EntryKey(EntryKind.FIELD, "example/Geometry", "b", "F");
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+				"a", "F", null, Float.valueOf(3.1415927F)));
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+				"b", "F", null, Float.valueOf(57.29578F)));
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(node);
+		plugin.setIndex(builder.build());
+		LlmSuggestion existing = new LlmSuggestion("PI", List.of(), 0.95, "existing stronger suggestion");
+		plugin.getSuggestions().put(strongerKey, existing);
+		int[] calls = { 0 };
+		LlmGuiService service = new LlmGuiService(plugin, (config, kind, targetName, prompt) -> {
+			calls[0]++;
+			return calls[0] == 1
+					? new LlmSuggestion("PI", List.of(), 0.70, "weaker duplicate")
+					: new LlmSuggestion("CIRCLE_CONSTANT", List.of(), 0.65, "fallback");
+		});
+		FakeProjectView project = new FakeProjectView();
+		LlmConfig config = new LlmConfig("http://localhost:1/v1", "test-model", "",
+				Duration.ofSeconds(5), java.util.OptionalDouble.empty());
+
+		LlmSuggestion suggestion = service.requestSuggestion(config, project, targetKey);
+
+		assertThat(calls[0], equalTo(2));
+		assertThat(suggestion.suggestedName(), equalTo("CIRCLE_CONSTANT"));
+		assertThat(plugin.getSuggestions().get(strongerKey), equalTo(Optional.of(existing)));
+		assertThat(plugin.getSuggestions().get(targetKey).map(LlmSuggestion::suggestedName),
+				equalTo(Optional.of("CIRCLE_CONSTANT")));
 	}
 
 	@Test
@@ -1174,6 +1556,39 @@ public class LlmNameProposalPluginTest {
 	}
 
 	@Test
+	public void requestBatchIncludesCompletedBatchSuggestionsInLaterPrompts() {
+		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
+		ClassNode node = classNode("example/Angles");
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+				"a", "F", null, Float.valueOf(57.29578F)));
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+				"b", "F", null, Float.valueOf(0.017453292F)));
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(node);
+		plugin.setIndex(builder.build());
+		List<String> prompts = new ArrayList<>();
+		LlmGuiService service = new LlmGuiService(plugin, (config, kind, targetName, prompt) -> {
+			prompts.add(prompt);
+			return targetName.contains(".a")
+					? new LlmSuggestion("DEGREES_TO_RADIANS", List.of(), 0.8, "degrees to radians conversion factor")
+					: new LlmSuggestion("RADIANS_TO_DEGREES", List.of(), 0.8, "inverse conversion factor");
+		});
+		FakeProjectView project = new FakeProjectView();
+		LlmConfig config = new LlmConfig("http://localhost:1/v1", "test-model", "",
+				Duration.ofSeconds(5), java.util.OptionalDouble.empty(), 1);
+		EntryKey first = new EntryKey(EntryKind.FIELD, "example/Angles", "a", "F");
+		EntryKey second = new EntryKey(EntryKind.FIELD, "example/Angles", "b", "F");
+
+		BatchSuggestionResult result = service.requestBatch(config, project, List.of(first, second));
+
+		assertThat(result.failures().size(), equalTo(0));
+		assertThat(prompts.get(0), not(containsString("Batch suggestions already produced in this run")));
+		assertThat(prompts.get(1), containsString("Batch suggestions already produced in this run"));
+		assertThat(prompts.get(1), containsString("FIELD example/Angles.a : F -> DEGREES_TO_RADIANS"));
+		assertThat(prompts.get(1), containsString("keep vocabulary, abbreviation style, unit order, and inverse pairs consistent"));
+	}
+
+	@Test
 	public void requestBatchUsesConfiguredParallelismAndKeepsTargetOrder() {
 		CountDownLatch entered = new CountDownLatch(2);
 		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
@@ -1192,14 +1607,19 @@ public class LlmNameProposalPluginTest {
 		LlmConfig config = new LlmConfig("http://localhost:1/v1", "test-model", "", Duration.ofSeconds(5), java.util.OptionalDouble.empty(), 2);
 		EntryKey first = new EntryKey(EntryKind.FIELD, "example/Foo", "a", "I");
 		EntryKey second = new EntryKey(EntryKind.FIELD, "example/Foo", "b", "I");
+		List<LlmSuggestionEngine.BatchProgress> progress = new ArrayList<>();
 
-		BatchSuggestionResult result = service.requestBatch(config, project, List.of(first, second));
+		BatchSuggestionResult result = service.requestBatch(config, project, List.of(first, second), progress::add);
 
 		assertThat(result.failures().size(), equalTo(0));
 		assertThat(result.suggestions().get(0).key(), equalTo(first));
 		assertThat(result.suggestions().get(0).suggestion().suggestedName(), equalTo("alpha"));
 		assertThat(result.suggestions().get(1).key(), equalTo(second));
 		assertThat(result.suggestions().get(1).suggestion().suggestedName(), equalTo("beta"));
+		assertThat(progress, equalTo(List.of(
+				new LlmSuggestionEngine.BatchProgress(1, 2),
+				new LlmSuggestionEngine.BatchProgress(2, 2)
+		)));
 	}
 
 	@Test
@@ -1257,6 +1677,35 @@ public class LlmNameProposalPluginTest {
 	}
 
 	@Test
+	public void validatesConstantFieldIdentifiersWithEntryContext() {
+		LlmNameValidator validator = new LlmNameValidator();
+		EntryKey field = new EntryKey(EntryKind.FIELD, "example/Constants", "a", "F");
+
+		assertTrue(validator.isValid(field, "PI", true));
+		assertTrue(validator.isValid(field, "DEGREES_PER_RADIAN", true));
+		assertFalse(validator.isValid(field, "degreesPerRadian", true));
+		assertFalse(validator.isValid(field, "CONSTANT__VALUE", true));
+		assertFalse(validator.isValid(field, "CONSTANT_VALUE_", true));
+		assertFalse(validator.isValid(new EntryKey(EntryKind.METHOD, "example/Constants", "a", "()V"), "PI", true));
+	}
+
+	@Test
+	public void normalizationPreservesStaticFinalFieldCase() {
+		ClassNode node = classNode("example/Constants");
+		node.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, "a", "F", null, Float.valueOf(3.1415927F)));
+		LlmProjectIndex.Builder builder = LlmProjectIndex.builder();
+		builder.accept(node);
+		LlmProjectIndex index = builder.build();
+		EntryKey key = new EntryKey(EntryKind.FIELD, "example/Constants", "a", "F");
+
+		LlmSuggestion suggestion = LlmSuggestionEngine.normalizeSuggestion(key, index,
+				new LlmSuggestion("PI", List.of("MATH_PI"), 0.9, "constant"));
+
+		assertThat(suggestion.suggestedName(), equalTo("PI"));
+		assertThat(suggestion.alternatives(), equalTo(List.of("MATH_PI")));
+	}
+
+	@Test
 	public void validatesClassIdentifiersWithEntryContext() {
 		LlmNameValidator validator = new LlmNameValidator();
 
@@ -1289,6 +1738,7 @@ public class LlmNameProposalPluginTest {
 
 	private static class FakeProjectView implements cuchaz.enigma.api.view.ProjectView {
 		private final Map<EntryKey, String> mappedNames;
+		private final Map<EntryKey, Map<String, String>> invalidRenames;
 		private final List<cuchaz.enigma.api.DataInvalidationListener> listeners = new ArrayList<>();
 		private int invalidations;
 
@@ -1297,7 +1747,12 @@ public class LlmNameProposalPluginTest {
 		}
 
 		FakeProjectView(Map<EntryKey, String> mappedNames) {
+			this(mappedNames, Map.of());
+		}
+
+		FakeProjectView(Map<EntryKey, String> mappedNames, Map<EntryKey, Map<String, String>> invalidRenames) {
 			this.mappedNames = Map.copyOf(mappedNames);
+			this.invalidRenames = Map.copyOf(invalidRenames);
 		}
 
 		@Override
@@ -1356,6 +1811,14 @@ public class LlmNameProposalPluginTest {
 		@Override
 		public ClassNode getBytecode(String className) {
 			return null;
+		}
+
+		@Override
+		public RenameValidationResult validateRename(cuchaz.enigma.api.view.entry.EntryView entry, String newName) {
+			return EntryKey.fromEntryView(entry)
+					.map(key -> this.invalidRenames.getOrDefault(key, Map.of()).get(newName))
+					.map(RenameValidationResult::invalid)
+					.orElseGet(RenameValidationResult::ok);
 		}
 
 		@Override
