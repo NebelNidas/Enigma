@@ -16,11 +16,31 @@ buildscript {
 	}
 }
 
+// Dev-only source set for the deobfuscation benchmark suite. Kept out of `main` so its heavy,
+// dev-only dependencies (tiny-remapper, ...) never ship in the production plugin jar. It sits on
+// top of main (same `cuchaz.enigma.llm` package) so it can drive the real suggestion engine and
+// reuse its package-private types.
+sourceSets {
+	evaluation {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+configurations {
+	evaluationImplementation.extendsFrom implementation
+	evaluationRuntimeOnly.extendsFrom runtimeOnly
+}
+
 dependencies {
 	implementation project(':enigma')
 
 	implementation 'org.ow2.asm:asm:9.9.1'
 	implementation 'org.ow2.asm:asm-tree:9.9.1'
+
+	// Benchmark-only: tiny-remapper applies the ground-truth rename map to produce the obfuscated
+	// corpus jars. (Same version the yarn build already resolves.) Dev-only — not in `main`.
+	evaluationImplementation 'net.fabricmc:tiny-remapper:0.12.0'
 }
 
 // Ground-truth OSS corpus for the Hybrid 1.1 deobfuscation round-trip benchmark.
@@ -58,6 +78,18 @@ tasks.register('downloadCorpus') {
 			logger.lifecycle("corpus: ${entry.name} ready (${java.nio.file.Files.size(target)} bytes)")
 		}
 	}
+}
+
+tasks.register('obfuscateCorpus', JavaExec) {
+	group = 'verification'
+	description = 'Obfuscates the downloaded corpus jars with tiny-remapper and emits ground-truth jsonl.'
+	dependsOn 'downloadCorpus'
+	classpath = sourceSets.evaluation.runtimeClasspath
+	mainClass = 'cuchaz.enigma.llm.ObfuscateCorpusTool'
+	args = [
+			corpusDir.path,
+			file("${project.buildDir}/llm-evaluation/obfuscated").path
+	]
 }
 
 def rootRelativePath = { Object value ->
