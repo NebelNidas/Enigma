@@ -12,12 +12,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Enumeration;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -120,6 +126,11 @@ public final class LlmObfuscationBenchmarkHarness {
 			reports.put(track, new ArrayList<>());
 		}
 
+		// Phase 1 -- prepare every jar-track unit SEQUENTIALLY. Opening the jar and building the index is
+		// cheap (seconds) and is the one step not proven thread-safe in Enigma core, so it never runs
+		// concurrently; each prepared unit then owns an isolated project/plugin/engine/index.
+		List<PreparedUnit> units = new ArrayList<>();
+
 		for (Path groundTruth : groundTruths) {
 			String base = stripSuffix(groundTruth.getFileName().toString(), "-groundtruth.jsonl");
 			List<GroundTruthSymbol> symbols = loadGroundTruth(groundTruth, base);
@@ -131,7 +142,23 @@ public final class LlmObfuscationBenchmarkHarness {
 					continue;
 				}
 
-				reports.get(track).add(processJar(base, obfJar, track, symbols, resultsDir, config, online));
+				units.add(prepareUnit(base, obfJar, track, symbols, resultsDir));
+			}
+		}
+
+		// Phase 2 -- score the units. Each unit's own loop stays strictly sequential (the order-dependent
+		// duplicate-name dedup lives in its per-unit accumulator), but independent units run concurrently
+		// when ENIGMA_LLM_BENCH_PARALLEL_UNITS > 1, feeding the multi-slot server so the GPU is not starved
+		// between requests. Concurrent co-decode is NOT bit-identical to a single stream (see the handoff);
+		// that is an accepted trade for throughput. Default 1 = the exact sequential behaviour.
+		int parallelUnits = Math.max(1, readEnvInt("ENIGMA_LLM_BENCH_PARALLEL_UNITS", 1));
+
+		if (parallelUnits > 1 && units.size() > 1) {
+			System.out.printf("  parallel jar-track units: %d (of %d)%n", parallelUnits, units.size());
+			runUnitsConcurrently(units, reports, resultsDir, config, online, parallelUnits);
+		} else {
+			for (PreparedUnit unit : units) {
+				reports.get(unit.track()).add(runUnit(unit, resultsDir, config, online));
 			}
 		}
 
@@ -168,32 +195,50 @@ public final class LlmObfuscationBenchmarkHarness {
 		}
 	}
 
-	private static JarReport processJar(String base, Path obfJar, Track track, List<GroundTruthSymbol> symbols,
-			Path resultsDir, LlmConfig config, boolean online) throws IOException {
-		// Open the obfuscated jar as a real project -- the assumption Phase A exists to verify.
-		ProjectView project = Enigma.create().openJar(obfJar, List.of(), ProgressListener.none());
+	/** An opened, indexed jar-track ready to score. Prepared sequentially; scored (possibly) in parallel. */
+	private record PreparedUnit(String base, Track track, Path obfJar, List<GroundTruthSymbol> symbols,
+			ProjectView project, LlmNameProposalPlugin plugin, LlmSuggestionEngine engine, Path resultsFile) {
+	}
 
+	/**
+	 * SEQUENTIAL setup for one jar-track: open the obfuscated jar as a real project and build the index.
+	 * Kept off the concurrent path because Enigma's {@code openJar} is not proven thread-safe; each
+	 * prepared unit owns an isolated project/plugin/engine so the scoring can then run in parallel.
+	 */
+	private static PreparedUnit prepareUnit(String base, Path obfJar, Track track, List<GroundTruthSymbol> symbols,
+			Path resultsDir) throws IOException {
+		ProjectView project = Enigma.create().openJar(obfJar, List.of(), ProgressListener.none());
 		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
 		plugin.setIndex(buildIndex(obfJar));
 		LlmSuggestionEngine engine = new LlmSuggestionEngine(plugin);
+		Path resultsFile = resultsDir.resolve(base + "-" + track.label() + "-benchmark.jsonl");
+		return new PreparedUnit(base, track, obfJar, symbols, project, plugin, engine, resultsFile);
+	}
 
+	/**
+	 * Score one prepared unit. This loop is strictly sequential per unit (its per-unit accumulator drives
+	 * the order-dependent duplicate-name dedup); only whole units run concurrently. Touches nothing shared
+	 * except the read-only config/symbols and the thread-safe HTTP client, and writes its own files.
+	 */
+	private static JarReport runUnit(PreparedUnit unit, Path resultsDir, LlmConfig config, boolean online)
+			throws IOException {
 		Map<Bucket, List<GroundTruthSymbol>> buckets = new EnumMap<>(Bucket.class);
 
 		for (Bucket bucket : Bucket.values()) {
 			buckets.put(bucket, new ArrayList<>());
 		}
 
-		for (GroundTruthSymbol symbol : symbols) {
+		for (GroundTruthSymbol symbol : unit.symbols()) {
 			buckets.get(bucketFor(symbol)).add(symbol);
 		}
 
-		Path resultsFile = resultsDir.resolve(base + "-" + track.label() + "-benchmark.jsonl");
-		JarReport report = new JarReport(base);
+		JarReport report = new JarReport(unit.base());
 
-		try (BufferedWriter writer = Files.newBufferedWriter(resultsFile, StandardCharsets.UTF_8)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(unit.resultsFile(), StandardCharsets.UTF_8)) {
 			for (Bucket bucket : Bucket.values()) {
-				for (GroundTruthSymbol symbol : sample(base, bucket, buckets.get(bucket))) {
-					TargetScore score = scoreTarget(engine, config, project, plugin.getIndex(), symbol, online);
+				for (GroundTruthSymbol symbol : sample(unit.base(), bucket, buckets.get(bucket))) {
+					TargetScore score = scoreTarget(unit.engine(), config, unit.project(), unit.plugin().getIndex(),
+							symbol, online);
 					report.add(score, bucket);
 					writer.write(score.toJson().toString());
 					writer.write('\n');
@@ -201,9 +246,45 @@ public final class LlmObfuscationBenchmarkHarness {
 			}
 		}
 
-		report.leaks = auditLeaks(obfJar, symbols, resultsDir, base, track);
+		report.leaks = auditLeaks(unit.obfJar(), unit.symbols(), resultsDir, unit.base(), unit.track());
 		System.out.println(report.line(online));
 		return report;
+	}
+
+	/**
+	 * Run the prepared units through a fixed thread pool of {@code parallelUnits}. Results are collected
+	 * back into the per-track report lists; a failing unit aborts the run rather than silently dropping a
+	 * jar-track from the totals.
+	 */
+	private static void runUnitsConcurrently(List<PreparedUnit> units, Map<Track, List<JarReport>> reports,
+			Path resultsDir, LlmConfig config, boolean online, int parallelUnits) {
+		ExecutorService pool = Executors.newFixedThreadPool(parallelUnits);
+		Map<PreparedUnit, Future<JarReport>> futures = new LinkedHashMap<>();
+
+		try {
+			for (PreparedUnit unit : units) {
+				Callable<JarReport> task = () -> runUnit(unit, resultsDir, config, online);
+				futures.put(unit, pool.submit(task));
+			}
+
+			for (Map.Entry<PreparedUnit, Future<JarReport>> entry : futures.entrySet()) {
+				reports.get(entry.getKey().track()).add(awaitReport(entry.getValue()));
+			}
+		} finally {
+			pool.shutdown();
+		}
+	}
+
+	private static JarReport awaitReport(Future<JarReport> future) {
+		try {
+			return future.get();
+		} catch (InterruptedException interrupted) {
+			Thread.currentThread().interrupt();
+			throw new IllegalStateException("interrupted while awaiting a benchmark unit", interrupted);
+		} catch (ExecutionException failure) {
+			Throwable cause = failure.getCause();
+			throw new IllegalStateException("benchmark unit failed", cause == null ? failure : cause);
+		}
 	}
 
 	/**

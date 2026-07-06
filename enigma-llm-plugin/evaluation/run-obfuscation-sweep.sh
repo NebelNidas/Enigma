@@ -39,6 +39,15 @@ export ENIGMA_LLM_TIMEOUT_SECONDS="${ENIGMA_LLM_TIMEOUT_SECONDS:-120}"
 # stability slice is run separately afterwards to quantify run-to-run jitter.
 export ENIGMA_LLM_TEMPERATURE="${ENIGMA_LLM_TEMPERATURE:-0}"
 export ENIGMA_LLM_MAX_TOKENS="${ENIGMA_LLM_MAX_TOKENS:-512}"
+# Score the 6 independent jar-track units concurrently to feed the multi-slot LM Studio server (the single
+# sequential client left the GPU idle between requests). Each unit stays STRICTLY sequential internally (its
+# per-unit accumulator drives the order-dependent dedup); only whole units overlap. K=2, NOT 3: llama.cpp
+# shares one KV pool across concurrently-active sequences, so K concurrent requests each get ctx/K tokens.
+# A 14B is VRAM-capped near ctx=8192 (more -> OOM), and the real prompts reach ~3300 tokens; K=3 gives only
+# ~2730/slot -> "Context size exceeded" (measured: 45/66 errors), K=2 gives ~4096/slot -> 0 errors. This
+# sacrifices bit-identical greedy output (concurrent batching perturbs the FP reduction order) for through-
+# put -- an explicit, user-approved trade; the sequential model-1 run is kept as a seq-vs-parallel reference.
+export ENIGMA_LLM_BENCH_PARALLEL_UNITS="${ENIGMA_LLM_BENCH_PARALLEL_UNITS:-2}"
 
 # Most-important-first so an early abort still leaves the essential models done.
 ROSTER=(
