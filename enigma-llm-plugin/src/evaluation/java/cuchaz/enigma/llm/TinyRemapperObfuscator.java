@@ -105,13 +105,30 @@ final class TinyRemapperObfuscator implements Obfuscator {
 					continue;
 				}
 
-				collectClass(internalName, cls, names, symbols);
-				collectMethods(internalName, cls, projectClasses, names, symbols, mappings);
-				collectFields(internalName, cls, names, symbols, mappings);
+				// Reflecting over the members (getDeclaredMethods/Fields, field.getType, getSuperclass)
+				// can still throw linkage errors later if a member signature references an absent type.
+				// Collect into per-class buffers and merge only on full success, so one unlinkable class
+				// is skipped (its bytecode is still remapped) rather than aborting the whole corpus.
+				List<ObfuscatedSymbol> classSymbols = new ArrayList<>();
+				List<Mapping> classMappings = new ArrayList<>();
+
+				try {
+					collectClass(internalName, cls, names, classSymbols);
+					collectMethods(internalName, cls, projectClasses, names, classSymbols, classMappings);
+					collectFields(internalName, cls, names, classSymbols, classMappings);
+				} catch (Throwable linkage) {
+					continue;
+				}
+
+				symbols.addAll(classSymbols);
+				mappings.addAll(classMappings);
 			}
 		}
 
 		applyRemap(inputJar, outputJar, mappings);
+		// tiny-remapper preserves debug/source metadata; strip it so original parameter names and
+		// the original SourceFile don't leak into the prompt the model is scored against.
+		DebugStripper.strip(outputJar);
 		return new ObfuscationResult(name(), outputJar, symbols);
 	}
 

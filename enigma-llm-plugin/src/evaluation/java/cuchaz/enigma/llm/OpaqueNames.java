@@ -55,7 +55,15 @@ final class OpaqueNames {
 	}
 
 	String methodToken(String name, String descriptor) {
-		return methodTokens.computeIfAbsent(name + descriptor, k -> "m" + (++methodCounter));
+		// Key on name + ARGUMENT descriptor (drop the return type). A covariant override and its base
+		// share name and arguments but differ in return type; keying on the full descriptor would hand
+		// them distinct tokens, whereas tiny-remapper propagates a single name across the override
+		// group. Keying on arguments only keeps the ground truth consistent with that propagation.
+		// (Only bridge/covariant pairs share name+args with a different return; bridges are skipped
+		// upstream, so this never collapses two genuinely distinct members.)
+		int endArgs = descriptor.indexOf(')');
+		String argKey = endArgs >= 0 ? descriptor.substring(0, endArgs + 1) : descriptor;
+		return methodTokens.computeIfAbsent(name + argKey, k -> "m" + (++methodCounter));
 	}
 
 	String fieldToken(String name, String descriptor) {
