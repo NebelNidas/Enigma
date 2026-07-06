@@ -82,6 +82,7 @@ class LlmSuggestionEngine {
 		for (int attempt = 0; attempt < 2; attempt++) {
 			String attemptPrompt = attempt == 0 ? prompt : repairPrompt(prompt, retryReason);
 			suggestion = normalizeSuggestion(key, this.plugin.getIndex(), this.suggestionRequester.suggestName(config, key.kind(), key.displayName(), attemptPrompt));
+			suggestion = stripOwnerRedundancy(project, this.plugin.getIndex(), key, suggestion);
 
 			if (!this.plugin.isProjectCurrent(project)) {
 				throw new ProjectChangedException();
@@ -470,25 +471,66 @@ class LlmSuggestionEngine {
 	}
 
 	private static boolean isOwnerPrefixedMemberName(ProjectView project, EntryKey key, String suggestedName) {
-		if (key.kind() == EntryKind.CLASS) {
-			return false;
-		}
-
-		String ownerPrefix = EntryKey.toEntryView(new EntryKey(EntryKind.CLASS, key.owner(), key.owner(), ""))
-				.map(project::deobfuscate)
-				.map(EntryView::getName)
-				.map(LlmSuggestionEngine::lowerCaseFirstCodePoint)
-				.orElse("");
+		String ownerPrefix = ownerNamePrefix(project, key);
 
 		return !ownerPrefix.isBlank()
 				&& suggestedName.length() > ownerPrefix.length()
 				&& suggestedName.startsWith(ownerPrefix);
 	}
 
-	private static Optional<String> mappedName(ProjectView project, EntryKey key) {
-		return EntryKey.toEntryView(key)
+	private static String ownerNamePrefix(ProjectView project, EntryKey key) {
+		if (key.kind() == EntryKind.CLASS) {
+			return "";
+		}
+
+		return EntryKey.toEntryView(new EntryKey(EntryKind.CLASS, key.owner(), key.owner(), ""))
 				.map(project::deobfuscate)
-				.map(entry -> key.kind() == EntryKind.CLASS ? entry.getFullName() : entry.getName());
+				.map(EntryView::getName)
+				.map(LlmSuggestionEngine::lowerCaseFirstCodePoint)
+				.orElse("");
+	}
+
+	// Minimum length of the residual token after stripping the owner-class prefix for the strip to be
+	// considered safe. Real Yarn word-tokens (health, offset, position) clear this easily; obfuscation
+	// leftovers such as the trailing "B" in "geometryConstantsB" do not, so those keep falling through
+	// to reject/retry, which lets the model produce a genuinely descriptive name instead.
+	private static final int MIN_STRIPPED_TOKEN_LENGTH = 3;
+
+	// Yarn member names do not repeat their owner class name (e.g. PlayerEntity.playerEntityHealth ->
+	// PlayerEntity.health). When the model emits an owner-prefixed name whose residual token is a real
+	// word, strip the redundant prefix deterministically instead of paying for a repair round-trip.
+	// Anything shorter than MIN_STRIPPED_TOKEN_LENGTH, blank, or not a valid identifier is left intact
+	// so validationFailure() still rejects it and the retry can propose a better name.
+	private LlmSuggestion stripOwnerRedundancy(ProjectView project, LlmProjectIndex index, EntryKey key,
+			LlmSuggestion suggestion) {
+		String primary = stripRedundantOwnerPrefix(project, index, key, suggestion.suggestedName());
+		List<String> alternatives = suggestion.alternatives().stream()
+				.map(alternative -> stripRedundantOwnerPrefix(project, index, key, alternative))
+				.toList();
+
+		if (primary.equals(suggestion.suggestedName()) && alternatives.equals(suggestion.alternatives())) {
+			return suggestion;
+		}
+
+		return new LlmSuggestion(primary, alternatives, suggestion.confidence(), suggestion.reasoning(),
+				suggestion.configuredBackend(), suggestion.resolvedBackend());
+	}
+
+	private String stripRedundantOwnerPrefix(ProjectView project, LlmProjectIndex index, EntryKey key,
+			String suggestedName) {
+		if (!isOwnerPrefixedMemberName(project, key, suggestedName)) {
+			return suggestedName;
+		}
+
+		String ownerPrefix = ownerNamePrefix(project, key);
+		String remainder = lowerCaseFirstCodePoint(suggestedName.substring(ownerPrefix.length()));
+
+		if (remainder.length() < MIN_STRIPPED_TOKEN_LENGTH
+				|| !this.validator.isValid(key, remainder, LlmPromptBuilder.isStaticFinalField(key, index))) {
+			return suggestedName;
+		}
+
+		return remainder;
 	}
 
 	private static boolean wasInterrupted(Throwable error) {

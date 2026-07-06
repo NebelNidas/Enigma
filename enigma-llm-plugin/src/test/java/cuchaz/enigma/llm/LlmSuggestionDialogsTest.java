@@ -2,6 +2,7 @@ package cuchaz.enigma.llm;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertTrue;
 
@@ -12,9 +13,17 @@ import java.util.Locale;
 
 import javax.swing.JTable;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class LlmSuggestionDialogsTest {
+	@BeforeClass
+	public static void loadTranslations() {
+		// Bootstrap Enigma so I18n.initialize() loads the plugin's en_us.json; the backend-column
+		// display (LlmSuggestion.backendDisplayName) resolves real translations rather than raw keys.
+		cuchaz.enigma.Enigma.create();
+	}
+
 	@Test
 	public void batchHeaderShowsFailuresInScrollableTextArea() {
 		BatchSuggestionResult result = new BatchSuggestionResult(List.of(), List.of("a.b : I: invalid", "a.c : I: duplicate"));
@@ -184,7 +193,7 @@ public class LlmSuggestionDialogsTest {
 		);
 		BatchSuggestionTableModel model = new BatchSuggestionTableModel(List.of(row));
 
-		assertThat(model.getColumnName(4), containsString("context"));
+		assertThat(model.getColumnName(4), containsStringIgnoringCase("context"));
 		assertThat(model.getValueAt(0, 4), equalTo("Auto -> Graph-based"));
 	}
 

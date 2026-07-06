@@ -85,6 +85,8 @@ class OpenAiCompatibleClient {
 	}
 
 	static LlmSuggestion parseSuggestion(String responseBody) throws IOException {
+		String finishReason = "";
+
 		try {
 			JsonObject response = JsonParser.parseString(responseBody).getAsJsonObject();
 			JsonArray choices = response.getAsJsonArray("choices");
@@ -93,7 +95,9 @@ class OpenAiCompatibleClient {
 				throw new IOException("LLM response did not contain choices");
 			}
 
-			JsonObject message = choices.get(0).getAsJsonObject().getAsJsonObject("message");
+			JsonObject choice = choices.get(0).getAsJsonObject();
+			finishReason = optionalString(choice, "finish_reason");
+			JsonObject message = choice.getAsJsonObject("message");
 
 			if (message == null || !message.has("content")) {
 				throw new IOException("LLM response did not contain message content");
@@ -122,6 +126,10 @@ class OpenAiCompatibleClient {
 
 			return new LlmSuggestion(suggestedName, alternatives, confidence, reasoning);
 		} catch (IllegalStateException | JsonParseException | NumberFormatException e) {
+			if ("length".equals(finishReason)) {
+				throw new IOException("LLM response truncated at token limit before valid suggestion JSON", e);
+			}
+
 			throw new IOException("LLM response was not valid OpenAI-compatible suggestion JSON", e);
 		}
 	}

@@ -971,6 +971,20 @@ public class LlmNameProposalPluginTest {
 	}
 
 	@Test
+	public void reportsTruncatedOpenAiCompatibleResponseSeparately() {
+		try {
+			OpenAiCompatibleClient.parseSuggestion(
+					"{\"choices\":[{\"finish_reason\":\"length\",\"message\":{\"content\":\"{\\\"reasoning\\\":\\\"the field stores the\"}}]}");
+		} catch (IOException e) {
+			assertThat(e.getMessage(), containsString("truncated at token limit"));
+			assertThat(LlmEvaluationHarness.errorCategory(e), equalTo("truncated"));
+			return;
+		}
+
+		throw new AssertionError("Expected IOException");
+	}
+
+	@Test
 	public void reportsWrongTypedOpenAiCompatibleSuggestionFields() {
 		try {
 			OpenAiCompatibleClient.parseSuggestion("""
@@ -1441,6 +1455,26 @@ public class LlmNameProposalPluginTest {
 		assertThat(prompts.get(1), containsString("Suggested name repeats the owner class name instead of describing the FIELD: geometryConstantsB"));
 		assertThat(suggestion.suggestedName(), equalTo("degreesPerRadian"));
 		assertThat(plugin.getSuggestions().get(fieldKey).map(LlmSuggestion::suggestedName), equalTo(Optional.of("degreesPerRadian")));
+	}
+
+	@Test
+	public void requestSuggestionStripsRedundantOwnerPrefixWithoutRetry() {
+		LlmNameProposalPlugin plugin = new LlmNameProposalPlugin();
+		EntryKey classKey = new EntryKey(EntryKind.CLASS, "example/Foo", "example/Foo", "");
+		EntryKey fieldKey = new EntryKey(EntryKind.FIELD, "example/Foo", "b", "F");
+		int[] calls = { 0 };
+		LlmGuiService service = new LlmGuiService(plugin, (config, kind, targetName, prompt) -> {
+			calls[0]++;
+			return new LlmSuggestion("GeometryConstantsScale", List.of(), 0.8, "owner plus real word");
+		});
+		FakeProjectView project = new FakeProjectView(Map.of(classKey, "GeometryConstants"));
+		LlmConfig config = new LlmConfig("http://localhost:1/v1", "test-model", "", Duration.ofSeconds(5), java.util.OptionalDouble.empty());
+
+		LlmSuggestion suggestion = service.requestSuggestion(config, project, fieldKey);
+
+		assertThat(calls[0], equalTo(1));
+		assertThat(suggestion.suggestedName(), equalTo("scale"));
+		assertThat(plugin.getSuggestions().get(fieldKey).map(LlmSuggestion::suggestedName), equalTo(Optional.of("scale")));
 	}
 
 	@Test

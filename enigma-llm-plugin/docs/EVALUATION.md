@@ -75,12 +75,21 @@ The harness writes one JSON object per case with:
 - latency in milliseconds
 - `errorCategory` and error message if the request failed
 
-The summary tool reports `invalidJson` separately. This bucket matters for
-strict JSON-schema runs because a response can be cut off by the configured
-response-token budget and fail parsing even when the model started with a
-reasonable answer. If `invalidJson` is non-zero for a model, inspect the saved
-error messages and consider rerunning with a larger response budget before
-judging the prompt or context backend.
+The summary tool reports `invalidJson` and `truncated` separately. Both matter
+for strict JSON-schema runs, but they point at different fixes:
+
+- `truncated` means the endpoint reported `finish_reason == "length"`, i.e. the
+  response hit the configured response-token budget mid-JSON. The fix is a
+  larger `MAX_RESPONSE_TOKENS` (or a less verbose reasoning prompt), not a
+  prompt/context change. A non-zero `truncated` count is also the expected
+  failure signature of running a thinking/reasoning model through the
+  interactive 384-token budget.
+- `invalidJson` means the response parsed as malformed for another reason
+  (endpoint ignored `response_format`, a leaked `<think>` block broke
+  extraction, wrong field types). The fix is on the prompt/endpoint side.
+
+If either bucket is non-zero for a model, inspect the saved error messages
+before judging the prompt or context backend.
 
 The current schema stores numeric model-reported confidence because the plugin
 uses it for batch preselection, duplicate-name conflict resolution, and

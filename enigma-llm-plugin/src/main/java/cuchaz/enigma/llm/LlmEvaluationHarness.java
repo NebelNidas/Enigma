@@ -6,10 +6,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -37,8 +42,12 @@ public final class LlmEvaluationHarness {
 		}
 
 		EvaluationSummary summary = run(config, Path.of(args[0]), Path.of(args[1]));
-		System.out.printf(Locale.ROOT, "Evaluated %d cases: accepted=%d exact=%d usable=%d failed=%d invalidJson=%d avgLatencyMs=%.1f%n",
-				summary.total, summary.accepted, summary.exact, summary.usable, summary.failed, summary.invalidJson, summary.averageLatencyMillis());
+		System.out.printf(Locale.ROOT,
+				"Evaluated %d cases: accepted=%d exact=%d usable=%d failed=%d invalidJson=%d truncated=%d "
+						+ "parallelism=%d avgLatencyMs=%.1f wallClockMs=%d throughputPerSec=%.2f%n",
+				summary.total, summary.accepted, summary.exact, summary.usable, summary.failed, summary.invalidJson,
+				summary.truncated, summary.parallelism, summary.averageLatencyMillis(), summary.wallClockMillis,
+				summary.throughputPerSecond());
 	}
 
 	static EvaluationSummary run(LlmConfig config, Path casesPath, Path resultsPath) throws IOException, InterruptedException {
@@ -48,30 +57,85 @@ public final class LlmEvaluationHarness {
 				.map(LlmEvaluationHarness::parseCase)
 				.toList();
 		OpenAiCompatibleClient client = new OpenAiCompatibleClient(config);
-		EvaluationSummary summary = new EvaluationSummary();
-		StringBuilder jsonl = new StringBuilder();
+		int parallelism = Math.max(1, config.batchParallelism());
 
 		Files.createDirectories(resultsPath.toAbsolutePath().getParent());
 
-		for (EvaluationCase testCase : cases) {
-			long startNanos = System.nanoTime();
-			EvaluationResult result;
+		long wallStartNanos = System.nanoTime();
+		List<EvaluationResult> results = evaluateCases(config, client, cases, parallelism);
+		long wallMillis = (System.nanoTime() - wallStartNanos) / 1_000_000L;
 
-			try {
-				LlmSuggestion suggestion = client.suggestName(testCase.kind, testCase.targetName, testCase.prompt);
-				Duration latency = Duration.ofNanos(System.nanoTime() - startNanos);
-				result = EvaluationResult.success(config.model(), testCase, suggestion, latency);
-			} catch (IOException | RuntimeException e) {
-				Duration latency = Duration.ofNanos(System.nanoTime() - startNanos);
-				result = EvaluationResult.failure(config.model(), testCase, e, latency);
-			}
+		EvaluationSummary summary = new EvaluationSummary();
+		summary.parallelism = parallelism;
+		summary.wallClockMillis = wallMillis;
+		StringBuilder jsonl = new StringBuilder();
 
+		for (EvaluationResult result : results) {
 			summary.add(result);
 			jsonl.append(result.toJson()).append('\n');
 		}
 
 		Files.writeString(resultsPath, jsonl.toString(), StandardCharsets.UTF_8);
 		return summary;
+	}
+
+	// Runs cases through a fixed thread pool so the benchmark can actually measure request
+	// parallelism, while preserving deterministic result ordering (results are collected in the
+	// original case order regardless of completion order). The shared OpenAiCompatibleClient wraps
+	// a thread-safe java.net.http.HttpClient and holds no per-request state, so it is safe to share.
+	private static List<EvaluationResult> evaluateCases(LlmConfig config, OpenAiCompatibleClient client,
+			List<EvaluationCase> cases, int parallelism) throws InterruptedException {
+		if (parallelism <= 1) {
+			List<EvaluationResult> results = new ArrayList<>(cases.size());
+
+			for (EvaluationCase testCase : cases) {
+				results.add(evaluateCase(config, client, testCase));
+			}
+
+			return results;
+		}
+
+		ExecutorService pool = Executors.newFixedThreadPool(parallelism);
+
+		try {
+			List<Future<EvaluationResult>> futures = new ArrayList<>(cases.size());
+
+			for (EvaluationCase testCase : cases) {
+				futures.add(pool.submit(() -> evaluateCase(config, client, testCase)));
+			}
+
+			List<EvaluationResult> results = new ArrayList<>(cases.size());
+
+			for (Future<EvaluationResult> future : futures) {
+				try {
+					results.add(future.get());
+				} catch (ExecutionException e) {
+					// evaluateCase never rethrows, so this only fires on a JVM-level fault.
+					throw new IllegalStateException("Unexpected evaluation task failure", e.getCause());
+				}
+			}
+
+			return results;
+		} finally {
+			pool.shutdown();
+		}
+	}
+
+	private static EvaluationResult evaluateCase(LlmConfig config, OpenAiCompatibleClient client, EvaluationCase testCase) {
+		long startNanos = System.nanoTime();
+
+		try {
+			LlmSuggestion suggestion = client.suggestName(testCase.kind, testCase.targetName, testCase.prompt);
+			Duration latency = Duration.ofNanos(System.nanoTime() - startNanos);
+			return EvaluationResult.success(config.model(), testCase, suggestion, latency);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			Duration latency = Duration.ofNanos(System.nanoTime() - startNanos);
+			return EvaluationResult.failure(config.model(), testCase, e, latency);
+		} catch (IOException | RuntimeException e) {
+			Duration latency = Duration.ofNanos(System.nanoTime() - startNanos);
+			return EvaluationResult.failure(config.model(), testCase, e, latency);
+		}
 	}
 
 	static EvaluationCase parseCase(String line) {
@@ -108,6 +172,10 @@ public final class LlmEvaluationHarness {
 	}
 
 	static String errorCategory(Exception error) {
+		if (message(error).contains("truncated at token limit")) {
+			return "truncated";
+		}
+
 		if (containsCause(error, JsonParseException.class)
 				|| message(error).contains("not valid OpenAI-compatible suggestion JSON")) {
 			return "invalid_json";
@@ -183,7 +251,10 @@ public final class LlmEvaluationHarness {
 		int usable;
 		int failed;
 		int invalidJson;
+		int truncated;
+		int parallelism = 1;
 		long latencyMillis;
+		long wallClockMillis;
 
 		void add(EvaluationResult result) {
 			this.total++;
@@ -196,6 +267,8 @@ public final class LlmEvaluationHarness {
 
 				if (result.errorCategory.equals("invalid_json")) {
 					this.invalidJson++;
+				} else if (result.errorCategory.equals("truncated")) {
+					this.truncated++;
 				}
 			}
 
@@ -210,6 +283,10 @@ public final class LlmEvaluationHarness {
 
 		double averageLatencyMillis() {
 			return this.total == 0 ? 0.0 : (double) this.latencyMillis / this.total;
+		}
+
+		double throughputPerSecond() {
+			return this.wallClockMillis == 0 ? 0.0 : (double) this.total * 1000.0 / this.wallClockMillis;
 		}
 	}
 }

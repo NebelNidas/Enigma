@@ -25,8 +25,8 @@ public final class LlmEvaluationSummaryTool {
 
 		for (Map.Entry<String, Summary> entry : summaries.entrySet()) {
 			Summary summary = entry.getValue();
-			System.out.printf(Locale.ROOT, "%s: total=%d accepted=%d exact=%d usable=%d failed=%d invalidJson=%d avgLatencyMs=%.1f%n",
-					entry.getKey(), summary.total, summary.accepted, summary.exact, summary.usable, summary.failed, summary.invalidJson, summary.averageLatencyMillis());
+			System.out.printf(Locale.ROOT, "%s: total=%d accepted=%d exact=%d usable=%d failed=%d invalidJson=%d truncated=%d avgLatencyMs=%.1f%n",
+					entry.getKey(), summary.total, summary.accepted, summary.exact, summary.usable, summary.failed, summary.invalidJson, summary.truncated, summary.averageLatencyMillis());
 		}
 	}
 
@@ -55,6 +55,7 @@ public final class LlmEvaluationSummaryTool {
 		int usable;
 		int failed;
 		int invalidJson;
+		int truncated;
 		long latencyMillis;
 
 		void add(JsonObject result) {
@@ -68,6 +69,8 @@ public final class LlmEvaluationSummaryTool {
 
 				if (stringField(result, "errorCategory").equals("invalid_json")) {
 					this.invalidJson++;
+				} else if (stringField(result, "errorCategory").equals("truncated")) {
+					this.truncated++;
 				}
 			}
 

@@ -3,6 +3,8 @@ package cuchaz.enigma.llm;
 import java.util.List;
 import java.util.Objects;
 
+import cuchaz.enigma.api.I18n;
+
 record LlmSuggestion(String suggestedName, List<String> alternatives, double confidence, String reasoning,
 		LlmContextBackend configuredBackend, LlmContextBackend resolvedBackend) {
 	LlmSuggestion(String suggestedName, List<String> alternatives, double confidence, String reasoning) {
@@ -46,9 +48,9 @@ record LlmSuggestion(String suggestedName, List<String> alternatives, double con
 
 	private static String backendDisplayName(LlmContextBackend backend) {
 		return switch (backend) {
-		case AUTO -> "Auto";
-		case OWNER -> "Simple";
-		case GRAPH -> "Graph-based";
+		case AUTO -> I18n.translate("llm.backend.auto");
+		case OWNER -> I18n.translate("llm.backend.owner");
+		case GRAPH -> I18n.translate("llm.backend.graph");
 		};
 	}
 }
