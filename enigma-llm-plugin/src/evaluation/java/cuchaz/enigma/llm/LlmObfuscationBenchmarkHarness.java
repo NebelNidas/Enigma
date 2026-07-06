@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -133,45 +134,95 @@ public final class LlmObfuscationBenchmarkHarness {
 		plugin.setIndex(buildIndex(obfJar));
 		LlmSuggestionEngine engine = new LlmSuggestionEngine(plugin);
 
-		List<GroundTruthSymbol> recovery = new ArrayList<>();
-		List<GroundTruthSymbol> preservation = new ArrayList<>();
+		Map<Bucket, List<GroundTruthSymbol>> buckets = new EnumMap<>(Bucket.class);
 
-		for (GroundTruthSymbol symbol : symbols) {
-			if (!symbol.recoverable()) {
-				continue;
-			}
-
-			if (symbol.obfuscated()) {
-				recovery.add(symbol);
-			} else {
-				preservation.add(symbol);
-			}
+		for (Bucket bucket : Bucket.values()) {
+			buckets.put(bucket, new ArrayList<>());
 		}
 
-		List<GroundTruthSymbol> sampledRecovery = sample(recovery, limit);
-		List<GroundTruthSymbol> sampledPreservation = sample(preservation, limit);
+		for (GroundTruthSymbol symbol : symbols) {
+			buckets.get(bucketFor(symbol)).add(symbol);
+		}
 
 		Path resultsFile = resultsDir.resolve(base + "-benchmark.jsonl");
 		JarReport report = new JarReport(base);
 
 		try (BufferedWriter writer = Files.newBufferedWriter(resultsFile, StandardCharsets.UTF_8)) {
-			for (GroundTruthSymbol symbol : sampledRecovery) {
-				TargetScore score = scoreTarget(engine, config, project, plugin.getIndex(), symbol, online);
-				report.add(score, false);
-				writer.write(score.toJson().toString());
-				writer.write('\n');
+			for (Bucket bucket : Bucket.values()) {
+				for (GroundTruthSymbol symbol : sample(buckets.get(bucket), limit)) {
+					TargetScore score = scoreTarget(engine, config, project, plugin.getIndex(), symbol, online);
+					report.add(score, bucket);
+					writer.write(score.toJson().toString());
+					writer.write('\n');
+				}
+			}
+		}
+
+		report.leaks = auditLeaks(obfJar, symbols, resultsDir, base);
+		System.out.println(report.line(online));
+		return report;
+	}
+
+	/**
+	 * Recovery is scored in three visibility slices — {@code api} (headline), {@code package}
+	 * (secondary), {@code private} (diagnostic, never in the headline) — plus the preservation control.
+	 * The buckets are reported separately and never averaged.
+	 */
+	private enum Bucket {
+		RECOVERY_API,
+		RECOVERY_PACKAGE,
+		RECOVERY_PRIVATE,
+		PRESERVATION;
+	}
+
+	private static Bucket bucketFor(GroundTruthSymbol symbol) {
+		if (!symbol.obfuscated()) {
+			// Preservation controls keep their real name on purpose; they are drawn from the api slice.
+			return Bucket.PRESERVATION;
+		}
+
+		return switch (symbol.slice()) {
+		case "api" -> Bucket.RECOVERY_API;
+		case "package" -> Bucket.RECOVERY_PACKAGE;
+		default -> Bucket.RECOVERY_PRIVATE;
+		};
+	}
+
+	/**
+	 * Runs the diagnostic leak audit against the obfuscated jar and writes the sampled hits to
+	 * {@code <base>-leaks.jsonl}. The oracle is every obfuscated symbol's real name (all slices);
+	 * preservation-control names are excluded since their real name is kept on purpose.
+	 */
+	private static LeakAudit.LeakReport auditLeaks(Path obfJar, List<GroundTruthSymbol> symbols,
+			Path resultsDir, String base) throws IOException {
+		Set<String> realClassNames = new TreeSet<>();
+		Set<String> realBinaryNames = new TreeSet<>();
+		Set<String> realMemberNames = new TreeSet<>();
+
+		for (GroundTruthSymbol symbol : symbols) {
+			if (!symbol.obfuscated()) {
+				continue;
 			}
 
-			for (GroundTruthSymbol symbol : sampledPreservation) {
-				TargetScore score = scoreTarget(engine, config, project, plugin.getIndex(), symbol, online);
-				report.add(score, true);
-				writer.write(score.toJson().toString());
+			if (symbol.kind() == EntryKind.CLASS) {
+				realClassNames.add(symbol.realName());
+				realBinaryNames.add(symbol.realOwner());
+			} else {
+				realMemberNames.add(symbol.realName());
+			}
+		}
+
+		LeakAudit.LeakReport leaks = LeakAudit.audit(obfJar, realClassNames, realBinaryNames, realMemberNames);
+		Path leaksFile = resultsDir.resolve(base + "-leaks.jsonl");
+
+		try (BufferedWriter writer = Files.newBufferedWriter(leaksFile, StandardCharsets.UTF_8)) {
+			for (LeakAudit.LeakSample sample : leaks.samples()) {
+				writer.write(sample.toJson().toString());
 				writer.write('\n');
 			}
 		}
 
-		System.out.println(report.line(online));
-		return report;
+		return leaks;
 	}
 
 	private static TargetScore scoreTarget(LlmSuggestionEngine engine, LlmConfig config, ProjectView project,
@@ -254,16 +305,25 @@ public final class LlmObfuscationBenchmarkHarness {
 					array.forEach(element -> acceptable.add(element.getAsString()));
 				}
 
+				boolean recoverable = object.get("recoverableSlice").getAsBoolean();
+				String visibility = object.get("visibility").getAsString();
+				// Newer ground truth carries an explicit slice; fall back to deriving it from the older
+				// recoverableSlice + visibility fields so stale corpora still load.
+				String slice = object.has("slice") ? object.get("slice").getAsString()
+						: recoverable ? "api" : visibility.equals("private") ? "private" : "package";
+
 				symbols.add(new GroundTruthSymbol(
 						jar,
 						EntryKind.valueOf(object.get("kind").getAsString()),
 						object.get("obfOwner").getAsString(),
 						object.get("obfName").getAsString(),
 						object.get("obfDesc").getAsString(),
+						object.get("realOwner").getAsString(),
 						object.get("realName").getAsString(),
 						Set.copyOf(acceptable),
-						object.get("visibility").getAsString(),
-						object.get("recoverableSlice").getAsBoolean(),
+						visibility,
+						slice,
+						recoverable,
 						object.get("obfuscated").getAsBoolean()));
 			}
 		}
@@ -324,12 +384,27 @@ public final class LlmObfuscationBenchmarkHarness {
 
 		if (online) {
 			System.out.println();
-			System.out.println("Per-kind (recovery, all jars):");
-			total.recovery.printByKind();
+			System.out.println("Per-kind (recovery api slice, all jars):");
+			total.stats(Bucket.RECOVERY_API).printByKind();
 
-			if (total.preservation.attempted > 0) {
+			KindStats pkg = total.stats(Bucket.RECOVERY_PACKAGE);
+
+			if (pkg.attempted > 0) {
+				System.out.println("Per-kind (recovery package slice, all jars):");
+				pkg.printByKind();
+			}
+
+			KindStats priv = total.stats(Bucket.RECOVERY_PRIVATE);
+
+			if (priv.attempted > 0) {
+				System.out.println("Recovery private slice (diagnostic, never in the headline): " + priv.describe());
+			}
+
+			KindStats preservation = total.stats(Bucket.PRESERVATION);
+
+			if (preservation.attempted > 0) {
 				System.out.println("Preservation control (kept-unchanged, all jars): "
-						+ total.preservation.describePreservation());
+						+ preservation.describePreservation());
 			}
 		}
 	}
@@ -358,8 +433,8 @@ public final class LlmObfuscationBenchmarkHarness {
 
 	/** One ground-truth row loaded back from the {@code -groundtruth.jsonl}. */
 	private record GroundTruthSymbol(String jar, EntryKind kind, String obfOwner, String obfName, String obfDesc,
-			String realName, Set<String> acceptableRealNames, String visibility, boolean recoverable,
-			boolean obfuscated) {
+			String realOwner, String realName, Set<String> acceptableRealNames, String visibility, String slice,
+			boolean recoverable, boolean obfuscated) {
 	}
 
 	/** The outcome of one target: structural resolution plus (if online) the scored suggestion. */
@@ -406,6 +481,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			object.addProperty("jar", this.symbol.jar());
 			object.addProperty("kind", this.symbol.kind().name());
 			object.addProperty("visibility", this.symbol.visibility());
+			object.addProperty("slice", this.symbol.slice());
 			object.addProperty("preservationControl", !this.symbol.obfuscated());
 			object.addProperty("obfOwner", this.symbol.obfOwner());
 			object.addProperty("obfName", this.symbol.obfName());
@@ -501,39 +577,59 @@ public final class LlmObfuscationBenchmarkHarness {
 		}
 	}
 
-	/** Per-jar aggregation over both buckets. */
+	/** Per-jar aggregation over the four buckets plus the leak audit. */
 	private static final class JarReport {
 		private final String base;
-		private final KindStats recovery = new KindStats();
-		private final KindStats preservation = new KindStats();
+		private final Map<Bucket, KindStats> buckets = new EnumMap<>(Bucket.class);
+		private LeakAudit.LeakReport leaks;
 
 		JarReport(String base) {
 			this.base = base;
+
+			for (Bucket bucket : Bucket.values()) {
+				this.buckets.put(bucket, new KindStats());
+			}
 		}
 
-		void add(TargetScore score, boolean preservationBucket) {
-			if (preservationBucket) {
-				this.preservation.add(score);
-			} else {
-				this.recovery.add(score);
-			}
+		void add(TargetScore score, Bucket bucket) {
+			this.buckets.get(bucket).add(score);
+		}
+
+		KindStats stats(Bucket bucket) {
+			return this.buckets.get(bucket);
 		}
 
 		void absorb(JarReport other) {
-			this.recovery.absorb(other.recovery);
-			this.preservation.absorb(other.preservation);
+			for (Bucket bucket : Bucket.values()) {
+				this.buckets.get(bucket).absorb(other.buckets.get(bucket));
+			}
 		}
 
 		String line(boolean online) {
+			KindStats api = stats(Bucket.RECOVERY_API);
+			KindStats pkg = stats(Bucket.RECOVERY_PACKAGE);
+			KindStats priv = stats(Bucket.RECOVERY_PRIVATE);
+			KindStats preservation = stats(Bucket.PRESERVATION);
+
 			if (!online) {
-				return String.format("%-28s recovery[n=%d resolved=%d] preservation[n=%d resolved=%d]",
-						this.base, this.recovery.attempted, this.recovery.resolved,
-						this.preservation.attempted, this.preservation.resolved);
+				return String.format(
+						"%-28s api[n=%d resolved=%d] pkg[n=%d resolved=%d] priv[n=%d resolved=%d]"
+								+ " preservation[n=%d resolved=%d]%s",
+						this.base, api.attempted, api.resolved, pkg.attempted, pkg.resolved,
+						priv.attempted, priv.resolved, preservation.attempted, preservation.resolved, leakPart());
 			}
 
-			String preservationPart = this.preservation.attempted > 0
-					? "  preservation[" + this.preservation.describePreservation() + "]" : "";
-			return String.format("%-28s recovery[%s]%s", this.base, this.recovery.describe(), preservationPart);
+			// api is the headline; pkg is secondary; priv (starred) is diagnostic, never blended in.
+			String pkgPart = pkg.attempted > 0 ? "  pkg[" + pkg.describe() + "]" : "";
+			String privPart = priv.attempted > 0 ? "  priv*[" + priv.describe() + "]" : "";
+			String preservationPart = preservation.attempted > 0
+					? "  preservation[" + preservation.describePreservation() + "]" : "";
+			return String.format("%-28s api[%s]%s%s%s%s", this.base, api.describe(),
+					pkgPart, privPart, preservationPart, leakPart());
+		}
+
+		private String leakPart() {
+			return this.leaks == null ? "" : "  leaks[" + this.leaks.describe() + "]";
 		}
 	}
 }

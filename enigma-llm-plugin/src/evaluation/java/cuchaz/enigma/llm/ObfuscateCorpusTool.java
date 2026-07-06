@@ -79,6 +79,7 @@ public final class ObfuscateCorpusTool {
 				symbol.acceptableRealNames().forEach(acceptable::add);
 				object.add("acceptableRealNames", acceptable);
 				object.addProperty("visibility", symbol.visibility());
+				object.addProperty("slice", symbol.slice());
 				object.addProperty("recoverableSlice", symbol.isRecoverableSlice());
 				object.addProperty("obfuscated", symbol.obfuscated());
 				writer.write(object.toString());

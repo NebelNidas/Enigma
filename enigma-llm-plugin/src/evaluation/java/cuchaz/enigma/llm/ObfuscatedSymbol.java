@@ -27,9 +27,25 @@ record ObfuscatedSymbol(
 		Set<String> acceptableRealNames,
 		int access,
 		boolean obfuscated) {
-	/** The recoverable slice for Phase A is public/protected members plus class names. */
+	/**
+	 * The visibility slice this symbol is scored in: {@code api} (class names plus public/protected
+	 * members — the externally recoverable surface), {@code package} (package-private members, scored
+	 * as a separate secondary bucket), or {@code private} (least recoverable — reported diagnostically,
+	 * never in the headline). The three slices are never averaged together.
+	 */
+	String slice() {
+		if (kind == EntryKind.CLASS || Modifier.isPublic(access) || Modifier.isProtected(access)) {
+			return "api";
+		} else if (Modifier.isPrivate(access)) {
+			return "private";
+		}
+
+		return "package";
+	}
+
+	/** The api slice (class names plus public/protected members); preservation controls draw from it. */
 	boolean isRecoverableSlice() {
-		return kind == EntryKind.CLASS || Modifier.isPublic(access) || Modifier.isProtected(access);
+		return slice().equals("api");
 	}
 
 	/**
