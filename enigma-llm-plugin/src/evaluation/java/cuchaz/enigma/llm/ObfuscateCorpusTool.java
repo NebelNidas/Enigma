@@ -55,10 +55,14 @@ public final class ObfuscateCorpusTool {
 		for (Path jar : jars) {
 			String base = stripJar(jar.getFileName().toString());
 			Path obfJar = outputDir.resolve(base + "-obf.jar");
+			Path nostrJar = outputDir.resolve(base + "-obf-nostr.jar");
 			Path groundTruth = outputDir.resolve(base + "-groundtruth.jsonl");
 
 			ObfuscationResult result = obfuscator.obfuscate(jar, obfJar);
 			writeGroundTruth(groundTruth, jar, result);
+			// Structure-only track: same jar, every program string blanked (see StringScrubber). Shares
+			// the ground truth and structure with the realistic jar; only string payloads differ.
+			StringScrubber.scrub(obfJar, nostrJar);
 			System.out.println(summary(base, result));
 		}
 	}

@@ -102,31 +102,62 @@ public final class LlmObfuscationBenchmarkHarness {
 			return;
 		}
 
-		List<JarReport> reports = new ArrayList<>();
+		Map<Track, List<JarReport>> reports = new EnumMap<>(Track.class);
+
+		for (Track track : Track.values()) {
+			reports.put(track, new ArrayList<>());
+		}
 
 		for (Path groundTruth : groundTruths) {
-			JarReport report = processJar(obfuscatedDir, groundTruth, resultsDir, config, online, limit);
+			String base = stripSuffix(groundTruth.getFileName().toString(), "-groundtruth.jsonl");
+			List<GroundTruthSymbol> symbols = loadGroundTruth(groundTruth, base);
 
-			if (report != null) {
-				reports.add(report);
+			for (Track track : Track.values()) {
+				Path obfJar = obfuscatedDir.resolve(base + track.jarSuffix());
+
+				if (!Files.exists(obfJar)) {
+					continue;
+				}
+
+				reports.get(track).add(processJar(base, obfJar, track, symbols, resultsDir, config, online, limit));
 			}
 		}
 
-		printSummary(reports, online);
+		for (Track track : Track.values()) {
+			printSummary(track, reports.get(track), online);
+		}
 	}
 
-	private static JarReport processJar(Path obfuscatedDir, Path groundTruth, Path resultsDir,
-			LlmConfig config, boolean online, int limit) throws IOException {
-		String base = stripSuffix(groundTruth.getFileName().toString(), "-groundtruth.jsonl");
-		Path obfJar = obfuscatedDir.resolve(base + "-obf.jar");
+	/**
+	 * The two obfuscation tracks, never averaged together. {@code realistic} keeps string literals
+	 * intact — faithful to how ProGuard/R8 (and Minecraft) leave strings untouched, so it measures what
+	 * a reverse-engineer gets in practice. {@code structure-only} blanks every program string (see
+	 * {@link StringScrubber}), isolating recovery from bytecode structure alone; their difference is the
+	 * contribution of string context.
+	 */
+	private enum Track {
+		REALISTIC("-obf.jar", "realistic"),
+		STRUCTURE_ONLY("-obf-nostr.jar", "structure-only");
 
-		if (!Files.exists(obfJar)) {
-			System.err.println("skip " + base + ": missing " + obfJar.getFileName());
-			return null;
+		private final String jarSuffix;
+		private final String label;
+
+		Track(String jarSuffix, String label) {
+			this.jarSuffix = jarSuffix;
+			this.label = label;
 		}
 
-		List<GroundTruthSymbol> symbols = loadGroundTruth(groundTruth, base);
+		String jarSuffix() {
+			return this.jarSuffix;
+		}
 
+		String label() {
+			return this.label;
+		}
+	}
+
+	private static JarReport processJar(String base, Path obfJar, Track track, List<GroundTruthSymbol> symbols,
+			Path resultsDir, LlmConfig config, boolean online, int limit) throws IOException {
 		// Open the obfuscated jar as a real project -- the assumption Phase A exists to verify.
 		ProjectView project = Enigma.create().openJar(obfJar, List.of(), ProgressListener.none());
 
@@ -144,7 +175,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			buckets.get(bucketFor(symbol)).add(symbol);
 		}
 
-		Path resultsFile = resultsDir.resolve(base + "-benchmark.jsonl");
+		Path resultsFile = resultsDir.resolve(base + "-" + track.label() + "-benchmark.jsonl");
 		JarReport report = new JarReport(base);
 
 		try (BufferedWriter writer = Files.newBufferedWriter(resultsFile, StandardCharsets.UTF_8)) {
@@ -158,7 +189,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			}
 		}
 
-		report.leaks = auditLeaks(obfJar, symbols, resultsDir, base);
+		report.leaks = auditLeaks(obfJar, symbols, resultsDir, base, track);
 		System.out.println(report.line(online));
 		return report;
 	}
@@ -194,7 +225,7 @@ public final class LlmObfuscationBenchmarkHarness {
 	 * preservation-control names are excluded since their real name is kept on purpose.
 	 */
 	private static LeakAudit.LeakReport auditLeaks(Path obfJar, List<GroundTruthSymbol> symbols,
-			Path resultsDir, String base) throws IOException {
+			Path resultsDir, String base, Track track) throws IOException {
 		Set<String> realClassNames = new TreeSet<>();
 		Set<String> realBinaryNames = new TreeSet<>();
 		Set<String> realMemberNames = new TreeSet<>();
@@ -213,7 +244,7 @@ public final class LlmObfuscationBenchmarkHarness {
 		}
 
 		LeakAudit.LeakReport leaks = LeakAudit.audit(obfJar, realClassNames, realBinaryNames, realMemberNames);
-		Path leaksFile = resultsDir.resolve(base + "-leaks.jsonl");
+		Path leaksFile = resultsDir.resolve(base + "-" + track.label() + "-leaks.jsonl");
 
 		try (BufferedWriter writer = Files.newBufferedWriter(leaksFile, StandardCharsets.UTF_8)) {
 			for (LeakAudit.LeakSample sample : leaks.samples()) {
@@ -366,9 +397,13 @@ public final class LlmObfuscationBenchmarkHarness {
 		}
 	}
 
-	private static void printSummary(List<JarReport> reports, boolean online) {
+	private static void printSummary(Track track, List<JarReport> reports, boolean online) {
+		if (reports.isEmpty()) {
+			return;
+		}
+
 		System.out.println();
-		System.out.println("=== Phase A summary ===");
+		System.out.println("=== Phase A summary [" + track.label() + "] ===");
 
 		JarReport total = new JarReport("TOTAL");
 
