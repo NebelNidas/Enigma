@@ -19,7 +19,27 @@ set -u
 
 BASE_URL="${ENIGMA_LLM_BASE_URL:-http://192.168.178.120:1234/v1}"
 SSH_HOST="${SWEEP_SSH_HOST:-dk-pc}"
-SWITCH_CTX="${SWEEP_CTX:-8192}"
+SWITCH_CTX="${SWEEP_CTX:-8192}"        # default load ctx; per-model override below
+
+# Per-model context length. K=2 splits the one KV pool -> each request gets ~ctx/K
+# tokens; the prompt (8000-char cap) must FIT that per-slot budget or the server
+# returns HTTP 400 "Context size has been exceeded". The 8000-char cap is ~3300
+# tokens on qwen's tokenizer (fits 8192/2=4096 with headroom, ~0 errors) but the
+# heavier deepseek tokenizer blows past 4096/slot (measured: 127x context-exceeded).
+# Fix is per-model ctx, NOT a smaller char-cap (would strip information from every
+# model to satisfy one tokenizer) and NOT per-model K (a throughput knob, not a fit
+# knob): give each model enough ctx that it receives the FULL prompt. deepseek-v2-lite
+# uses MLA (tiny KV cache) so ctx=16384 loads fine on 16GB -> 8192/slot; the dense
+# qwen-14B would OOM at 16384, so it stays at 8192. Fairness: every model sees the
+# same prompt text; only the token count differs by tokenizer. load_ctx is logged
+# per model, and each model is verified to reach 0 context-exceeded errors -- do NOT
+# compare error rates across models with different per-slot budgets. (declare -A is
+# not exportable: the lookup happens in the main loop and $ctx is interpolated into
+# the ssh switch command, never exported to a child shell.)
+declare -A MODEL_CTX=(
+	["deepseek-coder-v2-lite-instruct@q6_k"]=16384  # heavy tokenizer + MLA -> needs & affords 16384
+)
+
 SWITCH_PY="enigma-llm-plugin/evaluation/switch_model.py"
 LOG_DIR="${SWEEP_LOG_DIR:-enigma-llm-plugin/build/llm-evaluation/sweep-logs}"
 mkdir -p "$LOG_DIR"
@@ -59,7 +79,8 @@ ROSTER=(
 )
 
 echo "=== obfuscation sweep: ${#ROSTER[@]} models ==="
-echo "endpoint=$BASE_URL ctx=$SWITCH_CTX temp=$ENIGMA_LLM_TEMPERATURE max_tokens=$ENIGMA_LLM_MAX_TOKENS"
+echo "endpoint=$BASE_URL ctx=$SWITCH_CTX(default) temp=$ENIGMA_LLM_TEMPERATURE max_tokens=$ENIGMA_LLM_MAX_TOKENS"
+for m in "${!MODEL_CTX[@]}"; do echo "  ctx override: $m -> ${MODEL_CTX[$m]}"; done
 echo "caps: api=$ENIGMA_LLM_BENCH_API pkg=$ENIGMA_LLM_BENCH_PACKAGE priv=$ENIGMA_LLM_BENCH_PRIVATE pres=$ENIGMA_LLM_BENCH_PRESERVATION seed=$ENIGMA_LLM_BENCH_SEED"
 sweep_start=$(date +%s)
 
@@ -71,9 +92,18 @@ for model in "${ROSTER[@]}"; do
 	safe=$(echo "$model" | tr -c 'A-Za-z0-9._-' '_')
 	mlog="$LOG_DIR/$safe.log"
 
+	# Per-model load ctx (default SWITCH_CTX). Validate numeric > 0: a stray non-number
+	# or an accidental 0 in MODEL_CTX would NOT fall through :- (only unset/empty does),
+	# so guard it explicitly rather than ship a bad contextLength to the loader.
+	ctx="${MODEL_CTX[$model]:-$SWITCH_CTX}"
+	if ! [[ "$ctx" =~ ^[1-9][0-9]*$ ]]; then
+		echo "!! invalid ctx '$ctx' for $model -- falling back to $SWITCH_CTX"
+		ctx="$SWITCH_CTX"
+	fi
+
 	# 1) Switch the resident model on the PC (unload-before-load).
-	echo ">> switching resident model on $SSH_HOST ..."
-	if ! ssh "$SSH_HOST" "SWITCH_MODEL=$model SWITCH_CTX=$SWITCH_CTX ~/lmstudio-venv/bin/python -" \
+	echo ">> switching resident model on $SSH_HOST (ctx=$ctx) ..."
+	if ! ssh "$SSH_HOST" "SWITCH_MODEL=$model SWITCH_CTX=$ctx ~/lmstudio-venv/bin/python -" \
 			< "$SWITCH_PY" 2>&1 | grep -vE '^source:' | tee "$mlog" | grep -q "^loaded: "; then
 		echo "!! switch/load FAILED for $model -- skipping (likely does not fit VRAM). See $mlog"
 		continue
