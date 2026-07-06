@@ -8,11 +8,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -77,7 +79,6 @@ public final class LlmObfuscationBenchmarkHarness {
 		Path obfuscatedDir = Path.of(args[0]);
 		Path resultsDir = args.length >= 2 ? Path.of(args[1]) : obfuscatedDir.resolve("benchmark");
 
-		int limit = readLimit();
 		LlmConfig config = LlmConfig.load();
 		boolean online = config.isConfigured();
 
@@ -92,6 +93,9 @@ public final class LlmObfuscationBenchmarkHarness {
 
 		if (online) {
 			System.out.printf("Endpoint: %s model=%s%n  results -> %s%n", config.baseUrl(), config.model(), resultsDir);
+			System.out.printf("  sample/jar/track seed=%d api=%s package=%s private=%s preservation=%s (0 = all)%n",
+					SAMPLE_SEED, bucketLimit(Bucket.RECOVERY_API), bucketLimit(Bucket.RECOVERY_PACKAGE),
+					bucketLimit(Bucket.RECOVERY_PRIVATE), bucketLimit(Bucket.PRESERVATION));
 		} else {
 			System.out.println("Endpoint not configured -- running structural check only (open + index + resolve).");
 		}
@@ -127,7 +131,7 @@ public final class LlmObfuscationBenchmarkHarness {
 					continue;
 				}
 
-				reports.get(track).add(processJar(base, obfJar, track, symbols, resultsDir, config, online, limit));
+				reports.get(track).add(processJar(base, obfJar, track, symbols, resultsDir, config, online));
 			}
 		}
 
@@ -165,7 +169,7 @@ public final class LlmObfuscationBenchmarkHarness {
 	}
 
 	private static JarReport processJar(String base, Path obfJar, Track track, List<GroundTruthSymbol> symbols,
-			Path resultsDir, LlmConfig config, boolean online, int limit) throws IOException {
+			Path resultsDir, LlmConfig config, boolean online) throws IOException {
 		// Open the obfuscated jar as a real project -- the assumption Phase A exists to verify.
 		ProjectView project = Enigma.create().openJar(obfJar, List.of(), ProgressListener.none());
 
@@ -188,7 +192,7 @@ public final class LlmObfuscationBenchmarkHarness {
 
 		try (BufferedWriter writer = Files.newBufferedWriter(resultsFile, StandardCharsets.UTF_8)) {
 			for (Bucket bucket : Bucket.values()) {
-				for (GroundTruthSymbol symbol : sample(buckets.get(bucket), limit)) {
+				for (GroundTruthSymbol symbol : sample(base, bucket, buckets.get(bucket))) {
 					TargetScore score = scoreTarget(engine, config, project, plugin.getIndex(), symbol, online);
 					report.add(score, bucket);
 					writer.write(score.toJson().toString());
@@ -370,38 +374,70 @@ public final class LlmObfuscationBenchmarkHarness {
 		return symbols;
 	}
 
-	/** Deterministic stride sample: {@code limit <= 0} or {@code >= size} keeps everything. */
-	private static List<GroundTruthSymbol> sample(List<GroundTruthSymbol> symbols, int limit) {
+	/**
+	 * Seeded stratified-random sample WITHOUT replacement, per {@code (base, bucket)}. The seed depends
+	 * ONLY on the jar base and the bucket -- never the track or the model -- so realistic vs
+	 * structure-only and every model in the sweep score the IDENTICAL target set (paired comparisons),
+	 * and the whole sweep is reproducible. A per-bucket cap ({@link #bucketLimit}) lets the api headline
+	 * slice be sampled deeply while the diagnostic private slice stays shallow. {@code limit <= 0} or
+	 * {@code >= size} keeps everything (offline structural runs score the full population).
+	 */
+	private static List<GroundTruthSymbol> sample(String base, Bucket bucket, List<GroundTruthSymbol> symbols) {
 		List<GroundTruthSymbol> sorted = new ArrayList<>(symbols);
-		sorted.sort(Comparator.comparing(GroundTruthSymbol::obfOwner)
-				.thenComparing(GroundTruthSymbol::obfName)
-				.thenComparing(GroundTruthSymbol::obfDesc));
+		sorted.sort(SAMPLE_ORDER);
+
+		int limit = bucketLimit(bucket);
 
 		if (limit <= 0 || limit >= sorted.size()) {
 			return sorted;
 		}
 
-		List<GroundTruthSymbol> picked = new ArrayList<>(limit);
-
-		for (int i = 0; i < limit; i++) {
-			picked.add(sorted.get((int) ((long) i * sorted.size() / limit)));
-		}
-
+		long seed = SAMPLE_SEED ^ ((long) base.hashCode() << 21) ^ bucket.name().hashCode();
+		Collections.shuffle(sorted, new Random(seed));
+		List<GroundTruthSymbol> picked = new ArrayList<>(sorted.subList(0, limit));
+		picked.sort(SAMPLE_ORDER);
 		return picked;
 	}
 
+	private static final Comparator<GroundTruthSymbol> SAMPLE_ORDER =
+			Comparator.comparing(GroundTruthSymbol::obfOwner)
+					.thenComparing(GroundTruthSymbol::obfName)
+					.thenComparing(GroundTruthSymbol::obfDesc);
+
+	private static final long SAMPLE_SEED = readEnvInt("ENIGMA_LLM_BENCH_SEED", 1234567);
+
+	/**
+	 * Per-bucket sample cap. Each bucket reads its own env var; unset falls back to the uniform
+	 * {@code ENIGMA_LLM_BENCH_LIMIT} (the smoke {@code -Plimit}), else 0 = score everything.
+	 */
+	private static int bucketLimit(Bucket bucket) {
+		String var = switch (bucket) {
+		case RECOVERY_API -> "ENIGMA_LLM_BENCH_API";
+		case RECOVERY_PACKAGE -> "ENIGMA_LLM_BENCH_PACKAGE";
+		case RECOVERY_PRIVATE -> "ENIGMA_LLM_BENCH_PRIVATE";
+		case PRESERVATION -> "ENIGMA_LLM_BENCH_PRESERVATION";
+		};
+
+		int perBucket = readEnvInt(var, -1);
+		return perBucket >= 0 ? perBucket : readLimit();
+	}
+
 	private static int readLimit() {
-		String raw = System.getenv(LIMIT_ENV);
+		return Math.max(0, readEnvInt(LIMIT_ENV, 0));
+	}
+
+	private static int readEnvInt(String name, int fallback) {
+		String raw = System.getenv(name);
 
 		if (raw == null || raw.isBlank()) {
-			return 0;
+			return fallback;
 		}
 
 		try {
-			return Math.max(0, Integer.parseInt(raw.trim()));
+			return Integer.parseInt(raw.trim());
 		} catch (NumberFormatException ignored) {
-			System.err.println("ignoring non-integer " + LIMIT_ENV + "=" + raw);
-			return 0;
+			System.err.println("ignoring non-integer " + name + "=" + raw);
+			return fallback;
 		}
 	}
 
