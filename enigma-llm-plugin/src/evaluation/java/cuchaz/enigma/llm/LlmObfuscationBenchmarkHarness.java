@@ -356,9 +356,21 @@ public final class LlmObfuscationBenchmarkHarness {
 		// AUTO resolves per-target to graph or simple context; tag it per row so the api headline can be
 		// split by backend post-hoc (otherwise one model can look better only because it drew richer contexts).
 		String contextBackend = LlmPromptBuilder.resolveBackend(key, index, config.contextBackend()).configValue();
+		// What AUTO would independently route this target to, regardless of the configured backend. Logging
+		// it under every forced-backend run lets a post-hoc join answer "did AUTO pick the winning backend?":
+		// score each target under forced owner AND forced graph, then check per target whether the empirically
+		// better backend matches autoBackend. Divergence = AUTO's heuristic leaves recovery on the table.
+		String autoBackend = LlmPromptBuilder.resolveBackend(key, index, LlmContextBackend.AUTO).configValue();
+		// Rebuild the delivered prompt (same backend the engine uses) purely to log its length and whether the
+		// client-side char cap fired. Prompt construction is local (no network) so this also populates the
+		// structural/offline path -> a no-endpoint run is a GPU-free prompt/truncation audit. Batch suggestions
+		// are empty on the per-target api slice, so this matches what requestSuggestion sends.
+		String loggedPrompt = new LlmPromptBuilder().build(key, project, index, config.contextBackend());
+		int promptChars = loggedPrompt.length();
+		boolean promptTruncated = loggedPrompt.contains(LlmPromptBuilder.TRUNCATION_MARKER);
 
 		if (!online) {
-			return TargetScore.structural(symbol, resolved, contextBackend);
+			return TargetScore.structural(symbol, resolved, contextBackend, autoBackend, promptChars, promptTruncated);
 		}
 
 		String suggested = null;
@@ -375,7 +387,8 @@ public final class LlmObfuscationBenchmarkHarness {
 			error = ex.getClass().getSimpleName() + (ex.getMessage() == null ? "" : ": " + ex.getMessage());
 		}
 
-		return TargetScore.scored(symbol, resolved, contextBackend, suggested, alternatives, confidence, error);
+		return TargetScore.scored(symbol, resolved, contextBackend, autoBackend, promptChars, promptTruncated,
+				suggested, alternatives, confidence, error);
 	}
 
 	private static EntryKey keyFor(GroundTruthSymbol symbol) {
@@ -608,19 +621,23 @@ public final class LlmObfuscationBenchmarkHarness {
 
 	/** The outcome of one target: structural resolution plus (if online) the scored suggestion. */
 	private record TargetScore(GroundTruthSymbol symbol, boolean resolvedInIndex, boolean attempted,
-			String contextBackend, String suggested, List<String> alternatives, double confidence, String error,
+			String contextBackend, String autoBackend, int promptChars, boolean promptTruncated,
+			String suggested, List<String> alternatives, double confidence, String error,
 			boolean exact, boolean normalized, boolean usable) {
-		static TargetScore structural(GroundTruthSymbol symbol, boolean resolved, String contextBackend) {
-			return new TargetScore(symbol, resolved, false, contextBackend, null, List.of(), 0.0, null, false, false, false);
+		static TargetScore structural(GroundTruthSymbol symbol, boolean resolved, String contextBackend,
+				String autoBackend, int promptChars, boolean promptTruncated) {
+			return new TargetScore(symbol, resolved, false, contextBackend, autoBackend, promptChars, promptTruncated,
+					null, List.of(), 0.0, null, false, false, false);
 		}
 
-		static TargetScore scored(GroundTruthSymbol symbol, boolean resolved, String contextBackend, String suggested,
+		static TargetScore scored(GroundTruthSymbol symbol, boolean resolved, String contextBackend,
+				String autoBackend, int promptChars, boolean promptTruncated, String suggested,
 				List<String> alternatives, double confidence, String error) {
 			boolean exact = suggested != null && symbol.acceptableRealNames().contains(suggested);
 			boolean normalized = suggested != null && matchesNormalized(symbol.acceptableRealNames(), suggested);
 			boolean usable = exact || normalized || matchesAny(symbol.acceptableRealNames(), alternatives);
-			return new TargetScore(symbol, resolved, true, contextBackend, suggested, alternatives, confidence, error,
-					exact, normalized, usable);
+			return new TargetScore(symbol, resolved, true, contextBackend, autoBackend, promptChars, promptTruncated,
+					suggested, alternatives, confidence, error, exact, normalized, usable);
 		}
 
 		private static boolean matchesNormalized(Set<String> acceptable, String candidate) {
@@ -661,6 +678,9 @@ public final class LlmObfuscationBenchmarkHarness {
 			object.add("acceptable", acceptable);
 			object.addProperty("resolvedInIndex", this.resolvedInIndex);
 			object.addProperty("contextBackend", this.contextBackend);
+			object.addProperty("autoBackend", this.autoBackend);
+			object.addProperty("promptChars", this.promptChars);
+			object.addProperty("promptTruncated", this.promptTruncated);
 			object.addProperty("attempted", this.attempted);
 			object.addProperty("suggested", this.suggested);
 			JsonArray alternatives = new JsonArray();

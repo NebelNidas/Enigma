@@ -48,6 +48,18 @@ def _context_length():
     return int(raw)
 
 
+def _parallel():
+    # llama.cpp/LM Studio partitions the KV cache into `--parallel` static slots, each
+    # capped at ~n_ctx/slots -- this is a LOAD-TIME setting, NOT controlled by client
+    # concurrency (verified empirically + Codex/Grok, 2026-07-07). Default 1 => one slot
+    # gets the FULL n_ctx, so large prompts are not silently server-truncated. The SDK
+    # LlmLoadModelConfig has no parallelism field, so we load via the `lms` CLI instead.
+    raw = os.environ.get("SWITCH_PARALLEL", "").strip()
+    if not raw:
+        return 1
+    return int(raw)
+
+
 def _unload_all(client):
     unloaded = []
     for m in client.llm.list_loaded():
@@ -79,16 +91,31 @@ def main():
             return 2
 
         ctx = _context_length()
-        print(f"unloaded: {_unload_all(client)}")
-        print(f"loading {target} (contextLength={ctx}) ...")
+        par = _parallel()
+        import subprocess
+        lms_bin = os.path.expanduser("~/.lmstudio/bin/lms")
+        # Unload via the CLI, not the SDK: `lms unload --all` reliably clears suffixed (":2")
+        # and JIT-spawned instances that client.llm.list_loaded() can miss, avoiding a stale
+        # parallel-N instance shadowing the freshly loaded one under the same model id.
+        subprocess.run([lms_bin, "unload", "--all"], capture_output=True, text=True)
+        print(f"unloaded: (lms unload --all)")
+        print(f"loading {target} (contextLength={ctx}, parallel={par}) via lms CLI ...")
         t0 = time.monotonic()
-        try:
-            handle = client.llm.load_new_instance(target, config={"contextLength": ctx})
-        except Exception:
-            handle = client.llm.load_new_instance(target, config=lms.LlmLoadModelConfig(context_length=ctx))
-        ident = handle.identifier
+        # The SDK cannot set the parallel slot count (no field on LlmLoadModelConfig), and
+        # that count determines the per-request context ceiling (n_ctx/slots). So load via
+        # the `lms` CLI, which exposes --parallel. --parallel 1 => full n_ctx per request.
+        proc = subprocess.run(
+            [lms_bin, "load", target, "--context-length", str(ctx), "--parallel", str(par), "-y"],
+            capture_output=True, text=True,
+        )
+        if proc.returncode != 0:
+            sys.stderr.write(proc.stdout[-800:] + "\n" + proc.stderr[-800:] + "\n")
+            print(f"error: lms load failed for {target} (rc={proc.returncode})")
+            return 1
+        loaded = [m.identifier for m in client.llm.list_loaded()]
+        ident = next((i for i in loaded if i == target), loaded[0] if loaded else target)
         print(f"loaded: {ident} in {time.monotonic() - t0:.1f}s")
-        print(f"resident now: {[m.identifier for m in client.llm.list_loaded()]}")
+        print(f"resident now: {loaded}")
         return 0
 
 

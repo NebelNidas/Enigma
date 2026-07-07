@@ -11,8 +11,33 @@ import cuchaz.enigma.api.view.ProjectView;
 import cuchaz.enigma.api.view.entry.EntryView;
 
 class LlmPromptBuilder {
-	private static final int MAX_PROMPT_CHARS = 8000;
+	// Client-side hard cap on the prompt length. Default 8000 chars (~3300 tokens on qwen's tokenizer).
+	// Overridable via ENIGMA_LLM_MAX_PROMPT_CHARS so the evaluation harness can raise/disable it for a
+	// truncation-isolation run (the cap is K-independent: it fires before the prompt ever reaches the
+	// server, so a K=1 run at the default cap is NOT "untruncated" -- only server-side overflow is gone).
+	// Read once at class load; a benchmark sets the env before the JVM starts.
+	private static final int MAX_PROMPT_CHARS = resolveMaxPromptChars();
+	static final String TRUNCATION_MARKER = "[Context truncated to fit the configured local model context window.]";
 	private static final String RESPONSE_INSTRUCTIONS_MARKER = "\nRespond with JSON only:\n";
+
+	private static int resolveMaxPromptChars() {
+		String raw = System.getenv("ENIGMA_LLM_MAX_PROMPT_CHARS");
+
+		if (raw == null || raw.isBlank()) {
+			return 8000;
+		}
+
+		try {
+			int parsed = Integer.parseInt(raw.strip());
+			return parsed > 0 ? parsed : 8000;
+		} catch (NumberFormatException ex) {
+			return 8000;
+		}
+	}
+
+	static int maxPromptChars() {
+		return MAX_PROMPT_CHARS;
+	}
 
 	String build(EntryKey key, ProjectView project, LlmProjectIndex index, LlmContextBackend backend) {
 		return build(key, project, index, backend, Set.of());
@@ -82,11 +107,11 @@ class LlmPromptBuilder {
 
 		if (markerIndex < 0) {
 			return prompt.substring(0, MAX_PROMPT_CHARS)
-					+ "\n\n[Context truncated to fit the configured local model context window.]\n";
+					+ "\n\n" + TRUNCATION_MARKER + "\n";
 		}
 
 		String suffix = prompt.substring(markerIndex);
-		String notice = "\n[Context truncated to fit the configured local model context window.]\n";
+		String notice = "\n" + TRUNCATION_MARKER + "\n";
 		int prefixBudget = Math.max(0, MAX_PROMPT_CHARS - suffix.length() - notice.length());
 		return prompt.substring(0, Math.min(prefixBudget, markerIndex)) + notice + suffix;
 	}

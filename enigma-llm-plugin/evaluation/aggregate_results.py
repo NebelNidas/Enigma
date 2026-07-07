@@ -82,11 +82,18 @@ def load_model_rows(model_dir: str) -> list[dict]:
             print(f"  ! skip (unrecognized track): {fname}", file=sys.stderr)
             continue
         with open(path, encoding="utf-8") as fh:
-            for line in fh:
+            for lineno, line in enumerate(fh, 1):
                 line = line.strip()
                 if not line:
                     continue
-                row = json.loads(line)
+                try:
+                    row = json.loads(line)
+                except json.JSONDecodeError as e:
+                    # A benchmark process killed mid-write can leave one truncated JSONL line
+                    # (seen in an old restored AUTO dir). Skip it rather than aborting the whole
+                    # aggregate -- mirrors the defensive parse in analyze_backend_matrix.py.
+                    print(f"  ! skip (malformed JSON, {fname}:{lineno}): {e}", file=sys.stderr)
+                    continue
                 row["_track"] = track
                 rows.append(row)
     return rows
