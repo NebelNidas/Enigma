@@ -1,6 +1,32 @@
 # Model Selection
 
-Status: 2026-07-05
+Status: 2026-07-05 (original planning snapshot) — **UPDATE 2026-07-08 below.**
+
+> **UPDATE 2026-07-08 — some entries below are superseded.** The authoritative,
+> chronological record of what was actually chosen and why lives in the local
+> handoff timeline `LLM_ENIGMA_HANDOFF.local.md` (entries 2026-07-06 → 2026-07-08),
+> with the short live state in `LLM_ENIGMA_STATE.local.md`. Summary of the outcome:
+>
+> - **Final essay roster (single RX 9060 XT, 16 GB):** three representative Qwen
+>   members — `qwen2.5-coder-14b` Q6_K (dense, code, primary), `qwen3-8b` (newer,
+>   small), and `qwen3-coder-30b-a3b` MoE at IQ4_XS (top performer). `qwen2.5-coder-7b`
+>   Q4 is the improvement-loop subject (too weak for a headline). DeepSeek-Coder-V2-Lite,
+>   `qwen3-14b`, and a 14B Q5/Q6 quant ablation are context, not headline points.
+> - **Quant evidence (measured, api exact/336, graph-raised):** within the 30B, IQ4_XS
+>   (33) > Q3_K_M (26) — less aggressive quant is better; and 30B IQ4_XS (33) > 14B
+>   Q6_K (19) — a bigger model at 4-bit beats a smaller one at 6-bit. The naive
+>   "high quant makes a big model worse than a small one" did NOT hold at 3–4 bit.
+>   The extreme 1–2 bit regime is being probed separately (Qwen3-Coder-Next).
+> - **2026 landscape (primary sources cited in the essay, `references.bib`):** beyond
+>   Qwen, the current open families ship only very large mixture-of-experts models
+>   (DeepSeek V4 284B/1.6T, Llama 4 109B/400B, Kimi K2.x 1T) that exceed one 16 GB GPU
+>   — a small active-parameter count does NOT reduce resident weights. Google **Gemma 4**
+>   (Apr 2026, dense 31B) was added as a non-code, cross-family contrast (Q3_K_S,
+>   marginal 16 GB fit). Newer Qwen (3.5/3.6) exists; the roster was frozen for
+>   reproducibility. **Gemma 3n is fully superseded by this Gemma 4 decision.**
+> - **Reproducibility rule (standing):** benchmark/judge scripts under
+>   `enigma-llm-plugin/evaluation/` (sweep, backend-matrix, semantic-judge, 7b-loop)
+>   are FROZEN once their numbers appear in the essay — do not delete or edit them.
 
 This document tracks model candidates for the Enigma LLM plugin. The plugin is
 provider-neutral and only needs an OpenAI-compatible chat-completions endpoint,

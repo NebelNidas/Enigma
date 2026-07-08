@@ -1,6 +1,17 @@
 # Benchmark Runbook
 
-Status: 2026-07-05
+Status: 2026-07-05 (original) — **UPDATE 2026-07-08 below.**
+
+> **UPDATE 2026-07-08.** The as-run procedure, the final roster, and the actual
+> results now live in the local handoff timeline `LLM_ENIGMA_HANDOFF.local.md`
+> (2026-07-06 → 2026-07-08) plus `LLM_ENIGMA_STATE.local.md` (live state), and the
+> committed runners/analysers under `enigma-llm-plugin/evaluation/` (obfuscation
+> sweep, `run-pc-queue.sh`, backend-matrix, `semantic-judge/`, `7b-loop/`). The
+> per-model context map, `--parallel 1` (full n_ctx per request), and the raised
+> `MAX_PROMPT_CHARS=16000` graph cap are the load-time facts that matter. The
+> "Gemma 3n deprioritised" note below is superseded: Gemma **4** 31B was added as a
+> non-code contrast (see MODEL_SELECTION.md update). **Reproducibility rule:** any
+> script whose numbers appear in the essay is frozen — do not delete or edit it.
 
 Use this runbook when testing local and remote models for the Enigma LLM plugin.
 It assumes the model is exposed through an OpenAI-compatible endpoint.
