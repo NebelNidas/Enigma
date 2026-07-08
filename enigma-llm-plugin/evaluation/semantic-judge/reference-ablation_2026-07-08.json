@@ -1,0 +1,902 @@
+[
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m1110",
+  "suggested": "getFileFromPath",
+  "_ref": "getUserHome",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m269",
+  "suggested": "beginObject",
+  "_ref": "beginArray",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C76",
+  "obfName": "m128",
+  "suggested": "writeBuffer",
+  "_ref": "add",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f226",
+  "suggested": "CLASS_INSTANCE_FACTORY",
+  "_ref": "URL_FACTORY",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m112",
+  "suggested": "createInstance",
+  "_ref": "getInstance",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "CLASS",
+  "owner": "C20",
+  "obfName": "C20",
+  "suggested": "DataTransformer",
+  "_ref": "DeltaDecoder",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m300",
+  "suggested": "writeFloat",
+  "_ref": "value",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C22",
+  "obfName": "m117",
+  "suggested": "getString",
+  "_ref": "getAsString",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C338",
+  "obfName": "m2491",
+  "suggested": "addDateUnit",
+  "_ref": "round",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m41",
+  "suggested": "isFeatureEnabled",
+  "_ref": "htmlSafe",
+  "_verdict": "REJECT",
+  "ablated": "UNCERTAIN"
+ },
+ {
+  "model": "8b",
+  "kind": "CLASS",
+  "owner": "C186",
+  "obfName": "C186",
+  "suggested": "ListenerRegistry",
+  "_ref": "EventListenerSupport",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C277",
+  "obfName": "m2043",
+  "suggested": "invokeMethod",
+  "_ref": "invokeExactMethod",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f224",
+  "suggested": "CLASS_INSTANCE_FACTORY",
+  "_ref": "URI_FACTORY",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m33",
+  "suggested": "getDeltaDistance",
+  "_ref": "getDistance",
+  "_verdict": "ACCEPT",
+  "ablated": "UNCERTAIN"
+ },
+ {
+  "model": "30b",
+  "kind": "CLASS",
+  "owner": "C63",
+  "obfName": "C63",
+  "suggested": "ThreadFinder",
+  "_ref": "ThreadUtils",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C26",
+  "obfName": "m619",
+  "suggested": "getEnumByName",
+  "_ref": "getEnum",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C277",
+  "obfName": "m2043",
+  "suggested": "invokeMethod",
+  "_ref": "invokeExactMethod",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C22",
+  "obfName": "m112",
+  "suggested": "getSize",
+  "_ref": "getAsInt",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C204",
+  "obfName": "m351",
+  "suggested": "resolveMethod",
+  "_ref": "getAccessor",
+  "_verdict": "ACCEPT",
+  "ablated": "UNCERTAIN"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C204",
+  "obfName": "m351",
+  "suggested": "getMethodForField",
+  "_ref": "getAccessor",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C345",
+  "obfName": "m2547",
+  "suggested": "formatWithLocale",
+  "_ref": "getTimeInstance",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C112",
+  "obfName": "m1301",
+  "suggested": "appendInt",
+  "_ref": "append",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C106",
+  "obfName": "m241",
+  "suggested": "readData",
+  "_ref": "normalize",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C89",
+  "obfName": "m188",
+  "suggested": "isValid",
+  "_ref": "endMarkerDetected",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C265",
+  "obfName": "m1929",
+  "suggested": "updateValue",
+  "_ref": "setValue",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "CLASS",
+  "owner": "C30",
+  "obfName": "C30",
+  "suggested": "OutputStreamWrapper",
+  "_ref": "FinishableWrapperOutputStream",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m303",
+  "suggested": "writeNumber",
+  "_ref": "value",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "CLASS",
+  "owner": "C68",
+  "obfName": "C68",
+  "suggested": "VliConstants",
+  "_ref": "Util",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m299",
+  "suggested": "writeDouble",
+  "_ref": "value",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C338",
+  "obfName": "m2491",
+  "suggested": "adjustDate",
+  "_ref": "round",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C33",
+  "obfName": "m11",
+  "suggested": "isEnabled",
+  "_ref": "changesSize",
+  "_verdict": "REJECT",
+  "ablated": "UNCERTAIN"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m51",
+  "suggested": "serializeObject",
+  "_ref": "toJson",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m2",
+  "suggested": "wrapInputStream",
+  "_ref": "getInputStream",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C269",
+  "obfName": "m1923",
+  "suggested": "getValue",
+  "_ref": "getAndAdd",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2150",
+  "suggested": "appendFromIterator",
+  "_ref": "appendAll",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C363",
+  "obfName": "m2434",
+  "suggested": "toPattern",
+  "_ref": "getPattern",
+  "_verdict": "ACCEPT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C61",
+  "obfName": "m31",
+  "suggested": "fetchBytes",
+  "_ref": "finish",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C217",
+  "obfName": "m366",
+  "suggested": "createTypeToken",
+  "_ref": "getArray",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C103",
+  "obfName": "m1311",
+  "suggested": "processLongArray",
+  "_ref": "append",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "CLASS",
+  "owner": "C54",
+  "obfName": "C54",
+  "suggested": "Transformer",
+  "_ref": "TypeAdapterFactory",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C71",
+  "obfName": "m1209",
+  "suggested": "isBit32",
+  "_ref": "is32Bit",
+  "_verdict": "ACCEPT",
+  "ablated": "UNCERTAIN"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C100",
+  "obfName": "m79",
+  "suggested": "resetState",
+  "_ref": "reset",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "CLASS",
+  "owner": "C102",
+  "obfName": "C102",
+  "suggested": "Constants",
+  "_ref": "State",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C74",
+  "obfName": "m133",
+  "suggested": "getIndex",
+  "_ref": "getRecordCount",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "CLASS",
+  "owner": "C36",
+  "obfName": "C36",
+  "suggested": "DataStreamManager",
+  "_ref": "LZMA2InputStream",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C48",
+  "obfName": "m98",
+  "suggested": "seekBlock",
+  "_ref": "seekToBlock",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C181",
+  "obfName": "m1633",
+  "suggested": "executeWith",
+  "_ref": "lockApplyUnlock",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f227",
+  "suggested": "FACTORY_BUILDER",
+  "_ref": "UUID",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "30b",
+  "kind": "CLASS",
+  "owner": "C31",
+  "obfName": "C31",
+  "suggested": "StreamProcessor",
+  "_ref": "IA64Options",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m158",
+  "suggested": "isValid",
+  "_ref": "hasPending",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m384",
+  "suggested": "toFloatArray",
+  "_ref": "toPrimitive",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C196",
+  "obfName": "m1687",
+  "suggested": "removeFromList",
+  "_ref": "removeCommonFrames",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "CLASS",
+  "owner": "C107",
+  "obfName": "C107",
+  "suggested": "PrimitiveTypeUtils",
+  "_ref": "Primitives",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C14",
+  "obfName": "m29",
+  "suggested": "computeLength",
+  "_ref": "getUnpaddedSize",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m270",
+  "suggested": "createJsonObject",
+  "_ref": "beginObject",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f197",
+  "suggested": "FACTORY_CONFIG",
+  "_ref": "CHARACTER_FACTORY",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m294",
+  "suggested": "getSingleElement",
+  "_ref": "get",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C217",
+  "obfName": "m364",
+  "suggested": "getInstanceForClass",
+  "_ref": "get",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C70",
+  "obfName": "m1160",
+  "suggested": "validateValueInExclusiveRange",
+  "_ref": "exclusiveBetween",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m112",
+  "suggested": "fromId",
+  "_ref": "getInstance",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C100",
+  "obfName": "m79",
+  "suggested": "initializeState",
+  "_ref": "reset",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "CLASS",
+  "owner": "C3",
+  "obfName": "C3",
+  "suggested": "ObjectCreator",
+  "_ref": "ArrayCache",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2162",
+  "suggested": "appendString",
+  "_ref": "appendSeparator",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "CLASS",
+  "owner": "C205",
+  "obfName": "C205",
+  "suggested": "UnsupportedRecordHandler",
+  "_ref": "RecordNotSupportedHelper",
+  "_verdict": "ACCEPT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m135",
+  "suggested": "putChar",
+  "_ref": "addProperty",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m144",
+  "suggested": "containsKey",
+  "_ref": "has",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C131",
+  "obfName": "m168",
+  "suggested": "getAdapter",
+  "_ref": "create",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C147",
+  "obfName": "m1553",
+  "suggested": "getThreadFactory",
+  "_ref": "getWrappedFactory",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C114",
+  "obfName": "m1330",
+  "suggested": "appendDoubles",
+  "_ref": "appendDetail",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C99",
+  "obfName": "m1271",
+  "suggested": "getListSize",
+  "_ref": "getNumberOfDiffs",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m1034",
+  "suggested": "abbreviate",
+  "_ref": "substring",
+  "_verdict": "ACCEPT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C291",
+  "obfName": "m649",
+  "suggested": "processAndWrapCollection",
+  "_ref": "stream",
+  "_verdict": "REJECT",
+  "ablated": "UNCERTAIN"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C48",
+  "obfName": "m98",
+  "suggested": "checkBlockValidity",
+  "_ref": "seekToBlock",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C108",
+  "obfName": "m144",
+  "suggested": "writeData",
+  "_ref": "putArraysToCache",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m79",
+  "suggested": "initializeState",
+  "_ref": "reset",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C131",
+  "obfName": "m168",
+  "suggested": "processData",
+  "_ref": "create",
+  "_verdict": "ACCEPT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "8b",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f189",
+  "suggested": "BOOLEAN_FLAG",
+  "_ref": "BOOLEAN",
+  "_verdict": "ACCEPT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C48",
+  "obfName": "m82",
+  "suggested": "setPosition",
+  "_ref": "seek",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m372",
+  "suggested": "convertShortArray",
+  "_ref": "toObject",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m50",
+  "suggested": "objectToString",
+  "_ref": "toJson",
+  "_verdict": "REJECT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C193",
+  "obfName": "m1655",
+  "suggested": "getExceptionMessage",
+  "_ref": "getRawMessage",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m384",
+  "suggested": "convertFloatArray",
+  "_ref": "toPrimitive",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C378",
+  "obfName": "m2581",
+  "suggested": "appendValue",
+  "_ref": "appendTo",
+  "_verdict": "ACCEPT",
+  "ablated": "UNCERTAIN"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C48",
+  "obfName": "m81",
+  "suggested": "streamPosition",
+  "_ref": "position",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C8",
+  "obfName": "m7",
+  "suggested": "generateIntArray",
+  "_ref": "getIntArray",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "METHOD",
+  "owner": "C8",
+  "obfName": "m415",
+  "suggested": "isEqualToBoolean",
+  "_ref": "isFalse",
+  "_verdict": "REJECT",
+  "ablated": "REJECT"
+ },
+ {
+  "model": "14b",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m110",
+  "suggested": "getDoubleValue",
+  "_ref": "getAsDouble",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "CLASS",
+  "owner": "C30",
+  "obfName": "C30",
+  "suggested": "OutputStreamWrapper",
+  "_ref": "FinishableWrapperOutputStream",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "8b",
+  "kind": "CLASS",
+  "owner": "C62",
+  "obfName": "C62",
+  "suggested": "SystemProperties",
+  "_ref": "SystemUtils",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ },
+ {
+  "model": "30b",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m61",
+  "suggested": "validatePb",
+  "_ref": "setPb",
+  "_verdict": "ACCEPT",
+  "ablated": "ACCEPT"
+ }
+]
