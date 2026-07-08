@@ -1,0 +1,14 @@
+Semantic recovery judge (blind, 2 cross-family judges Grok+GPT/codex + Claude tie-break on disagreements)
+graph-raised config (cap16000), api realistic, n=300. Residual-only judging with decompiled obfuscated
+method bodies (+1-hop). ACCEPT/REJECT/UNCERTAIN; UNCERTAIN counts as NOT recovered. Generated 2026-07-08 08:58:06
+
+model             exact  ACCEPT  REJECT  UNCRT  sem-use  exact%   sem%        Wilson95  kappa  disag
+------------------------------------------------------------------------------------------------------------
+14b q6_k             19      92     175     11      111    6.3%  37.0%     [31.7,42.6]   0.75    12%
+qwen3-8b             22      91     177     10      113    7.3%  37.7%     [32.4,43.3]   0.62    18%
+30B-MoE iq4_xs       33     119     142      6      152   11.0%  50.7%     [45.0,56.3]   0.75    12%
+
+Rate B (ACCEPT / judged residuals) and no-suggestion misses:
+  14b: ACCEPT 92/278 judged = 33.1% ; no-suggestion misses=3 (counted as not recovered)
+  8b: ACCEPT 91/278 judged = 32.7% ; no-suggestion misses=0 (counted as not recovered)
+  30b: ACCEPT 119/267 judged = 44.6% ; no-suggestion misses=0 (counted as not recovered)
