@@ -98,10 +98,11 @@ tasks.register('benchmarkObfuscation', JavaExec) {
 	dependsOn 'obfuscateCorpus'
 	classpath = sourceSets.evaluation.runtimeClasspath
 	mainClass = 'cuchaz.enigma.llm.LlmObfuscationBenchmarkHarness'
-	args = [
-			file("${project.buildDir}/llm-evaluation/obfuscated").path,
-			file("${project.buildDir}/llm-evaluation/benchmark").path
-	]
+	// Optional -PobfDir / -PresultsDir override the input corpus dir and output dir (e.g. a DEV subset
+	// with only some jars for the 7B tuning loop); default to the full obfuscated corpus + benchmark dir.
+	def obfDirArg = project.hasProperty('obfDir') ? file(project.property('obfDir')).path : file("${project.buildDir}/llm-evaluation/obfuscated").path
+	def resultsDirArg = project.hasProperty('resultsDir') ? file(project.property('resultsDir')).path : file("${project.buildDir}/llm-evaluation/benchmark").path
+	args = [obfDirArg, resultsDirArg]
 	// Sample N targets per jar (deterministic stride) for a cheap smoke run: -Plimit=25.
 	// The engine reads its endpoint/model from ENIGMA_LLM_* env vars; with none set the harness
 	// still runs the structural half (open + index + resolve every key).

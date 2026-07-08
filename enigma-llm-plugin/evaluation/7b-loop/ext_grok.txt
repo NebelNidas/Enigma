@@ -1,0 +1,8 @@
+Task: map the obfuscated Java identifier to the most likely ORIGINAL name from open-source conventions.
+Steps (do in order):
+1. Read kind + owner simple name + JVM descriptor. Infer role (getter/setter, constant, functional-interface method, util helper, enum value, etc.).
+2. Use callers + referenced classes + hints + string literals as primary evidence. Prefer names that match literals, the types in the descriptor, and how callers use this symbol.
+3. Obfuscated names are meaningless; do not copy or lightly edit them unless there is no other evidence.
+4. Give one best identifier plus 2-4 other plausible open-source names for the same role (not synonyms of the obfuscated token).
+5. If evidence is weak, still pick the most conventional name for that role and set confidence low.
+Naming: camelCase for fields/methods, UPPER_SNAKE for constants, JavaBean getX/isX/setX for accessors when the descriptor matches.

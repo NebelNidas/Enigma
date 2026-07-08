@@ -1,0 +1,29 @@
+7B improvement loop (qwen2.5-coder-7b-instruct Q4) -- DEV=gson+commons, HOLDOUT=xz. temp=0, --parallel 1.
+Reviewed by Codex + GPT (gpt-5.5) and Grok before running.
+
+TEIL A -- wired-knob 9-cell grid (backend x hints), DEV api=50/jar (n=102), realistic:
+  cell                     usable exact
+  graph_conservative(cap16000) 10   8   <- WINNER
+  graph_all(cap16000)           9   8
+  owner_off                     8   8
+  auto_off                      8   7
+  graph_off(cap16000)           8   6
+  auto_all / auto_conservative  6   6/5
+  owner_all / owner_conservative 5  5
+  => graph + conservative hints + raised 16000-char cap wins (+4 usable / +3 exact over the
+     product-default auto/conservative/8000 baseline); no per-jar regression.
+
+TEIL B -- crafted PROMPT_EXTENSION A/B on the winner config, DEV api=150/jar (n=302 paired):
+  config          usable exact   paired usable (wins/losses/net)
+  none (baseline)   19    16      --
+  grok-ext          24    17      13/8/+5
+  codex-ext         25    19      13/7/+6   <- best (ext_codex.txt)
+  => small, consistent, direction-positive gain; sign test p~=0.13 (suggestive, not significant).
+
+HOLDOUT confirmation (xz, api, n=151 paired), winner (graph+conservative+codex-ext) vs none:
+  usable 2 -> 3, exact 2 -> 3 (wins 1 / losses 0) -- no regression, generalises; xz recovery near floor.
+
+CONCLUSION: cheap prompt/context tuning gives the weak 7B a small, consistent, non-regressing lift but
+does not transform it. Model capability is the binding constraint, not prompt engineering. Honest caveat:
+at usable ~5-10 % the per-config differences are near the noise floor; paired win/loss + n>=300 were used
+to keep the direction trustworthy, and the effect is reported as modest, not a breakthrough.
