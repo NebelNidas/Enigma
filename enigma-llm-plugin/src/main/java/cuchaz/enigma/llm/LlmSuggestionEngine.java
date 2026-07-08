@@ -306,8 +306,19 @@ class LlmSuggestionEngine {
 				suggestion.configuredBackend(), suggestion.resolvedBackend());
 	}
 
+	// Evaluation-only escape hatch (read once at class load, like LlmPromptBuilder's MAX_PROMPT_CHARS):
+	// when ENIGMA_LLM_DISABLE_SUGGESTION_CACHE is set, the whole-jar duplicate-name dedup/tie-break is
+	// switched off so the round-trip benchmark can measure recovery with every target scored independently
+	// (a cache-off control). Unset by default, so normal product runs are unchanged.
+	private static final boolean SUGGESTION_CACHE_DISABLED =
+			!System.getenv().getOrDefault("ENIGMA_LLM_DISABLE_SUGGESTION_CACHE", "").isBlank();
+
 	private Optional<String> cachedSuggestionFailure(LlmConfig config, ProjectView project, LlmProjectIndex index,
 			EntryKey key, LlmSuggestion suggestion) throws IOException, InterruptedException {
+		if (SUGGESTION_CACHE_DISABLED) {
+			return Optional.empty();
+		}
+
 		String conflictKey = cachedSuggestionConflictKey(key, suggestion);
 
 		if (conflictKey.isBlank()) {
