@@ -378,6 +378,10 @@ public final class LlmObfuscationBenchmarkHarness {
 		double confidence = 0.0;
 		String error = null;
 
+		// Wall-clock latency of the single suggestion round-trip (network + inference), for weighing
+		// slower/stronger models against faster ones. Includes only requestSuggestion, not local scoring.
+		long startNanos = System.nanoTime();
+
 		try {
 			LlmSuggestion suggestion = engine.requestSuggestion(config, project, key);
 			suggested = suggestion.suggestedName();
@@ -387,8 +391,10 @@ public final class LlmObfuscationBenchmarkHarness {
 			error = ex.getClass().getSimpleName() + (ex.getMessage() == null ? "" : ": " + ex.getMessage());
 		}
 
+		long latencyMs = (System.nanoTime() - startNanos) / 1_000_000L;
+
 		return TargetScore.scored(symbol, resolved, contextBackend, autoBackend, promptChars, promptTruncated,
-				suggested, alternatives, confidence, error);
+				suggested, alternatives, confidence, error, latencyMs);
 	}
 
 	private static EntryKey keyFor(GroundTruthSymbol symbol) {
@@ -623,21 +629,21 @@ public final class LlmObfuscationBenchmarkHarness {
 	private record TargetScore(GroundTruthSymbol symbol, boolean resolvedInIndex, boolean attempted,
 			String contextBackend, String autoBackend, int promptChars, boolean promptTruncated,
 			String suggested, List<String> alternatives, double confidence, String error,
-			boolean exact, boolean normalized, boolean usable) {
+			boolean exact, boolean normalized, boolean usable, long latencyMs) {
 		static TargetScore structural(GroundTruthSymbol symbol, boolean resolved, String contextBackend,
 				String autoBackend, int promptChars, boolean promptTruncated) {
 			return new TargetScore(symbol, resolved, false, contextBackend, autoBackend, promptChars, promptTruncated,
-					null, List.of(), 0.0, null, false, false, false);
+					null, List.of(), 0.0, null, false, false, false, -1L);
 		}
 
 		static TargetScore scored(GroundTruthSymbol symbol, boolean resolved, String contextBackend,
 				String autoBackend, int promptChars, boolean promptTruncated, String suggested,
-				List<String> alternatives, double confidence, String error) {
+				List<String> alternatives, double confidence, String error, long latencyMs) {
 			boolean exact = suggested != null && symbol.acceptableRealNames().contains(suggested);
 			boolean normalized = suggested != null && matchesNormalized(symbol.acceptableRealNames(), suggested);
 			boolean usable = exact || normalized || matchesAny(symbol.acceptableRealNames(), alternatives);
 			return new TargetScore(symbol, resolved, true, contextBackend, autoBackend, promptChars, promptTruncated,
-					suggested, alternatives, confidence, error, exact, normalized, usable);
+					suggested, alternatives, confidence, error, exact, normalized, usable, latencyMs);
 		}
 
 		private static boolean matchesNormalized(Set<String> acceptable, String candidate) {
@@ -690,6 +696,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			object.addProperty("exact", this.exact);
 			object.addProperty("normalized", this.normalized);
 			object.addProperty("usable", this.usable);
+			object.addProperty("latencyMs", this.latencyMs);
 			object.addProperty("error", this.error);
 			return object;
 		}
