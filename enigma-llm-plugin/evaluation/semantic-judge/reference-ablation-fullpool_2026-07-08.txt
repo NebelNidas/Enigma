@@ -1,0 +1,7 @@
+n rows = 796
+judge          ACCEPT plausible       REJECT plausible
+grok       251/302  =  83%        174/494  =  35%
+codex      254/302  =  84%        116/494  =  23%
+claude     257/302  =  85%        186/494  =  38%
+
+majority(>=2/3 ACCEPT): accepted 260/302 = 86%   rejected 157/494 = 32%

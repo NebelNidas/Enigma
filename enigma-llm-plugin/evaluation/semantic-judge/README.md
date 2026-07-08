@@ -50,3 +50,19 @@ decompiled body is not full semantics — not ground-truth behavioural equivalen
 `JUDGE_DIR` (default: this directory) is where the `resid_*`, `judged_*`,
 `tiebreak_*` and `decomp_*` files live; `BENCH_DIR` (default:
 `../../build/llm-evaluation/benchmark`) is the harness output root.
+
+## Reference-ablation robustness (anti-anchoring)
+
+To rule out the judges anchoring on the reference string, every accepted and
+rejected residual is re-judged with the reference **withheld** (code + suggestion
+only), asking merely whether the name is plausible *for the observed behaviour*.
+`build_ablation_full.py` emits all accepted (302) + rejected (494) residuals across
+the three models; `judge_ablated2.py <grok|codex|claude> <out> <slice>` re-judges
+them (resumable via an `<out>.partial.json`); `ablfull_combine.py` combines the
+three runs. All three families agree closely (`reference-ablation-fullpool_2026-07-08.txt`):
+**83–85 % of accepted vs 23–38 % of rejected** residuals stay behaviour-plausible
+without the reference, so acceptances are behaviour-grounded, not string-anchored.
+
+Exact assistant models (vendor CLIs, 2026-07-08): Grok `grok-composer-2.5-fast`
+(xAI), GPT `gpt-5.5` via the Codex CLI (OpenAI), Claude `claude-opus-4-8`
+(Anthropic). The earlier 90-item two-judge check is `reference-ablation_2026-07-08.json`.
