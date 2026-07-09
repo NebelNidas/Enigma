@@ -52,18 +52,20 @@ final class CliBridgeProvider implements BridgeProvider {
 	@Override
 	public String complete(ChatCompletionRequest request) throws Exception {
 		String model = request.model();
-		String vendor;
-		String modelId;
-		int colon = model.indexOf(':');
+		// Route by "vendor:modelId" with an OPTIONAL ":effort" third segment, e.g. codex:gpt-5.5:high,
+		// claude:opus:medium, grok:grok-build (grok-build has no effort knob so any third segment is ignored).
+		String[] parts = model.split(":", 3);
 
-		if (colon < 0) {
-			throw new IllegalArgumentException("cli provider expects a 'vendor:modelId' model, got: " + model);
+		if (parts.length < 2) {
+			throw new IllegalArgumentException(
+					"cli provider expects a 'vendor:modelId[:effort]' model, got: " + model);
 		}
 
-		vendor = model.substring(0, colon).toLowerCase(Locale.ROOT);
-		modelId = model.substring(colon + 1).strip();
+		String vendor = parts[0].toLowerCase(Locale.ROOT);
+		String modelId = parts[1].strip();
+		String effort = parts.length >= 3 ? parts[2].strip() : "";
 		String prompt = request.combinedPrompt();
-		List<String> command = buildCommand(vendor, modelId, prompt);
+		List<String> command = buildCommand(vendor, modelId, effort, prompt);
 		String stdout = run(command);
 		String json = extractSuggestionJson(stdout);
 
@@ -76,15 +78,49 @@ final class CliBridgeProvider implements BridgeProvider {
 		return json;
 	}
 
-	private List<String> buildCommand(String vendor, String modelId, String prompt) {
-		return switch (vendor) {
-		case "grok" -> concat(this.grokCommand, List.of("--disable-web-search", "-m", modelId, "-p", prompt));
-		// claude accepts a model alias ("opus") or a full id; -p is single-turn headless.
-		case "claude" -> concat(this.claudeCommand, List.of("-p", prompt, "--model", modelId));
-		// codex: global flags (incl. -m) precede the exec subcommand.
-		case "codex" -> concat(this.codexCommand, List.of("-m", modelId, "exec", "--skip-git-repo-check", prompt));
+	private List<String> buildCommand(String vendor, String modelId, String effort, String prompt) {
+		List<String> extra = new ArrayList<>();
+
+		switch (vendor) {
+		case "grok" -> {
+			// grok-build exposes no reasoning-effort knob; effort intentionally ignored.
+			extra.add("--disable-web-search");
+			extra.add("-m");
+			extra.add(modelId);
+			extra.add("-p");
+			extra.add(prompt);
+			return concat(this.grokCommand, extra);
+		}
+		case "claude" -> {
+			// claude accepts a model alias ("opus") or full id; -p is single-turn headless.
+			extra.add("-p");
+			extra.add(prompt);
+			extra.add("--model");
+			extra.add(modelId);
+
+			if (!effort.isEmpty()) {
+				extra.add("--effort");
+				extra.add(effort);
+			}
+
+			return concat(this.claudeCommand, extra);
+		}
+		case "codex" -> {
+			// codex: global flags (incl. -c effort override and -m) precede the exec subcommand.
+			if (!effort.isEmpty()) {
+				extra.add("-c");
+				extra.add("model_reasoning_effort=" + effort);
+			}
+
+			extra.add("-m");
+			extra.add(modelId);
+			extra.add("exec");
+			extra.add("--skip-git-repo-check");
+			extra.add(prompt);
+			return concat(this.codexCommand, extra);
+		}
 		default -> throw new IllegalArgumentException("cli provider: unknown vendor '" + vendor + "'");
-		};
+		}
 	}
 
 	private String run(List<String> command) throws Exception {
