@@ -4,9 +4,12 @@ Blinded, cross-family LLM judge that re-scores the round-trip benchmark's residu
 misses (non-exact, non-normalized) to measure *semantic* recovery, i.e. whether a
 suggested name captures the same meaning as the original even when it is not a
 verbatim match (`getUser` for `fetchUser`). Exact matching alone understates
-practical usefulness roughly 4–5×; on 14b/8b/30B-MoE (graph backend, raised cap,
-api realistic, n=300) semantic recovery was 37.0 / 37.7 / 50.7 % versus 6.3 / 7.3 /
-11.0 % exact (`results_2026-07-08.txt`).
+practical usefulness several-fold. Under the **primary v2 rubric** (maintainer
+adoption; grok-build flagship judge) on 14b/8b/30B-MoE (graph backend, raised cap,
+api realistic, n=300) semantic recovery is 29.0 / 22.7 / 38.3 % versus 6.3 / 7.3 /
+11.0 % exact (`results-v2_2026-07-09.txt`). An earlier, more lenient **v1 rubric**
+(behavioural plausibility; grok-composer-2.5-fast) gave 37.0 / 37.7 / 50.7 %
+(`results_2026-07-08.txt`) and is kept as a sensitivity bound, not the headline.
 
 ## Protocol (validated with Codex + Grok)
 
@@ -17,12 +20,34 @@ string similarity), the suggested name (+ alternatives), and the original framed
 neutrally as a "reference identifier from an unobfuscated build" (never "correct
 answer"). It returns `ACCEPT` / `REJECT` / `UNCERTAIN`; `UNCERTAIN` counts as not
 recovered. Two judges from families other than the Qwen models under test — xAI
-Grok and OpenAI GPT (`codex`) — judge independently; Cohen's κ was 0.62–0.75.
-Disagreements were adjudicated by a third family (Anthropic Claude); those manual
-decisions are recorded verbatim in `tiebreak_{14b,8b,30b}.json` so the aggregate
-is reproducible. `semantic-usable = exact + ACCEPT residuals`, with a Wilson 95 %
-interval on the residual n. Read this as a *bounded plausibility audit* — a
-decompiled body is not full semantics — not ground-truth behavioural equivalence.
+Grok and OpenAI GPT (`codex`) — judge independently; Cohen's κ was 0.70–0.75 for
+the v2 panel (0.62–0.75 for v1). Disagreements were adjudicated by a third family
+(Anthropic Claude); those manual decisions are recorded verbatim in
+`tiebreak_v2_{14b,8b,30b}.json` (v2) / `tiebreak_{14b,8b,30b}.json` (v1) so the
+aggregate is reproducible. `semantic-usable = exact + ACCEPT residuals`, with a
+Wilson 95 % interval on the residual n. Read this as a *bounded plausibility audit*
+— a decompiled body is not full semantics — not ground-truth behavioural equivalence.
+
+## Rubric versions: v1 (lenient, sensitivity) and v2 (strict, primary)
+
+The v1→v2 change is a **joint protocol change** and should not be decomposed into
+its two parts:
+
+- **Rubric.** v1 asked "is this a behaviourally *plausible* name?"; v2 asks "would
+  a maintainer actually *adopt* this name?" — v2 rejects well-known-type collisions
+  (e.g. `FailableConsumer`→`Consumer`), dropped load-bearing qualifiers, and wrong
+  granularity. That collision case is exactly what motivated the stricter rubric.
+- **Grok judge.** v1 used `grok-composer-2.5-fast` (the "Schnell" tier); v2 uses
+  `grok-build` (the "Grok 4.3" flagship), which is also stricter on the *same*
+  residuals (130 vs 146 shared ACCEPTs). GPT stayed `gpt-5.5` (high effort) and the
+  Claude tie-break stayed `claude-opus-4-8` (high); only Grok was re-run.
+
+Exact-match counts are deterministic and unchanged, so the whole v1→v2 delta is a
+reclassification of residual non-exact suggestions. The v2 pipeline mirrors v1 with
+`_v2`-suffixed scripts and data: `judge_run_v2.py` (adds the maintainer-adoption
+rubric and `-m grok-build`), `tiebreak_v2.py`, `agg_v2.py` (prints v1 and v2 side by
+side; reads `judged_v2_{grok,codex}_*.json` + `tiebreak_v2_*.json`). Regenerate the
+headline table with `python3 agg_v2.py`.
 
 ## Pipeline
 
@@ -59,10 +84,14 @@ only), asking merely whether the name is plausible *for the observed behaviour*.
 `build_ablation_full.py` emits all accepted (302) + rejected (494) residuals across
 the three models; `judge_ablated2.py <grok|codex|claude> <out> <slice>` re-judges
 them (resumable via an `<out>.partial.json`); `ablfull_combine.py` combines the
-three runs. All three families agree closely (`reference-ablation-fullpool_2026-07-08.txt`):
-**83–85 % of accepted vs 23–38 % of rejected** residuals stay behaviour-plausible
-without the reference, so acceptances are behaviour-grounded, not string-anchored.
+three runs. Under the **v2 grok-build panel** (`reference-ablation-fullpool-v2_2026-07-09.txt`)
+the majority still rate **82 % of accepted vs 24 % of rejected** residuals plausible
+without the reference (per judge 70–87 % vs 18–38 %; 33/796 grok parse-fails counted
+conservatively as not plausible), so acceptances are behaviour-grounded, not
+string-anchored. The v1/grok-fast run is preserved as
+`reference-ablation-fullpool_2026-07-08.txt` (majority 86 % vs 32 %).
 
-Exact assistant models (vendor CLIs, 2026-07-08): Grok `grok-composer-2.5-fast`
-(xAI), GPT `gpt-5.5` via the Codex CLI (OpenAI), Claude `claude-opus-4-8`
-(Anthropic). The earlier 90-item two-judge check is `reference-ablation_2026-07-08.json`.
+Exact assistant models (vendor CLIs): **v2 (primary)** — Grok `grok-build` ("Grok 4.3"
+flagship), GPT `gpt-5.5` at high reasoning effort via the Codex CLI, Claude
+`claude-opus-4-8` at high effort. **v1 (lenient)** used Grok `grok-composer-2.5-fast`.
+The earlier 90-item two-judge check is `reference-ablation_2026-07-08.json`.

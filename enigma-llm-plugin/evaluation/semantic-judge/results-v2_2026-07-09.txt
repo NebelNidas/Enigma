@@ -1,0 +1,30 @@
+Semantic recovery judge -- v2 (maintainer-adoption rubric), PRIMARY essay metric.
+Blind, 2 cross-family judges + Claude tie-break on disagreements. graph-raised config (cap16000),
+api realistic, n=300. Residual-only judging with decompiled obfuscated method bodies (+1-hop).
+ACCEPT/REJECT/UNCERTAIN; UNCERTAIN counts as NOT recovered.
+
+v2 vs v1 difference is a JOINT protocol change (do not decompose):
+  - rubric: v1 = "behaviourally plausible name?"  ->  v2 = "would a maintainer ADOPT this name?"
+    (v2 rejects well-known-type collisions e.g. FailableConsumer->Consumer, dropped qualifiers,
+     wrong granularity).
+  - Grok judge: v1 = grok-composer-2.5-fast ("Schnell" tier)  ->  v2 = grok-build ("Grok 4.3" flagship).
+  - GPT judge = gpt-5.5 (high reasoning effort, via Codex CLI); Claude tie-break = claude-opus-4-8 (high).
+Exact-match counts are unchanged (deterministic); the entire v1->v2 delta is reclassification of
+residual non-exact suggestions. grok-build is also stricter than grok-composer-2.5-fast on the SAME
+residuals (130 vs 146 shared ACCEPTs), so the tightening is rubric AND judge.
+
+Regenerate: python3 agg_v2.py  (reads judged_v2_{grok,codex}_{14b,8b,30b}.json + tiebreak_v2_*.json;
+exact counts from build/llm-evaluation/benchmark/<pass>).  Cohen's kappa (grok-build vs gpt-5.5, binary
+ACCEPT-vs-rest, MISSING dropped): 14b 0.70 (n=278), 8b 0.74 (n=278), 30b 0.75 (n=256).
+
+model            ver  exact   ACC   REJ   UNC  sem-use   sem%       Wilson95  pend
+--------------------------------------------------------------------------------------------
+14b q6_k          v1     19    92   175    11      111  37.0%  [31.7,42.6]     0
+14b q6_k          v2     19    68   199    11       87  29.0%  [24.2,34.4]     0
+qwen3-8b          v1     22    91   177    10      113  37.7%  [32.4,43.3]     0
+qwen3-8b          v2     22    46   215    17       68  22.7%  [18.3,27.7]     0
+30B-MoE iq4_xs    v1     33   119   142     6      152  50.7%  [45.0,56.3]     0
+30B-MoE iq4_xs    v2     33    82   171    14      115  38.3%  [33.0,43.9]     0
+
+Essay Table (tab:semantic): exact | adoption(=v2) | lenient(=v1)
+  14B  6.3% | 29.0% | 37.0%     8B  7.3% | 22.7% | 37.7%     30B-MoE 11.0% | 38.3% | 50.7%

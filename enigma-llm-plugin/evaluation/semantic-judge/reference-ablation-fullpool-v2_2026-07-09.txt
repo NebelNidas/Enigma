@@ -1,0 +1,27 @@
+Reference-ablation (anti-anchoring), full pool -- v2 with grok-build (PRIMARY).
+Re-judge ALL accepted (302) and rejected (494) residuals with the reference name WITHHELD (code +
+suggestion only). "plausible" = judge would still accept the suggestion as a name for the behaviour.
+Judges: grok-build ("Grok 4.3"), gpt-5.5 (high, Codex CLI), claude-opus-4-8 (high). Only Grok was
+re-run for v2 (grok-composer-2.5-fast -> grok-build); codex/claude were already flagship and unchanged.
+grok-build returns prose instead of JSON on 33/796 ablation prompts (after 3 refill passes); these are
+counted CONSERVATIVELY as "not plausible", so they depress grok's rates slightly.
+
+Regenerate: python3 ablfull_combine.py (reads ablfull_{grok,codex,claude}.json).
+
+n rows = 796
+judge          ACCEPT plausible       REJECT plausible
+grok       212/302  =  70%         87/494  =  18%
+codex      254/302  =  84%        116/494  =  23%
+claude     262/302  =  87%        187/494  =  38%
+
+majority(>=2/3 ACCEPT): accepted 249/302 = 82%   rejected 119/494 = 24%
+
+Interpretation: the accept/reject split survives with the reference withheld (majority 82% vs 24%),
+so acceptances track observed behaviour, not string similarity to the reference name. Compared with
+v1/grok-fast (grok 83%/35%, majority 86%/32%), the stricter grok-build widens the low end (70% accept),
+but the separation direction is unchanged. Essay range: accepted 70-87% (majority 82%) vs rejected
+18-38% (majority 24%).
+
+Provenance: the v1/grok-fast run is preserved in reference-ablation-fullpool_2026-07-08.txt and
+reference-ablation-fullpool_grok.json (grok-composer-2.5-fast). The grok-build verdicts for this v2
+table are in reference-ablation-fullpool-v2_grok.json.
