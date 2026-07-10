@@ -1,0 +1,982 @@
+{
+ "gpt-5.5 high (commercial)": {
+  "cls": "commercial",
+  "self": "codex",
+  "n_api": 100,
+  "exact": 23,
+  "err": 1,
+  "n_res": 76,
+  "sanity": "OK",
+  "rubrics": {
+   "lenient": {
+    "available": [
+     "claude",
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "cross_family": [
+     "claude",
+     "gemini",
+     "grok"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 34,
+      "answered": 76,
+      "rate": 0.4473684210526316
+     },
+     "claude": {
+      "accept": 37,
+      "answered": 76,
+      "rate": 0.4868421052631579
+     },
+     "gemini": {
+      "accept": 35,
+      "answered": 76,
+      "rate": 0.4605263157894737
+     },
+     "grok": {
+      "accept": 31,
+      "answered": 65,
+      "rate": 0.47692307692307695
+     }
+    },
+    "cross_family_panel": {
+     "perm": 39,
+     "strict": 30,
+     "major": 36,
+     "cov": 76,
+     "miss": 0.048
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini",
+      "grok"
+     ],
+     "perm": 37,
+     "strict": 31,
+     "major": 31,
+     "cov": 76,
+     "miss": 0.072
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex",
+      "gemini",
+      "grok"
+     ],
+     "perm": 40,
+     "strict": 29,
+     "major": 34,
+     "cov": 76,
+     "miss": 0.036
+    },
+    "combined_recovery_api": {
+     "exact": 0.23,
+     "cross_majority": 0.59,
+     "cross_majority_ci": [
+      0.492,
+      0.681
+     ],
+     "cross_permissive": 0.62,
+     "cross_strict": 0.53,
+     "cross_miss_rate": 0.048,
+     "uniform_majority": 0.54,
+     "all_majority": 0.57,
+     "all_strict": 0.52
+    },
+    "self_pref": {
+     "self_rate": 0.447,
+     "cross_rate": 0.475,
+     "delta": -0.027,
+     "n_paired": 76,
+     "most_lenient_cross": "claude",
+     "cross_max_rate": 0.487,
+     "delta_vs_max": -0.039
+    }
+   },
+   "strict": {
+    "available": [
+     "claude",
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "cross_family": [
+     "claude",
+     "gemini",
+     "grok"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 26,
+      "answered": 76,
+      "rate": 0.34210526315789475
+     },
+     "claude": {
+      "accept": 37,
+      "answered": 76,
+      "rate": 0.4868421052631579
+     },
+     "gemini": {
+      "accept": 29,
+      "answered": 76,
+      "rate": 0.3815789473684211
+     },
+     "grok": {
+      "accept": 16,
+      "answered": 43,
+      "rate": 0.37209302325581395
+     }
+    },
+    "cross_family_panel": {
+     "perm": 38,
+     "strict": 27,
+     "major": 30,
+     "cov": 76,
+     "miss": 0.145
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini",
+      "grok"
+     ],
+     "perm": 31,
+     "strict": 28,
+     "major": 28,
+     "cov": 76,
+     "miss": 0.217
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex",
+      "gemini",
+      "grok"
+     ],
+     "perm": 38,
+     "strict": 23,
+     "major": 30,
+     "cov": 76,
+     "miss": 0.109
+    },
+    "combined_recovery_api": {
+     "exact": 0.23,
+     "cross_majority": 0.53,
+     "cross_majority_ci": [
+      0.433,
+      0.625
+     ],
+     "cross_permissive": 0.61,
+     "cross_strict": 0.5,
+     "cross_miss_rate": 0.145,
+     "uniform_majority": 0.51,
+     "all_majority": 0.53,
+     "all_strict": 0.46
+    },
+    "self_pref": {
+     "self_rate": 0.342,
+     "cross_rate": 0.421,
+     "delta": -0.078,
+     "n_paired": 76,
+     "most_lenient_cross": "claude",
+     "cross_max_rate": 0.487,
+     "delta_vs_max": -0.145
+    }
+   }
+  }
+ },
+ "opus high (commercial)": {
+  "cls": "commercial",
+  "self": "claude",
+  "n_api": 100,
+  "exact": 22,
+  "err": 0,
+  "n_res": 78,
+  "sanity": "OK",
+  "rubrics": {
+   "lenient": {
+    "available": [
+     "claude",
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "cross_family": [
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 34,
+      "answered": 78,
+      "rate": 0.4358974358974359
+     },
+     "claude": {
+      "accept": 43,
+      "answered": 78,
+      "rate": 0.5512820512820513
+     },
+     "gemini": {
+      "accept": 37,
+      "answered": 78,
+      "rate": 0.47435897435897434
+     },
+     "grok": {
+      "accept": 27,
+      "answered": 78,
+      "rate": 0.34615384615384615
+     }
+    },
+    "cross_family_panel": {
+     "perm": 39,
+     "strict": 25,
+     "major": 34,
+     "cov": 78,
+     "miss": 0.0
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini",
+      "grok"
+     ],
+     "perm": 38,
+     "strict": 26,
+     "major": 26,
+     "cov": 78,
+     "miss": 0.0
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex",
+      "gemini",
+      "grok"
+     ],
+     "perm": 46,
+     "strict": 25,
+     "major": 33,
+     "cov": 78,
+     "miss": 0.0
+    },
+    "combined_recovery_api": {
+     "exact": 0.22,
+     "cross_majority": 0.56,
+     "cross_majority_ci": [
+      0.462,
+      0.653
+     ],
+     "cross_permissive": 0.61,
+     "cross_strict": 0.47,
+     "cross_miss_rate": 0.0,
+     "uniform_majority": 0.48,
+     "all_majority": 0.55,
+     "all_strict": 0.47
+    },
+    "self_pref": {
+     "self_rate": 0.551,
+     "cross_rate": 0.419,
+     "delta": 0.132,
+     "n_paired": 78,
+     "most_lenient_cross": "gemini",
+     "cross_max_rate": 0.474,
+     "delta_vs_max": 0.077
+    }
+   },
+   "strict": {
+    "available": [
+     "claude",
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "cross_family": [
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 18,
+      "answered": 78,
+      "rate": 0.23076923076923078
+     },
+     "claude": {
+      "accept": 35,
+      "answered": 78,
+      "rate": 0.44871794871794873
+     },
+     "gemini": {
+      "accept": 26,
+      "answered": 78,
+      "rate": 0.3333333333333333
+     },
+     "grok": {
+      "accept": 21,
+      "answered": 67,
+      "rate": 0.31343283582089554
+     }
+    },
+    "cross_family_panel": {
+     "perm": 31,
+     "strict": 16,
+     "major": 18,
+     "cov": 78,
+     "miss": 0.047
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini",
+      "grok"
+     ],
+     "perm": 30,
+     "strict": 18,
+     "major": 18,
+     "cov": 78,
+     "miss": 0.071
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex",
+      "gemini",
+      "grok"
+     ],
+     "perm": 41,
+     "strict": 16,
+     "major": 20,
+     "cov": 78,
+     "miss": 0.035
+    },
+    "combined_recovery_api": {
+     "exact": 0.22,
+     "cross_majority": 0.4,
+     "cross_majority_ci": [
+      0.309,
+      0.498
+     ],
+     "cross_permissive": 0.53,
+     "cross_strict": 0.38,
+     "cross_miss_rate": 0.047,
+     "uniform_majority": 0.4,
+     "all_majority": 0.42,
+     "all_strict": 0.38
+    },
+    "self_pref": {
+     "self_rate": 0.449,
+     "cross_rate": 0.291,
+     "delta": 0.157,
+     "n_paired": 78,
+     "most_lenient_cross": "gemini",
+     "cross_max_rate": 0.333,
+     "delta_vs_max": 0.115
+    }
+   }
+  }
+ },
+ "local 30B (local)": {
+  "cls": "local",
+  "self": null,
+  "n_api": 100,
+  "exact": 15,
+  "err": 0,
+  "n_res": 85,
+  "sanity": "OK",
+  "rubrics": {
+   "lenient": {
+    "available": [
+     "claude",
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "cross_family": [
+     "claude",
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 21,
+      "answered": 85,
+      "rate": 0.24705882352941178
+     },
+     "claude": {
+      "accept": 28,
+      "answered": 85,
+      "rate": 0.32941176470588235
+     },
+     "gemini": {
+      "accept": 23,
+      "answered": 85,
+      "rate": 0.27058823529411763
+     },
+     "grok": {
+      "accept": 12,
+      "answered": 74,
+      "rate": 0.16216216216216217
+     }
+    },
+    "cross_family_panel": {
+     "perm": 34,
+     "strict": 11,
+     "major": 18,
+     "cov": 85,
+     "miss": 0.032
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini",
+      "grok"
+     ],
+     "perm": 23,
+     "strict": 16,
+     "major": 16,
+     "cov": 85,
+     "miss": 0.065
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex",
+      "gemini",
+      "grok"
+     ],
+     "perm": 34,
+     "strict": 11,
+     "major": 18,
+     "cov": 85,
+     "miss": 0.032
+    },
+    "combined_recovery_api": {
+     "exact": 0.15,
+     "cross_majority": 0.33,
+     "cross_majority_ci": [
+      0.246,
+      0.427
+     ],
+     "cross_permissive": 0.49,
+     "cross_strict": 0.26,
+     "cross_miss_rate": 0.032,
+     "uniform_majority": 0.31,
+     "all_majority": 0.33,
+     "all_strict": 0.26
+    }
+   },
+   "strict": {
+    "available": [
+     "claude",
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "cross_family": [
+     "claude",
+     "codex",
+     "gemini",
+     "grok"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 8,
+      "answered": 85,
+      "rate": 0.09411764705882353
+     },
+     "claude": {
+      "accept": 27,
+      "answered": 85,
+      "rate": 0.3176470588235294
+     },
+     "gemini": {
+      "accept": 11,
+      "answered": 85,
+      "rate": 0.12941176470588237
+     },
+     "grok": {
+      "accept": 10,
+      "answered": 77,
+      "rate": 0.12987012987012986
+     }
+    },
+    "cross_family_panel": {
+     "perm": 28,
+     "strict": 5,
+     "major": 11,
+     "cov": 85,
+     "miss": 0.024
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini",
+      "grok"
+     ],
+     "perm": 15,
+     "strict": 8,
+     "major": 8,
+     "cov": 85,
+     "miss": 0.047
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex",
+      "gemini",
+      "grok"
+     ],
+     "perm": 28,
+     "strict": 5,
+     "major": 11,
+     "cov": 85,
+     "miss": 0.024
+    },
+    "combined_recovery_api": {
+     "exact": 0.15,
+     "cross_majority": 0.26,
+     "cross_majority_ci": [
+      0.184,
+      0.354
+     ],
+     "cross_permissive": 0.43,
+     "cross_strict": 0.2,
+     "cross_miss_rate": 0.024,
+     "uniform_majority": 0.23,
+     "all_majority": 0.26,
+     "all_strict": 0.2
+    }
+   }
+  }
+ },
+ "gemini Pro high (commercial)": {
+  "cls": "commercial",
+  "self": "gemini",
+  "n_api": 100,
+  "exact": 25,
+  "err": 0,
+  "n_res": 75,
+  "sanity": "OK",
+  "rubrics": {
+   "lenient": {
+    "available": [
+     "claude",
+     "codex"
+    ],
+    "cross_family": [
+     "claude",
+     "codex"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 41,
+      "answered": 75,
+      "rate": 0.5466666666666666
+     },
+     "claude": {
+      "accept": 44,
+      "answered": 75,
+      "rate": 0.5866666666666667
+     }
+    },
+    "cross_family_panel": {
+     "perm": 46,
+     "strict": 39,
+     "major": 39,
+     "cov": 75,
+     "miss": 0.0
+    },
+    "uniform_panel": {
+     "judges": [],
+     "perm": 0,
+     "strict": 0,
+     "major": 0,
+     "cov": 0,
+     "miss": 0.0
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex"
+     ],
+     "perm": 46,
+     "strict": 39,
+     "major": 39,
+     "cov": 75,
+     "miss": 0.0
+    },
+    "combined_recovery_api": {
+     "exact": 0.25,
+     "cross_majority": 0.64,
+     "cross_majority_ci": [
+      0.542,
+      0.727
+     ],
+     "cross_permissive": 0.71,
+     "cross_strict": 0.64,
+     "cross_miss_rate": 0.0,
+     "uniform_majority": null,
+     "all_majority": 0.64,
+     "all_strict": 0.64
+    }
+   },
+   "strict": {
+    "available": [
+     "claude",
+     "codex"
+    ],
+    "cross_family": [
+     "claude",
+     "codex"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 25,
+      "answered": 75,
+      "rate": 0.3333333333333333
+     },
+     "claude": {
+      "accept": 39,
+      "answered": 75,
+      "rate": 0.52
+     }
+    },
+    "cross_family_panel": {
+     "perm": 41,
+     "strict": 23,
+     "major": 23,
+     "cov": 75,
+     "miss": 0.0
+    },
+    "uniform_panel": {
+     "judges": [],
+     "perm": 0,
+     "strict": 0,
+     "major": 0,
+     "cov": 0,
+     "miss": 0.0
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex"
+     ],
+     "perm": 41,
+     "strict": 23,
+     "major": 23,
+     "cov": 75,
+     "miss": 0.0
+    },
+    "combined_recovery_api": {
+     "exact": 0.25,
+     "cross_majority": 0.48,
+     "cross_majority_ci": [
+      0.385,
+      0.577
+     ],
+     "cross_permissive": 0.66,
+     "cross_strict": 0.48,
+     "cross_miss_rate": 0.0,
+     "uniform_majority": null,
+     "all_majority": 0.48,
+     "all_strict": 0.48
+    }
+   }
+  }
+ },
+ "sonnet high (commercial)": {
+  "cls": "commercial",
+  "self": "claude",
+  "n_api": 100,
+  "exact": 25,
+  "err": 2,
+  "n_res": 73,
+  "sanity": "OK",
+  "rubrics": {
+   "lenient": {
+    "available": [
+     "codex",
+     "gemini"
+    ],
+    "cross_family": [
+     "codex",
+     "gemini"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 29,
+      "answered": 73,
+      "rate": 0.3972602739726027
+     },
+     "gemini": {
+      "accept": 30,
+      "answered": 73,
+      "rate": 0.410958904109589
+     }
+    },
+    "cross_family_panel": {
+     "perm": 32,
+     "strict": 27,
+     "major": 27,
+     "cov": 73,
+     "miss": 0.0
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini"
+     ],
+     "perm": 30,
+     "strict": 30,
+     "major": 30,
+     "cov": 73,
+     "miss": 0.0
+    },
+    "all_panel": {
+     "judges": [
+      "codex",
+      "gemini"
+     ],
+     "perm": 32,
+     "strict": 27,
+     "major": 27,
+     "cov": 73,
+     "miss": 0.0
+    },
+    "combined_recovery_api": {
+     "exact": 0.25,
+     "cross_majority": 0.52,
+     "cross_majority_ci": [
+      0.423,
+      0.615
+     ],
+     "cross_permissive": 0.57,
+     "cross_strict": 0.52,
+     "cross_miss_rate": 0.0,
+     "uniform_majority": 0.55,
+     "all_majority": 0.52,
+     "all_strict": 0.52
+    }
+   },
+   "strict": {
+    "available": [
+     "codex",
+     "gemini"
+    ],
+    "cross_family": [
+     "codex",
+     "gemini"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 19,
+      "answered": 73,
+      "rate": 0.2602739726027397
+     },
+     "gemini": {
+      "accept": 21,
+      "answered": 73,
+      "rate": 0.2876712328767123
+     }
+    },
+    "cross_family_panel": {
+     "perm": 24,
+     "strict": 16,
+     "major": 16,
+     "cov": 73,
+     "miss": 0.0
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini"
+     ],
+     "perm": 21,
+     "strict": 21,
+     "major": 21,
+     "cov": 73,
+     "miss": 0.0
+    },
+    "all_panel": {
+     "judges": [
+      "codex",
+      "gemini"
+     ],
+     "perm": 24,
+     "strict": 16,
+     "major": 16,
+     "cov": 73,
+     "miss": 0.0
+    },
+    "combined_recovery_api": {
+     "exact": 0.25,
+     "cross_majority": 0.41,
+     "cross_majority_ci": [
+      0.319,
+      0.508
+     ],
+     "cross_permissive": 0.49,
+     "cross_strict": 0.41,
+     "cross_miss_rate": 0.0,
+     "uniform_majority": 0.46,
+     "all_majority": 0.41,
+     "all_strict": 0.41
+    }
+   }
+  }
+ },
+ "grok-build (commercial)": {
+  "cls": "commercial",
+  "self": "grok",
+  "n_api": 100,
+  "exact": 14,
+  "err": 42,
+  "n_res": 44,
+  "sanity": "OK",
+  "rubrics": {
+   "lenient": {
+    "available": [
+     "claude",
+     "codex",
+     "gemini"
+    ],
+    "cross_family": [
+     "claude",
+     "codex",
+     "gemini"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 21,
+      "answered": 44,
+      "rate": 0.4772727272727273
+     },
+     "claude": {
+      "accept": 24,
+      "answered": 44,
+      "rate": 0.5454545454545454
+     },
+     "gemini": {
+      "accept": 22,
+      "answered": 44,
+      "rate": 0.5
+     }
+    },
+    "cross_family_panel": {
+     "perm": 26,
+     "strict": 19,
+     "major": 22,
+     "cov": 44,
+     "miss": 0.0
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini"
+     ],
+     "perm": 22,
+     "strict": 22,
+     "major": 22,
+     "cov": 44,
+     "miss": 0.0
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex",
+      "gemini"
+     ],
+     "perm": 26,
+     "strict": 19,
+     "major": 22,
+     "cov": 44,
+     "miss": 0.0
+    },
+    "combined_recovery_api": {
+     "exact": 0.14,
+     "cross_majority": 0.36,
+     "cross_majority_ci": [
+      0.273,
+      0.458
+     ],
+     "cross_permissive": 0.4,
+     "cross_strict": 0.33,
+     "cross_miss_rate": 0.0,
+     "uniform_majority": 0.36,
+     "all_majority": 0.36,
+     "all_strict": 0.33
+    }
+   },
+   "strict": {
+    "available": [
+     "claude",
+     "codex",
+     "gemini"
+    ],
+    "cross_family": [
+     "claude",
+     "codex",
+     "gemini"
+    ],
+    "per_judge": {
+     "codex": {
+      "accept": 12,
+      "answered": 44,
+      "rate": 0.2727272727272727
+     },
+     "claude": {
+      "accept": 22,
+      "answered": 44,
+      "rate": 0.5
+     },
+     "gemini": {
+      "accept": 20,
+      "answered": 44,
+      "rate": 0.45454545454545453
+     }
+    },
+    "cross_family_panel": {
+     "perm": 22,
+     "strict": 12,
+     "major": 20,
+     "cov": 44,
+     "miss": 0.0
+    },
+    "uniform_panel": {
+     "judges": [
+      "gemini"
+     ],
+     "perm": 20,
+     "strict": 20,
+     "major": 20,
+     "cov": 44,
+     "miss": 0.0
+    },
+    "all_panel": {
+     "judges": [
+      "claude",
+      "codex",
+      "gemini"
+     ],
+     "perm": 22,
+     "strict": 12,
+     "major": 20,
+     "cov": 44,
+     "miss": 0.0
+    },
+    "combined_recovery_api": {
+     "exact": 0.14,
+     "cross_majority": 0.34,
+     "cross_majority_ci": [
+      0.255,
+      0.437
+     ],
+     "cross_permissive": 0.36,
+     "cross_strict": 0.26,
+     "cross_miss_rate": 0.0,
+     "uniform_majority": 0.34,
+     "all_majority": 0.34,
+     "all_strict": 0.26
+    }
+   }
+  }
+ }
+}

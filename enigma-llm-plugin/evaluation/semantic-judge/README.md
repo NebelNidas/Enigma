@@ -95,3 +95,11 @@ Exact assistant models (vendor CLIs): **v2 (primary)** — Grok `grok-build` ("G
 flagship), GPT `gpt-5.5` at high reasoning effort via the Codex CLI, Claude
 `claude-opus-4-8` at high effort. **v1 (lenient)** used Grok `grok-composer-2.5-fast`.
 The earlier 90-item two-judge check is `reference-ablation_2026-07-08.json`.
+
+## Hypo near-miss package
+
+`hypo-nearmiss-2026-07-10/` preserves the later Hypo-only near-miss audit for
+the essay review draft. It includes the six-model residuals, lenient and strict
+judge verdicts, minimal benchmark JSONL inputs, and `agg_hypo.py`; run
+`python3 agg_hypo.py` in that directory to regenerate the majority/permissive/
+strict aggregation and self-preference sanity check.
