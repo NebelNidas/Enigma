@@ -189,10 +189,12 @@ local 30B 15/26/33 · sonnet high 25/41/52 · opus high 22/40/56 · gpt-5.5 high
   HANDOFF narrative but its `.tsv` files are **scratchpad-only / not on disk** (a `find` returns nothing) —
   and they do **not** back an essay number (they used 4 short prompts and *underestimated*; the essay uses
   the full-prompt `latencyMs` instead). So this is a non-essay side-artifact, not a provenance gap.
-- ⚠️ **Essay-number nuance to verify (NOT a provenance issue):** the dedicated local-latency log shows local
-  30B median ~6.4 s (offloaded IQ4_XS) while `tab:commercial`/l.472 quote ~18 s for local 30B. The 18 s is the
-  full-prompt `latencyMs` from the *accuracy* run; the 6.4 s is the *mini-prompt* study. Different measurement
-  contexts → worth a one-line reconciliation in the essay so the two local-30B latencies don't look contradictory.
+- **Full-prompt vs short-prompt (already handled correctly):** the essay quotes local-30B ~18 s from the
+  full-prompt `latencyMs`, consistent with the commercial 7–14 s which are *also* full-prompt — an apples-to-
+  apples comparison. The dedicated mini-prompt study's local-30B ~6.4 s was **deliberately kept out** of the
+  essay so it doesn't read as a contradiction (HANDOFF l.4761: "Latenz full-prompt-basiert … mein Roster-'MoE
+  schlägt' war SHORT-prompt, NICHT reinschreiben als Widerspruch"). So the essay latency is internally
+  consistent; the two local-30B numbers are just different prompt-size regimes. No action needed.
 
 ### §Interpretation — roster + 7B loop (l.496)
 Roster raw JSONL UNCOMMITTED but on disk: `benchmark/{qwen2.5-coder-7b-instruct, …_14b_instruct_q6_k, qwen3-8b, deepseek-coder-v2-lite-instruct_q6_k, qwen3-coder-30b-a3b-instruct_iq4_xs}/`. Aggregator `aggregate_results.py`. Commits `eee709d`+`f5037e0`.
@@ -207,7 +209,8 @@ Every ESSAY number now has a complete, verified chain. Remaining notes are minor
 1. ~~Headline raw per-target JSONL UNCOMMITTED~~ → **RESOLVED**: preserved `benchmark-raw-2026-07-11/` (`0e95f53`).
 2. ~~Dedicated latency TSVs UNKNOWN~~ → **RESOLVED (non-issue)**: the essay latency uses the accuracy-run
    `latencyMs` (preserved), not the scratchpad mini-prompt `latency_bench.tsv` (which underestimated and is
-   not on disk). See §Local-vs-Commercial latency. One essay-number nuance to reconcile (local-30B 18 s vs 6.4 s).
+   not on disk). See §Local-vs-Commercial latency. (The local-30B 18 s vs 6.4 s is full-prompt vs short-prompt,
+   already deliberately handled in the essay per HANDOFF l.4761 — no action.)
 3. ~~De-dup "~3/300" control run dir UNKNOWN~~ → **RESOLVED**: `run-cacheoff.sh` → `…_graph_k1_raised_cacheoff`
    (22/300) vs `…_graph_k1_raised` (19/300), report `cacheoff_2026-07-08.txt`, commit `ce45a50`; dirs preserved.
 4. **Obfuscated jars** (`build/llm-evaluation/obfuscated/*`) — gitignored; regenerable from the sha1-pinned
