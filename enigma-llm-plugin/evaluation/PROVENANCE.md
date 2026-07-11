@@ -178,6 +178,16 @@ local 30B 15/26/33 · sonnet high 25/41/52 · opus high 22/40/56 · gpt-5.5 high
 - **Aggregation** `agg_hypo.py` → `agg_hypo_report.txt` (reproduces exact 15/25/22/23; macro lens 21.8/15.0 exact, 53.4/33.0 majority).
 - **Commits** `16dd983` (repro package) + `612d09d` (preserved results). Essay `76251fd` *(essay repo)*. **This is the best-preserved chain in the essay** (raw + residuals + verdicts all committed).
 
+### §Threats to Validity — judge self-preference (added 2026-07-11, essay `c73da8b`)
+"Local roster judged entirely cross-family (bias impossible); on the commercial side small + not one-directional:
+OpenAI judge slightly stricter on gpt-5.5 (−3 to −8 pt), Anthropic judge +13 pt on Claude (only +8 pt vs the most
+lenient cross-family judge)."
+- **Input** the committed Hypo residual verdicts `hypo-nearmiss-2026-07-10/…/judged_hypo[_strict]_{claude,codex,gemini,grok}_*.json`.
+- **Computation** `agg_hypo.py` **SELF-PREF lens** (prints `self(<family>)=X% vs cross-mean=Y% (delta)`), reproduced 2026-07-11:
+  gpt-5.5 self(codex) 45 vs 48 (−3); opus self(claude) 55 vs 42 (+13, +8 vs most-lenient-cross); local models self-family=None.
+- **Commit** data `16dd983`/`612d09d`; essay `c73da8b` *(essay repo)*. (Note: the self-pref numbers are computed on the Hypo
+  residual pool, where commercial models are present; the main tab:semantic pool is local-only so self-pref is structurally N/A.)
+
 ### §Local vs Commercial — latency (l.472) — provenance CONFIRMED (Codex + Gemini, 2026-07-11)
 "commercial 7–14 s/suggestion vs local 30B ~18 s"; Table `tab:commercial` latency column.
 - **Source = the `latencyMs` field recorded per suggestion in the ACCURACY-run benchmark JSONL** (full
