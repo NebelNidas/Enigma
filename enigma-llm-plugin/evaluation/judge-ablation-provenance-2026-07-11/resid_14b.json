@@ -1,0 +1,3896 @@
+[
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C103",
+  "obfName": "m1311",
+  "descriptor": "([J)Lobf/C103;",
+  "reference": "append",
+  "suggested": "updateWithLongArray",
+  "alternatives": [
+   "processLongArray",
+   "applyLongValues"
+  ],
+  "context": "   public C103 m1311(long[] var1) {\n      if (var1 == null) {\n         this.f352 = this.f352 * this.f351;\n      } else {\n         for (long var5 : var1) {\n            this.m1302(var5);\n         }\n      }\n\n      return this;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C110",
+  "obfName": "m1352",
+  "descriptor": "()Z",
+  "reference": "isAppendTransients",
+  "suggested": "isTransient",
+  "alternatives": [
+   "shouldExcludeTransientField",
+   "checkTransient"
+  ],
+  "context": "      } else if (Modifier.isTransient(var1.getModifiers()) && !this.m1352()) {\n         return false;\n      }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C111",
+  "obfName": "m1373",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getFieldSeparator",
+  "suggested": "getStringValue",
+  "alternatives": [
+   "fetchStringValue",
+   "retrieveString"
+  ],
+  "context": "   public String m1373() {\n      return super.m1373();\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C112",
+  "obfName": "m1301",
+  "descriptor": "(I)Lobf/C112;",
+  "reference": "append",
+  "suggested": "appendInt",
+  "alternatives": [
+   "addInteger",
+   "withInt"
+  ],
+  "context": "   public C112 m1301(int var1) {\n      this.f336.m1451(this.f364, null, var1);\n      return this;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C114",
+  "obfName": "m1330",
+  "descriptor": "(Ljava/lang/StringBuffer;Ljava/lang/String;[D)V",
+  "reference": "appendDetail",
+  "suggested": "appendDoubles",
+  "alternatives": [
+   "addDoubleArray",
+   "processDoubleValues"
+  ],
+  "context": "   protected void m1330(StringBuffer var1, String var2, double[] var3) {\n      var1.append(this.f377);\n\n      for (int var4 = 0; var4 < var3.length; var4++) {\n         if (var4 > 0) {\n            var1.append(this.f376);\n         }\n\n         this.m1471(var1, var2, var3[var4]);\n      }\n\n      var1.append(this.f375);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C114",
+  "obfName": "m1452",
+  "descriptor": "(Ljava/lang/StringBuffer;Ljava/lang/String;J)V",
+  "reference": "append",
+  "suggested": "appendLong",
+  "alternatives": [
+   "addLongValue",
+   "insertLong"
+  ],
+  "context": "   public void m1452(StringBuffer var1, String var2, long var3) {\n      this.m1482(var1, var2);\n      this.m1475(var1, var2, var3);\n      this.m1480(var1, var2);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C116",
+  "obfName": "m1459",
+  "descriptor": "(Ljava/lang/StringBuffer;Ljava/lang/String;[FLjava/lang/Boolean;)V",
+  "reference": "append",
+  "suggested": "appendJsonFloatArray",
+  "alternatives": [
+   "convertToJsonStringWithFloats",
+   "handleJsonFloatArray"
+  ],
+  "context": "   public void m1459(StringBuffer var1, String var2, float[] var3, Boolean var4) {\n      this.m1482(var1, var2);\n      if (var3 == null) {\n         this.m1485(var1, var2);\n      } else if (this.m1500(var4)) {\n         this.m1331(var1, var2, var3);\n      } else {\n         this.m1491(var1, var2, var3);\n      }\n\n      this.m1480(var1, var2);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C118",
+  "obfName": "C118",
+  "descriptor": "",
+  "reference": "NoClassNameToStringStyle",
+  "suggested": "Constants",
+  "alternatives": [
+   "Config",
+   "Settings"
+  ],
+  "context": "\n\npublic abstract class C114 implements Serializable {\n   private static final long f46 = -2587890625525655916L;\n   public static final C114 f367 = new C114.C115();\n   public static final C114 f369 = new C114.C117();\n   public static final C114 f371 = new C114.C119();\n   public static final C114 f372 = new C114.C120();\n   public static final C114 f373 = new C114.C121();\n   public static final C114 f370 = new C114.C118();\n   public static final C114 f368 = new C114.C116();\n   private static final ThreadLocal<WeakHashMap<Object, Object>> f342 = new ThreadLocal<>();\n   private boolean f391 = true;\n   private boolean f390 = true;\n   private boolean f393;\n   private boolean f392 = true;\n   private String f379 = \"[\";\n   private String f378 = \"]\";\n   private String f381 = \"=\";\n   private boolean f384;\n   private boolean f383;\n   private String f382 = \",\";\n   private String f377 = \"{\";\n   private String f376 = \",\";\n   private boolean f374 = true;"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C139",
+  "obfName": "C139",
+  "descriptor": "",
+  "reference": "Builder",
+  "suggested": "ObjectCreator",
+  "alternatives": [
+   "ObjectHandler",
+   "InstanceManager"
+  ],
+  "context": "\n\npublic class C137<T> extends C134<T, C154> {\n   private static final Object f405 = new Object();\n   private final AtomicReference<T> f406 = new AtomicReference<>(this.m1539());\n\n   public static <T> C137.C139<C137<T>, T> m1538() {\n      return new C137.C139<>();\n   }\n\n   public C137() {\n   }\n\n   private C137(C242<T, C154> var1, C210<T, C154> var2) {\n      super(var1, var2);\n   }\n\n   @Override\n   public T m663() throws C154 {\n      Object var1 = this.f406.get();\n      if (var1 == this.m1539()) {\n         var1 = this.m1531();\n         if (!this.f406.compareAndSet(this.m1539(), (T)var1)) {\n            var1 = this.f406.get();\n         }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C140",
+  "obfName": "m663",
+  "descriptor": "()Ljava/lang/Object;",
+  "reference": "get",
+  "suggested": "getObject",
+  "alternatives": [
+   "getValue",
+   "fetchObject"
+  ],
+  "context": "   public final T m663() throws C154 {\n      Object var1;\n      while ((var1 = this.f406.get()) == this.m1539()) {\n         if (this.f407.compareAndSet(null, this)) {\n            this.f406.set(this.m1531());\n         }\n      }\n\n      return (T)var1;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C143",
+  "obfName": "m1530",
+  "descriptor": "(Ljava/lang/Exception;)Ljava/lang/Exception;",
+  "reference": "getTypedException",
+  "suggested": "wrapException",
+  "alternatives": [
+   "rethrowException",
+   "handleException"
+  ],
+  "context": "   protected Exception m1530(Exception var1) {\n      return new Exception(var1);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C147",
+  "obfName": "m1553",
+  "descriptor": "()Ljava/util/concurrent/ThreadFactory;",
+  "reference": "getWrappedFactory",
+  "suggested": "getThreadFactory",
+  "alternatives": [
+   "threadFactory"
+  ],
+  "context": "   public final ThreadFactory m1553() {\n      return this.f416;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C162",
+  "obfName": "C162",
+  "descriptor": "",
+  "reference": "CheckIntervalData",
+  "suggested": "TimeDuration",
+  "alternatives": [
+   "DurationInfo",
+   "TimingData"
+  ],
+  "context": "\n\npublic class C160 extends C129<Integer> {\n   private static final Map<C129.C131, C160.C163> f420 = m1574();\n   private final AtomicReference<C160.C162> f421 = new AtomicReference<>(new C160.C162(0, 0L));\n   private final int f425;\n   private final long f424;\n   private final int f423;\n   private final long f422;\n\n   private static Map<C129.C131, C160.C163> m1574() {\n      EnumMap var0 = new EnumMap<>(C129.C131.class);\n      var0.put(C129.C131.f400, new C160.C164());\n      var0.put(C129.C131.f401, new C160.C165());\n      return var0;\n   }\n\n   private static C160.C163 m1584(C129.C131 var0) {\n      return f420.get(var0);\n   }\n\n   public C160(int var1, long var2, TimeUnit var4) {\n      this(var1, var2, var4, var1);\n   }\n"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C17",
+  "obfName": "C17",
+  "descriptor": "",
+  "reference": "Charsets",
+  "suggested": "CharsetUtils",
+  "alternatives": [
+   "EncodingHelper",
+   "CharSetConverter"
+  ],
+  "context": "\n\nfinal class C17 {\n   static Charset m505(Charset var0) {\n      return var0 == null ? Charset.defaultCharset() : var0;\n   }\n\n   static Charset m504(String var0) {\n      return var0 == null ? Charset.defaultCharset() : Charset.forName(var0);\n   }\n\n   static String m506(String var0) {\n      return var0 == null ? Charset.defaultCharset().name() : var0;\n   }\n}"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C181",
+  "obfName": "m1633",
+  "descriptor": "(Ljava/util/function/Supplier;Lobf/C219;)Ljava/lang/Object;",
+  "reference": "lockApplyUnlock",
+  "suggested": "getFromSupplierWithLock",
+  "alternatives": [
+   "getObjectWithLock",
+   "retrieveObjectSafely"
+  ],
+  "context": "      protected <T> T m1633(Supplier<Lock> var1, C219<O, T, ?> var2) {\n         Lock var3 = (Lock)var1.get();\n         var3.lock();\n\n         try {\n            return (T)var2.m660(this.f366);\n         } catch (Throwable var8) {\n            throw C204.m647(var8);\n         } finally {\n            var3.unlock();\n         }\n      }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C186",
+  "obfName": "C186",
+  "descriptor": "",
+  "reference": "EventListenerSupport",
+  "suggested": "ListenerManager",
+  "alternatives": [
+   "ProxyCreator",
+   "ObjectHandler"
+  ],
+  "context": "\n\npublic class C186<L> implements Serializable {\n   private static final long f46 = 3593265990380473632L;\n   private List<L> f454 = new CopyOnWriteArrayList<>();\n   private transient L f456;\n   private transient L[] f455;\n\n   public static <T> C186<T> m1636(Class<T> var0) {\n      return new C186(var0);\n   }\n\n   private C186() {\n   }\n\n   public C186(Class<L> var1) {\n      this(var1, Thread.currentThread().getContextClassLoader());\n   }\n\n   public C186(Class<L> var1, ClassLoader var2) {\n      this();\n      Objects.requireNonNull(var1, \"listenerInterface\");\n      Objects.requireNonNull(var2, \"classLoader\");\n      C70.m1177(var1.isInterface(), \"Class %s is not an interface\", var1.getName());\n      this.m1642(var1, var2);"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C193",
+  "obfName": "m1655",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getRawMessage",
+  "suggested": "getExceptionMessage",
+  "alternatives": [
+   "getErrorMessage",
+   "getDetailedMessage"
+  ],
+  "context": "   public String m1655() {\n      return super.getMessage();\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C196",
+  "obfName": "m1687",
+  "descriptor": "(Ljava/util/List;Ljava/util/List;)V",
+  "reference": "removeCommonFrames",
+  "suggested": "removeMatchingFrames",
+  "alternatives": [
+   "processFrameLists",
+   "handleFrameCollisions"
+  ],
+  "context": "   public static void m1687(List<String> var0, List<String> var1) {\n      Objects.requireNonNull(var0, \"causeFrames\");\n      Objects.requireNonNull(var1, \"wrapperFrames\");\n      int var2 = var0.size() - 1;\n\n      for (int var3 = var1.size() - 1; var2 >= 0 && var3 >= 0; var3--) {\n         String var4 = (String)var0.get(var2);\n         String var5 = (String)var1.get(var3);\n         if (var4.equals(var5)) {\n            var0.remove(var2);\n         }\n\n         var2--;\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "FIELD",
+  "owner": "C223",
+  "obfName": "f481",
+  "descriptor": "Lobf/C223;",
+  "reference": "FALSE",
+  "suggested": "ALWAYS_FALSE",
+  "alternatives": [
+   "FALSE_PREDICATE",
+   "NEVER_TRUE"
+  ],
+  "context": "// field declaration:\nC223 f481 = var0 -> false;\n// sibling fields in the same class:\nC223 f481 = var0 -> false;\nC223 f482 = var0 -> true;\nreturn f481;\nreturn f482;"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C245",
+  "obfName": "m1788",
+  "descriptor": "(Ljava/lang/Object;Ljava/lang/Object;)I",
+  "reference": "applyAsInt",
+  "suggested": "and",
+  "alternatives": [
+   "or",
+   "negate"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C255",
+  "obfName": "C255",
+  "descriptor": "",
+  "reference": "TriFunction",
+  "suggested": "PredicateCombinator",
+  "alternatives": [
+   "FunctionCombiner",
+   "AbstractFunction"
+  ],
+  "context": "\n\n@FunctionalInterface\npublic interface C255<T, U, V, R> {\n   default <W> C255<T, U, V, W> m1810(Function<? super R, ? extends W> var1) {\n      Objects.requireNonNull(var1);\n      return (var2, var3, var4) -> (W)var1.apply(this.m1811(var2, var3, var4));\n   }\n\n   R m1811(T var1, U var2, V var3);\n}"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "FIELD",
+  "owner": "C259",
+  "obfName": "f535",
+  "descriptor": "Ljava/lang/Long;",
+  "reference": "LONG_INT_MIN_VALUE",
+  "suggested": "LONG_CONSTANT",
+  "alternatives": [
+   "MAX_VALUE",
+   "DEFAULT_TIMEOUT"
+  ],
+  "context": "// field declaration:\npublic static final Long f535 = -2147483648L;\n// sibling fields in the same class:\npublic static final Long f538 = 0L;\npublic static final Long f537 = 1L;\npublic static final Long f536 = -1L;\npublic static final Integer f533 = 0;\npublic static final Integer f531 = 1;\npublic static final Integer f532 = 2;\npublic static final Integer f530 = -1;\npublic static final Short f541 = (short)0;\npublic static final Short f540 = (short)1;\npublic static final Short f539 = (short)-1;\npublic static final Byte f523 = (byte)0;\npublic static final Byte f522 = (byte)1;\npublic static final Byte f521 = (byte)-1;\npublic static final Double f526 = 0.0;\npublic static final Double f525 = 1.0;\npublic static final Double f524 = -1.0;\npublic static final Float f529 = 0.0F;\npublic static final Float f528 = 1.0F;\npublic static final Float f527 = -1.0F;\npublic static final Long f534 = 2147483647L;\npublic static final Long f535 = -2147483648L;"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C26",
+  "obfName": "m619",
+  "descriptor": "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Enum;)Ljava/lang/Enum;",
+  "reference": "getEnum",
+  "suggested": "getEnumByName",
+  "alternatives": [
+   "findEnumConstant",
+   "lookupEnum"
+  ],
+  "context": "   public static <E extends Enum<E>> E m619(Class<E> var0, String var1, E var2) {\n      if (var1 == null) {\n         return (E)var2;\n      }\n\n      try {\n         return Enum.valueOf(var0, var1);\n      } catch (IllegalArgumentException var4) {\n         return (E)var2;\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C26",
+  "obfName": "m630",
+  "descriptor": "(Ljava/lang/Class;[J)Ljava/util/EnumSet;",
+  "reference": "processBitVectors",
+  "suggested": "createEnumSetFromBitVectors",
+  "alternatives": [
+   "generateEnumSetFromBits",
+   "convertBitArrayToEnumSet"
+  ],
+  "context": "   public static <E extends Enum<E>> EnumSet<E> m630(Class<E> var0, long... var1) {\n      EnumSet var2 = EnumSet.noneOf(m612(var0));\n      long[] var3 = C6.clone(Objects.requireNonNull(var1, \"values\"));\n      C6.m291(var3);\n\n      for (Enum var7 : (Enum[])var0.getEnumConstants()) {\n         int var8 = var7.ordinal() / 64;\n         if (var8 < var3.length && (var3[var8] & 1L << var7.ordinal() % 64) != 0L) {\n            var2.add((E)var7);\n         }\n      }\n\n      return var2;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C262",
+  "obfName": "m1909",
+  "descriptor": "()Z",
+  "reference": "isFalse",
+  "suggested": "isActive",
+  "alternatives": [
+   "isEnabled",
+   "isFlagSet"
+  ],
+  "context": "   public boolean m1909() {\n      return !this.f542;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C265",
+  "obfName": "m1929",
+  "descriptor": "(Ljava/lang/Number;)V",
+  "reference": "setValue",
+  "suggested": "updateValue",
+  "alternatives": [
+   "setNumber",
+   "setValueFromNumber"
+  ],
+  "context": "   public void m1929(Number var1) {\n      this.f123 = var1.floatValue();\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C269",
+  "obfName": "m1923",
+  "descriptor": "(Ljava/lang/Number;)S",
+  "reference": "getAndAdd",
+  "suggested": "updateValue",
+  "alternatives": [
+   "modifyState",
+   "adjustValue"
+  ],
+  "context": "   public short m1923(Number var1) {\n      short var2 = this.f547;\n      this.f547 = (short)(this.f547 + var1.shortValue());\n      return var2;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C32",
+  "obfName": "C32",
+  "descriptor": "",
+  "reference": "FailableConsumer",
+  "suggested": "Action",
+  "alternatives": [
+   "ConsumerFunction",
+   "ObjectAction"
+  ],
+  "context": "\n\n@Deprecated\npublic class C27 {\n   public static <O1, O2, T extends Throwable> void m631(C27.C28<O1, O2, T> var0, O1 var1, O2 var2) {\n      m648(() -> var0.m655(var1, var2));\n   }\n\n   public static <O, T extends Throwable> void m632(C27.C32<O, T> var0, O var1) {\n      m648(() -> var0.m659(var1));\n   }\n\n   public static <O1, O2, O, T extends Throwable> O m633(C27.C29<O1, O2, O, T> var0, O1 var1, O2 var2) {\n      return m645(() -> (O)var0.m656(var1, var2));\n   }\n\n   public static <I, O, T extends Throwable> O m634(C27.C33<I, O, T> var0, I var1) {\n      return m645(() -> (O)var0.m660(var1));\n   }\n\n   public static <O1, O2> BiConsumer<O1, O2> m635(C27.C28<O1, O2, ?> var0) {\n      return (var1, var2) -> m631(var0, var1, var2);\n   }\n\n   public static <O1, O2, O> BiFunction<O1, O2, O> m636(C27.C29<O1, O2, O, ?> var0) {"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C34",
+  "obfName": "m661",
+  "descriptor": "(Ljava/lang/Object;)Z",
+  "reference": "test",
+  "suggested": "isMatch",
+  "alternatives": [
+   "testObject",
+   "matches"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C277",
+  "obfName": "m2043",
+  "descriptor": "(Ljava/lang/Object;Ljava/lang/String;[Ljava/lang/Object;[Ljava/lang/Class;)Ljava/lang/Object;",
+  "reference": "invokeExactMethod",
+  "suggested": "invokeMethod",
+  "alternatives": [
+   "callMethod",
+   "executeMethod"
+  ],
+  "context": "   public static Object m2043(Object var0, String var1, Object[] var2, Class<?>[] var3) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {\n      Objects.requireNonNull(var0, \"object\");\n      var2 = C6.m217(var2);\n      var3 = C6.m212(var3);\n      Class var4 = var0.getClass();\n      Method var5 = m2027(var4, var1, var3);\n      if (var5 == null) {\n         throw new NoSuchMethodException(\"No such accessible method: \" + var1 + \"() on object: \" + var4.getName());\n      } else {\n         return var5.invoke(var0, var2);\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C283",
+  "obfName": "C283",
+  "descriptor": "",
+  "reference": "WildcardTypeBuilder",
+  "suggested": "TypeHandler",
+  "alternatives": [
+   "WildcardTypeManager",
+   "TypeManipulator"
+  ],
+  "context": "\n\npublic class C279 {\n   public static final WildcardType f555 = m2100().m2105(Object.class).m1218();\n\n   private static <T> StringBuilder m2055(StringBuilder var0, String var1, T... var2) {\n      C70.m1192(C70.m1182(var2));\n      if (var2.length > 0) {\n         var0.append(toString(var2[0]));\n\n         for (int var3 = 1; var3 < var2.length; var3++) {\n            var0.append(var1).append(toString(var2[var3]));\n         }\n      }\n\n      return var0;\n   }\n\n   private static void m2056(StringBuilder var0, int[] var1, Type[] var2) {\n      for (int var3 = 0; var3 < var1.length; var3++) {\n         m2055(var0.append('<'), \", \", var2[var3].toString()).append('>');\n      }\n\n      Type[] var4 = C6.m242(var2, var1);\n      if (var4.length > 0) {"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C291",
+  "obfName": "m2122",
+  "descriptor": "(Ljava/util/Enumeration;)Ljava/util/stream/Stream;",
+  "reference": "of",
+  "suggested": "enumerationToStream",
+  "alternatives": [
+   "toStreamFromEnumeration",
+   "convertEnumerationToStream"
+  ],
+  "context": "   public static <E> Stream<E> m2122(Enumeration<E> var0) {\n      return StreamSupport.stream(new C291.C293<>(Long.MAX_VALUE, 16, var0), false);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C291",
+  "obfName": "m649",
+  "descriptor": "(Ljava/util/Collection;)Lobf/C291$C294;",
+  "reference": "stream",
+  "suggested": "processAndWrapCollection",
+  "alternatives": [
+   "createCollectionWrapper",
+   "convertToC294"
+  ],
+  "context": "   public static <E> C291.C294<E> m649(Collection<E> var0) {\n      return m2112(var0);\n   }\n// callee m2112:\n   public static <T> C291.C294<T> m2112(Collection<T> var0) {\n      return m2113(m2121(var0));\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C296",
+  "obfName": "m2132",
+  "descriptor": "()Ljava/text/Format;",
+  "reference": "getFormatter",
+  "suggested": "getFormat",
+  "alternatives": [
+   "retrieveFormat",
+   "fetchFormat"
+  ],
+  "context": "   public Format m2132() {\n      return this.f568;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2150",
+  "descriptor": "(Ljava/util/Iterator;)Lobf/C300;",
+  "reference": "appendAll",
+  "suggested": "appendIterator",
+  "alternatives": [
+   "addElementsFromIterator",
+   "concatenateIterator"
+  ],
+  "context": "   public C300 m2150(Iterator<?> var1) {\n      if (var1 != null) {\n         var1.forEachRemaining(this::append);\n      }\n\n      return this;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2153",
+  "descriptor": "(Ljava/lang/Object;IC)Lobf/C300;",
+  "reference": "appendFixedWidthPadLeft",
+  "suggested": "appendObjectWithIndexAndChar",
+  "alternatives": [
+   "addObjectAtIndexWithChar",
+   "insertObjectAtPosition"
+  ],
+  "context": "   public C300 m2153(Object var1, int var2, char var3) {\n      if (var2 > 0) {\n         this.m2204(this.size + var2);\n         String var4 = C44.toString(var1, this::m1374);\n         if (var4 == null) {\n            var4 = \"\";\n         }\n\n         int var5 = var4.length();\n         if (var5 >= var2) {\n            var4.getChars(var5 - var2, var5, this.f580, this.size);\n         } else {\n            int var6 = var2 - var5;\n\n            for (int var7 = 0; var7 < var6; var7++) {\n               this.f580[this.size + var7] = var3;\n            }\n\n            var4.getChars(0, var5, this.f580, this.size + var6);\n         }\n\n         this.size += var2;\n      }\n\n      return this;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2162",
+  "descriptor": "(Ljava/lang/String;)Lobf/C300;",
+  "reference": "appendSeparator",
+  "suggested": "appendString",
+  "alternatives": [
+   "addString",
+   "concatenate"
+  ],
+  "context": "   public C300 m2162(String var1) {\n      return this.m2164(var1, null);\n   }\n// callee m2164:\n   public C300 m2164(String var1, String var2) {\n      String var3 = this.isEmpty() ? var2 : var1;\n      if (var3 != null) {\n         this.append(var3);\n      }\n\n      return this;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2188",
+  "descriptor": "()Lobf/C315;",
+  "reference": "asTokenizer",
+  "suggested": "createC315",
+  "alternatives": [
+   "buildC315",
+   "generateC315"
+  ],
+  "context": "   public C315 m2188() {\n      return new C300.C302();\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2206",
+  "descriptor": "(II[CI)V",
+  "reference": "getChars",
+  "suggested": "appendSubstring",
+  "alternatives": [
+   "copyChars",
+   "insertChars"
+  ],
+  "context": "   public void m2206(int var1, int var2, char[] var3, int var4) {\n      if (var1 < 0) {\n         throw new StringIndexOutOfBoundsException(var1);\n      }\n\n      if (var2 < 0 || var2 > this.length()) {\n         throw new StringIndexOutOfBoundsException(var2);\n      }\n\n      if (var1 > var2) {\n         throw new StringIndexOutOfBoundsException(\"end < start\");\n      }\n\n      System.arraycopy(this.f580, var1, var3, var4, var2 - var1);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2208",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getNewLineText",
+  "suggested": "toString",
+  "alternatives": [
+   "convertToString",
+   "formatString"
+  ],
+  "context": "   public String m2208() {\n      return this.f581;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2226",
+  "descriptor": "(C)I",
+  "reference": "lastIndexOf",
+  "suggested": "charToInt",
+  "alternatives": [
+   "convertCharToInt",
+   "getCharCode"
+  ],
+  "context": "   public int m2226(char var1) {\n      return this.m2227(var1, this.size - 1);\n   }\n// callee m2227:\n   public int m2227(char var1, int var2) {\n      var2 = var2 >= this.size ? this.size - 1 : var2;\n      if (var2 < 0) {\n         return -1;\n      }\n\n      for (int var3 = var2; var3 >= 0; var3--) {\n         if (this.f580[var3] == var1) {\n            return var3;\n         }\n      }\n\n      return -1;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C308",
+  "obfName": "m2268",
+  "descriptor": "(C)Lobf/C308;",
+  "reference": "charMatcher",
+  "suggested": "createInstanceFromChar",
+  "alternatives": [
+   "getInstanceForCharacter",
+   "initializeWithChar"
+  ],
+  "context": "   public static C308 m2268(char var0) {\n      return new C308.C309(var0);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C310",
+  "obfName": "C310",
+  "descriptor": "",
+  "reference": "CharSetMatcher",
+  "suggested": "CharSearcher",
+  "alternatives": [
+   "CharacterArrayHandler",
+   "BinaryCharArray"
+  ],
+  "context": "\n\n@Deprecated\npublic abstract class C308 {\n   private static final C308 f588 = new C308.C309(',');\n   private static final C308 f595 = new C308.C309('\\t');\n   private static final C308 f593 = new C308.C309(' ');\n   private static final C308 f594 = new C308.C310(\" \\t\\n\\r\\f\".toCharArray());\n   private static final C308 f596 = new C308.C313();\n   private static final C308 f592 = new C308.C309('\\'');\n   private static final C308 f589 = new C308.C309('\"');\n   private static final C308 f591 = new C308.C310(\"'\\\"\".toCharArray());\n   private static final C308 f590 = new C308.C311();\n\n   public static C308 m2268(char var0) {\n      return new C308.C309(var0);\n   }\n\n   public static C308 m2270(char... var0) {\n      if (C6.m143(var0)) {\n         return f590;\n      } else {\n         return var0.length == 1 ? new C308.C309(var0[0]) : new C308.C310(var0);\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C314",
+  "obfName": "m2301",
+  "descriptor": "(Lobf/C300;)Ljava/lang/String;",
+  "reference": "replace",
+  "suggested": "convertToString",
+  "alternatives": [
+   "processAndConvert",
+   "toStringConversion"
+  ],
+  "context": "   public String m2301(C300 var1) {\n      if (var1 == null) {\n         return null;\n      }\n\n      C300 var2 = new C300(var1.length()).append(var1);\n      this.m2326(var2, 0, var2.length());\n      return var2.toString();\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C314",
+  "obfName": "m2323",
+  "descriptor": "(C)Lobf/C314;",
+  "reference": "setVariableSuffix",
+  "suggested": "createInstanceFromChar",
+  "alternatives": [
+   "getInstanceForChar",
+   "newInstanceWithChar"
+  ],
+  "context": "   public C314 m2323(char var1) {\n      return this.m2325(C308.m2268(var1));\n   }\n// callee m2325:\n   public C314 m2325(C308 var1) {\n      this.f607 = Objects.requireNonNull(var1);\n      return this;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C315",
+  "obfName": "m2345",
+  "descriptor": "()Z",
+  "reference": "isEmptyTokenAsNull",
+  "suggested": "isConditionMet",
+  "alternatives": [
+   "isValidState",
+   "checkStatus"
+  ],
+  "context": "         if (this.m2345()) {\n            var2 = null;\n         }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C315",
+  "obfName": "m2359",
+  "descriptor": "(C)Lobf/C315;",
+  "reference": "setIgnoredChar",
+  "suggested": "createInstanceFromChar",
+  "alternatives": [
+   "newInstanceWithChar",
+   "getInstanceForChar"
+  ],
+  "context": "   public C315 m2359(char var1) {\n      return this.m2360(C308.m2268(var1));\n   }\n// callee m2360:\n   public C315 m2360(C308 var1) {\n      if (var1 != null) {\n         this.f615 = var1;\n      }\n\n      return this;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C319",
+  "obfName": "m2377",
+  "descriptor": "(Ljava/lang/CharSequence;Ljava/io/Writer;)V",
+  "reference": "translate",
+  "suggested": "writeCharSequence",
+  "alternatives": [
+   "writeCharSequenceToWriter",
+   "outputCharSequence"
+  ],
+  "context": "   public final void m2377(CharSequence var1, Writer var2) throws IOException {\n      Objects.requireNonNull(var2, \"writer\");\n      if (var1 != null) {\n         int var3 = 0;\n         int var4 = var1.length();\n\n         while (var3 < var4) {\n            int var5 = this.m829(var1, var3, var2);\n            if (var5 == 0) {\n               char var8 = var1.charAt(var3);\n               var2.write(var8);\n               if (Character.isHighSurrogate(var8) && ++var3 < var4) {\n                  char var7 = var1.charAt(var3);\n                  if (Character.isLowSurrogate(var7)) {\n                     var2.write(var7);\n                     var3++;\n                  }\n               }\n            } else {\n               for (int var6 = 0; var6 < var5; var6++) {\n                  var3 += Character.charCount(Character.codePointAt(var1, var3));\n               }\n            }\n         }\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C329",
+  "obfName": "C329",
+  "descriptor": "",
+  "reference": "UnicodeUnescaper",
+  "suggested": "CharSequenceProcessor",
+  "alternatives": [
+   "WriterHandler",
+   "CharacterStreamWriter"
+  ],
+  "context": "\n\n@Deprecated\npublic class C329 extends C319 {\n   @Override\n   public int m829(CharSequence var1, int var2, Writer var3) throws IOException {\n      if (var1.charAt(var2) == '\\\\' && var2 + 1 < var1.length() && var1.charAt(var2 + 1) == 'u') {\n         int var4 = 2;\n\n         while (var2 + var4 < var1.length() && var1.charAt(var2 + var4) == 'u') {\n            var4++;\n         }\n\n         if (var2 + var4 < var1.length() && var1.charAt(var2 + var4) == '+') {\n            var4++;\n         }\n\n         if (var2 + var4 + 4 <= var1.length()) {\n            CharSequence var5 = var1.subSequence(var2 + var4, var2 + var4 + 4);\n\n            try {\n               int var6 = Integer.parseInt(var5.toString(), 16);\n               var3.write((char)var6);\n            } catch (NumberFormatException var7) {\n               throw new IllegalArgumentException(\"Unable to parse unicode value: \" + var5, var7);"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C336",
+  "obfName": "m2437",
+  "descriptor": "(Ljava/lang/String;Ljava/text/ParsePosition;)Ljava/util/Date;",
+  "reference": "parse",
+  "suggested": "parseDateWithPosition",
+  "alternatives": [
+   "getDateFromInput"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C338",
+  "obfName": "m2475",
+  "descriptor": "(Ljava/util/Calendar;Ljava/util/Calendar;)Z",
+  "reference": "isSameDay",
+  "suggested": "areCalendarsEqual",
+  "alternatives": [
+   "compareCalendars",
+   "isEqualCalendar"
+  ],
+  "context": "   public static boolean m2475(Calendar var0, Calendar var1) {\n      Objects.requireNonNull(var0, \"cal1\");\n      Objects.requireNonNull(var1, \"cal2\");\n      return var0.get(0) == var1.get(0) && var0.get(1) == var1.get(1) && var0.get(6) == var1.get(6);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C338",
+  "obfName": "m2491",
+  "descriptor": "(Ljava/util/Date;I)Ljava/util/Date;",
+  "reference": "round",
+  "suggested": "adjustDate",
+  "alternatives": [
+   "modifyDate",
+   "updateDate"
+  ],
+  "context": "   public static Date m2491(Date var0, int var1) {\n      return m2483(m2500(var0), var1, C338.C340.ROUND).getTime();\n   }\n// callee m2483:\n   private static Calendar m2483(Calendar var0, int var1, C338.C340 var2) {\n      if (var0.get(1) > 280000000) {\n         throw new ArithmeticException(\"Calendar value too large for accurate calculations\");\n      }\n\n      if (var1 == 14) {\n         return var0;\n      }\n\n      Date var3 = var0.getTime();\n      long var4 = var3.getTime();\n      boolean var6 = false;\n      int var7 = var0.get(14);\n      if (C338.C340.f680 == var2 || var7 < 500) {\n         var4 -= var7;\n      }\n\n      if (var1 == 13) {\n         var6 = true;\n      }\n\n      int var8 = var0.get(13);\n      if (!var6 && (C338.C340.f680 == var2 || var8 < 30)) {\n         var4 -= var8 * 1000L;\n      }\n\n      if (var1 == 12) {\n         var6 = true;\n      }\n\n      int var9 = var0.get(12);\n      if (!var6 && (C338.C340.f680 == var2 || var9 < 30)) {\n         var4 -= var9 * 60000L;\n      }\n\n      if (var3.getTime() != var4) {\n         var3.setTime(var4);\n         var0.setTime(var3);\n      }\n\n      boolean var10 = false;\n\n      for (int[] var14 : f675) {\n         for (int var18 : var14) {\n            if (var18 == var1) {\n               if (var2 == C338.C340.f678 || var2 == C338.C340.ROUND && var10) {\n                  if (var1 == 1001) {\n                     if (var0.get(5) == 1) {\n          "
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C345",
+  "obfName": "m2434",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getPattern",
+  "suggested": "toString",
+  "alternatives": [
+   "formatToString",
+   "getStringRepresentation"
+  ],
+  "context": "   public String m2434() {\n      return this.f699.m2434();\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C345",
+  "obfName": "m2547",
+  "descriptor": "(ILjava/util/Locale;)Lobf/C345;",
+  "reference": "getTimeInstance",
+  "suggested": "createInstanceWithLocale",
+  "alternatives": [
+   "getInstanceForLocale",
+   "formatByLocale"
+  ],
+  "context": "   public static C345 m2547(int var0, Locale var1) {\n      return f697.m2406(var0, null, var1);\n   }\n// callee m2406:\n   public static C345 m2406(int var0, TimeZone var1, Locale var2) {\n      return f697.m2406(var0, var1, var2);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C363",
+  "obfName": "m2434",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getPattern",
+  "suggested": "getStringValue",
+  "alternatives": [
+   "getF720",
+   "getValue"
+  ],
+  "context": "   public String m2434() {\n      return this.f720;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C368",
+  "obfName": "m2580",
+  "descriptor": "()I",
+  "reference": "estimateLength",
+  "suggested": "getIntValue",
+  "alternatives": [
+   "getFieldValue",
+   "getF582"
+  ],
+  "context": "      public int m2580() {\n         return 1;\n      }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C378",
+  "obfName": "m2581",
+  "descriptor": "(Ljava/lang/Appendable;I)V",
+  "reference": "appendTo",
+  "suggested": "appendValue",
+  "alternatives": [
+   "writeToAppendable",
+   "addValue"
+  ],
+  "context": "      public void m2581(Appendable var1, int var2) throws IOException {\n         this.f747.m2581(var1, var2);\n      }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C385",
+  "obfName": "m2606",
+  "descriptor": "()V",
+  "reference": "stop",
+  "suggested": "checkRunningState",
+  "alternatives": [
+   "validateRunningStatus",
+   "ensureRunning"
+  ],
+  "context": "   public void m2606() {\n      if (this.f772 != C385.C388.f780 && this.f772 != C385.C388.f782) {\n         throw new IllegalStateException(\"Stopwatch is not running. \");\n      }\n\n      if (this.f772 == C385.C388.f780) {\n         this.f777 = System.nanoTime();\n         this.f776 = System.currentTimeMillis();\n      }\n\n      this.f772 = C385.C388.f781;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C50",
+  "obfName": "C50",
+  "descriptor": "",
+  "reference": "RegExUtils",
+  "suggested": "RegexHelper",
+  "alternatives": [
+   "StringManipulator",
+   "RegexUtils",
+   "TextProcessor"
+  ],
+  "context": "\n\npublic class C50 {\n   public static Pattern m784(String var0) {\n      return Pattern.compile(var0, 32);\n   }\n\n   public static Matcher m785(String var0, String var1) {\n      return m784(var0).matcher(var1);\n   }\n\n   public static String m787(String var0, Pattern var1) {\n      return m792(var0, var1, \"\");\n   }\n\n   public static String m786(String var0, String var1) {\n      return m791(var0, var1, \"\");\n   }\n\n   public static String m789(String var0, Pattern var1) {\n      return m794(var0, var1, \"\");\n   }\n\n   public static String m788(String var0, String var1) {\n      return m793(var0, var1, \"\");"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C50",
+  "obfName": "m793",
+  "descriptor": "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+  "reference": "replaceFirst",
+  "suggested": "replaceFirstOccurrence",
+  "alternatives": [
+   "replaceAllOccurrences",
+   "updateString"
+  ],
+  "context": "   public static String m793(String var0, String var1, String var2) {\n      return var0 != null && var1 != null && var2 != null ? var0.replaceFirst(var1, var2) : var0;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C57",
+  "obfName": "m817",
+  "descriptor": "(Ljava/lang/String;)Ljava/lang/String;",
+  "reference": "escapeJava",
+  "suggested": "escapeXml",
+  "alternatives": [
+   "transformString",
+   "processString",
+   "modifyString"
+  ],
+  "context": "   public static final String m817(String var0) {\n      return f150.m2376(var0);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C57",
+  "obfName": "m827",
+  "descriptor": "(Ljava/lang/String;)Ljava/lang/String;",
+  "reference": "unescapeJson",
+  "suggested": "unescapeXml",
+  "alternatives": [
+   "processStringWithF160",
+   "transformStringUsingF160"
+  ],
+  "context": "   public static final String m827(String var0) {\n      return f160.m2376(var0);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m120",
+  "descriptor": "([FFI)Ljava/util/BitSet;",
+  "reference": "indexesOf",
+  "suggested": "processFloats",
+  "alternatives": [
+   "createBitSetFromFloats",
+   "convertToBitSet"
+  ],
+  "context": "   public static BitSet m120(float[] var0, float var1, int var2) {\n      BitSet var3 = new BitSet();\n      if (var0 == null) {\n         return var3;\n      }\n\n      while (var2 < var0.length) {\n         var2 = m100(var0, var1, var2);\n         if (var2 == -1) {\n            break;\n         }\n\n         var3.set(var2);\n         var2++;\n      }\n\n      return var3;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m134",
+  "descriptor": "(I[F[F)[F",
+  "reference": "insert",
+  "suggested": "processFloatArrays",
+  "alternatives": [
+   "mergeFloatArrays",
+   "combineFloatArrays"
+  ],
+  "context": "   public static float[] m134(int var0, float[] var1, float... var2) {\n      if (var1 == null) {\n         return null;\n      }\n\n      if (m145(var2)) {\n         return clone(var1);\n      }\n\n      if (var0 >= 0 && var0 <= var1.length) {\n         float[] var3 = new float[var1.length + var2.length];\n         System.arraycopy(var2, 0, var3, var0, var2.length);\n         if (var0 > 0) {\n            System.arraycopy(var1, 0, var3, 0, var0);\n         }\n\n         if (var0 < var1.length) {\n            System.arraycopy(var1, var0, var3, var0 + var2.length, var1.length - var0);\n         }\n\n         return var3;\n      } else {\n         throw new IndexOutOfBoundsException(\"Index: \" + var0 + \", Length: \" + var1.length);\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m298",
+  "descriptor": "([ZII)V",
+  "reference": "reverse",
+  "suggested": "updateBooleanArray",
+  "alternatives": [
+   "modifyBooleanArray",
+   "setBooleanValue"
+  ],
+  "context": "   public static void m298(boolean[] var0, int var1, int var2) {\n      if (var0 != null) {\n         int var3 = Math.max(var1, 0);\n\n         for (int var4 = Math.min(var0.length, var2) - 1; var4 > var3; var3++) {\n            boolean var5 = var0[var4];\n            var0[var4] = var0[var3];\n            var0[var3] = var5;\n            var4--;\n         }\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m305",
+  "descriptor": "([DI)V",
+  "reference": "shift",
+  "suggested": "setArrayValue",
+  "alternatives": [
+   "updateArrayElement",
+   "assignArrayIndex"
+  ],
+  "context": "   public static void m305(double[] var0, int var1) {\n      if (var0 != null) {\n         m306(var0, 0, var0.length, var1);\n      }\n   }\n// callee m306:\n   public static void m306(double[] var0, int var1, int var2, int var3) {\n      if (var0 != null && var1 < var0.length - 1 && var2 > 0) {\n         if (var1 < 0) {\n            var1 = 0;\n         }\n\n         if (var2 >= var0.length) {\n            var2 = var0.length;\n         }\n\n         int var4 = var2 - var1;\n         if (var4 > 1) {\n            var3 %= var4;\n            if (var3 < 0) {\n               var3 += var4;\n            }\n\n            while (var4 > 1 && var3 > 0) {\n               int var5 = var4 - var3;\n               if (var3 > var5) {\n                  m351(var0, var1, var1 + var4 - var5, var5);\n                  var4 = var3;\n                  var3 -= var5;\n               } else {\n                  if (var3 >= var5) {\n                     m351(var0, var1, var1 + var5, var3);\n                     break;\n                  }\n\n                  m351(var0, var1, var1 + var5, var3);\n                  var1 += var3;\n                  var4 = var5;\n               }\n            }\n         }\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m307",
+  "descriptor": "([FI)V",
+  "reference": "shift",
+  "suggested": "setArrayValue",
+  "alternatives": [
+   "updateArrayElement",
+   "assignArrayIndex"
+  ],
+  "context": "   public static void m307(float[] var0, int var1) {\n      if (var0 != null) {\n         m308(var0, 0, var0.length, var1);\n      }\n   }\n// callee m308:\n   public static void m308(float[] var0, int var1, int var2, int var3) {\n      if (var0 != null && var1 < var0.length - 1 && var2 > 0) {\n         if (var1 < 0) {\n            var1 = 0;\n         }\n\n         if (var2 >= var0.length) {\n            var2 = var0.length;\n         }\n\n         int var4 = var2 - var1;\n         if (var4 > 1) {\n            var3 %= var4;\n            if (var3 < 0) {\n               var3 += var4;\n            }\n\n            while (var4 > 1 && var3 > 0) {\n               int var5 = var4 - var3;\n               if (var3 > var5) {\n                  m353(var0, var1, var1 + var4 - var5, var5);\n                  var4 = var3;\n                  var3 -= var5;\n               } else {\n                  if (var3 >= var5) {\n                     m353(var0, var1, var1 + var5, var3);\n                     break;\n                  }\n\n                  m353(var0, var1, var1 + var5, var3);\n                  var1 += var3;\n                  var4 = var5;\n               }\n            }\n         }\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m313",
+  "descriptor": "([Ljava/lang/Object;I)V",
+  "reference": "shift",
+  "suggested": "setObjectAtIndex",
+  "alternatives": [
+   "updateArrayElement",
+   "modifyArrayValue"
+  ],
+  "context": "   public static void m313(Object[] var0, int var1) {\n      if (var0 != null) {\n         m314(var0, 0, var0.length, var1);\n      }\n   }\n// callee m314:\n   public static void m314(Object[] var0, int var1, int var2, int var3) {\n      if (var0 != null && var1 < var0.length - 1 && var2 > 0) {\n         if (var1 < 0) {\n            var1 = 0;\n         }\n\n         if (var2 >= var0.length) {\n            var2 = var0.length;\n         }\n\n         int var4 = var2 - var1;\n         if (var4 > 1) {\n            var3 %= var4;\n            if (var3 < 0) {\n               var3 += var4;\n            }\n\n            while (var4 > 1 && var3 > 0) {\n               int var5 = var4 - var3;\n               if (var3 > var5) {\n                  m359(var0, var1, var1 + var4 - var5, var5);\n                  var4 = var3;\n                  var3 -= var5;\n               } else {\n                  if (var3 >= var5) {\n                     m359(var0, var1, var1 + var5, var3);\n                     break;\n                  }\n\n                  m359(var0, var1, var1 + var5, var3);\n                  var1 += var3;\n                  var4 = var5;\n               }\n            }\n         }\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m333",
+  "descriptor": "([S)V",
+  "reference": "shuffle",
+  "suggested": "processShortArray",
+  "alternatives": [
+   "updateShorts",
+   "modifyShortValues"
+  ],
+  "context": "   public static void m333(short[] var0) {\n      m334(var0, m223());\n   }\n// callee m334:\n   public static void m334(short[] var0, Random var1) {\n      for (int var2 = var0.length; var2 > 1; var2--) {\n         m361(var0, var2 - 1, var1.nextInt(var2), 1);\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m372",
+  "descriptor": "([S)[Ljava/lang/Short;",
+  "reference": "toObject",
+  "suggested": "convertShortArray",
+  "alternatives": [
+   "toShortObjects",
+   "shortArrayToWrapper"
+  ],
+  "context": "   public static Short[] m372(short[] var0) {\n      if (var0 == null) {\n         return null;\n      } else {\n         return var0.length == 0 ? f22 : m299(new Short[var0.length], var1 -> var0[var1]);\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m384",
+  "descriptor": "([Ljava/lang/Float;F)[F",
+  "reference": "toPrimitive",
+  "suggested": "processFloatArray",
+  "alternatives": [
+   "modifyFloatArray",
+   "adjustFloatValues"
+  ],
+  "context": "   public static float[] m384(Float[] var0, float var1) {\n      if (var0 == null) {\n         return null;\n      }\n\n      if (var0.length == 0) {\n         return f13;\n      }\n\n      float[] var2 = new float[var0.length];\n\n      for (int var3 = 0; var3 < var0.length; var3++) {\n         Float var4 = var0[var3];\n         var2[var3] = var4 == null ? var1 : var4;\n      }\n\n      return var2;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m1029",
+  "descriptor": "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+  "reference": "stripEnd",
+  "suggested": "transformString",
+  "alternatives": [
+   "processString",
+   "modifyString"
+  ],
+  "context": "   public static String m1029(String var0, String var1) {\n      int var2 = m960(var0);\n      if (var2 == 0) {\n         return var0;\n      }\n\n      if (var1 == null) {\n         while (var2 != 0 && Character.isWhitespace(var0.charAt(var2 - 1))) {\n            var2--;\n         }\n      } else {\n         if (var1.isEmpty()) {\n            return var0;\n         }\n\n         while (var2 != 0 && var1.indexOf(var0.charAt(var2 - 1)) != -1) {\n            var2--;\n         }\n      }\n\n      return var0.substring(0, var2);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m1034",
+  "descriptor": "(Ljava/lang/String;II)Ljava/lang/String;",
+  "reference": "substring",
+  "suggested": "formatString",
+  "alternatives": [
+   "processString",
+   "adjustString"
+  ],
+  "context": "   public static String m1034(String var0, int var1, int var2) {\n      if (var0 == null) {\n         return null;\n      }\n\n      if (var2 < 0) {\n         var2 += var0.length();\n      }\n\n      if (var1 < 0) {\n         var1 += var0.length();\n      }\n\n      if (var2 > var0.length()) {\n         var2 = var0.length();\n      }\n\n      if (var1 > var2) {\n         return \"\";\n      }\n\n      if (var1 < 0) {\n         var1 = 0;\n      }\n\n      if (var2 < 0) {\n         var2 = 0;\n      }\n\n      return var0.substring(var1, var2);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m1063",
+  "descriptor": "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+  "reference": "wrap",
+  "suggested": "transformString",
+  "alternatives": [
+   "processStrings",
+   "combineStrings"
+  ],
+  "context": "   public static String m1063(String var0, String var1) {\n      return !m913(var0) && !m913(var1) ? var1.concat(var0).concat(var1) : var0;\n   }\n// callee m913:\n   public static boolean m913(CharSequence var0) {\n      return var0 == null || var0.length() == 0;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m845",
+  "descriptor": "(Ljava/lang/String;Ljava/lang/String;)I",
+  "reference": "compare",
+  "suggested": "compareStrings",
+  "alternatives": [
+   "stringComparison",
+   "compareText"
+  ],
+  "context": "   public static int m845(String var0, String var1) {\n      return m846(var0, var1, true);\n   }\n// callee m846:\n   public static int m846(String var0, String var1, boolean var2) {\n      if (var0 == var1) {\n         return 0;\n      } else if (var0 == null) {\n         return var2 ? -1 : 1;\n      } else if (var1 == null) {\n         return var2 ? 1 : -1;\n      } else {\n         return var0.compareTo(var1);\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m849",
+  "descriptor": "(Ljava/lang/CharSequence;I)Z",
+  "reference": "contains",
+  "suggested": "isValidSequence",
+  "alternatives": [
+   "isMatchingPattern",
+   "checkSequence"
+  ],
+  "context": "   public static boolean m849(CharSequence var0, int var1) {\n      return m913(var0) ? false : C13.m466(var0, var1, 0) >= 0;\n   }\n// callee m913:\n   public static boolean m913(CharSequence var0) {\n      return var0 == null || var0.length() == 0;\n   }\n// callee m466:\n   public static int m466(CharSequence var0, int var1, int var2) {\n      return m913(var0) ? -1 : C13.m466(var0, var1, var2);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m978",
+  "descriptor": "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+  "reference": "removeStart",
+  "suggested": "formatString",
+  "alternatives": [
+   "processString",
+   "transformString"
+  ],
+  "context": "   public static String m978(String var0, String var1) {\n      if (m913(var0) || m913(var1)) {\n         return var0;\n      } else {\n         return var0.startsWith(var1) ? var0.substring(var1.length()) : var0;\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m987",
+  "descriptor": "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+  "reference": "replaceChars",
+  "suggested": "processAbbreviation",
+  "alternatives": [
+   "transformString",
+   "formatString"
+  ],
+  "context": "   public static String m987(String var0, String var1, String var2) {\n      if (!m913(var0) && !m913(var1)) {\n         if (var2 == null) {\n            var2 = \"\";\n         }\n\n         boolean var3 = false;\n         int var4 = var2.length();\n         int var5 = var0.length();\n         StringBuilder var6 = new StringBuilder(var5);\n\n         for (int var7 = 0; var7 < var5; var7++) {\n            char var8 = var0.charAt(var7);\n            int var9 = var1.indexOf(var8);\n            if (var9 >= 0) {\n               var3 = true;\n               if (var9 < var4) {\n                  var6.append(var2.charAt(var9));\n               }\n            } else {\n               var6.append(var8);\n            }\n         }\n\n         return var3 ? var6.toString() : var0;\n      } else {\n         return var0;\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C61",
+  "obfName": "m1109",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getUserDir",
+  "suggested": "getUserHome",
+  "alternatives": [
+   "getHomeDirectory",
+   "homePath"
+  ],
+  "context": "   public static String m1109() {\n      return m1106(\"user.dir\");\n   }\n// callee m1106:\n   public static String m1106(String var0) {\n      return m1107(var0, C252.m1785());\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C62",
+  "obfName": "C62",
+  "descriptor": "",
+  "reference": "SystemUtils",
+  "suggested": "EnvironmentProperties",
+  "alternatives": [
+   "SystemFileUtils",
+   "EnvConfig"
+  ],
+  "context": "\n\npublic class C62 {\n   private static final String f290 = \"Windows\";\n   public static final String f173 = C61.m1068();\n   @Deprecated\n   public static final String f174 = C61.m1069();\n   public static final String f175 = C61.m1071();\n   public static final String f176 = C61.m1072();\n   public static final String f177 = C61.m1073();\n   public static final String f178 = C61.m1074();\n   public static final String f179 = C61.m1075();\n   public static final String f180 = C61.m1076();\n   public static final String f181 = C61.m1077();\n   public static final String f182 = C61.m1078();\n   public static final String f183 = C61.m1079();\n   public static final String f184 = C61.m1080();\n   public static final String f185 = C61.m1081();\n   public static final String f186 = C61.m1082();\n   public static final String f188 = C61.m1084();\n   public static final String f189 = C61.m1085();\n   public static final String f190 = C61.m1086();\n   public static final String f191 = C61.m1087();\n   public static final String f192 = C61.m1088();\n   private static final C38 f289 = C38.m668(f192);"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "FIELD",
+  "owner": "C62",
+  "obfName": "f244",
+  "descriptor": "Z",
+  "reference": "IS_OS_MAC",
+  "suggested": "IS_WINDOWS",
+  "alternatives": [
+   "IS_COMPUTERNAME_SET",
+   "IS_HOSTNAME_SET"
+  ],
+  "context": "// field declaration:\npublic static final boolean f244 = m1119(\"Mac\");\n// sibling fields in the same class:\nprivate static final String f290 = \"Windows\";\npublic static final String f173 = C61.m1068();\npublic static final String f174 = C61.m1069();\npublic static final String f175 = C61.m1071();\npublic static final String f176 = C61.m1072();\npublic static final String f177 = C61.m1073();\npublic static final String f178 = C61.m1074();\npublic static final String f179 = C61.m1075();\npublic static final String f180 = C61.m1076();\npublic static final String f181 = C61.m1077();\npublic static final String f182 = C61.m1078();\npublic static final String f183 = C61.m1079();\npublic static final String f184 = C61.m1080();\npublic static final String f185 = C61.m1081();\npublic static final String f186 = C61.m1082();\npublic static final String f188 = C61.m1084();\npublic static final String f189 = C61.m1085();\npublic static final String f190 = C61.m1086();\npublic static final String f191 = C61.m1087();\npublic static final String f192 = C61.m1088();\nprivate static final C38 f289 = C38.m668(f192);\npublic static final String f193 = C61.m1089();\npublic static final String f194 = C61.m1090();\npublic static final String f195 = C61.m1091();\npublic static final String f196 = C61.m1092();"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m1080",
+  "descriptor": "()Ljava/io/File;",
+  "reference": "getJavaHome",
+  "suggested": "getFileFromEncoding",
+  "alternatives": [
+   "createFileFromEncoding",
+   "initializeFileWithEncoding"
+  ],
+  "context": "   public static File m1080() {\n      return new File(C61.m1080());\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m1110",
+  "descriptor": "()Ljava/io/File;",
+  "reference": "getUserHome",
+  "suggested": "getFileFromPath",
+  "alternatives": [
+   "createFileObject",
+   "initializeFile"
+  ],
+  "context": "   public static File m1110() {\n      return new File(C61.m1110());\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "CLASS",
+  "owner": "C63",
+  "obfName": "C63",
+  "descriptor": "",
+  "reference": "ThreadUtils",
+  "suggested": "ThreadManager",
+  "alternatives": [
+   "ThreadUtils",
+   "ThreadQuery"
+  ],
+  "context": "\n\npublic class C63 {\n   @Deprecated\n   public static final C63.C65 f295 = new C63.C65();\n   private static final Predicate<?> f294 = var0 -> true;\n\n   private static <T> Predicate<T> m1128() {\n      return (Predicate<T>)f294;\n   }\n\n   public static Thread m1129(long var0) {\n      if (var0 <= 0L) {\n         throw new IllegalArgumentException(\"The thread id must be greater than zero\");\n      }\n\n      Collection var2 = m1139(var2x -> var2x != null && var2x.getId() == var0);\n      return var2.isEmpty() ? null : (Thread)var2.iterator().next();\n   }\n\n   public static Thread m1130(long var0, String var2) {\n      Objects.requireNonNull(var2, \"threadGroupName\");\n      Thread var3 = m1129(var0);\n      return var3 != null && var3.getThreadGroup() != null && var3.getThreadGroup().getName().equals(var2) ? var3 : null;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C7",
+  "obfName": "m402",
+  "descriptor": "(I)I",
+  "reference": "set",
+  "suggested": "calculateValue",
+  "alternatives": [
+   "computeResult",
+   "processInput"
+  ],
+  "context": "   public int m402(int var1) {\n      return var1 | this.f27;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C70",
+  "obfName": "m1156",
+  "descriptor": "(DDDLjava/lang/String;)V",
+  "reference": "exclusiveBetween",
+  "suggested": "validateRangeWithMessage",
+  "alternatives": [
+   "checkRangeAndThrow",
+   "assertRangeWithCustomMessage"
+  ],
+  "context": "   public static void m1156(double var0, double var2, double var4, String var6) {\n      if (var4 <= var0 || var4 >= var2) {\n         throw new IllegalArgumentException(var6);\n      }\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C70",
+  "obfName": "m1160",
+  "descriptor": "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Comparable;Ljava/lang/String;[Ljava/lang/Object;)V",
+  "reference": "exclusiveBetween",
+  "suggested": "validateValueInRange",
+  "alternatives": [
+   "checkRangeAndThrow",
+   "ensureValueWithinBounds"
+  ],
+  "context": "   public static <T> void m1160(T var0, T var1, Comparable<T> var2, String var3, Object... var4) {\n      if (var2.compareTo(var0) <= 0 || var2.compareTo(var1) >= 0) {\n         throw new IllegalArgumentException(m1163(var3, var4));\n      }\n   }\n// callee m1163:\n   private static String m1163(String var0, Object... var1) {\n      return C6.m148(var1) ? var0 : String.format(var0, var1);\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C71",
+  "obfName": "m1209",
+  "descriptor": "()Z",
+  "reference": "is32Bit",
+  "suggested": "isBit32Or64",
+  "alternatives": [
+   "checkBit32Or64",
+   "hasBit32Or64"
+  ],
+  "context": "   public boolean m1209() {\n      return C71.C72.f319 == this.f317;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C77",
+  "obfName": "m1219",
+  "descriptor": "(BB)Lobf/C77;",
+  "reference": "append",
+  "suggested": "compareBytes",
+  "alternatives": [
+   "byteComparison",
+   "compareTwoBytes"
+  ],
+  "context": "   public C77 m1219(byte var1, byte var2) {\n      if (this.f329 != 0) {\n         return this;\n      }\n\n      this.f329 = Byte.compare(var1, var2);\n      return this;\n   }"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "FIELD",
+  "owner": "C8",
+  "obfName": "f30",
+  "descriptor": "Ljava/lang/String;",
+  "reference": "FALSE",
+  "suggested": "BOOLEAN_FALSE",
+  "alternatives": [
+   "STATE_OFF",
+   "STATUS_NO"
+  ],
+  "context": "// field declaration:\npublic static final String f30 = \"false\";\n// sibling fields in the same class:\nprivate static final List<Boolean> f29 = Collections.unmodifiableList(Arrays.asList(Boolean.FALSE, Boolean.TRUE));\npublic static final String f30 = \"false\";\npublic static final String f31 = \"no\";\npublic static final String f32 = \"off\";\npublic static final String f33 = \"on\";\npublic static final String f34 = \"true\";\npublic static final String f35 = \"yes\";\nreturn var0 ? C259.f531 : C259.f533;\nreturn var0 ? C259.f531 : C259.f533;\nreturn f29;"
+ },
+ {
+  "jar": "commons-lang3-3.14.0",
+  "kind": "METHOD",
+  "owner": "C99",
+  "obfName": "m1271",
+  "descriptor": "()I",
+  "reference": "getNumberOfDiffs",
+  "suggested": "getListSize",
+  "alternatives": [
+   "sizeOfList",
+   "listCount"
+  ],
+  "context": "   public int m1271() {\n      return this.f339.size();\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C1",
+  "obfName": "m1",
+  "descriptor": "(Ljava/lang/Class;)Z",
+  "reference": "shouldSkipClass",
+  "suggested": "isAnnotated",
+  "alternatives": [
+   "hasClassAnnotation",
+   "checkClass"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C107",
+  "obfName": "C107",
+  "descriptor": "",
+  "reference": "Primitives",
+  "suggested": "PrimitiveTypeUtils",
+  "alternatives": [
+   "PrimitiveTypeHandler",
+   "WrapperClassHelper",
+   "TypeUtils"
+  ],
+  "context": "\n\npublic final class C107 {\n   private C107() {\n   }\n\n   public static boolean m241(Type var0) {\n      return var0 instanceof Class && ((Class)var0).isPrimitive();\n   }\n\n   public static boolean m242(Type var0) {\n      return var0 == Integer.class\n         || var0 == Float.class\n         || var0 == Byte.class\n         || var0 == Double.class\n         || var0 == Long.class\n         || var0 == Character.class\n         || var0 == Boolean.class\n         || var0 == Short.class\n         || var0 == Void.class;\n   }\n\n   public static <T> Class<T> m244(Class<T> var0) {\n      if (var0 == int.class) {\n         return (Class<T>)Integer.class;"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C107",
+  "obfName": "m243",
+  "descriptor": "(Ljava/lang/Class;)Ljava/lang/Class;",
+  "reference": "unwrap",
+  "suggested": "getPrimitiveType",
+  "alternatives": [
+   "isPrimitiveClass",
+   "findPrimitiveClass"
+  ],
+  "context": "   public static <T> Class<T> m243(Class<T> var0) {\n      if (var0 == Integer.class) {\n         return (Class<T>)int.class;\n      } else if (var0 == Float.class) {\n         return (Class<T>)float.class;\n      } else if (var0 == Byte.class) {\n         return (Class<T>)byte.class;\n      } else if (var0 == Double.class) {\n         return (Class<T>)double.class;\n      } else if (var0 == Long.class) {\n         return (Class<T>)long.class;\n      } else if (var0 == Character.class) {\n         return (Class<T>)char.class;\n      } else if (var0 == Boolean.class) {\n         return (Class<T>)boolean.class;\n      } else if (var0 == Short.class) {\n         return (Class<T>)short.class;\n      } else {\n         return (Class<T>)(var0 == Void.class ? void.class : var0);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C11",
+  "obfName": "m12",
+  "descriptor": "(Ljava/lang/reflect/Field;)Ljava/lang/String;",
+  "reference": "translateName",
+  "suggested": "getFieldValue",
+  "alternatives": [
+   "fieldToString",
+   "convertField"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C113",
+  "obfName": "m147",
+  "descriptor": "(Lobf/C219;)Lobf/C25;",
+  "reference": "parse",
+  "suggested": "parseJson",
+  "alternatives": [
+   "convertData",
+   "processObject"
+  ],
+  "context": "   public static C25 m147(C219 var0) throws C29 {\n      boolean var1 = true;\n\n      try {\n         C222 var2 = var0.m288();\n         var1 = false;\n         return C161.f209.m59(var0);\n      } catch (EOFException var3) {\n         if (var1) {\n            return C27.f59;\n         } else {\n            throw new C35(var3);\n         }\n      } catch (C224 var4) {\n         throw new C35(var4);\n      } catch (IOException var5) {\n         throw new C26(var5);\n      } catch (NumberFormatException var6) {\n         throw new C35(var6);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C12",
+  "obfName": "C12",
+  "descriptor": "",
+  "reference": "FormattingStyle",
+  "suggested": "TextFormatting",
+  "alternatives": [
+   "LineAndIndentSettings",
+   "NewlineIndentConfig"
+  ],
+  "context": "\n\npublic class C12 {\n   private final String f12;\n   private final String f11;\n   private final boolean f13;\n   public static final C12 f9 = new C12(\"\", \"\", false);\n   public static final C12 f10 = new C12(\"\\n\", \"  \", true);\n\n   private C12(String var1, String var2, boolean var3) {\n      Objects.requireNonNull(var1, \"newline == null\");\n      Objects.requireNonNull(var2, \"indent == null\");\n      if (!var1.matches(\"[\\r\\n]*\")) {\n         throw new IllegalArgumentException(\"Only combinations of \\\\n and \\\\r are allowed in newline.\");\n      }\n\n      if (!var2.matches(\"[ \\t]*\")) {\n         throw new IllegalArgumentException(\"Only combinations of spaces and tabs are allowed in indent.\");\n      }\n\n      this.f12 = var1;\n      this.f11 = var2;\n      this.f13 = var3;\n   }\n"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C12",
+  "obfName": "f10",
+  "descriptor": "Lobf/C12;",
+  "reference": "PRETTY",
+  "suggested": "DEFAULT_CONFIG",
+  "alternatives": [
+   "DEFAULT_STATE",
+   "EMPTY_INSTANCE"
+  ],
+  "context": "// field declaration:\npublic static final C12 f10 = new C12(\"\\n\", \"  \", true);\n// sibling fields in the same class:\nprivate final String f12;\nprivate final String f11;\nprivate final boolean f13;\npublic static final C12 f9 = new C12(\"\", \"\", false);\npublic static final C12 f10 = new C12(\"\\n\", \"  \", true);\nthis.f12 = var1;\nthis.f11 = var2;\nthis.f13 = var3;\nreturn this.f12;\nreturn this.f11;\nreturn this.f13;"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m28",
+  "descriptor": "(Lobf/C25;Ljava/lang/Class;)Ljava/lang/Object;",
+  "reference": "fromJson",
+  "suggested": "convertObject",
+  "alternatives": [
+   "processObject",
+   "handleObject"
+  ],
+  "context": "   public <T> T m28(C25 var1, Class<T> var2) throws C35 {\n      Object var3 = this.m27(var1, C217.m364(var2));\n      return C107.<T>m244(var2).cast(var3);\n   }\n// callee m27:\n   public <T> T m27(C25 var1, C217<T> var2) throws C35 {\n      return var1 == null ? null : this.m30(new C134(var1), var2);\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m37",
+  "descriptor": "(Ljava/lang/String;Ljava/lang/reflect/Type;)Ljava/lang/Object;",
+  "reference": "fromJson",
+  "suggested": "parseObject",
+  "alternatives": [
+   "deserializeObject",
+   "convertToObject"
+  ],
+  "context": "   public <T> T m37(String var1, Type var2) throws C35 {\n      return this.m35(var1, (C217<T>)C217.m365(var2));\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m41",
+  "descriptor": "()Z",
+  "reference": "htmlSafe",
+  "suggested": "isFeatureEnabled",
+  "alternatives": [
+   "hasFeature",
+   "isEnabled"
+  ],
+  "context": "   public boolean m41() {\n      return this.f38;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m44",
+  "descriptor": "(Ljava/io/Reader;)Lobf/C219;",
+  "reference": "newJsonReader",
+  "suggested": "parseReader",
+  "alternatives": [
+   "readAndProcess",
+   "processInput"
+  ],
+  "context": "   public C219 m44(Reader var1) {\n      C219 var2 = new C219(var1);\n      var2.m92(this.f47 == null ? C45.f74 : this.f47);\n      return var2;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m50",
+  "descriptor": "(Ljava/lang/Object;)Ljava/lang/String;",
+  "reference": "toJson",
+  "suggested": "objectToString",
+  "alternatives": [
+   "serializeObject",
+   "convertToString"
+  ],
+  "context": "   public String m50(Object var1) {\n      return var1 == null ? this.m47(C27.f59) : this.m52(var1, var1.getClass());\n   }\n// callee m52:\n   public String m52(Object var1, Type var2) {\n      StringWriter var3 = new StringWriter();\n      this.m54(var1, var2, var3);\n      return var3.toString();\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m51",
+  "descriptor": "(Ljava/lang/Object;Ljava/lang/Appendable;)V",
+  "reference": "toJson",
+  "suggested": "serializeObject",
+  "alternatives": [
+   "writeObjectToAppendable",
+   "appendObject"
+  ],
+  "context": "   public void m51(Object var1, Appendable var2) throws C26 {\n      if (var1 != null) {\n         this.m54(var1, var1.getClass(), var2);\n      } else {\n         this.m49(C27.f59, var2);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m53",
+  "descriptor": "(Ljava/lang/Object;Ljava/lang/reflect/Type;Lobf/C223;)V",
+  "reference": "toJson",
+  "suggested": "serializeObject",
+  "alternatives": [
+   "processObject",
+   "writeObjectToAppendable"
+  ],
+  "context": "   public void m53(Object var1, Type var2, C223 var3) throws C26 {\n      C52 var4 = this.m38(C217.m365(var2));\n      C45 var5 = var3.m384();\n      if (this.f47 != null) {\n         var3.m92(this.f47);\n      } else if (var3.m384() == C45.f74) {\n         var3.m92(C45.f75);\n      }\n\n      boolean var6 = var3.m406();\n      boolean var7 = var3.m405();\n      var3.m411(this.f38);\n      var3.m413(this.f45);\n\n      try {\n         var4.m61(var3, var1);\n      } catch (IOException var13) {\n         throw new C26(var13);\n      } catch (AssertionError var14) {\n         throw new AssertionError(\"AssertionError (GSON 2.11.0): \" + var14.getMessage(), var14);\n      } finally {\n         var3.m92(var5);\n         var3.m411(var6);\n         var3.m413(var7);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C19",
+  "obfName": "C19",
+  "descriptor": "",
+  "reference": "FutureTypeAdapter",
+  "suggested": "TypeAdapter",
+  "alternatives": [
+   "DelegateManager",
+   "TypeHandler"
+  ],
+  "context": "\n\npublic final class C13 {\n   static final boolean f19 = false;\n   static final C45 f24 = null;\n   static final C12 f18 = C12.f9;\n   static final boolean f16 = true;\n   static final boolean f22 = false;\n   static final boolean f14 = false;\n   static final boolean f23 = false;\n   static final boolean f25 = true;\n   static final String f15 = null;\n   static final C11 f17 = C3.f2;\n   static final C51 f21 = C46.f78;\n   static final C51 f20 = C46.f79;\n   private static final String f26 = \")]}'\\n\";\n   private final ThreadLocal<Map<C217<?>, C52<?>>> f48 = new ThreadLocal<>();\n   private final ConcurrentMap<C217<?>, C52<?>> f50 = new ConcurrentHashMap<>();\n   private final C68 f30;\n   private final C131 f40;\n   final List<C54> f34;\n   final C89 f33;\n   final C11 f35;\n   final Map<Type, C21<?>> f39;\n   final boolean f45;"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C19",
+  "obfName": "m58",
+  "descriptor": "()Lobf/C52;",
+  "reference": "getSerializationDelegate",
+  "suggested": "getAdapter",
+  "alternatives": [
+   "getDelegate",
+   "getCyclicDependencyAdapter"
+  ],
+  "context": "      public C52<T> m58() {\n         return this.m57();\n      }\n// callee m57:\n      private C52<T> m57() {\n         C52 var1 = this.f52;\n         if (var1 == null) {\n            throw new IllegalStateException(\"Adapter for type with cyclic dependency has been used before dependency has been resolved\");\n         } else {\n            return var1;\n         }\n      }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C131",
+  "obfName": "m168",
+  "descriptor": "(Lobf/C13;Lobf/C217;)Lobf/C52;",
+  "reference": "create",
+  "suggested": "getAdapter",
+  "alternatives": [
+   "createAdapter",
+   "bindAdapter"
+  ],
+  "context": "   public <T> C52<T> m168(C13 var1, C217<T> var2) {\n      Class var3 = var2.m368();\n      C56 var4 = m3(var3);\n      return (C52<T>)(var4 == null ? null : this.m266(this.f30, var1, var2, var4, true));\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C134",
+  "obfName": "m276",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getPreviousPath",
+  "suggested": "generateFormattedString",
+  "alternatives": [
+   "createDetailedString",
+   "buildVerboseString"
+  ],
+  "context": "   public String m276() {\n      return this.m275(true);\n   }\n// callee m275:\n   private String m275(boolean var1) {\n      StringBuilder var2 = new StringBuilder().append('$');\n\n      for (int var3 = 0; var3 < this.f146; var3++) {\n         if (this.f145[var3] instanceof C22) {\n            var3++;\n            if (var3 < this.f146 && this.f145[var3] instanceof Iterator) {\n               int var4 = this.f143[var3];\n               if (var1 && var4 > 0 && (var3 == this.f146 - 1 || var3 == this.f146 - 2)) {\n                  var4--;\n               }\n\n               var2.append('[').append(var4).append(']');\n            }\n         } else if (this.f145[var3] instanceof C28) {\n            var3++;\n            if (var3 < this.f146 && this.f145[var3] instanceof Iterator) {\n               var2.append('.');\n               if (this.f144[var3] != null) {\n                  var2.append(this.f144[var3]);\n               }\n            }\n         }\n      }\n\n      return var2.toString();\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C134",
+  "obfName": "m280",
+  "descriptor": "()D",
+  "reference": "nextDouble",
+  "suggested": "parseDouble",
+  "alternatives": [
+   "getDoubleValue",
+   "readDouble"
+  ],
+  "context": "   public double m280() throws IOException {\n      C222 var1 = this.m288();\n      if (var1 != C222.f304 && var1 != C222.f305) {\n         throw new IllegalStateException(\"Expected \" + C222.f304 + \" but was \" + var1 + this.m278());\n      }\n\n      double var2 = ((C31)this.m289()).m110();\n      if (this.m385() || !Double.isNaN(var2) && !Double.isInfinite(var2)) {\n         this.m290();\n         if (this.f146 > 0) {\n            this.f143[this.f146 - 1]++;\n         }\n\n         return var2;\n      } else {\n         throw new C224(\"JSON forbids NaN and infinities: \" + var2);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m270",
+  "descriptor": "()Lobf/C223;",
+  "reference": "beginObject",
+  "suggested": "createJsonObject",
+  "alternatives": [
+   "buildJsonObject",
+   "generateJsonObject"
+  ],
+  "context": "   public C223 m270() throws IOException {\n      C28 var1 = new C28();\n      this.m298(var1);\n      this.f151.add(var1);\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m294",
+  "descriptor": "()Lobf/C25;",
+  "reference": "get",
+  "suggested": "getSingleElement",
+  "alternatives": [
+   "fetchUniqueItem",
+   "retrieveOne"
+  ],
+  "context": "   public C25 m294() {\n      if (!this.f151.isEmpty()) {\n         throw new IllegalStateException(\"Expected one JSON element but was \" + this.f151);\n      } else {\n         return this.f150;\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m296",
+  "descriptor": "(Ljava/lang/String;)Lobf/C223;",
+  "reference": "name",
+  "suggested": "writeJsonName",
+  "alternatives": [
+   "setJsonName",
+   "beginJsonObject"
+  ],
+  "context": "   public C223 m296(String var1) throws IOException {\n      Objects.requireNonNull(var1, \"name == null\");\n      if (!this.f151.isEmpty() && this.f149 == null) {\n         C25 var2 = this.m288();\n         if (var2 instanceof C28) {\n            this.f149 = var1;\n            return this;\n         } else {\n            throw new IllegalStateException(\"Please begin an object before writing a name.\");\n         }\n      } else {\n         throw new IllegalStateException(\"Did not expect a name\");\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m300",
+  "descriptor": "(F)Lobf/C223;",
+  "reference": "value",
+  "suggested": "writeFloat",
+  "alternatives": [
+   "addFloat",
+   "appendFloat"
+  ],
+  "context": "   public C223 m300(float var1) throws IOException {\n      if (this.m385() || !Float.isNaN(var1) && !Float.isInfinite(var1)) {\n         this.m298(new C31(var1));\n         return this;\n      } else {\n         throw new IllegalArgumentException(\"JSON forbids NaN and infinities: \" + var1);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m301",
+  "descriptor": "(J)Lobf/C223;",
+  "reference": "value",
+  "suggested": "writeLong",
+  "alternatives": [
+   "processLong",
+   "addLong"
+  ],
+  "context": "   public C223 m301(long var1) throws IOException {\n      this.m298(new C31(var1));\n      return this;\n   }\n// callee m298:\n   private void m298(C25 var1) {\n      if (this.f149 != null) {\n         if (!var1.m130() || this.m405()) {\n            C28 var2 = (C28)this.m288();\n            var2.m133(this.f149, var1);\n         }\n\n         this.f149 = null;\n      } else if (this.f151.isEmpty()) {\n         this.f150 = var1;\n      } else {\n         C25 var3 = this.m288();\n         if (!(var3 instanceof C22)) {\n            throw new IllegalStateException();\n         }\n\n         ((C22)var3).m95(var1);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m303",
+  "descriptor": "(Ljava/lang/Number;)Lobf/C223;",
+  "reference": "value",
+  "suggested": "writeNumber",
+  "alternatives": [
+   "addNumber",
+   "appendNumber"
+  ],
+  "context": "   public C223 m303(Number var1) throws IOException {\n      if (var1 == null) {\n         return this.m297();\n      }\n\n      if (!this.m385()) {\n         double var2 = var1.doubleValue();\n         if (Double.isNaN(var2) || Double.isInfinite(var2)) {\n            throw new IllegalArgumentException(\"JSON forbids NaN and infinities: \" + var1);\n         }\n      }\n\n      this.m298(new C31(var1));\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m304",
+  "descriptor": "(Ljava/lang/String;)Lobf/C223;",
+  "reference": "value",
+  "suggested": "writeName",
+  "alternatives": [
+   "addObject",
+   "createJsonElement"
+  ],
+  "context": "   public C223 m304(String var1) throws IOException {\n      if (var1 == null) {\n         return this.m297();\n      }\n\n      this.m298(new C31(var1));\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C147",
+  "obfName": "C147",
+  "descriptor": "",
+  "reference": "ReflectiveTypeAdapterFactory",
+  "suggested": "ReflectionAccessHandler",
+  "alternatives": [
+   "FieldReflectionManager",
+   "ReflectionFieldProcessor"
+  ],
+  "context": "\n\npublic final class C147 implements C54 {\n   private final C68 f30;\n   private final C11 f54;\n   private final C89 f33;\n   private final C131 f40;\n   private final List<C39> f44;\n\n   public C147(C68 var1, C11 var2, C89 var3, C131 var4, List<C39> var5) {\n      this.f30 = var1;\n      this.f54 = var2;\n      this.f33 = var3;\n      this.f40 = var4;\n      this.f44 = var5;\n   }\n\n   private boolean m319(Field var1, boolean var2) {\n      return !this.f33.m203(var1, var2);\n   }\n\n   private List<String> m318(Field var1) {\n      C57 var2 = var1.getAnnotation(C57.class);\n      if (var2 == null) {\n         String var6 = this.f54.m12(var1);"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C150",
+  "obfName": "C150",
+  "descriptor": "",
+  "reference": "Adapter",
+  "suggested": "ObjectManipulator",
+  "alternatives": [
+   "ObjectProcessor",
+   "ErrorHandler",
+   "ExceptionManager"
+  ],
+  "context": "\n\npublic final class C147 implements C54 {\n   private final C68 f30;\n   private final C11 f54;\n   private final C89 f33;\n   private final C131 f40;\n   private final List<C39> f44;\n\n   public C147(C68 var1, C11 var2, C89 var3, C131 var4, List<C39> var5) {\n      this.f30 = var1;\n      this.f54 = var2;\n      this.f33 = var3;\n      this.f40 = var4;\n      this.f44 = var5;\n   }\n\n   private boolean m319(Field var1, boolean var2) {\n      return !this.f33.m203(var1, var2);\n   }\n\n   private List<String> m318(Field var1) {\n      C57 var2 = var1.getAnnotation(C57.class);\n      if (var2 == null) {\n         String var6 = this.f54.m12(var1);"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C150",
+  "obfName": "m59",
+  "descriptor": "(Lobf/C219;)Ljava/lang/Object;",
+  "reference": "read",
+  "suggested": "processData",
+  "alternatives": [
+   "retrieveValue",
+   "handleData"
+  ],
+  "context": "            public T m59(C219 var1) throws IOException {\n               var1.m293();\n               return null;\n            }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C154",
+  "obfName": "C154",
+  "descriptor": "",
+  "reference": "RecordAdapter",
+  "suggested": "ConstructorManager",
+  "alternatives": [
+   "ConstructorHandler",
+   "ReflectionHelper",
+   "ObjectCreator"
+  ],
+  "context": "\n\npublic final class C147 implements C54 {\n   private final C68 f30;\n   private final C11 f54;\n   private final C89 f33;\n   private final C131 f40;\n   private final List<C39> f44;\n\n   public C147(C68 var1, C11 var2, C89 var3, C131 var4, List<C39> var5) {\n      this.f30 = var1;\n      this.f54 = var2;\n      this.f33 = var3;\n      this.f40 = var4;\n      this.f44 = var5;\n   }\n\n   private boolean m319(Field var1, boolean var2) {\n      return !this.f33.m203(var1, var2);\n   }\n\n   private List<String> m318(Field var1) {\n      C57 var2 = var1.getAnnotation(C57.class);\n      if (var2 == null) {\n         String var6 = this.f54.m12(var1);"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C155",
+  "obfName": "m58",
+  "descriptor": "()Lobf/C52;",
+  "reference": "getSerializationDelegate",
+  "suggested": "getBaseObject",
+  "alternatives": [
+   "createBaseInstance",
+   "fetchBaseObject"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C156",
+  "obfName": "m58",
+  "descriptor": "()Lobf/C52;",
+  "reference": "getSerializationDelegate",
+  "suggested": "getObject",
+  "alternatives": [
+   "getInternalObject",
+   "fetchObject",
+   "retrieveObject"
+  ],
+  "context": "   public C52<T> m58() {\n      return this.f171 != null ? this : this.m57();\n   }\n// callee m57:\n   private C52<T> m57() {\n      C52 var1 = this.f52;\n      return var1 != null ? var1 : (this.f52 = this.f157.m40(this.f172, this.f173));\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C158",
+  "obfName": "m157",
+  "descriptor": "(Ljava/lang/Object;)Lobf/C25;",
+  "reference": "serialize",
+  "suggested": "convertObject",
+  "alternatives": [
+   "processObject",
+   "transformObject"
+  ],
+  "context": "      public C25 m157(Object var1) {\n         return C156.this.f157.m55(var1);\n      }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C160",
+  "obfName": "C160",
+  "descriptor": "",
+  "reference": "TypeAdapterRuntimeTypeWrapper",
+  "suggested": "TypeHandler",
+  "alternatives": [
+   "ObjectManipulator",
+   "TypeProcessor"
+  ],
+  "context": "\n\nfinal class C160<T> extends C52<T> {\n   private final C13 f177;\n   private final C52<T> f52;\n   private final Type f178;\n\n   C160(C13 var1, C52<T> var2, Type var3) {\n      this.f177 = var1;\n      this.f52 = var2;\n      this.f178 = var3;\n   }\n\n   @Override\n   public T m59(C219 var1) throws IOException {\n      return this.f52.m59(var1);\n   }\n\n   @Override\n   public void m61(C223 var1, T var2) throws IOException {\n      C52 var3 = this.f52;\n      Type var4 = m329(this.f178, var2);\n      if (var4 != this.f178) {\n         C52 var5 = this.f177.m38(C217.m365(var4));\n         if (!(var5 instanceof C147.C150)) {"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f189",
+  "descriptor": "Lobf/C52;",
+  "reference": "BOOLEAN",
+  "suggested": "BOOLEAN_SERIALIZER",
+  "alternatives": [
+   "BOOLEAN_TYPE_ADAPTER",
+   "BOOLEAN_HANDLER"
+  ],
+  "context": "// field declaration:\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\npublic static fin"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f197",
+  "descriptor": "Lobf/C54;",
+  "reference": "CHARACTER_FACTORY",
+  "suggested": "INSTANCE_FACTORY",
+  "alternatives": [
+   "FACTORY_INSTANCE",
+   "NEW_FACTORY"
+  ],
+  "context": "// field declaration:\npublic static final C54 f197 = newFactory(char.class, Character.class, f196);\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\n"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f202",
+  "descriptor": "Lobf/C52;",
+  "reference": "DOUBLE",
+  "suggested": "DEFAULT_VALUE",
+  "alternatives": [
+   "CONSTANT_VALUE_1",
+   "STATIC_CONSTANT"
+  ],
+  "context": "// field declaration:\npublic static final C52<Number> f202 = new C52<Number>() {\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\npublic static final"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f205",
+  "descriptor": "Lobf/C52;",
+  "reference": "INET_ADDRESS",
+  "suggested": "DEFAULT_VALUE",
+  "alternatives": [
+   "CONFIGURATION_CONSTANT",
+   "INITIAL_STATE"
+  ],
+  "context": "// field declaration:\npublic static final C52<InetAddress> f205 = new C52<InetAddress>() {\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\npublic st"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f207",
+  "descriptor": "Lobf/C52;",
+  "reference": "INTEGER",
+  "suggested": "CONFIGURATION_CONSTANT_7",
+  "alternatives": [
+   "CONSTANT_VALUE_207",
+   "DEFAULT_SETTING_7"
+  ],
+  "context": "// field declaration:\npublic static final C52<Number> f207 = new C52<Number>() {\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\npublic static final"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f208",
+  "descriptor": "Lobf/C54;",
+  "reference": "INTEGER_FACTORY",
+  "suggested": "FACTORY_TYPE_8",
+  "alternatives": [
+   "INSTANCE_FACTORY_8",
+   "TYPE_8_FACTORY"
+  ],
+  "context": "// field declaration:\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\npub"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f224",
+  "descriptor": "Lobf/C54;",
+  "reference": "URI_FACTORY",
+  "suggested": "CLASS_INSTANCE_FACTORY",
+  "alternatives": [
+   "OBJECT_CREATION_PATTERN",
+   "FACTORY_METHOD_OUTPUT"
+  ],
+  "context": "// field declaration:\npublic static final C54 f224 = m332(URI.class, f223);\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\npublic static final C54 "
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f226",
+  "descriptor": "Lobf/C54;",
+  "reference": "URL_FACTORY",
+  "suggested": "CLASS_INSTANCE_FACTORY",
+  "alternatives": [
+   "OBJECT_CREATION_PATTERN",
+   "FACTORY_METHOD_OUTPUT"
+  ],
+  "context": "// field declaration:\npublic static final C54 f226 = m332(URL.class, f225);\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\npublic static final C54 "
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f227",
+  "descriptor": "Lobf/C52;",
+  "reference": "UUID",
+  "suggested": "CONFIGURATION_CONSTANT_1",
+  "alternatives": [
+   "CONSTANT_VALUE_227",
+   "DEFAULT_SETTING_1"
+  ],
+  "context": "// field declaration:\npublic static final C52<UUID> f227 = new C52<UUID>() {\n// sibling fields in the same class:\npublic static final C52<Class> f198 = (new C52<Class>() {\npublic static final C54 f199 = m332(Class.class, f198);\npublic static final C52<BitSet> f187 = (new C52<BitSet>() {\nfor (C222 var4 = var1.m288(); var4 != C222.f299; var4 = var1.m288()) {\npublic static final C54 f188 = m332(BitSet.class, f187);\npublic static final C52<Boolean> f189 = new C52<Boolean>() {\npublic static final C52<Boolean> f190 = new C52<Boolean>() {\npublic static final C54 f191 = newFactory(boolean.class, Boolean.class, f189);\npublic static final C52<Number> f192 = new C52<Number>() {\npublic static final C54 f193 = newFactory(byte.class, Byte.class, f192);\npublic static final C52<Number> f215 = new C52<Number>() {\npublic static final C54 f216 = newFactory(short.class, Short.class, f215);\npublic static final C52<Number> f207 = new C52<Number>() {\npublic static final C54 f208 = newFactory(int.class, Integer.class, f207);\npublic static final C52<AtomicInteger> f181 = (new C52<AtomicInteger>() {\npublic static final C54 f184 = m332(AtomicInteger.class, f181);\npublic static final C52<AtomicBoolean> f179 = (new C52<AtomicBoolean>() {\npublic static final C54 f180 = m332(AtomicBoolean.class, f179);\npublic static final C52<AtomicIntegerArray> f182 = (new C52<AtomicIntegerArray>() {\npublic static final C54"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C161",
+  "obfName": "m335",
+  "descriptor": "(Ljava/lang/Class;Lobf/C52;)Lobf/C54;",
+  "reference": "newTypeHierarchyFactory",
+  "suggested": "createFactory",
+  "alternatives": [
+   "initializeFactory",
+   "buildFactory"
+  ],
+  "context": "   public static <T1> C54 m335(final Class<T1> var0, final C52<T1> var1) {\n      return new C54() {\n         @Override\n         public <T2> C52<T2> m168(C13 var1x, C217<T2> var2) {\n            final Class var3 = var2.m368();\n            return (C52<T2>)(!var0.isAssignableFrom(var3) ? null : new C52<T1>() {\n               @Override\n               public void m61(C223 var1x, T1 var2x) throws IOException {\n                  var1.m61(var1x, var2x);\n               }\n\n               @Override\n               public T1 m59(C219 var1x) throws IOException {\n                  Object var2x = var1.m59(var1x);\n                  if (var2x != null && !var3.isInstance(var2x)) {\n                     throw new C35(\"Expected a \" + var3.getName() + \" but was \" + var2x.getClass().getName() + \"; at path \" + var1x.m276());\n                  } else {\n                     return (T1)var2x;\n                  }\n               }\n            });\n         }\n\n         @Override\n         public String toString() {\n            return \"Factory[typeHierarchy=\" + var0.getName() + \",adapter=\" + var1 + \"]\";\n         }\n      };\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C2",
+  "obfName": "C2",
+  "descriptor": "",
+  "reference": "FieldAttributes",
+  "suggested": "FieldWrapper",
+  "alternatives": [
+   "ReflectiveField",
+   "FieldInfo"
+  ],
+  "context": "\n\npublic final class C2 {\n   private final Field f1;\n\n   public C2(Field var1) {\n      this.f1 = Objects.requireNonNull(var1);\n   }\n\n   public Class<?> m7() {\n      return this.f1.getDeclaringClass();\n   }\n\n   public String m8() {\n      return this.f1.getName();\n   }\n\n   public Type m6() {\n      return this.f1.getGenericType();\n   }\n\n   public Class<?> m5() {\n      return this.f1.getType();\n   }\n"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C2",
+  "obfName": "m6",
+  "descriptor": "()Ljava/lang/reflect/Type;",
+  "reference": "getDeclaredType",
+  "suggested": "getGenericType",
+  "alternatives": [
+   "getFieldType",
+   "getGenericFieldType",
+   "getType"
+  ],
+  "context": "   public Type m6() {\n      return this.f1.getGenericType();\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C20",
+  "obfName": "C20",
+  "descriptor": "",
+  "reference": "GsonBuilder",
+  "suggested": "ConfigurationProcessor",
+  "alternatives": [
+   "ConfigManager",
+   "SettingsHandler"
+  ],
+  "context": "\n\npublic final class C20 {\n   private C89 f33 = C89.f88;\n   private C36 f41 = C36.f64;\n   private C11 f54 = C3.f2;\n   private final Map<Type, C21<?>> f39 = new HashMap<>();\n   private final List<C54> f34 = new ArrayList<>();\n   private final List<C54> f55 = new ArrayList<>();\n   private boolean f45 = false;\n   private String f31 = C13.f15;\n   private int f32 = 2;\n   private int f49 = 2;\n   private boolean f29 = false;\n   private boolean f46 = false;\n   private boolean f53 = true;\n   private C12 f36 = C13.f18;\n   private boolean f37 = false;\n   private C45 f47 = C13.f24;\n   private boolean f51 = true;\n   private C51 f43 = C13.f21;\n   private C51 f42 = C13.f20;\n   private final ArrayDeque<C39> f56 = new ArrayDeque<>();\n\n   public C20() {"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m62",
+  "descriptor": "(Lobf/C1;)Lobf/C20;",
+  "reference": "addDeserializationExclusionStrategy",
+  "suggested": "updateWithObject",
+  "alternatives": [
+   "processObject",
+   "applyObject"
+  ],
+  "context": "   public C20 m62(C1 var1) {\n      Objects.requireNonNull(var1);\n      this.f33 = this.f33.m208(var1, false, true);\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m68",
+  "descriptor": "()Lobf/C20;",
+  "reference": "disableHtmlEscaping",
+  "suggested": "disableFeature",
+  "alternatives": [
+   "resetFlag",
+   "clearOption"
+  ],
+  "context": "   public C20 m68() {\n      this.f53 = false;\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m70",
+  "descriptor": "()Lobf/C20;",
+  "reference": "disableJdkUnsafe",
+  "suggested": "disableFeature",
+  "alternatives": [
+   "setFeatureDisabled",
+   "clearFeature"
+  ],
+  "context": "   public C20 m70() {\n      this.f51 = false;\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m88",
+  "descriptor": "(Lobf/C36;)Lobf/C20;",
+  "reference": "setLongSerializationPolicy",
+  "suggested": "setC36",
+  "alternatives": [
+   "updateC36",
+   "assignC36"
+  ],
+  "context": "   public C20 m88(C36 var1) {\n      this.f41 = Objects.requireNonNull(var1);\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C204",
+  "obfName": "m351",
+  "descriptor": "(Ljava/lang/Class;Ljava/lang/reflect/Field;)Ljava/lang/reflect/Method;",
+  "reference": "getAccessor",
+  "suggested": "getMethodForField",
+  "alternatives": [
+   "findMethodByField",
+   "getAssociatedMethod"
+  ],
+  "context": "   public static Method m351(Class<?> var0, Field var1) {\n      return f234.m351(var0, var1);\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C205",
+  "obfName": "C205",
+  "descriptor": "",
+  "reference": "RecordNotSupportedHelper",
+  "suggested": "UnsupportedRecordHandler",
+  "alternatives": [
+   "JVMRecordSupport",
+   "RecordOperationHandler"
+  ],
+  "context": "\n\npublic class C202 {\n   private static final C202.C204 f234;\n\n   private C202() {\n   }\n\n   private static String m353(Exception var0) {\n      if (!var0.getClass().getName().equals(\"java.lang.reflect.InaccessibleObjectException\")) {\n         return \"\";\n      }\n\n      String var1 = var0.getMessage();\n      String var2 = var1 != null && var1.contains(\"to module com.google.gson\") ? \"reflection-inaccessible-to-module-gson\" : \"reflection-inaccessible\";\n      return \"\\nSee \" + C117.createUrl(var2);\n   }\n\n   public static void m358(AccessibleObject var0) throws C26 {\n      try {\n         var0.setAccessible(true);\n      } catch (Exception var3) {\n         String var2 = m350(var0, false);\n         throw new C26(\n            \"Failed making \" + var2 + \" accessible; either increase its visibility or write a custom TypeAdapter for its declaring type.\" + m353(var3), var3"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C211",
+  "obfName": "m362",
+  "descriptor": "(Lobf/C223;Ljava/sql/Timestamp;)V",
+  "reference": "write",
+  "suggested": "setTimestamp",
+  "alternatives": [
+   "updateTimestamp",
+   "recordTimestamp"
+  ],
+  "context": "   public void m362(C223 var1, Timestamp var2) throws IOException {\n      this.f240.m61(var1, var2);\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C213",
+  "obfName": "f246",
+  "descriptor": "Lobf/C54;",
+  "reference": "TIME_FACTORY",
+  "suggested": "TIMESTAMP_FACTORY",
+  "alternatives": [
+   "SQL_TIMESTAMP_FACTORY",
+   "TIMESTAMP_CREATOR"
+  ],
+  "context": "// field declaration:\npublic static final C54 f246;\n// sibling fields in the same class:\npublic static final boolean f243;\npublic static final C127.C129<? extends Date> f241;\npublic static final C127.C129<? extends Date> f244;\npublic static final C54 f242;\npublic static final C54 f246;\nf243 = var0;\nf241 = new C127.C129<java.sql.Date>(java.sql.Date.class) {\nf244 = new C127.C129<Timestamp>(Timestamp.class) {\nf242 = C207.f127;\nf246 = C209.f127;\nTIMESTAMP_FACTORY = C211.f127;\nf241 = null;\nf244 = null;\nf242 = null;\nf246 = null;"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C217",
+  "obfName": "m364",
+  "descriptor": "(Ljava/lang/Class;)Lobf/C217;",
+  "reference": "get",
+  "suggested": "getInstanceForClass",
+  "alternatives": [
+   "createFromClass",
+   "getObjectFromType"
+  ],
+  "context": "   public static <T> C217<T> m364(Class<T> var0) {\n      return new C217<>(var0);\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C217",
+  "obfName": "m366",
+  "descriptor": "(Ljava/lang/reflect/Type;)Lobf/C217;",
+  "reference": "getArray",
+  "suggested": "createTypeToken",
+  "alternatives": [
+   "getTypeToken",
+   "newInstance"
+  ],
+  "context": "   public static C217<?> m366(Type var0) {\n      return new C217(C61$C62$C64.arrayOf(var0));\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C217",
+  "obfName": "m371",
+  "descriptor": "(Lobf/C217;)Z",
+  "reference": "isAssignableFrom",
+  "suggested": "isCompatibleType",
+  "alternatives": [
+   "isValidType",
+   "matchesType"
+  ],
+  "context": "   public boolean m371(C217<?> var1) {\n      return this.m373(var1.m369());\n   }\n// callee m369:\n   public final Type m369() {\n      return this.f178;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C219",
+  "obfName": "m92",
+  "descriptor": "(Lobf/C45;)V",
+  "reference": "setStrictness",
+  "suggested": "setC45",
+  "alternatives": [
+   "updateC45",
+   "assignC45"
+  ],
+  "context": "   public final void m92(C45 var1) {\n      Objects.requireNonNull(var1);\n      this.f47 = var1;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C22",
+  "obfName": "m112",
+  "descriptor": "()I",
+  "reference": "getAsInt",
+  "suggested": "getSize",
+  "alternatives": [
+   "listSize",
+   "getCount"
+  ],
+  "context": "   public int m112() {\n      return this.m116().m112();\n   }\n// callee m116:\n   private C25 m116() {\n      int var1 = this.f57.size();\n      if (var1 == 1) {\n         return this.f57.get(0);\n      } else {\n         throw new IllegalStateException(\"Array must have size 1, but has size \" + var1);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C22",
+  "obfName": "m117",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getAsString",
+  "suggested": "getElementAsString",
+  "alternatives": [
+   "getStringRepresentation",
+   "toStringElement"
+  ],
+  "context": "   public String m117() {\n      return this.m116().m117();\n   }\n// callee m116:\n   private C25 m116() {\n      int var1 = this.f57.size();\n      if (var1 == 1) {\n         return this.f57.get(0);\n      } else {\n         throw new IllegalStateException(\"Array must have size 1, but has size \" + var1);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C22",
+  "obfName": "m97",
+  "descriptor": "(Ljava/lang/Character;)V",
+  "reference": "add",
+  "suggested": "addCharacter",
+  "alternatives": [
+   "appendChar",
+   "insertCharacter"
+  ],
+  "context": "   public void m97(Character var1) {\n      this.f57.add(var1 == null ? C27.f59 : new C31(var1));\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C222",
+  "obfName": "f302",
+  "descriptor": "Lobf/C222;",
+  "reference": "NAME",
+  "suggested": "TOKEN_NAME",
+  "alternatives": [
+   "JSON_TOKEN_NAME"
+  ],
+  "context": "// field declaration:\n\n// sibling fields in the same class:\nf300;"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C222",
+  "obfName": "f303",
+  "descriptor": "Lobf/C222;",
+  "reference": "NULL",
+  "suggested": "NULL_VALUE",
+  "alternatives": [
+   "UNEXPECTED_JSON_STRUCTURE"
+  ],
+  "context": "// field declaration:\n\n// sibling fields in the same class:\nf300;"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C222",
+  "obfName": "f305",
+  "descriptor": "Lobf/C222;",
+  "reference": "STRING",
+  "suggested": "JSON_STRING",
+  "alternatives": [
+   "TOKEN_STRING"
+  ],
+  "context": "// field declaration:\n\n// sibling fields in the same class:\nf300;"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m269",
+  "descriptor": "()Lobf/C223;",
+  "reference": "beginArray",
+  "suggested": "writeJson",
+  "alternatives": [
+   "outputJson",
+   "serializeJson"
+  ],
+  "context": "   public C223 m269() throws IOException {\n      this.m415();\n      return this.m409(1, '[');\n   }\n// callee m415:\n   private void m415() throws IOException {\n      if (this.f309 != null) {\n         this.m401();\n         this.m414(this.f309);\n         this.f309 = null;\n      }\n   }\n// callee m409:\n   private C223 m409(int var1, char var2) throws IOException {\n      this.m402();\n      this.m392(var1);\n      this.f312.write(var2);\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m295",
+  "descriptor": "(Ljava/lang/String;)Lobf/C223;",
+  "reference": "jsonValue",
+  "suggested": "writeString",
+  "alternatives": [
+   "appendString",
+   "addValue"
+  ],
+  "context": "   public C223 m295(String var1) throws IOException {\n      if (var1 == null) {\n         return this.m297();\n      }\n\n      this.m415();\n      this.m402();\n      this.f312.append(var1);\n      return this;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m299",
+  "descriptor": "(D)Lobf/C223;",
+  "reference": "value",
+  "suggested": "writeDouble",
+  "alternatives": [
+   "appendDouble",
+   "outputDouble"
+  ],
+  "context": "   public C223 m299(double var1) throws IOException {\n      this.m415();\n      if (this.f47 == C45.f75 || !Double.isNaN(var1) && !Double.isInfinite(var1)) {\n         this.m402();\n         this.f312.append(Double.toString(var1));\n         return this;\n      } else {\n         throw new IllegalArgumentException(\"Numeric values must be finite, but was \" + var1);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m300",
+  "descriptor": "(F)Lobf/C223;",
+  "reference": "value",
+  "suggested": "writeFloat",
+  "alternatives": [
+   "appendFloat",
+   "outputFloat"
+  ],
+  "context": "   public C223 m300(float var1) throws IOException {\n      this.m415();\n      if (this.f47 == C45.f75 || !Float.isNaN(var1) && !Float.isInfinite(var1)) {\n         this.m402();\n         this.f312.append(Float.toString(var1));\n         return this;\n      } else {\n         throw new IllegalArgumentException(\"Numeric values must be finite, but was \" + var1);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m411",
+  "descriptor": "(Z)V",
+  "reference": "setHtmlSafe",
+  "suggested": "setFlag",
+  "alternatives": [
+   "updateState",
+   "enableFeature"
+  ],
+  "context": "   public final void m411(boolean var1) {\n      this.f38 = var1;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m86",
+  "descriptor": "(Lobf/C12;)V",
+  "reference": "setFormattingStyle",
+  "suggested": "processObject",
+  "alternatives": [
+   "handleObject",
+   "writeObject"
+  ],
+  "context": "   public final void m86(C12 var1) {\n      this.f36 = Objects.requireNonNull(var1);\n      this.f311 = \",\";\n      if (this.f36.m15()) {\n         this.f310 = \": \";\n         if (this.f36.m14().isEmpty()) {\n            this.f311 = \", \";\n         }\n      } else {\n         this.f310 = \":\";\n      }\n\n      this.f313 = this.f36.m14().isEmpty() && this.f36.m13().isEmpty();\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m123",
+  "descriptor": "(Lobf/C25;Ljava/lang/reflect/Type;)Ljava/lang/Object;",
+  "reference": "deserialize",
+  "suggested": "convert",
+  "alternatives": [
+   "transform",
+   "adapt"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C25",
+  "obfName": "m129",
+  "descriptor": "()Z",
+  "reference": "isJsonArray",
+  "suggested": "isJsonNull",
+  "alternatives": [
+   "isNull",
+   "checkIsNull"
+  ],
+  "context": "   public boolean m129() {\n      return this instanceof C22;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C28",
+  "obfName": "C28",
+  "descriptor": "",
+  "reference": "JsonObject",
+  "suggested": "DataMap",
+  "alternatives": [
+   "KeyValueStore",
+   "EntryManager"
+  ],
+  "context": "\n\npublic final class C28 extends C25 {\n   private final C95<String, C25> f60 = new C95<>(false);\n\n   public C28 m103() {\n      C28 var1 = new C28();\n\n      for (Entry var3 : this.f60.entrySet()) {\n         var1.m133((String)var3.getKey(), ((C25)var3.getValue()).m103());\n      }\n\n      return var1;\n   }\n\n   public void m133(String var1, C25 var2) {\n      this.f60.put(var1, var2 == null ? C27.f59 : var2);\n   }\n\n   @CanIgnoreReturnValue\n   public C25 m146(String var1) {\n      return this.f60.remove(var1);\n   }\n\n   public void m137(String var1, String var2) {"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m118",
+  "descriptor": "()Z",
+  "reference": "isEmpty",
+  "suggested": "isSingleEntry",
+  "alternatives": [
+   "hasOneEntry",
+   "containsOnlyOne"
+  ],
+  "context": "   public boolean m118() {\n      return this.f60.size() == 0;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m135",
+  "descriptor": "(Ljava/lang/String;Ljava/lang/Character;)V",
+  "reference": "addProperty",
+  "suggested": "setCharacterValue",
+  "alternatives": [
+   "putCharacter",
+   "updateChar"
+  ],
+  "context": "   public void m135(String var1, Character var2) {\n      this.m133(var1, var2 == null ? C27.f59 : new C31(var2));\n   }\n// callee m133:\n   public void m133(String var1, C25 var2) {\n      this.f60.put(var1, var2 == null ? C27.f59 : var2);\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m138",
+  "descriptor": "()Ljava/util/Map;",
+  "reference": "asMap",
+  "suggested": "getMap",
+  "alternatives": [
+   "retrieveMap",
+   "fetchMap"
+  ],
+  "context": "   public Map<String, C25> m138() {\n      return this.f60;\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m144",
+  "descriptor": "(Ljava/lang/String;)Z",
+  "reference": "has",
+  "suggested": "containsKey",
+  "alternatives": [
+   "hasKey",
+   "isKeyPresent"
+  ],
+  "context": "   public boolean m144(String var1) {\n      return this.f60.containsKey(var1);\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m109",
+  "descriptor": "()C",
+  "reference": "getAsCharacter",
+  "suggested": "getFirstCharacter",
+  "alternatives": [
+   "charAtZero",
+   "initialChar"
+  ],
+  "context": "   public char m109() {\n      String var1 = this.m117();\n      if (var1.isEmpty()) {\n         throw new UnsupportedOperationException(\"String value is empty\");\n      } else {\n         return var1.charAt(0);\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m110",
+  "descriptor": "()D",
+  "reference": "getAsDouble",
+  "suggested": "getDoubleValue",
+  "alternatives": [
+   "toDouble",
+   "doubleValue"
+  ],
+  "context": "   public double m110() {\n      return this.m155() ? this.m114().doubleValue() : Double.parseDouble(this.m117());\n   }\n// callee m114:\n   public Number m114() {\n      if (this.f61 instanceof Number) {\n         return (Number)this.f61;\n      } else if (this.f61 instanceof String) {\n         return new C94((String)this.f61);\n      } else {\n         throw new UnsupportedOperationException(\"Primitive is neither a number nor a string\");\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m115",
+  "descriptor": "()S",
+  "reference": "getAsShort",
+  "suggested": "toShort",
+  "alternatives": [
+   "getShortValue",
+   "convertToShort"
+  ],
+  "context": "   public short m115() {\n      return this.m155() ? this.m114().shortValue() : Short.parseShort(this.m117());\n   }\n// callee m114:\n   public Number m114() {\n      if (this.f61 instanceof Number) {\n         return (Number)this.f61;\n      } else if (this.f61 instanceof String) {\n         return new C94((String)this.f61);\n      } else {\n         throw new UnsupportedOperationException(\"Primitive is neither a number nor a string\");\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m117",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "getAsString",
+  "suggested": "toStringRepresentation",
+  "alternatives": [
+   "convertToString",
+   "getValueAsString"
+  ],
+  "context": "   public String m117() {\n      if (this.f61 instanceof String) {\n         return (String)this.f61;\n      } else if (this.m155()) {\n         return this.m114().toString();\n      } else if (this.m153()) {\n         return ((Boolean)this.f61).toString();\n      } else {\n         throw new AssertionError(\"Unexpected value type: \" + this.f61.getClass());\n      }\n   }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C32",
+  "obfName": "m158",
+  "descriptor": "(Ljava/lang/Object;Ljava/lang/reflect/Type;)Lobf/C25;",
+  "reference": "serialize",
+  "suggested": "convertWithTypeInfo",
+  "alternatives": [
+   "transformWithType",
+   "processObjectWithType"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C52",
+  "obfName": "m59",
+  "descriptor": "(Lobf/C219;)Ljava/lang/Object;",
+  "reference": "read",
+  "suggested": "processData",
+  "alternatives": [
+   "convertData",
+   "handleData"
+  ],
+  "context": "         public T m59(C219 var1) throws IOException {\n            if (var1.m288() == C222.f303) {\n               var1.m286();\n               return null;\n            } else {\n               return (T)C52.this.m59(var1);\n            }\n         }"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C54",
+  "obfName": "C54",
+  "descriptor": "",
+  "reference": "TypeAdapterFactory",
+  "suggested": "Transformer",
+  "alternatives": [
+   "FunctionInterface",
+   "Processor"
+  ],
+  "context": "\npublic interface C54 {\n   <T> C52<T> m168(C13 var1, C217<T> var2);\n}"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C63",
+  "obfName": "C63",
+  "descriptor": "",
+  "reference": "Preconditions",
+  "suggested": "ConstraintValidator",
+  "alternatives": [
+   "RuleEnforcer",
+   "ParameterChecker"
+  ],
+  "context": ""
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "METHOD",
+  "owner": "C64",
+  "obfName": "m188",
+  "descriptor": "(Ljava/lang/reflect/Type;)Z",
+  "reference": "requiresOwnerType",
+  "suggested": "isTypeStatic",
+  "alternatives": [
+   "checkIfStatic",
+   "isStaticType"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "FIELD",
+  "owner": "C89",
+  "obfName": "f88",
+  "descriptor": "Lobf/C89;",
+  "reference": "DEFAULT",
+  "suggested": "DEFAULT_INSTANCE",
+  "alternatives": [
+   "CONSTANT_OBJECT",
+   "STATIC_OBJECT"
+  ],
+  "context": "// field declaration:\npublic static final C89 f88 = new C89();\n// sibling fields in the same class:\nprivate static final double f89 = -1.0;\npublic static final C89 f88 = new C89();\nprivate double f95 = -1.0;\nprivate int f91 = 136;\nprivate boolean f94 = true;\nprivate boolean f92;\nprivate List<C1> f93 = Collections.emptyList();\nprivate List<C1> f90 = Collections.emptyList();\nvar3.f95 = var1;\nvar2.f91 = 0;\nvar1.f94 = false;\nvar1.f92 = true;\nvar4.f93 = new ArrayList<>(this.f93);\nvar4.f90 = new ArrayList<>(this.f90);\nList var7 = var2 ? this.f93 : this.f90;"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C93",
+  "obfName": "C93",
+  "descriptor": "",
+  "reference": "JsonReaderInternalAccess",
+  "suggested": "AbstractProcessor",
+  "alternatives": [
+   "KeyHandler",
+   "MapProcessor"
+  ],
+  "context": "\n\npublic abstract class C93 {\n   public static volatile C93 f98;\n\n   public abstract void m217(C219 var1) throws IOException;\n}"
+ },
+ {
+  "jar": "gson-2.11.0",
+  "kind": "CLASS",
+  "owner": "C94",
+  "obfName": "C94",
+  "descriptor": "",
+  "reference": "LazilyParsedNumber",
+  "suggested": "StringNumber",
+  "alternatives": [
+   "NumericConverter",
+   "StringToNumber"
+  ],
+  "context": "\n\npublic final class C94 extends Number {\n   private final String f99;\n\n   public C94(String var1) {\n      this.f99 = var1;\n   }\n\n   private BigDecimal m218() {\n      return C104.m235(this.f99);\n   }\n\n   @Override\n   public int intValue() {\n      try {\n         return Integer.parseInt(this.f99);\n      } catch (NumberFormatException var4) {\n         try {\n            return (int)Long.parseLong(this.f99);\n         } catch (NumberFormatException var3) {\n            return this.m218().intValue();\n         }\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C100",
+  "obfName": "m79",
+  "descriptor": "()V",
+  "reference": "reset",
+  "suggested": "resetFields",
+  "alternatives": [
+   "initializeValues",
+   "clearState"
+  ],
+  "context": "   public void m79() {\n      this.f280 = 0;\n      this.f281 = 0;\n      super.m79();\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C102",
+  "obfName": "C102",
+  "descriptor": "",
+  "reference": "State",
+  "suggested": "ConstantValues",
+  "alternatives": [
+   "ConfigConstants",
+   "Settings"
+  ],
+  "context": "\nfinal class C102 {\n   static final int f305 = 12;\n   private static final int f296 = 7;\n   private static final int f292 = 0;\n   private static final int f298 = 1;\n   private static final int f302 = 2;\n   private static final int f304 = 3;\n   private static final int f297 = 4;\n   private static final int f301 = 5;\n   private static final int f303 = 6;\n   private static final int f294 = 7;\n   private static final int f293 = 8;\n   private static final int f295 = 9;\n   private static final int f299 = 10;\n   private static final int f300 = 11;\n   private int f306;\n\n   C102() {\n   }\n\n   C102(C102 var1) {\n      this.f306 = var1.f306;\n   }\n"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C104",
+  "obfName": "m237",
+  "descriptor": "([SI)I",
+  "reference": "decodeBit",
+  "suggested": "processData",
+  "alternatives": [
+   "updateValues",
+   "handleData"
+  ],
+  "context": "   public int m237(short[] var1, int var2) throws IOException {\n      this.m241();\n      short var3 = var1[var2];\n      int var4 = (this.f314 >>> 11) * var3;\n      byte var5;\n      if ((this.f313 ^ Integer.MIN_VALUE) < (var4 ^ Integer.MIN_VALUE)) {\n         this.f314 = var4;\n         var1[var2] = (short)(var3 + (2048 - var3 >>> 5));\n         var5 = 0;\n      } else {\n         this.f314 -= var4;\n         this.f313 -= var4;\n         var1[var2] = (short)(var3 - (var3 >>> 5));\n         var5 = 1;\n      }\n\n      return var5;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C104",
+  "obfName": "m240",
+  "descriptor": "([S)I",
+  "reference": "decodeReverseBitTree",
+  "suggested": "processShortArray",
+  "alternatives": [
+   "calculateValueFromShorts",
+   "computeResultFromShorts"
+  ],
+  "context": "   public int m240(short[] var1) throws IOException {\n      int var2 = 1;\n      int var3 = 0;\n      int var4 = 0;\n\n      do {\n         int var5 = this.m237(var1, var2);\n         var2 = var2 << 1 | var5;\n         var4 |= var5 << var3++;\n      } while (var2 < var1.length);\n\n      return var4;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C105",
+  "obfName": "m242",
+  "descriptor": "()Z",
+  "reference": "isFinished",
+  "suggested": "isValid",
+  "alternatives": [
+   "isConditionMet",
+   "checkStatus"
+  ],
+  "context": "   public boolean m242() {\n      return this.f22 == this.f201.length && this.f313 == 0;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C106",
+  "obfName": "m241",
+  "descriptor": "()V",
+  "reference": "normalize",
+  "suggested": "readData",
+  "alternatives": [
+   "updateFields",
+   "processStream"
+  ],
+  "context": "   public void m241() throws IOException {\n      if ((this.f314 & 0xFF000000) == 0) {\n         this.f313 = this.f313 << 8 | this.f31.readUnsignedByte();\n         this.f314 <<= 8;\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C107",
+  "obfName": "m244",
+  "descriptor": "([SII)V",
+  "reference": "encodeBit",
+  "suggested": "processShortArray",
+  "alternatives": [
+   "updateIndices",
+   "handleBitData"
+  ],
+  "context": "   public void m244(short[] var1, int var2, int var3) throws IOException {\n      short var4 = var1[var2];\n      int var5 = (this.f314 >>> 11) * var4;\n      if (var3 == 0) {\n         this.f314 = var5;\n         var1[var2] = (short)(var4 + (2048 - var4 >>> 5));\n      } else {\n         this.f320 += var5 & 4294967295L;\n         this.f314 -= var5;\n         var1[var2] = (short)(var4 - (var4 >>> 5));\n      }\n\n      if ((this.f314 & 0xFF000000) == 0) {\n         this.f314 <<= 8;\n         this.m253();\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C108",
+  "obfName": "C108",
+  "descriptor": "",
+  "reference": "RangeEncoderToBuffer",
+  "suggested": "ByteArrayProcessor",
+  "alternatives": [
+   "DataHandler",
+   "ByteIntProcessor"
+  ],
+  "context": "\n\npublic final class C108 extends C107 {\n   private final byte[] f201;\n   private int f322;\n\n   public C108(int var1, C3 var2) {\n      this.f201 = var2.m4(var1, false);\n      this.m79();\n   }\n\n   public void m144(C3 var1) {\n      var1.m8(this.f201);\n   }\n\n   @Override\n   public void m79() {\n      super.m79();\n      this.f322 = 0;\n   }\n\n   @Override\n   public int m251() {\n      return this.f322 + (int)this.f319 + 5 - 1;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C108",
+  "obfName": "m144",
+  "descriptor": "(Lobf/C3;)V",
+  "reference": "putArraysToCache",
+  "suggested": "processData",
+  "alternatives": [
+   "handleData",
+   "updateData"
+  ],
+  "context": "   public void m144(C3 var1) {\n      var1.m8(this.f201);\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C108",
+  "obfName": "m31",
+  "descriptor": "()I",
+  "reference": "finish",
+  "suggested": "validateState",
+  "alternatives": [
+   "getErrorCode",
+   "checkStatus"
+  ],
+  "context": "   public int m31() {\n      try {\n         super.m31();\n      } catch (IOException var2) {\n         throw new Error();\n      }\n\n      return this.f322;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C114",
+  "obfName": "C114",
+  "descriptor": "",
+  "reference": "SPARC",
+  "suggested": "ByteProcessor",
+  "alternatives": [
+   "DataHandler",
+   "FlaggedProcessor"
+  ],
+  "context": "\npublic final class C114 implements C115 {\n   private final boolean f323;\n   private int f22;\n\n   public C114(boolean var1, int var2) {\n      this.f323 = var1;\n      this.f22 = var2;\n   }\n\n   @Override\n   public int m256(byte[] var1, int var2, int var3) {\n      int var4 = var2 + var3 - 4;\n\n      int var5;\n      for (var5 = var2; var5 <= var4; var5 += 4) {\n         if (var1[var5] == 64 && (var1[var5 + 1] & 192) == 0 || var1[var5] == 127 && (var1[var5 + 1] & 192) == 192) {\n            int var6 = (var1[var5] & 255) << 24 | (var1[var5 + 1] & 255) << 16 | (var1[var5 + 2] & 255) << 8 | var1[var5 + 3] & 255;\n            var6 <<= 2;\n            int var7;\n            if (this.f323) {\n               var7 = var6 + (this.f22 + var5 - var2);\n            } else {\n               var7 = var6 - (this.f22 + var5 - var2);\n            }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C115",
+  "obfName": "C115",
+  "descriptor": "",
+  "reference": "SimpleFilter",
+  "suggested": "ByteProcessor",
+  "alternatives": [
+   "ByteArrayHandler",
+   "DataProcessor"
+  ],
+  "context": "\npublic interface C115 {\n   int m256(byte[] var1, int var2, int var3);\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C14",
+  "obfName": "m29",
+  "descriptor": "()J",
+  "reference": "getUnpaddedSize",
+  "suggested": "computeValue",
+  "alternatives": [
+   "processData",
+   "handleData"
+  ],
+  "context": "   public long m29() {\n      return this.f29 + this.f38.m32() + this.f24.m32();\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C19",
+  "obfName": "C19",
+  "descriptor": "",
+  "reference": "DeltaCoder",
+  "suggested": "ConfigConstants",
+  "alternatives": [
+   "StateFlags",
+   "BooleanChecks"
+  ],
+  "context": "\nabstract class C19 implements C25 {\n   public static final long f40 = 3L;\n\n   @Override\n   public boolean m11() {\n      return false;\n   }\n\n   @Override\n   public boolean m14() {\n      return true;\n   }\n\n   @Override\n   public boolean m13() {\n      return false;\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C19",
+  "obfName": "f40",
+  "descriptor": "J",
+  "reference": "FILTER_ID",
+  "suggested": "THREE",
+  "alternatives": [
+   "CONSTANT_THREE",
+   "VALUE_THREE"
+  ],
+  "context": "// field declaration:\npublic static final long f40 = 3L;\n// sibling fields in the same class:\npublic static final long f40 = 3L;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C20",
+  "obfName": "C20",
+  "descriptor": "",
+  "reference": "DeltaDecoder",
+  "suggested": "StreamProcessor",
+  "alternatives": [
+   "InputStreamHandler",
+   "DataFilter"
+  ],
+  "context": "\n\nclass C20 extends C19 implements C26 {\n   private final int f41;\n\n   C20(byte[] var1) throws C53 {\n      if (var1.length != 1) {\n         throw new C53(\"Unsupported Delta filter properties\");\n      }\n\n      this.f41 = (var1[0] & 255) + 1;\n   }\n\n   @Override\n   public int m15() {\n      return 1;\n   }\n\n   @Override\n   public InputStream m2(InputStream var1, C3 var2) {\n      return new C22(var1, this.f41);\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C21",
+  "obfName": "m17",
+  "descriptor": "()[B",
+  "reference": "getFilterProps",
+  "suggested": "getBytes",
+  "alternatives": [
+   "getByteArray",
+   "retrieveBytes",
+   "fetchBytes"
+  ],
+  "context": "   public byte[] m17() {\n      return this.f13;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C23",
+  "obfName": "C23",
+  "descriptor": "",
+  "reference": "DeltaOptions",
+  "suggested": "StreamProcessor",
+  "alternatives": [
+   "DeltaManager",
+   "InputStreamHandler"
+  ],
+  "context": "\n\npublic class C23 extends C28 {\n   public static final int f44 = 1;\n   public static final int f43 = 256;\n   private int f41 = 1;\n\n   public C23() {\n   }\n\n   public C23(int var1) throws C53 {\n      this.m34(var1);\n   }\n\n   public void m34(int var1) throws C53 {\n      if (var1 >= 1 && var1 <= 256) {\n         this.f41 = var1;\n      } else {\n         throw new C53(\"Delta distance must be in the range [1, 256]: \" + var1);\n      }\n   }\n\n   public int m33() {\n      return this.f41;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m20",
+  "descriptor": "()I",
+  "reference": "getEncoderMemoryUsage",
+  "suggested": "getStreamValue",
+  "alternatives": [
+   "getValueFromStream",
+   "fetchStreamData"
+  ],
+  "context": "   public int m20() {\n      return C24.m15();\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m33",
+  "descriptor": "()I",
+  "reference": "getDistance",
+  "suggested": "getConstantValue",
+  "alternatives": [
+   "getDefaultThreshold",
+   "getInitialValue"
+  ],
+  "context": "   public int m33() {\n      return this.f41;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C25",
+  "obfName": "C25",
+  "descriptor": "",
+  "reference": "FilterCoder",
+  "suggested": "BooleanCheck",
+  "alternatives": [
+   "FlagInterface",
+   "Condition"
+  ],
+  "context": "\ninterface C25 {\n   boolean m11();\n\n   boolean m14();\n\n   boolean m13();\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C25",
+  "obfName": "m11",
+  "descriptor": "()Z",
+  "reference": "changesSize",
+  "suggested": "isSupported",
+  "alternatives": [
+   "checkSupport",
+   "hasSupport"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C25",
+  "obfName": "m13",
+  "descriptor": "()Z",
+  "reference": "lastOK",
+  "suggested": "isSupported",
+  "alternatives": [
+   "isValidFilterChain",
+   "checkXzSupport"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m19",
+  "descriptor": "()I",
+  "reference": "getDecoderMemoryUsage",
+  "suggested": "getElementCount",
+  "alternatives": [
+   "getTotalElements",
+   "countElements"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m20",
+  "descriptor": "()I",
+  "reference": "getEncoderMemoryUsage",
+  "suggested": "getValue",
+  "alternatives": [
+   "getIntValue",
+   "computeValue"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m3",
+  "descriptor": "(Lobf/C29;Lobf/C3;)Lobf/C29;",
+  "reference": "getOutputStream",
+  "suggested": "processC29WithC3",
+  "alternatives": [
+   "transformC29UsingC3",
+   "updateC29BasedOnC3"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C29",
+  "obfName": "C29",
+  "descriptor": "",
+  "reference": "FinishableOutputStream",
+  "suggested": "CustomOutputStream",
+  "alternatives": [
+   "DataOutputStreamExt",
+   "StreamHandler"
+  ],
+  "context": "\n\npublic abstract class C29 extends OutputStream {\n   public void m31() throws IOException {\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C3",
+  "obfName": "C3",
+  "descriptor": "",
+  "reference": "ArrayCache",
+  "suggested": "DataProcessor",
+  "alternatives": [
+   "Configurator",
+   "Initializer"
+  ],
+  "context": "\npublic class C3 {\n   private static final C3 f3 = new C3();\n   private static volatile C3 f2 = f3;\n\n   public static C3 m6() {\n      return f3;\n   }\n\n   public static C3 m5() {\n      return f2;\n   }\n\n   public static void m10(C3 var0) {\n      if (var0 == null) {\n         throw new NullPointerException();\n      }\n\n      f2 = var0;\n   }\n\n   public byte[] m4(int var1, boolean var2) {\n      return new byte[var1];\n   }\n"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C3",
+  "obfName": "m7",
+  "descriptor": "(IZ)[I",
+  "reference": "getIntArray",
+  "suggested": "generateIntArray",
+  "alternatives": [
+   "processIntegers",
+   "createIntegerArray"
+  ],
+  "context": "   public int[] m7(int var1, boolean var2) {\n      return new int[var1];\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C3",
+  "obfName": "m9",
+  "descriptor": "([I)V",
+  "reference": "putArray",
+  "suggested": "processArray",
+  "alternatives": [
+   "updateState",
+   "handleInput"
+  ],
+  "context": "   public void m9(int[] var1) {\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C30",
+  "obfName": "C30",
+  "descriptor": "",
+  "reference": "FinishableWrapperOutputStream",
+  "suggested": "DataOutputStreamWrapper",
+  "alternatives": [
+   "EnhancedOutputStream"
+  ],
+  "context": "\n\npublic class C30 extends C29 {\n   protected OutputStream out;\n\n   public C30(OutputStream var1) {\n      this.out = var1;\n   }\n\n   @Override\n   public void write(int var1) throws IOException {\n      this.out.write(var1);\n   }\n\n   @Override\n   public void write(byte[] var1) throws IOException {\n      this.out.write(var1);\n   }\n\n   @Override\n   public void write(byte[] var1, int var2, int var3) throws IOException {\n      this.out.write(var1, var2, var3);\n   }\n\n   @Override"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C31",
+  "obfName": "C31",
+  "descriptor": "",
+  "reference": "IA64Options",
+  "suggested": "StreamManipulator",
+  "alternatives": [
+   "ObjectProcessor",
+   "DataHandler"
+  ],
+  "context": "\n\npublic class C31 extends C7 {\n   private static final int f1 = 16;\n\n   public C31() {\n      super(16);\n   }\n\n   @Override\n   public C29 m3(C29 var1, C3 var2) {\n      return new C50(var1, new C112(true, this.f11));\n   }\n\n   @Override\n   public InputStream m2(InputStream var1, C3 var2) {\n      return new C49(var1, new C112(false, this.f11));\n   }\n\n   @Override\n   C27 m1() {\n      return new C6(this, 6L);\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m2",
+  "descriptor": "(Ljava/io/InputStream;Lobf/C3;)Ljava/io/InputStream;",
+  "reference": "getInputStream",
+  "suggested": "wrapInputStream",
+  "alternatives": [
+   "processStream",
+   "transformStream"
+  ],
+  "context": "   public InputStream m2(InputStream var1, C3 var2) {\n      return new C49(var1, new C112(false, this.f11));\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C33",
+  "obfName": "m11",
+  "descriptor": "()Z",
+  "reference": "changesSize",
+  "suggested": "isValid",
+  "alternatives": [
+   "isConditionMet",
+   "checkCondition"
+  ],
+  "context": "   public boolean m11() {\n      return true;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C35",
+  "obfName": "m18",
+  "descriptor": "()Z",
+  "reference": "supportsFlushing",
+  "suggested": "isValid",
+  "alternatives": [
+   "isSupported",
+   "isEnabled"
+  ],
+  "context": "   public boolean m18() {\n      return true;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C36",
+  "obfName": "C36",
+  "descriptor": "",
+  "reference": "LZMA2InputStream",
+  "suggested": "DataStream",
+  "alternatives": [
+   "InputStreamWrapper",
+   "DataInputHandler"
+  ],
+  "context": "\n\npublic class C36 extends InputStream {\n   public static final int f57 = 4096;\n   public static final int f56 = 2147483632;\n   private static final int f55 = 65536;\n   private final C3 f58;\n   private DataInputStream f59;\n   private C82 f61;\n   private C105 f65;\n   private C89 f62;\n   private int f66 = 0;\n   private boolean f60 = false;\n   private boolean f63 = true;\n   private boolean f64 = true;\n   private boolean f27 = false;\n   private IOException f46 = null;\n   private final byte[] f32 = new byte[1];\n\n   public static int m42(int var0) {\n      return 104 + m41(var0) / 1024;\n   }\n\n   private static int m41(int var0) {\n      if (var0 >= 4096 && var0 <= 2147483632) {"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C36",
+  "obfName": "m42",
+  "descriptor": "(I)I",
+  "reference": "getMemoryUsage",
+  "suggested": "calculateBufferSize",
+  "alternatives": [
+   "determineBufferCapacity",
+   "computeBufferSize"
+  ],
+  "context": "   public static int m42(int var0) {\n      return 104 + m41(var0) / 1024;\n   }\n// callee m41:\n   private static int m41(int var0) {\n      if (var0 >= 4096 && var0 <= 2147483632) {\n         return var0 + 15 & -16;\n      } else {\n         throw new IllegalArgumentException(\"Unsupported dictionary size \" + var0);\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C37",
+  "obfName": "f67",
+  "descriptor": "I",
+  "reference": "DICT_SIZE_DEFAULT",
+  "suggested": "MEMORY_SIZE_23",
+  "alternatives": [
+   "BIT_MASK_23",
+   "INTEGER_POWER_OF_TWO_23"
+  ],
+  "context": "// field declaration:\npublic static final int f67 = 8388608;\n// sibling fields in the same class:\npublic static final int f82 = 0;\npublic static final int f81 = 9;\npublic static final int f80 = 6;\npublic static final int f57 = 4096;\npublic static final int f56 = 805306368;\npublic static final int f67 = 8388608;\npublic static final int f69 = 4;\npublic static final int f68 = 3;\npublic static final int f70 = 0;\npublic static final int f79 = 4;\npublic static final int f78 = 2;\npublic static final int f75 = 0;\npublic static final int f73 = 1;\npublic static final int f74 = 2;\npublic static final int f77 = 8;\npublic static final int f76 = 273;\npublic static final int f72 = 4;\npublic static final int f71 = 20;\nprivate static final int[] f92 = new int[]{262144, 1048576, 2097152, 4194304, 4194304, 8388608, 8388608, 16777216, 33554432, 67108864};\nprivate static final int[] f91 = new int[]{4, 8, 24, 48};\nprivate int f53;\nprivate byte[] f90 = null;\nprivate int f84;\nprivate int f85;\nprivate int f89;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C37",
+  "obfName": "f70",
+  "descriptor": "I",
+  "reference": "LP_DEFAULT",
+  "suggested": "DEFAULT_VALUE",
+  "alternatives": [
+   "INITIAL_STATE",
+   "ZERO"
+  ],
+  "context": "// field declaration:\npublic static final int f70 = 0;\n// sibling fields in the same class:\npublic static final int f82 = 0;\npublic static final int f81 = 9;\npublic static final int f80 = 6;\npublic static final int f57 = 4096;\npublic static final int f56 = 805306368;\npublic static final int f67 = 8388608;\npublic static final int f69 = 4;\npublic static final int f68 = 3;\npublic static final int f70 = 0;\npublic static final int f79 = 4;\npublic static final int f78 = 2;\npublic static final int f75 = 0;\npublic static final int f73 = 1;\npublic static final int f74 = 2;\npublic static final int f77 = 8;\npublic static final int f76 = 273;\npublic static final int f72 = 4;\npublic static final int f71 = 20;\nprivate static final int[] f92 = new int[]{262144, 1048576, 2097152, 4194304, 4194304, 8388608, 8388608, 16777216, 33554432, 67108864};\nprivate static final int[] f91 = new int[]{4, 8, 24, 48};\nprivate int f53;\nprivate byte[] f90 = null;\nprivate int f84;\nprivate int f85;\nprivate int f89;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C37",
+  "obfName": "f71",
+  "descriptor": "I",
+  "reference": "MF_BT4",
+  "suggested": "DEFAULT_VALUE",
+  "alternatives": [
+   "CONSTANT_20",
+   "TEN"
+  ],
+  "context": "// field declaration:\npublic static final int f71 = 20;\n// sibling fields in the same class:\npublic static final int f82 = 0;\npublic static final int f81 = 9;\npublic static final int f80 = 6;\npublic static final int f57 = 4096;\npublic static final int f56 = 805306368;\npublic static final int f67 = 8388608;\npublic static final int f69 = 4;\npublic static final int f68 = 3;\npublic static final int f70 = 0;\npublic static final int f79 = 4;\npublic static final int f78 = 2;\npublic static final int f75 = 0;\npublic static final int f73 = 1;\npublic static final int f74 = 2;\npublic static final int f77 = 8;\npublic static final int f76 = 273;\npublic static final int f72 = 4;\npublic static final int f71 = 20;\nprivate static final int[] f92 = new int[]{262144, 1048576, 2097152, 4194304, 4194304, 8388608, 8388608, 16777216, 33554432, 67108864};\nprivate static final int[] f91 = new int[]{4, 8, 24, 48};\nprivate int f53;\nprivate byte[] f90 = null;\nprivate int f84;\nprivate int f85;\nprivate int f89;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C37",
+  "obfName": "f79",
+  "descriptor": "I",
+  "reference": "PB_MAX",
+  "suggested": "FOUR",
+  "alternatives": [
+   "CONSTANT_FOUR",
+   "VALUE_FOUR"
+  ],
+  "context": "// field declaration:\npublic static final int f79 = 4;\n// sibling fields in the same class:\npublic static final int f82 = 0;\npublic static final int f81 = 9;\npublic static final int f80 = 6;\npublic static final int f57 = 4096;\npublic static final int f56 = 805306368;\npublic static final int f67 = 8388608;\npublic static final int f69 = 4;\npublic static final int f68 = 3;\npublic static final int f70 = 0;\npublic static final int f79 = 4;\npublic static final int f78 = 2;\npublic static final int f75 = 0;\npublic static final int f73 = 1;\npublic static final int f74 = 2;\npublic static final int f77 = 8;\npublic static final int f76 = 273;\npublic static final int f72 = 4;\npublic static final int f71 = 20;\nprivate static final int[] f92 = new int[]{262144, 1048576, 2097152, 4194304, 4194304, 8388608, 8388608, 16777216, 33554432, 67108864};\nprivate static final int[] f91 = new int[]{4, 8, 24, 48};\nprivate int f53;\nprivate byte[] f90 = null;\nprivate int f84;\nprivate int f85;\nprivate int f89;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m50",
+  "descriptor": "()I",
+  "reference": "getNiceLen",
+  "suggested": "getMatchFinder",
+  "alternatives": [
+   "getMatchFinderSetting",
+   "getMatchFinderValue"
+  ],
+  "context": "   public int m50() {\n      return this.f88;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m51",
+  "descriptor": "()I",
+  "reference": "getPb",
+  "suggested": "getCompressionLevel",
+  "alternatives": [
+   "getCompressionSetting",
+   "getCompressionValue"
+  ],
+  "context": "   public int m51() {\n      return this.f89;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m52",
+  "descriptor": "()[B",
+  "reference": "getPresetDict",
+  "suggested": "getBytes",
+  "alternatives": [
+   "getByteArray",
+   "readBytes"
+  ],
+  "context": "   public byte[] m52() {\n      return this.f90;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m56",
+  "descriptor": "(II)V",
+  "reference": "setLcLp",
+  "suggested": "validateParameters",
+  "alternatives": [
+   "checkParameters",
+   "setParameters"
+  ],
+  "context": "   public void m56(int var1, int var2) throws C53 {\n      if (var1 >= 0 && var2 >= 0 && var1 <= 4 && var2 <= 4 && var1 + var2 <= 4) {\n         this.f84 = var1;\n         this.f85 = var2;\n      } else {\n         throw new C53(\"lc + lp must not exceed 4: \" + var1 + \" + \" + var2);\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m61",
+  "descriptor": "(I)V",
+  "reference": "setPb",
+  "suggested": "validatePb",
+  "alternatives": [
+   "checkPbValue",
+   "setPb"
+  ],
+  "context": "   public void m61(int var1) throws C53 {\n      if (var1 >= 0 && var1 <= 4) {\n         this.f89 = var1;\n      } else {\n         throw new C53(\"pb must not exceed 4: \" + var1);\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C38",
+  "obfName": "m31",
+  "descriptor": "()V",
+  "reference": "finish",
+  "suggested": "finalize",
+  "alternatives": [
+   "cleanup",
+   "complete"
+  ],
+  "context": "   public void m31() throws IOException {\n      if (!this.f51) {\n         this.m67();\n\n         try {\n            this.f52.m31();\n         } catch (IOException var2) {\n            this.f46 = var2;\n            throw var2;\n         }\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m11",
+  "descriptor": "()Z",
+  "reference": "changesSize",
+  "suggested": "isValid",
+  "alternatives": [
+   "isPresent",
+   "isEnabled"
+  ],
+  "context": "   public boolean m11() {\n      return false;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m14",
+  "descriptor": "()Z",
+  "reference": "nonLastOK",
+  "suggested": "isPositive",
+  "alternatives": [
+   "isValid",
+   "isEnabled"
+  ],
+  "context": "   public boolean m14() {\n      return true;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C40",
+  "obfName": "m28",
+  "descriptor": "()J",
+  "reference": "getUncompressedSize",
+  "suggested": "getLongValue",
+  "alternatives": [
+   "readLong",
+   "fetchLong"
+  ],
+  "context": "   public long m28() {\n      return this.f105;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C40",
+  "obfName": "m31",
+  "descriptor": "()V",
+  "reference": "finish",
+  "suggested": "closeAndReset",
+  "alternatives": [
+   "resetStreamState",
+   "finalizeOutputStream"
+  ],
+  "context": "   public void m31() throws IOException {\n      if (!this.f51) {\n         if (this.f46 != null) {\n            throw this.f46;\n         }\n\n         try {\n            if (this.f106 != -1L && this.f106 != this.f105) {\n               throw new C57(\"Expected uncompressed size (\" + this.f106 + \") doesn't equal the number of bytes written to the stream (\" + this.f105 + \")\");\n            }\n\n            this.f95.m179();\n            this.f96.m190();\n            if (this.f108) {\n               this.f96.m193();\n            }\n\n            this.f107.m31();\n         } catch (IOException var2) {\n            this.f46 = var2;\n            throw var2;\n         }\n\n         this.f51 = true;\n         this.f96.m144(this.f58);\n         this.f96 = null;\n         this.f95 = null;\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C44",
+  "obfName": "m79",
+  "descriptor": "()V",
+  "reference": "reset",
+  "suggested": "processLists",
+  "alternatives": [
+   "handleData",
+   "clearAndProcess"
+  ],
+  "context": "   public void m79() {\n      if (this.f111 != null) {\n         synchronized (this.f111) {\n            for (int var2 = this.f111.size() - 1; var2 >= 0; var2--) {\n               this.f58.m8(this.f111.get(var2));\n            }\n\n            this.f111.clear();\n         }\n\n         synchronized (this.f112) {\n            for (int var8 = this.f112.size() - 1; var8 >= 0; var8--) {\n               this.f58.m9(this.f112.get(var8));\n            }\n\n            this.f112.clear();\n         }\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C47",
+  "obfName": "m80",
+  "descriptor": "()J",
+  "reference": "length",
+  "suggested": "calculateSkip",
+  "alternatives": [
+   "skipPart",
+   "getSkipValue"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C47",
+  "obfName": "m82",
+  "descriptor": "(J)V",
+  "reference": "seek",
+  "suggested": "skipBytes",
+  "alternatives": [
+   "advanceStream",
+   "movePointer"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C48",
+  "obfName": "m81",
+  "descriptor": "()J",
+  "reference": "position",
+  "suggested": "getStreamPosition",
+  "alternatives": [
+   "getCurrentPosition",
+   "readStreamPosition"
+  ],
+  "context": "   public long m81() throws IOException {\n      if (this.f119 == null) {\n         throw new C57(\"Stream closed\");\n      } else {\n         return this.f123 ? this.f124 : this.f118;\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C48",
+  "obfName": "m98",
+  "descriptor": "(I)V",
+  "reference": "seekToBlock",
+  "suggested": "validateXzBlock",
+  "alternatives": [
+   "handleStream",
+   "processBlock"
+  ],
+  "context": "   public void m98(int var1) throws IOException {\n      if (this.f119 == null) {\n         throw new C57(\"Stream closed\");\n      }\n\n      if (var1 >= 0 && var1 < this.f114) {\n         this.f124 = this.m88(var1);\n         this.f123 = true;\n      } else {\n         throw new C57(\"Invalid XZ Block number: \" + var1);\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C5",
+  "obfName": "C5",
+  "descriptor": "",
+  "reference": "BCJDecoder",
+  "suggested": "StreamProcessor",
+  "alternatives": [
+   "FilterInputStreamHandler",
+   "BCJFilter"
+  ],
+  "context": "\n\nclass C5 extends C4 implements C26 {\n   private final long f10;\n   private final int f11;\n\n   C5(long var1, byte[] var3) throws C53 {\n      assert m12(var1);\n      this.f10 = var1;\n      if (var3.length == 0) {\n         this.f11 = 0;\n      } else {\n         if (var3.length != 4) {\n            throw new C53(\"Unsupported BCJ filter properties\");\n         }\n\n         int var4 = 0;\n\n         for (int var5 = 0; var5 < 4; var5++) {\n            var4 |= (var3[var5] & 255) << var5 * 8;\n         }\n\n         this.f11 = var4;\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C50",
+  "obfName": "C50",
+  "descriptor": "",
+  "reference": "SimpleOutputStream",
+  "suggested": "BufferedOutputStreamExt",
+  "alternatives": [
+   "StreamHandler",
+   "DataOutputStreamExt"
+  ],
+  "context": "\n\nclass C50 extends C29 {\n   private static final int f48 = 4096;\n   private C29 f52;\n   private final C115 f127;\n   private final byte[] f50 = new byte[4096];\n   private int f22 = 0;\n   private int f128 = 0;\n   private IOException f46 = null;\n   private boolean f51 = false;\n   private final byte[] f32 = new byte[1];\n\n   static int m15() {\n      return 5;\n   }\n\n   C50(C29 var1, C115 var2) {\n      if (var1 == null) {\n         throw new NullPointerException();\n      }\n\n      this.f52 = var1;\n      this.f127 = var2;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C55",
+  "obfName": "f135",
+  "descriptor": "I",
+  "reference": "CHECK_CRC64",
+  "suggested": "FOUR",
+  "alternatives": [
+   "CONSTANT_FOUR",
+   "VALUE_FOUR"
+  ],
+  "context": "// field declaration:\npublic static final int f135 = 4;\n// sibling fields in the same class:\npublic static final byte[] f139 = new byte[]{-3, 55, 122, 88, 90, 0};\npublic static final byte[] f138 = new byte[]{89, 90};\npublic static final int f136 = 0;\npublic static final int f134 = 1;\npublic static final int f135 = 4;\npublic static final int f137 = 10;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C56",
+  "obfName": "C56",
+  "descriptor": "",
+  "reference": "XZFormatException",
+  "suggested": "Constants",
+  "alternatives": [
+   "MathConstants",
+   "ValueConstants"
+  ],
+  "context": "\npublic class C56 extends C57 {\n   private static final long f20 = 3L;\n\n   public C56() {\n      super(\"Input is not in the XZ format\");\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C59",
+  "obfName": "m31",
+  "descriptor": "()V",
+  "reference": "finish",
+  "suggested": "closeStream",
+  "alternatives": [
+   "finishStream",
+   "endStream"
+  ],
+  "context": "   public void m31() throws IOException {\n      if (!this.f51) {\n         this.m108();\n\n         try {\n            this.f144.m140(this.f37);\n            this.m106();\n         } catch (IOException var2) {\n            this.f46 = var2;\n            throw var2;\n         }\n\n         this.f51 = true;\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m111",
+  "descriptor": "([BII)V",
+  "reference": "update",
+  "suggested": "updateChecksum",
+  "alternatives": [
+   "processBytes"
+  ],
+  "context": "   public void m111(byte[] var1, int var2, int var3) {\n      this.f146.update(var1, var2, var3);\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C61",
+  "obfName": "m31",
+  "descriptor": "()[B",
+  "reference": "finish",
+  "suggested": "calculateChecksum",
+  "alternatives": [
+   "computeHash"
+  ],
+  "context": "   public byte[] m31() {\n      long var1 = ~this.f148;\n      this.f148 = -1L;\n      byte[] var3 = new byte[8];\n\n      for (int var4 = 0; var4 < var3.length; var4++) {\n         var3[var4] = (byte)(var1 >> var4 * 8);\n      }\n\n      return var3;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C62",
+  "obfName": "C62",
+  "descriptor": "",
+  "reference": "Check",
+  "suggested": "DataProcessor",
+  "alternatives": [
+   "AbstractDataHandler",
+   "BaseDataClass"
+  ],
+  "context": "\n\npublic abstract class C62 {\n   int f150;\n   String f149;\n\n   public abstract void m111(byte[] var1, int var2, int var3);\n\n   public abstract byte[] m31();\n\n   public void m114(byte[] var1) {\n      this.m111(var1, 0, var1.length);\n   }\n\n   public int m32() {\n      return this.f150;\n   }\n\n   public String m113() {\n      return this.f149;\n   }\n\n   public static C62 m112(int var0) throws C53 {\n      switch (var0) {\n         case 0:"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m112",
+  "descriptor": "(I)Lobf/C62;",
+  "reference": "getInstance",
+  "suggested": "createCheck",
+  "alternatives": [
+   "getCheckInstance",
+   "validateCheck"
+  ],
+  "context": "   public static C62 m112(int var0) throws C53 {\n      switch (var0) {\n         case 0:\n            return new C63();\n         case 1:\n            return new C60();\n         case 4:\n            return new C61();\n         case 10:\n            try {\n               return new C64();\n            } catch (NoSuchAlgorithmException var2) {\n            }\n         default:\n            throw new C53(\"Unsupported Check ID \" + var0);\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C63",
+  "obfName": "C63",
+  "descriptor": "",
+  "reference": "None",
+  "suggested": "C63Extended",
+  "alternatives": [
+   "C63Enhanced",
+   "C63Modified"
+  ],
+  "context": "\npublic class C63 extends C62 {\n   public C63() {\n      this.f150 = 0;\n      this.f149 = \"None\";\n   }\n\n   @Override\n   public void m111(byte[] var1, int var2, int var3) {\n   }\n\n   @Override\n   public byte[] m31() {\n      return new byte[0];\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C66",
+  "obfName": "m122",
+  "descriptor": "(Ljava/io/OutputStream;[B)V",
+  "reference": "writeCRC32",
+  "suggested": "writeWithChecksum",
+  "alternatives": [
+   "outputDataWithCrc",
+   "writeAndCalculateCrc"
+  ],
+  "context": "   public static void m122(OutputStream var0, byte[] var1) throws IOException {\n      CRC32 var2 = new CRC32();\n      var2.update(var1);\n      long var3 = var2.getValue();\n\n      for (int var5 = 0; var5 < 4; var5++) {\n         var0.write((byte)(var3 >>> var5 * 8));\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C68",
+  "obfName": "C68",
+  "descriptor": "",
+  "reference": "Util",
+  "suggested": "SizeConstants",
+  "alternatives": [
+   "MaxValueConstants",
+   "DimensionConstants"
+  ],
+  "context": "\npublic class C68 {\n   public static final int f156 = 12;\n   public static final long f154 = 17179869184L;\n   public static final int f155 = 1024;\n   public static final long VLI_MAX = Long.MAX_VALUE;\n   public static final int VLI_SIZE_MAX = 9;\n\n   public static int m123(long var0) {\n      int var2 = 0;\n\n      do {\n         var2++;\n         var0 >>= 7;\n      } while (var0 != 0L);\n\n      return var2;\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C68",
+  "obfName": "f154",
+  "descriptor": "J",
+  "reference": "BACKWARD_SIZE_MAX",
+  "suggested": "POWER_OF_TWO_34",
+  "alternatives": [
+   "MAX_VALUE_34",
+   "TWO_POWER_34"
+  ],
+  "context": "// field declaration:\npublic static final long f154 = 17179869184L;\n// sibling fields in the same class:\npublic static final int f156 = 12;\npublic static final long f154 = 17179869184L;\npublic static final int f155 = 1024;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C68",
+  "obfName": "f156",
+  "descriptor": "I",
+  "reference": "STREAM_HEADER_SIZE",
+  "suggested": "MAX_VALUE_12",
+  "alternatives": [
+   "DEFAULT_SIZE_12",
+   "CONSTANT_12"
+  ],
+  "context": "// field declaration:\npublic static final int f156 = 12;\n// sibling fields in the same class:\npublic static final int f156 = 12;\npublic static final long f154 = 17179869184L;\npublic static final int f155 = 1024;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C69",
+  "obfName": "C69",
+  "descriptor": "",
+  "reference": "DeltaCoder",
+  "suggested": "ByteArrayConstants",
+  "alternatives": [
+   "ByteSizeConstants",
+   "BufferConstants"
+  ],
+  "context": "\nabstract class C69 {\n   static final int f44 = 1;\n   static final int f43 = 256;\n   static final int f159 = 255;\n   final int f41;\n   final byte[] f160 = new byte[256];\n   int f22 = 0;\n\n   C69(int var1) {\n      if (var1 >= 1 && var1 <= 256) {\n         this.f41 = var1;\n      } else {\n         throw new IllegalArgumentException();\n      }\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C72",
+  "obfName": "f164",
+  "descriptor": "J",
+  "reference": "uncompressedOffset",
+  "suggested": "uncompressedSize",
+  "alternatives": [
+   "size",
+   "totalSize"
+  ],
+  "context": "// field declaration:\npublic long f164 = -1L;\n// sibling fields in the same class:\npublic int f161 = -1;\npublic long f162 = -1L;\npublic long f164 = -1L;\npublic long f33 = -1L;\nC74 f163;\nthis.f163 = var1;\nreturn this.f163.m134().f153;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C72",
+  "obfName": "f33",
+  "descriptor": "J",
+  "reference": "uncompressedSize",
+  "suggested": "size",
+  "alternatives": [
+   "position",
+   "uncompressedSize"
+  ],
+  "context": "// field declaration:\npublic long f33 = -1L;\n// sibling fields in the same class:\npublic int f161 = -1;\npublic long f162 = -1L;\npublic long f164 = -1L;\npublic long f33 = -1L;\nC74 f163;\nthis.f163 = var1;\nreturn this.f163.m134().f153;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C74",
+  "obfName": "m133",
+  "descriptor": "()I",
+  "reference": "getRecordCount",
+  "suggested": "getIndex",
+  "alternatives": [
+   "getPosition",
+   "getOffset"
+  ],
+  "context": "   public int m133() {\n      return (int)this.f169;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C74",
+  "obfName": "m137",
+  "descriptor": "(Lobf/C72;J)V",
+  "reference": "locateBlock",
+  "suggested": "processData",
+  "alternatives": [
+   "validateData",
+   "updateObject"
+  ],
+  "context": "   public void m137(C72 var1, long var2) {\n      assert var2 >= this.f164;\n      var2 -= this.f164;\n      assert var2 < this.f170;\n      int var4 = 0;\n      int var5 = this.f175.length - 1;\n\n      while (var4 < var5) {\n         int var6 = var4 + (var5 - var4) / 2;\n         if (this.f174[var6] <= var2) {\n            var4 = var6 + 1;\n         } else {\n            var5 = var6;\n         }\n      }\n\n      this.m138(var1, this.f172 + var4);\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C74",
+  "obfName": "m92",
+  "descriptor": "()J",
+  "reference": "getLargestBlockSize",
+  "suggested": "getLongValue",
+  "alternatives": [
+   "readLong",
+   "fetchLong"
+  ],
+  "context": "   public long m92() {\n      return this.f121;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C76",
+  "obfName": "m128",
+  "descriptor": "(JJ)V",
+  "reference": "add",
+  "suggested": "processData",
+  "alternatives": [
+   "storeData",
+   "handleData"
+  ],
+  "context": "   public void m128(long var1, long var3) throws C57 {\n      super.m128(var1, var3);\n      ByteBuffer var5 = ByteBuffer.allocate(16);\n      var5.putLong(var1);\n      var5.putLong(var3);\n      this.f177.m114(var5.array());\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C77",
+  "obfName": "C77",
+  "descriptor": "",
+  "reference": "IndexRecord",
+  "suggested": "DataStorage",
+  "alternatives": [
+   "TransmissionInfo",
+   "OutputRecord"
+  ],
+  "context": "\nclass C77 {\n   final long f179;\n   final long f178;\n\n   C77(long var1, long var3) {\n      this.f179 = var1;\n      this.f178 = var3;\n   }\n}"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C8",
+  "obfName": "m7",
+  "descriptor": "(IZ)[I",
+  "reference": "getIntArray",
+  "suggested": "fillIntArray",
+  "alternatives": [
+   "initializeArray",
+   "prepareArray"
+  ],
+  "context": "   public int[] m7(int var1, boolean var2) {\n      int[] var3 = m23(this.f19, var1);\n      if (var3 == null) {\n         var3 = new int[var1];\n      } else if (var2) {\n         Arrays.fill(var3, 0);\n      }\n\n      return var3;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C10",
+  "obfName": "C10",
+  "descriptor": "",
+  "reference": "CacheMap",
+  "suggested": "EntryCache",
+  "alternatives": [
+   "LimitedMap",
+   "SizeConstrainedMap"
+  ],
+  "context": "\n\npublic class C8 extends C3 {\n   private static final int f15 = 32768;\n   private static final int f17 = 32;\n   private static final int f16 = 512;\n   private final C8.C10<byte[]> f18 = new C8.C10<>();\n   private final C8.C10<int[]> f19 = new C8.C10<>();\n\n   public static C8 m24() {\n      return C8.C12.f23;\n   }\n\n   private static <T> T m23(C8.C10<T> var0, int var1) {\n      if (var1 < 32768) {\n         return null;\n      }\n\n      C8.C11 var2;\n      synchronized (var0) {\n         var2 = var0.get(var1);\n      }\n\n      if (var2 == null) {\n         return null;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m157",
+  "descriptor": "()I",
+  "reference": "getPos",
+  "suggested": "getPosition",
+  "alternatives": [
+   "getIndex",
+   "getOffset"
+  ],
+  "context": "   public int m157() {\n      return this.f22;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m158",
+  "descriptor": "()Z",
+  "reference": "hasPending",
+  "suggested": "isConditionMet",
+  "alternatives": [
+   "checkStatus",
+   "isValid"
+  ],
+  "context": "   public boolean m158() {\n      return this.f206 > 0;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m163",
+  "descriptor": "(I)V",
+  "reference": "setLimit",
+  "suggested": "updateStreamPosition",
+  "alternatives": [
+   "incrementStreamIndex",
+   "advanceStreamPointer"
+  ],
+  "context": "   public void m163(int var1) {\n      if (this.f202 - this.f22 <= var1) {\n         this.f204 = this.f202;\n      } else {\n         this.f204 = this.f22 + var1;\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m79",
+  "descriptor": "()V",
+  "reference": "reset",
+  "suggested": "processData",
+  "alternatives": [
+   "updateState",
+   "handleInput"
+  ],
+  "context": "   public void m79() {\n      this.f207 = 0;\n      this.f22 = 0;\n      this.f203 = 0;\n      this.f204 = 0;\n      this.f201[this.f202 - 1] = 0;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C83",
+  "obfName": "f71",
+  "descriptor": "I",
+  "reference": "MF_BT4",
+  "suggested": "DEFAULT_LIMIT",
+  "alternatives": [
+   "MAX_VALUE",
+   "CONFIGURED_SIZE"
+  ],
+  "context": "// field declaration:\npublic static final int f71 = 20;\n// sibling fields in the same class:\npublic static final int f72 = 4;\npublic static final int f71 = 20;\nprivate final int f210;\nprivate final int f209;\nfinal int f211;\nfinal int f88;\nfinal byte[] f201;\nfinal int f202;\nint f213 = -1;\nprivate int f212 = -1;\nprivate boolean f208 = false;\nprivate int f214 = 0;\nprivate int f97 = 0;\nthis.f202 = m167(var1, var2, var3, var5);\nthis.f201 = var6.m4(this.f202, false);\nthis.f210 = var2 + var1;\nthis.f209 = var3 + var5;\nthis.f211 = var5;\nthis.f88 = var4;\nassert this.f214 == 0;\nassert !this.f208;\nvar3 = this.f202 - this.f214;\nthis.f212 = this.f214 - this.f209;\nthis.f213 = this.f213 - this.f97;\nint var1 = this.f97;"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C83",
+  "obfName": "m144",
+  "descriptor": "(Lobf/C3;)V",
+  "reference": "putArraysToCache",
+  "suggested": "processData",
+  "alternatives": [
+   "handleData",
+   "updateData"
+  ],
+  "context": "   public void m144(C3 var1) {\n      var1.m8(this.f201);\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C83",
+  "obfName": "m174",
+  "descriptor": "()Z",
+  "reference": "isStarted",
+  "suggested": "isValid",
+  "alternatives": [
+   "isReady",
+   "hasData"
+  ],
+  "context": "   public boolean m174() {\n      return this.f213 != -1;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C83",
+  "obfName": "m181",
+  "descriptor": "(I[B)V",
+  "reference": "setPresetDict",
+  "suggested": "processData",
+  "alternatives": [
+   "handleData",
+   "updateData"
+  ],
+  "context": "   public void m181(int var1, byte[] var2) {\n      assert !this.m174();\n      assert this.f214 == 0;\n      if (var2 != null) {\n         int var3 = Math.min(var2.length, var1);\n         int var4 = var2.length - var3;\n         System.arraycopy(var2, var4, this.f201, 0, var3);\n         this.f214 += var3;\n         this.m145(var3);\n      }\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C83",
+  "obfName": "m182",
+  "descriptor": "(Lobf/C84;)Z",
+  "reference": "verifyMatches",
+  "suggested": "validateC84",
+  "alternatives": [
+   "checkC84Condition",
+   "isC84Valid"
+  ],
+  "context": "   public boolean m182(C84 var1) {\n      int var2 = Math.min(this.m166(), this.f211);\n\n      for (int var3 = 0; var3 < var1.count; var3++) {\n         if (this.m170(var1.f216[var3], var2) != var1.f217[var3]) {\n            return false;\n         }\n      }\n\n      return true;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "FIELD",
+  "owner": "C84",
+  "obfName": "f216",
+  "descriptor": "[I",
+  "reference": "dist",
+  "suggested": "itemCounts",
+  "alternatives": [
+   "countArray",
+   "arrayCount"
+  ],
+  "context": "// field declaration:\npublic final int[] f216;\n// sibling fields in the same class:\npublic final int[] f217;\npublic final int[] f216;\nthis.f217 = new int[var1];\nthis.f216 = new int[var1];"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C85",
+  "obfName": "C85",
+  "descriptor": "",
+  "reference": "LZMACoder",
+  "suggested": "GameSettings",
+  "alternatives": [
+   "Constants",
+   "Configurations",
+   "Settings"
+  ],
+  "context": "\nabstract class C85 {\n   static final int f228 = 16;\n   static final int f227 = 2;\n   static final int f226 = 273;\n   static final int f224 = 4;\n   static final int f223 = 64;\n   static final int f222 = 4;\n   static final int f221 = 14;\n   static final int f225 = 128;\n   static final int f218 = 4;\n   static final int f220 = 16;\n   static final int f219 = 15;\n   static final int f229 = 4;\n   final int f239;\n   final int[] f240 = new int[4];\n   final C102 f241 = new C102();\n   final short[][] f233 = new short[12][16];\n   final short[] f234 = new short[12];\n   final short[] f235 = new short[12];\n   final short[] f237 = new short[12];\n   final short[] f238 = new short[12];\n   final short[][] f236 = new short[12][16];\n   final short[][] f231 = new short[4][64];\n   final short[][] f232 = new short[][]{"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C87",
+  "obfName": "C87",
+  "descriptor": "",
+  "reference": "LiteralCoder",
+  "suggested": "MathOperations",
+  "alternatives": [
+   "Calculator",
+   "ArithmeticHelper"
+  ],
+  "context": "\nabstract class C85 {\n   static final int f228 = 16;\n   static final int f227 = 2;\n   static final int f226 = 273;\n   static final int f224 = 4;\n   static final int f223 = 64;\n   static final int f222 = 4;\n   static final int f221 = 14;\n   static final int f225 = 128;\n   static final int f218 = 4;\n   static final int f220 = 16;\n   static final int f219 = 15;\n   static final int f229 = 4;\n   final int f239;\n   final int[] f240 = new int[4];\n   final C102 f241 = new C102();\n   final short[][] f233 = new short[12][16];\n   final short[] f234 = new short[12];\n   final short[] f235 = new short[12];\n   final short[] f237 = new short[12];\n   final short[] f238 = new short[12];\n   final short[][] f236 = new short[12][16];\n   final short[][] f231 = new short[4][64];\n   final short[][] f232 = new short[][]{"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C89",
+  "obfName": "m188",
+  "descriptor": "()Z",
+  "reference": "endMarkerDetected",
+  "suggested": "isValid",
+  "alternatives": [
+   "isConditionMet",
+   "checkState"
+  ],
+  "context": "   public boolean m188() {\n      return this.f240[0] == -1;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C89",
+  "obfName": "m79",
+  "descriptor": "()V",
+  "reference": "reset",
+  "suggested": "performAction",
+  "alternatives": [
+   "updateState",
+   "execute"
+  ],
+  "context": "   public void m79() {\n      super.m79();\n      this.f251.m79();\n      this.f252.m79();\n      this.f254.m79();\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "CLASS",
+  "owner": "C94",
+  "obfName": "C94",
+  "descriptor": "",
+  "reference": "LZMAEncoder",
+  "suggested": "MemoryConfig",
+  "alternatives": [
+   "ResourceConstants",
+   "ConfigurationSettings"
+  ],
+  "context": "\n\npublic abstract class C94 extends C85 {\n   public static final int f73 = 1;\n   public static final int f74 = 2;\n   private static final int f259 = 2096879;\n   private static final int f258 = 65510;\n   private static final int f257 = 128;\n   private static final int f256 = 16;\n   private final C107 f269;\n   final C83 f95;\n   final C94.C97 f267;\n   final C94.C96 f268;\n   final C94.C96 f271;\n   final int f88;\n   private int f263 = 0;\n   private int f260 = 0;\n   private final int f265;\n   private final int[][] f264;\n   private final int[][] f266 = new int[4][128];\n   private final int[] f261 = new int[16];\n   int f262 = 0;\n   int f270 = -1;\n   private int f66 = 0;\n"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C94",
+  "obfName": "m201",
+  "descriptor": "()Lobf/C83;",
+  "reference": "getLZEncoder",
+  "suggested": "getC83",
+  "alternatives": [
+   "getF95",
+   "getC83Instance",
+   "accessC83"
+  ],
+  "context": "   public C83 m201() {\n      return this.f95;\n   }"
+ },
+ {
+  "jar": "xz-1.9",
+  "kind": "METHOD",
+  "owner": "C94",
+  "obfName": "m79",
+  "descriptor": "()V",
+  "reference": "reset",
+  "suggested": "updateState",
+  "alternatives": [
+   "processData",
+   "refreshValues"
+  ],
+  "context": "   public void m79() {\n      super.m79();\n      this.f267.m79();\n      this.f268.m79();\n      this.f271.m79();\n      this.f263 = 0;\n      this.f260 = 0;\n      this.f66 = this.f66 + this.f270 + 1;\n      this.f270 = -1;\n   }"
+ }
+]

@@ -1,0 +1,4 @@
+Endpoint: http://127.0.0.1:8797/v1 model=claude:haiku:high
+  results -> /tmp/claude-1000/-home-julian-Dev-Env-Digitalisierungskolleg/32e22798-6bde-488a-b047-83d0956e3383/scratchpad/hypo-results/claude_haiku_high/claude_haiku_high
+  sample/jar/track seed=1234567 api=100 package=5 private=3 preservation=3 (0 = all)
+hypo-model-2.4.1             api[n=100 resolved=100 exact=16 norm=0 matched=16 usable=24 err=0]  priv*[n=3 resolved=3 exact=0 norm=0 matched=0 usable=2 err=0]  preservation[n=3 resolved=3 left_unchanged=0 unnecessary_rename=3 err=0]  leaks[strict=10 loose=15 unique=14 type-ref=0 string=15 resource=0]

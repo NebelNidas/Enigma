@@ -1,0 +1,1146 @@
+[
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C1",
+  "obfName": "m9",
+  "descriptor": "()Ljava/util/Collection;",
+  "reference": "roots",
+  "suggested": "getProviders",
+  "alternatives": [
+   "getSources",
+   "getClassProviders",
+   "getInputs"
+  ],
+  "context": "   public Collection<C6> m9() {\n      return this.f6;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C12",
+  "obfName": "m36",
+  "descriptor": "()Ljava/nio/file/Path;",
+  "reference": "getJarFile",
+  "suggested": "getSourcePath",
+  "alternatives": [
+   "getPath",
+   "getFileSystemPath",
+   "getArchivePath"
+  ],
+  "context": "   public Path m36() {\n      return this.f10;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "CLASS",
+  "owner": "C15",
+  "obfName": "C15",
+  "descriptor": "",
+  "reference": "SystemFileDataReference",
+  "suggested": "ModuleResource",
+  "alternatives": [
+   "ModuleResourceEntry",
+   "ReadableModuleResource"
+  ],
+  "context": "\n\nfinal class C14 implements C6 {\n   @NotNull\n   private final List<ModuleReader> f14;\n\n   C14() throws IOException {\n      Set var1 = ModuleFinder.ofSystem().findAll();\n      ModuleReader[] var2 = new ModuleReader[var1.size()];\n      int var3 = 0;\n\n      for (ModuleReference var5 : var1) {\n         var2[var3++] = var5.open();\n      }\n\n      this.f14 = Arrays.asList(var2);\n   }\n\n   @Override\n   public byte @Nullable [] m22(@NotNull String var1) throws IOException {\n      for (ModuleReader var3 : this.f14) {\n         ByteBuffer var4 = var3.read(var1).orElse(null);\n         if (var4 != null) {\n            try {\n               byte[] var5 = new byte[var4.remaining()];"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C15",
+  "obfName": "m25",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "name",
+  "suggested": "getName",
+  "alternatives": [
+   "getResourceName",
+   "getPath",
+   "getClassName"
+  ],
+  "context": "      public String m25() {\n         return this.f12;\n      }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C16",
+  "obfName": "m12",
+  "descriptor": "(Z)V",
+  "reference": "setRequireFullClasspath",
+  "suggested": "setEnabled",
+  "alternatives": [
+   "setActive",
+   "setFlag"
+  ],
+  "context": "   public void m12(boolean var1) {\n      this.f5 = var1;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C16",
+  "obfName": "m38",
+  "descriptor": "()Ljava/util/Set;",
+  "reference": "innerClasses",
+  "suggested": "getItems",
+  "alternatives": [
+   "getValues",
+   "getEntries"
+  ],
+  "context": "   public Set<C20> m38() {\n      return this.f17;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C16",
+  "obfName": "m39",
+  "descriptor": "()Z",
+  "reference": "isContextClass",
+  "suggested": "isEnabled",
+  "alternatives": [
+   "isActive",
+   "isSet"
+  ],
+  "context": "   public boolean m39() {\n      return this.f18;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C16",
+  "obfName": "m40",
+  "descriptor": "()Lobf/C4;",
+  "reference": "prov",
+  "suggested": "requireProvider",
+  "alternatives": [
+   "getProvider",
+   "provider"
+  ],
+  "context": "   protected C4 m40() {\n      return this.provider;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C16",
+  "obfName": "m41",
+  "descriptor": "(Z)V",
+  "reference": "setContextClass",
+  "suggested": "setFlag",
+  "alternatives": [
+   "setEnabled",
+   "setActive",
+   "setVisible"
+  ],
+  "context": "   public void m41(boolean var1) {\n      this.f18 = var1;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "CLASS",
+  "owner": "C18",
+  "obfName": "C18",
+  "descriptor": "",
+  "reference": "AbstractHypoData",
+  "suggested": "IdentityCache",
+  "alternatives": [
+   "IdentityValueStore",
+   "ObjectCache",
+   "IdentityMapStore"
+  ],
+  "context": "\n\npublic abstract class C18 implements C25 {\n   @NotNull\n   private final Map<C26<?>, ?> f20 = Collections.synchronizedMap(new IdentityHashMap());\n\n   @Nullable\n   @Override\n   public <T> T m46(@NotNull C26<T> var1, @Nullable T var2) {\n      if (var2 == null) {\n         this.f20.remove(var1);\n      } else {\n         ((Map<C26<?>, Object>)this.f20).put(var1, C9.m29(var2));\n      }\n\n      return (T)var2;\n   }\n\n   @NotNull\n   @Override\n   public <T> T m43(@NotNull C26<T> var1, @NotNull Supplier<T> var2) {\n      Object var3 = this.f20.computeIfAbsent(var1, var1x -> C9.m29(var2.get()));\n      Objects.requireNonNull(var3, \"Result of supplier must not be null\");\n      return C9.m29(var3);\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C18",
+  "obfName": "m43",
+  "descriptor": "(Lobf/C26;Ljava/util/function/Supplier;)Ljava/lang/Object;",
+  "reference": "compute",
+  "suggested": "getOrCompute",
+  "alternatives": [
+   "computeIfAbsent",
+   "getOrCreate",
+   "getOrPut"
+  ],
+  "context": "   public <T> T m43(@NotNull C26<T> var1, @NotNull Supplier<T> var2) {\n      Object var3 = this.f20.computeIfAbsent(var1, var1x -> C9.m29(var2.get()));\n      Objects.requireNonNull(var3, \"Result of supplier must not be null\");\n      return C9.m29(var3);\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C18",
+  "obfName": "m46",
+  "descriptor": "(Lobf/C26;Ljava/lang/Object;)Ljava/lang/Object;",
+  "reference": "store",
+  "suggested": "set",
+  "alternatives": [
+   "put",
+   "putValue",
+   "setValue"
+  ],
+  "context": "   public <T> T m46(@NotNull C26<T> var1, @Nullable T var2) {\n      if (var2 == null) {\n         this.f20.remove(var1);\n      } else {\n         ((Map<C26<?>, Object>)this.f20).put(var1, C9.m29(var2));\n      }\n\n      return (T)var2;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m25",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "name",
+  "suggested": "getName",
+  "alternatives": [
+   "name",
+   "getSimpleName"
+  ],
+  "context": "         if (var5.m25().equals(var1)) {\n            if (var3 == null) {\n               var3 = var5;\n            } else if (var2 == null) {\n               var2 = new ArrayList();\n               var2.add(var3);\n               var2.add(var5);\n            } else {\n               var2.add(var5);\n            }\n         }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m37",
+  "descriptor": "()Ljava/util/Set;",
+  "reference": "childClasses",
+  "suggested": "annotations",
+  "alternatives": [
+   "metadata",
+   "attributes"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m39",
+  "descriptor": "()Z",
+  "reference": "isContextClass",
+  "suggested": "active",
+  "alternatives": [
+   "available",
+   "defined"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m42",
+  "descriptor": "(Lobf/C4;)V",
+  "reference": "setProvider",
+  "suggested": "setVisibility",
+  "alternatives": [
+   "setAccess",
+   "setModifier",
+   "setProperty"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m50",
+  "descriptor": "()Ljava/util/stream/Stream;",
+  "reference": "allSuperClasses",
+  "suggested": "streamDirectParents",
+  "alternatives": [
+   "getDirectParents",
+   "parentStream",
+   "streamSupertypes"
+  ],
+  "context": "   default Stream<C20> m50() throws IOException {\n      C20 var1 = this.m77();\n      List var2 = this.m58();\n      if (var1 == null && var2.isEmpty()) {\n         return Stream.empty();\n      }\n\n      if (var1 == null) {\n         return var2.stream();\n      }\n\n      if (var2.isEmpty()) {\n         return Stream.of(var1);\n      }\n\n      C20[] var3 = new C20[var2.size() + 1];\n      var3[0] = var1;\n      int var4 = 1;\n\n      for (C20 var6 : var2) {\n         var3[var4++] = var6;\n      }\n\n      return Arrays.stream(var3);\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m56",
+  "descriptor": "(Ljava/lang/String;)Ljava/util/List;",
+  "reference": "fields",
+  "suggested": "getMethodsByName",
+  "alternatives": [
+   "findMethods",
+   "findMethodsByName"
+  ],
+  "context": "   default List<C24> m56(@NotNull String var1) {\n      ArrayList var2 = null;\n      C24 var3 = null;\n\n      for (C24 var5 : this.m55()) {\n         if (var5.m25().equals(var1)) {\n            if (var3 == null) {\n               var3 = var5;\n            } else if (var2 == null) {\n               var2 = new ArrayList();\n               var2.add(var3);\n               var2.add(var5);\n            } else {\n               var2.add(var5);\n            }\n         }\n      }\n\n      if (var2 != null) {\n         return Collections.unmodifiableList(var2);\n      } else {\n         return var3 != null ? Collections.singletonList(var3) : Collections.emptyList();\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m58",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "interfaces",
+  "suggested": "getInterfaces",
+  "alternatives": [
+   "getInterfaceTypes",
+   "getImplementedInterfaces",
+   "interfaces"
+  ],
+  "context": "      for (C20 var4 : this.m58()) {\n         var1.m34(var4);\n      }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m59",
+  "descriptor": "(Lobf/C22;)Z",
+  "reference": "is",
+  "suggested": "hasKind",
+  "alternatives": [
+   "containsKind",
+   "isKind",
+   "matchesKind"
+  ],
+  "context": "   default boolean m59(@NotNull C22 var1) {\n      return this.m70().contains(var1);\n   }\n// callee m70:\n         if (this.m70().contains(var5)) {\n            return true;\n         }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m62",
+  "descriptor": "(Ljava/util/EnumSet;)Z",
+  "reference": "isAny",
+  "suggested": "hasAnyKind",
+  "alternatives": [
+   "containsAnyKind",
+   "matchesAnyKind",
+   "isAnyKind"
+  ],
+  "context": "   default boolean m62(@NotNull EnumSet<C22> var1) {\n      for (C22 var3 : var1) {\n         if (this.m70().contains(var3)) {\n            return true;\n         }\n      }\n\n      return false;\n   }\n// callee m70:\n         if (this.m70().contains(var5)) {\n            return true;\n         }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m63",
+  "descriptor": "([Lobf/C22;)Z",
+  "reference": "isAny",
+  "suggested": "hasAnyKind",
+  "alternatives": [
+   "matchesAnyKind",
+   "containsAnyKind"
+  ],
+  "context": "   default boolean m63(@NotNull C22... var1) {\n      for (C22 var5 : var1) {\n         if (this.m70().contains(var5)) {\n            return true;\n         }\n      }\n\n      return false;\n   }\n// callee m70:\n         if (this.m70().contains(var5)) {\n            return true;\n         }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m66",
+  "descriptor": "()Z",
+  "reference": "isSealed",
+  "suggested": "synthetic",
+  "alternatives": [
+   "anonymous",
+   "complete"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m70",
+  "descriptor": "()Ljava/util/EnumSet;",
+  "reference": "kinds",
+  "suggested": "getClassKinds",
+  "alternatives": [
+   "getKinds",
+   "getClassKindSet"
+  ],
+  "context": "         if (this.m70().contains(var5)) {\n            return true;\n         }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m72",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "methods",
+  "suggested": "getFields",
+  "alternatives": [
+   "fields",
+   "getFieldList"
+  ],
+  "context": "      for (C32 var5 : this.m72()) {\n         if (var5.m25().equals(var1)) {\n            if (var3 == null) {\n               var3 = var5;\n            } else if (var2 == null) {\n               var2 = new ArrayList();\n               var2.add(var3);\n               var2.add(var5);\n            } else {\n               var2.add(var5);\n            }\n         }\n      }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m74",
+  "descriptor": "()Lobf/C20;",
+  "reference": "outerClass",
+  "suggested": "getEnclosingClass",
+  "alternatives": [
+   "getRelatedClass",
+   "getParentClass",
+   "getOuterClass"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m76",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "recordComponents",
+  "suggested": "getItems",
+  "alternatives": [
+   "getValues",
+   "getEntries"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "CLASS",
+  "owner": "C23",
+  "obfName": "C23",
+  "descriptor": "",
+  "reference": "ConstructorData",
+  "suggested": "ConstructorDescriptor",
+  "alternatives": [
+   "ConstructorMember",
+   "ConstructorElement"
+  ],
+  "context": "\n\npublic interface C23 extends C32 {\n   @NotNull\n   @Override\n   default String m25() {\n      return \"<init>\";\n   }\n\n   @Override\n   default boolean m81() {\n      return true;\n   }\n\n   @Override\n   default boolean m83() {\n      return false;\n   }\n\n   @Override\n   default boolean m79() {\n      return false;\n   }\n\n   @Override"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m25",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "name",
+  "suggested": "getConstructorName",
+  "alternatives": [
+   "getName",
+   "getMethodName",
+   "getSpecialName"
+  ],
+  "context": "   default String m25() {\n      return \"<init>\";\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m64",
+  "descriptor": "()Z",
+  "reference": "isFinal",
+  "suggested": "enabled",
+  "alternatives": [
+   "active",
+   "available"
+  ],
+  "context": "   default boolean m64() {\n      return false;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m83",
+  "descriptor": "()Z",
+  "reference": "isStatic",
+  "suggested": "active",
+  "alternatives": [
+   "available",
+   "supported"
+  ],
+  "context": "   default boolean m83() {\n      return false;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "CLASS",
+  "owner": "C27",
+  "obfName": "C27",
+  "descriptor": "",
+  "reference": "LazyClassData",
+  "suggested": "AbstractDescriptor",
+  "alternatives": [
+   "AbstractPropertySet",
+   "CachedDescriptor",
+   "AbstractDefinition"
+  ],
+  "context": "\n\npublic abstract class C27 extends C16 {\n   @NotNull\n   private final C29<String, ?> f36 = C29.m110(this::m97);\n   @NotNull\n   private final C29<C20, IOException> f37 = C29.m110(this::m98);\n   private final C29<Boolean, ?> f40 = C29.m110(this::m101);\n   private final C29<Boolean, ?> f31 = C29.m110(this::m93);\n   private final C29<Boolean, ?> f33 = C29.m110(this::m95);\n   private final C29<Boolean, ?> f32 = C29.m110(this::m94);\n   private final C29<List<C20>, IOException> f38 = C29.m110(this::m99);\n   private final C29<List<C24>, ?> f39 = C29.m110(this::m100);\n   @NotNull\n   private final C29<EnumSet<C22>, ?> f34 = C29.m110(this::m90);\n   @NotNull\n   private final C29<C34, ?> f42 = C29.m110(this::m103);\n   @NotNull\n   private final C29<C20, IOException> f41 = C29.m110(this::m102);\n   @NotNull\n   private final C29<List<C20>, IOException> f30 = C29.m110(this::m92);\n   @NotNull\n   private final C29<List<C24>, ?> f29 = C29.m110(this::m91);\n   @NotNull\n   private final C29<List<C32>, ?> f35 = C29.m110(this::m96);"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m100",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "computeRecordComponents",
+  "suggested": "getValues",
+  "alternatives": [
+   "getItems",
+   "getEntries",
+   "getLists"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m25",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "name",
+  "suggested": "getString",
+  "alternatives": [
+   "getText",
+   "getLabel"
+  ],
+  "context": "   public String m25() {\n      return this.f36.m107();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m55",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "fields",
+  "suggested": "getValues",
+  "alternatives": [
+   "getEntries",
+   "getItems"
+  ],
+  "context": "   public List<C24> m55() {\n      return this.f29.m107();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m64",
+  "descriptor": "()Z",
+  "reference": "isFinal",
+  "suggested": "enabled",
+  "alternatives": [
+   "active",
+   "available"
+  ],
+  "context": "   public boolean m64() {\n      return this.f31.m107();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m66",
+  "descriptor": "()Z",
+  "reference": "isSealed",
+  "suggested": "active",
+  "alternatives": [
+   "available",
+   "allowed"
+  ],
+  "context": "   public boolean m66() {\n      return this.f32.m107();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m68",
+  "descriptor": "()Z",
+  "reference": "isSynthetic",
+  "suggested": "isFlagSet",
+  "alternatives": [
+   "isPropertyEnabled",
+   "getBooleanValue"
+  ],
+  "context": "   public boolean m68() {\n      return this.f33.m107();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m70",
+  "descriptor": "()Ljava/util/EnumSet;",
+  "reference": "kinds",
+  "suggested": "getFlags",
+  "alternatives": [
+   "getEnumValues",
+   "getValues"
+  ],
+  "context": "   public EnumSet<C22> m70() {\n      return this.f34.m107();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m72",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "methods",
+  "suggested": "getValues",
+  "alternatives": [
+   "getEntries",
+   "getItems"
+  ],
+  "context": "   public List<C32> m72() {\n      return this.f35.m107();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m91",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "computeFields",
+  "suggested": "getEntries",
+  "alternatives": [
+   "getItems",
+   "getElements"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m92",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "computeInterfaces",
+  "suggested": "getItems",
+  "alternatives": [
+   "listItems",
+   "loadItems"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C27",
+  "obfName": "m93",
+  "descriptor": "()Z",
+  "reference": "computeIsFinal",
+  "suggested": "available",
+  "alternatives": [
+   "active",
+   "visible",
+   "supported"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m104",
+  "descriptor": "()Lobf/C33;",
+  "reference": "computeDescriptor",
+  "suggested": "createValue",
+  "alternatives": [
+   "computeValue",
+   "getUncachedValue"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m105",
+  "descriptor": "()Lobf/C33;",
+  "reference": "descriptor",
+  "suggested": "getCachedValue",
+  "alternatives": [
+   "getValue",
+   "getLazyValue"
+  ],
+  "context": "   public C33 m105() {\n      return this.f43.m107();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C29",
+  "obfName": "m106",
+  "descriptor": "()Ljava/lang/Object;",
+  "reference": "get",
+  "suggested": "getUnchecked",
+  "alternatives": [
+   "getValue",
+   "getNullable",
+   "get"
+  ],
+  "context": "   public T m106() {\n      try {\n         return this.m108();\n      } catch (Throwable var2) {\n         throw C9.rethrow(var2);\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C29",
+  "obfName": "m107",
+  "descriptor": "()Ljava/lang/Object;",
+  "reference": "getNotNull",
+  "suggested": "getRequired",
+  "alternatives": [
+   "requireValue",
+   "getNonNull"
+  ],
+  "context": "   public T m107() {\n      return Objects.requireNonNull(this.m106());\n   }\n// callee m106:\n   public T m106() {\n      try {\n         return this.m108();\n      } catch (Throwable var2) {\n         throw C9.rethrow(var2);\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C29",
+  "obfName": "m108",
+  "descriptor": "()Ljava/lang/Object;",
+  "reference": "getOrThrow",
+  "suggested": "get",
+  "alternatives": [
+   "getValue",
+   "computeValue",
+   "getNullableValue"
+  ],
+  "context": "   public T m108() throws X {\n      Object var1 = this.f45;\n      if (var1 != null) {\n         return (T)var1;\n      }\n\n      synchronized (this) {\n         var1 = this.f45;\n         if (var1 != null) {\n            return (T)var1;\n         }\n\n         C29.C30 var3 = this.f44;\n         if (var3 == null) {\n            return null;\n         }\n\n         var1 = var3.m106();\n         this.f45 = (T)var1;\n         this.f44 = null;\n         return (T)var1;\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "CLASS",
+  "owner": "C31",
+  "obfName": "C31",
+  "descriptor": "",
+  "reference": "MemberData",
+  "suggested": "DescribedElement",
+  "alternatives": [
+   "PropertySource",
+   "QueryableElement",
+   "NamedElement"
+  ],
+  "context": "\n\npublic interface C31 extends C25 {\n   @NotNull\n   C34 m78();\n\n   @NotNull\n   String m25();\n\n   @NotNull\n   C20 m111();\n\n   boolean m83();\n\n   boolean m64();\n\n   boolean m68();\n}"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m64",
+  "descriptor": "()Z",
+  "reference": "isFinal",
+  "suggested": "isEnabled",
+  "alternatives": [
+   "isAvailable",
+   "isValid",
+   "canUse"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m78",
+  "descriptor": "()Lobf/C34;",
+  "reference": "visibility",
+  "suggested": "getValue",
+  "alternatives": [
+   "getType",
+   "getResult"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C32",
+  "obfName": "m113",
+  "descriptor": "(Lobf/C32;)Z",
+  "reference": "overrides",
+  "suggested": "canAccess",
+  "alternatives": [
+   "isAccessibleFrom",
+   "canAccessFrom",
+   "hasAccessTo"
+  ],
+  "context": "   default boolean m113(@NotNull C32 var1) {\n      if (!this.m83() && !var1.m83() && !var1.m64()) {\n         if (!this.m78().m123(var1.m78())) {\n            return false;\n         }\n\n         if (var1.m78() == C34.f48) {\n            String var2 = this.m111().m25();\n            String var3 = var1.m111().m25();\n            int var4 = var2.lastIndexOf(47);\n            int var5 = var3.lastIndexOf(47);\n            if (var4 != var5) {\n               return false;\n            }\n\n            if (!var2.regionMatches(0, var3, 0, var5)) {\n               return false;\n            }\n         }\n\n         if (!this.m25().equals(var1.m25())) {\n            return false;\n         } else {\n            return !this.m105().equals(var1.m105()) ? false : this.m111().m52(var1.m111());\n         }\n      } else {\n         return false;\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C32",
+  "obfName": "m114",
+  "descriptor": "(I)Lobf/C37;",
+  "reference": "param",
+  "suggested": "getParameterType",
+  "alternatives": [
+   "getArgumentType",
+   "getParameter",
+   "getArgument"
+  ],
+  "context": "   default C37 m114(int var1) {\n      List var2 = this.m105().m118();\n      if (var1 >= 0 && var1 < var2.size()) {\n         return (C37)var2.get(var1);\n      } else {\n         throw new IndexOutOfBoundsException(\"Index out of range: \" + var1 + \", list has \" + var2.size() + \" items\");\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C32",
+  "obfName": "m115",
+  "descriptor": "(I)Lobf/C37;",
+  "reference": "paramLvt",
+  "suggested": "getParameterBySlot",
+  "alternatives": [
+   "getArgumentBySlot",
+   "getParameterAtSlot",
+   "getArgumentAtSlot"
+  ],
+  "context": "   default C37 m115(int var1) {\n      List var2 = this.m105().m118();\n      int var3 = this.m83() ? 0 : 1;\n\n      for (C37 var5 : var2) {\n         if (var3 == var1) {\n            return var5;\n         }\n\n         var3++;\n         if (var5 == C38.f61 || var5 == C38.f58) {\n            var3++;\n         }\n      }\n\n      return null;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C32",
+  "obfName": "m116",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "params",
+  "suggested": "getParameterTypes",
+  "alternatives": [
+   "getArgumentTypes",
+   "getParameters"
+  ],
+  "context": "   default List<C37> m116() {\n      return this.m105().m118();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C32",
+  "obfName": "m48",
+  "descriptor": "(Lobf/C32;)V",
+  "reference": "setSuperMethod",
+  "suggested": "linkWith",
+  "alternatives": [
+   "addRelated",
+   "connectTo",
+   "attachTo"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C33",
+  "obfName": "m118",
+  "descriptor": "()Ljava/util/List;",
+  "reference": "getParams",
+  "suggested": "parameterTypes",
+  "alternatives": [
+   "argumentTypes",
+   "parameters"
+  ],
+  "context": "   public List<C37> m118() {\n      return this.f46;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C33",
+  "obfName": "m122",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "toInternalString",
+  "suggested": "getDescriptor",
+  "alternatives": [
+   "toDescriptor",
+   "toDescriptorString"
+  ],
+  "context": "   public String m122() {\n      StringBuilder var1 = new StringBuilder();\n      var1.append('(');\n\n      for (C37 var3 : this.f46) {\n         var3.m124(var1);\n      }\n\n      var1.append(')');\n      this.f47.m124(var1);\n      return var1.toString();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C34",
+  "obfName": "m123",
+  "descriptor": "(Lobf/C34;)Z",
+  "reference": "canOverride",
+  "suggested": "isAtLeastAsAccessibleAs",
+  "alternatives": [
+   "canAccessAs",
+   "allowsAccessFrom",
+   "isMoreAccessibleThan"
+  ],
+  "context": "   public boolean m123(@NotNull C34 var1) {\n      switch (var1) {\n         case f51:\n            return this == f51;\n         case f48:\n            return this != f49;\n         case f50:\n            return this == f51 || this == f50;\n         case f49:\n         default:\n            return false;\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C35",
+  "obfName": "m124",
+  "descriptor": "(Ljava/lang/StringBuilder;)V",
+  "reference": "asInternalName",
+  "suggested": "appendDescriptor",
+  "alternatives": [
+   "appendTypeDescriptor",
+   "writeDescriptor"
+  ],
+  "context": "   public void m124(@NotNull StringBuilder var1) {\n      this.m128(var1);\n      this.f52.m124(var1);\n   }\n// callee m128:\n   private void m128(@NotNull StringBuilder var1) {\n      for (int var2 = 0; var2 < this.f53; var2++) {\n         var1.append('[');\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C35",
+  "obfName": "m127",
+  "descriptor": "()I",
+  "reference": "dimension",
+  "suggested": "getDimensionCount",
+  "alternatives": [
+   "getDimensions",
+   "getArrayDepth",
+   "getArrayDimensions"
+  ],
+  "context": "   public int m127() {\n      return this.f53;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C36",
+  "obfName": "m124",
+  "descriptor": "(Ljava/lang/StringBuilder;)V",
+  "reference": "asInternalName",
+  "suggested": "appendDescriptor",
+  "alternatives": [
+   "appendTypeDescriptor",
+   "appendInternalDescriptor"
+  ],
+  "context": "   public void m124(@NotNull StringBuilder var1) {\n      var1.append('L').append(this.f54).append(';');\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C36",
+  "obfName": "m130",
+  "descriptor": "()Lobf/C38;",
+  "reference": "toPrimitiveType",
+  "suggested": "getPrimitiveType",
+  "alternatives": [
+   "asPrimitiveType",
+   "toPrimitiveType"
+  ],
+  "context": "   public C38 m130() {\n      for (C38 var4 : C38.values()) {\n         if (var4.m134().equals(this)) {\n            return var4;\n         }\n      }\n\n      return null;\n   }\n// callee m134:\n         if (var4.m134().equals(this)) {\n            return var4;\n         }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m124",
+  "descriptor": "(Ljava/lang/StringBuilder;)V",
+  "reference": "asInternalName",
+  "suggested": "appendDescriptor",
+  "alternatives": [
+   "writeDescriptor",
+   "appendString",
+   "appendRepresentation"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m125",
+  "descriptor": "(Ljava/lang/StringBuilder;)V",
+  "reference": "asReadableName",
+  "suggested": "appendTo",
+  "alternatives": [
+   "appendString",
+   "appendRepresentation",
+   "appendName"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m131",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "asInternalName",
+  "suggested": "toDescriptor",
+  "alternatives": [
+   "asString",
+   "getName"
+  ],
+  "context": "   default String m131() {\n      StringBuilder var1 = new StringBuilder();\n      this.m124(var1);\n      return var1.toString();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m132",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "asReadableName",
+  "suggested": "buildString",
+  "alternatives": [
+   "formatString",
+   "asString"
+  ],
+  "context": "   default String m132() {\n      StringBuilder var1 = new StringBuilder();\n      this.m125(var1);\n      return var1.toString();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m12",
+  "descriptor": "(Z)V",
+  "reference": "setRequireFullClasspath",
+  "suggested": "setEnabled",
+  "alternatives": [
+   "setActive",
+   "setAvailable"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m13",
+  "descriptor": "()Ljava/util/stream/Stream;",
+  "reference": "stream",
+  "suggested": "allClasses",
+  "alternatives": [
+   "streamClasses",
+   "classes",
+   "getClasses"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m3",
+  "descriptor": "(Ljava/lang/String;)Lobf/C20;",
+  "reference": "findClass",
+  "suggested": "getClass",
+  "alternatives": [
+   "findClass",
+   "getClassByName",
+   "loadClass"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m5",
+  "descriptor": "()Z",
+  "reference": "isContextClassProvider",
+  "suggested": "isEnabled",
+  "alternatives": [
+   "isAvailable",
+   "isActive",
+   "canProvide"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m6",
+  "descriptor": "()Z",
+  "reference": "isRequireFullClasspath",
+  "suggested": "available",
+  "alternatives": [
+   "active",
+   "supported"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "CLASS",
+  "owner": "C5",
+  "obfName": "C5",
+  "descriptor": "",
+  "reference": "ClassDataProviderSet",
+  "suggested": "CompositeResource",
+  "alternatives": [
+   "CompositeCloseable",
+   "ResourceGroup",
+   "ResourceCollection"
+  ],
+  "context": "\n\npublic class C5 implements C4 {\n   @NotNull\n   private final List<? extends C4> f7;\n\n   private C5(@NotNull List<? extends C4> var1) {\n      this.f7 = var1;\n   }\n\n   @Contract(\"_ -> new\")\n   public static C5 wrap(@NotNull Collection<? extends C4> var0) {\n      return new C5(List.copyOf(var0));\n   }\n\n   @Override\n   public void m11(@NotNull C3 var1) {\n      for (C4 var3 : this.f7) {\n         var3.m11(var1);\n      }\n   }\n\n   @Override\n   public void m10(boolean var1) {\n      for (C4 var3 : this.f7) {"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C5",
+  "obfName": "m12",
+  "descriptor": "(Z)V",
+  "reference": "setRequireFullClasspath",
+  "suggested": "setFlag",
+  "alternatives": [
+   "setEnabled",
+   "setActive",
+   "updateFlag"
+  ],
+  "context": "   public void m12(boolean var1) {\n      for (C4 var3 : this.f7) {\n         var3.m12(var1);\n      }\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C5",
+  "obfName": "m6",
+  "descriptor": "()Z",
+  "reference": "isRequireFullClasspath",
+  "suggested": "active",
+  "alternatives": [
+   "enabled",
+   "available",
+   "valid"
+  ],
+  "context": "   public boolean m6() {\n      boolean var1 = false;\n\n      for (C4 var3 : this.f7) {\n         var1 |= var3.m6();\n      }\n\n      return var1;\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m24",
+  "descriptor": "()Ljava/util/stream/Stream;",
+  "reference": "walkAllFiles",
+  "suggested": "stream",
+  "alternatives": [
+   "emptyStream",
+   "getStream",
+   "listStream"
+  ],
+  "context": "   default Stream<? extends C6.C7> m24() throws IOException {\n      return Stream.of();\n   }"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C7",
+  "obfName": "m25",
+  "descriptor": "()Ljava/lang/String;",
+  "reference": "name",
+  "suggested": "getName",
+  "alternatives": [
+   "getPath",
+   "getKey",
+   "getIdentifier"
+  ],
+  "context": "(body not found)"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "CLASS",
+  "owner": "C8",
+  "obfName": "C8",
+  "descriptor": "",
+  "reference": "DirClassProviderRoot",
+  "suggested": "PathFileSource",
+  "alternatives": [
+   "DirectoryFileSource",
+   "PathBackedFileSource",
+   "FileSystemPathSource"
+  ],
+  "context": "\n\npublic final class C8 implements C6 {\n   @NotNull\n   private final Path f8;\n\n   C8(@NotNull Path var1) {\n      this.f8 = var1;\n   }\n\n   @NotNull\n   public Path m27() {\n      return this.f8;\n   }\n\n   @Override\n   public byte @Nullable [] m22(@NotNull String var1) throws IOException {\n      Path var2 = this.f8.resolve(var1);\n      return Files.exists(var2) ? Files.readAllBytes(var2) : null;\n   }\n\n   @NotNull\n   @Override\n   public List<? extends C6.C7> m21() throws IOException {\n      PathMatcher var1 = this.f8.getFileSystem().getPathMatcher(\"glob:*.class\");"
+ },
+ {
+  "jar": "hypo-model-2.4.1",
+  "kind": "METHOD",
+  "owner": "C9",
+  "obfName": "m29",
+  "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+  "reference": "cast",
+  "suggested": "uncheckedCast",
+  "alternatives": [
+   "cast",
+   "castUnchecked"
+  ],
+  "context": "   public static <T> T m29(@Nullable Object var0) {\n      return (T)var0;\n   }"
+ }
+]

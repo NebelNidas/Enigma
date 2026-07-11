@@ -1,0 +1,27 @@
+Endpoint: http://127.0.0.1:1234/v1 model=qwen3-coder-next
+  results -> /tmp/claude-1000/-home-julian-Dev-Env-Digitalisierungskolleg/32e22798-6bde-488a-b047-83d0956e3383/scratchpad/hypo-results/coder_next_iq1/qwen3-coder-next
+  sample/jar/track seed=1234567 api=40 package=0 private=0 preservation=0 (0 = all)
+hypo-model-2.4.1             api[n=40 resolved=40 exact=4 norm=0 matched=4 usable=4 err=0]  priv*[n=56 resolved=56 exact=3 norm=0 matched=3 usable=7 err=0]  preservation[n=12 resolved=12 left_unchanged=0 unnecessary_rename=12 err=0]  leaks[strict=10 loose=15 unique=14 type-ref=0 string=15 resource=0]
+hypo-model-2.4.1             api[n=40 resolved=40 exact=2 norm=0 matched=2 usable=2 err=0]  priv*[n=56 resolved=56 exact=3 norm=0 matched=3 usable=5 err=0]  preservation[n=12 resolved=12 left_unchanged=0 unnecessary_rename=11 err=1]  leaks[strict=0 loose=3 unique=3 type-ref=0 string=3 resource=0]
+
+=== Phase A summary [realistic] ===
+hypo-model-2.4.1             api[n=40 resolved=40 exact=4 norm=0 matched=4 usable=4 err=0]  priv*[n=56 resolved=56 exact=3 norm=0 matched=3 usable=7 err=0]  preservation[n=12 resolved=12 left_unchanged=0 unnecessary_rename=12 err=0]  leaks[strict=10 loose=15 unique=14 type-ref=0 string=15 resource=0]
+TOTAL                        api[n=40 resolved=40 exact=4 norm=0 matched=4 usable=4 err=0]  priv*[n=56 resolved=56 exact=3 norm=0 matched=3 usable=7 err=0]  preservation[n=12 resolved=12 left_unchanged=0 unnecessary_rename=12 err=0]
+
+Per-kind (recovery api slice, all jars):
+  CLASS     n=6 matched=0
+  FIELD     n=2 matched=2
+  METHOD    n=32 matched=2
+Recovery private slice (diagnostic, never in the headline): n=56 resolved=56 exact=3 norm=0 matched=3 usable=7 err=0
+Preservation control (kept-unchanged, all jars): n=12 resolved=12 left_unchanged=0 unnecessary_rename=12 err=0
+
+=== Phase A summary [structure-only] ===
+hypo-model-2.4.1             api[n=40 resolved=40 exact=2 norm=0 matched=2 usable=2 err=0]  priv*[n=56 resolved=56 exact=3 norm=0 matched=3 usable=5 err=0]  preservation[n=12 resolved=12 left_unchanged=0 unnecessary_rename=11 err=1]  leaks[strict=0 loose=3 unique=3 type-ref=0 string=3 resource=0]
+TOTAL                        api[n=40 resolved=40 exact=2 norm=0 matched=2 usable=2 err=0]  priv*[n=56 resolved=56 exact=3 norm=0 matched=3 usable=5 err=0]  preservation[n=12 resolved=12 left_unchanged=0 unnecessary_rename=11 err=1]
+
+Per-kind (recovery api slice, all jars):
+  CLASS     n=6 matched=0
+  FIELD     n=2 matched=0
+  METHOD    n=32 matched=2
+Recovery private slice (diagnostic, never in the headline): n=56 resolved=56 exact=3 norm=0 matched=3 usable=5 err=0
+Preservation control (kept-unchanged, all jars): n=12 resolved=12 left_unchanged=0 unnecessary_rename=11 err=1

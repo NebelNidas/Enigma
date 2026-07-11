@@ -1,0 +1,2504 @@
+[
+ {
+  "id": 0,
+  "kind": "METHOD",
+  "owner": "C103",
+  "obfName": "m1311",
+  "reference": "append",
+  "suggested": "updateWithLongArray",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 1,
+  "kind": "METHOD",
+  "owner": "C110",
+  "obfName": "m1352",
+  "reference": "isAppendTransients",
+  "suggested": "isTransient",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 2,
+  "kind": "METHOD",
+  "owner": "C111",
+  "obfName": "m1373",
+  "reference": "getFieldSeparator",
+  "suggested": "getStringValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 3,
+  "kind": "METHOD",
+  "owner": "C112",
+  "obfName": "m1301",
+  "reference": "append",
+  "suggested": "appendInt",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 4,
+  "kind": "METHOD",
+  "owner": "C114",
+  "obfName": "m1330",
+  "reference": "appendDetail",
+  "suggested": "appendDoubles",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 5,
+  "kind": "METHOD",
+  "owner": "C114",
+  "obfName": "m1452",
+  "reference": "append",
+  "suggested": "appendLong",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 6,
+  "kind": "METHOD",
+  "owner": "C116",
+  "obfName": "m1459",
+  "reference": "append",
+  "suggested": "appendJsonFloatArray",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 7,
+  "kind": "CLASS",
+  "owner": "C118",
+  "obfName": "C118",
+  "reference": "NoClassNameToStringStyle",
+  "suggested": "Constants",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 8,
+  "kind": "CLASS",
+  "owner": "C139",
+  "obfName": "C139",
+  "reference": "Builder",
+  "suggested": "ObjectCreator",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 9,
+  "kind": "METHOD",
+  "owner": "C140",
+  "obfName": "m663",
+  "reference": "get",
+  "suggested": "getObject",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 10,
+  "kind": "METHOD",
+  "owner": "C143",
+  "obfName": "m1530",
+  "reference": "getTypedException",
+  "suggested": "wrapException",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 11,
+  "kind": "METHOD",
+  "owner": "C147",
+  "obfName": "m1553",
+  "reference": "getWrappedFactory",
+  "suggested": "getThreadFactory",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 12,
+  "kind": "CLASS",
+  "owner": "C162",
+  "obfName": "C162",
+  "reference": "CheckIntervalData",
+  "suggested": "TimeDuration",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 13,
+  "kind": "CLASS",
+  "owner": "C17",
+  "obfName": "C17",
+  "reference": "Charsets",
+  "suggested": "CharsetUtils",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 14,
+  "kind": "METHOD",
+  "owner": "C181",
+  "obfName": "m1633",
+  "reference": "lockApplyUnlock",
+  "suggested": "getFromSupplierWithLock",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 15,
+  "kind": "CLASS",
+  "owner": "C186",
+  "obfName": "C186",
+  "reference": "EventListenerSupport",
+  "suggested": "ListenerManager",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 16,
+  "kind": "METHOD",
+  "owner": "C193",
+  "obfName": "m1655",
+  "reference": "getRawMessage",
+  "suggested": "getExceptionMessage",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 17,
+  "kind": "METHOD",
+  "owner": "C196",
+  "obfName": "m1687",
+  "reference": "removeCommonFrames",
+  "suggested": "removeMatchingFrames",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 18,
+  "kind": "FIELD",
+  "owner": "C223",
+  "obfName": "f481",
+  "reference": "FALSE",
+  "suggested": "ALWAYS_FALSE",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 19,
+  "kind": "METHOD",
+  "owner": "C245",
+  "obfName": "m1788",
+  "reference": "applyAsInt",
+  "suggested": "and",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 20,
+  "kind": "CLASS",
+  "owner": "C255",
+  "obfName": "C255",
+  "reference": "TriFunction",
+  "suggested": "PredicateCombinator",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 21,
+  "kind": "FIELD",
+  "owner": "C259",
+  "obfName": "f535",
+  "reference": "LONG_INT_MIN_VALUE",
+  "suggested": "LONG_CONSTANT",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 22,
+  "kind": "METHOD",
+  "owner": "C26",
+  "obfName": "m619",
+  "reference": "getEnum",
+  "suggested": "getEnumByName",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 23,
+  "kind": "METHOD",
+  "owner": "C26",
+  "obfName": "m630",
+  "reference": "processBitVectors",
+  "suggested": "createEnumSetFromBitVectors",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 24,
+  "kind": "METHOD",
+  "owner": "C262",
+  "obfName": "m1909",
+  "reference": "isFalse",
+  "suggested": "isActive",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 25,
+  "kind": "METHOD",
+  "owner": "C265",
+  "obfName": "m1929",
+  "reference": "setValue",
+  "suggested": "updateValue",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 26,
+  "kind": "METHOD",
+  "owner": "C269",
+  "obfName": "m1923",
+  "reference": "getAndAdd",
+  "suggested": "updateValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 27,
+  "kind": "CLASS",
+  "owner": "C32",
+  "obfName": "C32",
+  "reference": "FailableConsumer",
+  "suggested": "Action",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 28,
+  "kind": "METHOD",
+  "owner": "C34",
+  "obfName": "m661",
+  "reference": "test",
+  "suggested": "isMatch",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 29,
+  "kind": "METHOD",
+  "owner": "C277",
+  "obfName": "m2043",
+  "reference": "invokeExactMethod",
+  "suggested": "invokeMethod",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 30,
+  "kind": "CLASS",
+  "owner": "C283",
+  "obfName": "C283",
+  "reference": "WildcardTypeBuilder",
+  "suggested": "TypeHandler",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 31,
+  "kind": "METHOD",
+  "owner": "C291",
+  "obfName": "m2122",
+  "reference": "of",
+  "suggested": "enumerationToStream",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 32,
+  "kind": "METHOD",
+  "owner": "C291",
+  "obfName": "m649",
+  "reference": "stream",
+  "suggested": "processAndWrapCollection",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 33,
+  "kind": "METHOD",
+  "owner": "C296",
+  "obfName": "m2132",
+  "reference": "getFormatter",
+  "suggested": "getFormat",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 34,
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2150",
+  "reference": "appendAll",
+  "suggested": "appendIterator",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 35,
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2153",
+  "reference": "appendFixedWidthPadLeft",
+  "suggested": "appendObjectWithIndexAndChar",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 36,
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2162",
+  "reference": "appendSeparator",
+  "suggested": "appendString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 37,
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2188",
+  "reference": "asTokenizer",
+  "suggested": "createC315",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 38,
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2206",
+  "reference": "getChars",
+  "suggested": "appendSubstring",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 39,
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2208",
+  "reference": "getNewLineText",
+  "suggested": "toString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 40,
+  "kind": "METHOD",
+  "owner": "C300",
+  "obfName": "m2226",
+  "reference": "lastIndexOf",
+  "suggested": "charToInt",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 41,
+  "kind": "METHOD",
+  "owner": "C308",
+  "obfName": "m2268",
+  "reference": "charMatcher",
+  "suggested": "createInstanceFromChar",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 42,
+  "kind": "CLASS",
+  "owner": "C310",
+  "obfName": "C310",
+  "reference": "CharSetMatcher",
+  "suggested": "CharSearcher",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 43,
+  "kind": "METHOD",
+  "owner": "C314",
+  "obfName": "m2301",
+  "reference": "replace",
+  "suggested": "convertToString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 44,
+  "kind": "METHOD",
+  "owner": "C314",
+  "obfName": "m2323",
+  "reference": "setVariableSuffix",
+  "suggested": "createInstanceFromChar",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 45,
+  "kind": "METHOD",
+  "owner": "C315",
+  "obfName": "m2345",
+  "reference": "isEmptyTokenAsNull",
+  "suggested": "isConditionMet",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 46,
+  "kind": "METHOD",
+  "owner": "C315",
+  "obfName": "m2359",
+  "reference": "setIgnoredChar",
+  "suggested": "createInstanceFromChar",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 47,
+  "kind": "METHOD",
+  "owner": "C319",
+  "obfName": "m2377",
+  "reference": "translate",
+  "suggested": "writeCharSequence",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 48,
+  "kind": "CLASS",
+  "owner": "C329",
+  "obfName": "C329",
+  "reference": "UnicodeUnescaper",
+  "suggested": "CharSequenceProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 49,
+  "kind": "METHOD",
+  "owner": "C336",
+  "obfName": "m2437",
+  "reference": "parse",
+  "suggested": "parseDateWithPosition",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 50,
+  "kind": "METHOD",
+  "owner": "C338",
+  "obfName": "m2475",
+  "reference": "isSameDay",
+  "suggested": "areCalendarsEqual",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 51,
+  "kind": "METHOD",
+  "owner": "C338",
+  "obfName": "m2491",
+  "reference": "round",
+  "suggested": "adjustDate",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 52,
+  "kind": "METHOD",
+  "owner": "C345",
+  "obfName": "m2434",
+  "reference": "getPattern",
+  "suggested": "toString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 53,
+  "kind": "METHOD",
+  "owner": "C345",
+  "obfName": "m2547",
+  "reference": "getTimeInstance",
+  "suggested": "createInstanceWithLocale",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 54,
+  "kind": "METHOD",
+  "owner": "C363",
+  "obfName": "m2434",
+  "reference": "getPattern",
+  "suggested": "getStringValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 55,
+  "kind": "METHOD",
+  "owner": "C368",
+  "obfName": "m2580",
+  "reference": "estimateLength",
+  "suggested": "getIntValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 56,
+  "kind": "METHOD",
+  "owner": "C378",
+  "obfName": "m2581",
+  "reference": "appendTo",
+  "suggested": "appendValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 57,
+  "kind": "METHOD",
+  "owner": "C385",
+  "obfName": "m2606",
+  "reference": "stop",
+  "suggested": "checkRunningState",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 58,
+  "kind": "CLASS",
+  "owner": "C50",
+  "obfName": "C50",
+  "reference": "RegExUtils",
+  "suggested": "RegexHelper",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 59,
+  "kind": "METHOD",
+  "owner": "C50",
+  "obfName": "m793",
+  "reference": "replaceFirst",
+  "suggested": "replaceFirstOccurrence",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 60,
+  "kind": "METHOD",
+  "owner": "C57",
+  "obfName": "m817",
+  "reference": "escapeJava",
+  "suggested": "escapeXml",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 61,
+  "kind": "METHOD",
+  "owner": "C57",
+  "obfName": "m827",
+  "reference": "unescapeJson",
+  "suggested": "unescapeXml",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 62,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m120",
+  "reference": "indexesOf",
+  "suggested": "processFloats",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 63,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m134",
+  "reference": "insert",
+  "suggested": "processFloatArrays",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 64,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m298",
+  "reference": "reverse",
+  "suggested": "updateBooleanArray",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 65,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m305",
+  "reference": "shift",
+  "suggested": "setArrayValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 66,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m307",
+  "reference": "shift",
+  "suggested": "setArrayValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 67,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m313",
+  "reference": "shift",
+  "suggested": "setObjectAtIndex",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 68,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m333",
+  "reference": "shuffle",
+  "suggested": "processShortArray",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 69,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m372",
+  "reference": "toObject",
+  "suggested": "convertShortArray",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 70,
+  "kind": "METHOD",
+  "owner": "C6",
+  "obfName": "m384",
+  "reference": "toPrimitive",
+  "suggested": "processFloatArray",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 71,
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m1029",
+  "reference": "stripEnd",
+  "suggested": "transformString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 72,
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m1034",
+  "reference": "substring",
+  "suggested": "formatString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 73,
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m1063",
+  "reference": "wrap",
+  "suggested": "transformString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 74,
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m845",
+  "reference": "compare",
+  "suggested": "compareStrings",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 75,
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m849",
+  "reference": "contains",
+  "suggested": "isValidSequence",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 76,
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m978",
+  "reference": "removeStart",
+  "suggested": "formatString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 77,
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m987",
+  "reference": "replaceChars",
+  "suggested": "processAbbreviation",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 78,
+  "kind": "METHOD",
+  "owner": "C61",
+  "obfName": "m1109",
+  "reference": "getUserDir",
+  "suggested": "getUserHome",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 79,
+  "kind": "CLASS",
+  "owner": "C62",
+  "obfName": "C62",
+  "reference": "SystemUtils",
+  "suggested": "EnvironmentProperties",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 80,
+  "kind": "FIELD",
+  "owner": "C62",
+  "obfName": "f244",
+  "reference": "IS_OS_MAC",
+  "suggested": "IS_WINDOWS",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 81,
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m1080",
+  "reference": "getJavaHome",
+  "suggested": "getFileFromEncoding",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 82,
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m1110",
+  "reference": "getUserHome",
+  "suggested": "getFileFromPath",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 83,
+  "kind": "CLASS",
+  "owner": "C63",
+  "obfName": "C63",
+  "reference": "ThreadUtils",
+  "suggested": "ThreadManager",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 84,
+  "kind": "METHOD",
+  "owner": "C7",
+  "obfName": "m402",
+  "reference": "set",
+  "suggested": "calculateValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 85,
+  "kind": "METHOD",
+  "owner": "C70",
+  "obfName": "m1156",
+  "reference": "exclusiveBetween",
+  "suggested": "validateRangeWithMessage",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 86,
+  "kind": "METHOD",
+  "owner": "C70",
+  "obfName": "m1160",
+  "reference": "exclusiveBetween",
+  "suggested": "validateValueInRange",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 87,
+  "kind": "METHOD",
+  "owner": "C71",
+  "obfName": "m1209",
+  "reference": "is32Bit",
+  "suggested": "isBit32Or64",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 88,
+  "kind": "METHOD",
+  "owner": "C77",
+  "obfName": "m1219",
+  "reference": "append",
+  "suggested": "compareBytes",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 89,
+  "kind": "FIELD",
+  "owner": "C8",
+  "obfName": "f30",
+  "reference": "FALSE",
+  "suggested": "BOOLEAN_FALSE",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 90,
+  "kind": "METHOD",
+  "owner": "C99",
+  "obfName": "m1271",
+  "reference": "getNumberOfDiffs",
+  "suggested": "getListSize",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 91,
+  "kind": "METHOD",
+  "owner": "C1",
+  "obfName": "m1",
+  "reference": "shouldSkipClass",
+  "suggested": "isAnnotated",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 92,
+  "kind": "CLASS",
+  "owner": "C107",
+  "obfName": "C107",
+  "reference": "Primitives",
+  "suggested": "PrimitiveTypeUtils",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 93,
+  "kind": "METHOD",
+  "owner": "C107",
+  "obfName": "m243",
+  "reference": "unwrap",
+  "suggested": "getPrimitiveType",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 94,
+  "kind": "METHOD",
+  "owner": "C11",
+  "obfName": "m12",
+  "reference": "translateName",
+  "suggested": "getFieldValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 95,
+  "kind": "METHOD",
+  "owner": "C113",
+  "obfName": "m147",
+  "reference": "parse",
+  "suggested": "parseJson",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 96,
+  "kind": "CLASS",
+  "owner": "C12",
+  "obfName": "C12",
+  "reference": "FormattingStyle",
+  "suggested": "TextFormatting",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 97,
+  "kind": "FIELD",
+  "owner": "C12",
+  "obfName": "f10",
+  "reference": "PRETTY",
+  "suggested": "DEFAULT_CONFIG",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 98,
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m28",
+  "reference": "fromJson",
+  "suggested": "convertObject",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 99,
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m37",
+  "reference": "fromJson",
+  "suggested": "parseObject",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 100,
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m41",
+  "reference": "htmlSafe",
+  "suggested": "isFeatureEnabled",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 101,
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m44",
+  "reference": "newJsonReader",
+  "suggested": "parseReader",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 102,
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m50",
+  "reference": "toJson",
+  "suggested": "objectToString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 103,
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m51",
+  "reference": "toJson",
+  "suggested": "serializeObject",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 104,
+  "kind": "METHOD",
+  "owner": "C13",
+  "obfName": "m53",
+  "reference": "toJson",
+  "suggested": "serializeObject",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 105,
+  "kind": "CLASS",
+  "owner": "C19",
+  "obfName": "C19",
+  "reference": "FutureTypeAdapter",
+  "suggested": "TypeAdapter",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 106,
+  "kind": "METHOD",
+  "owner": "C19",
+  "obfName": "m58",
+  "reference": "getSerializationDelegate",
+  "suggested": "getAdapter",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 107,
+  "kind": "METHOD",
+  "owner": "C131",
+  "obfName": "m168",
+  "reference": "create",
+  "suggested": "getAdapter",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 108,
+  "kind": "METHOD",
+  "owner": "C134",
+  "obfName": "m276",
+  "reference": "getPreviousPath",
+  "suggested": "generateFormattedString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 109,
+  "kind": "METHOD",
+  "owner": "C134",
+  "obfName": "m280",
+  "reference": "nextDouble",
+  "suggested": "parseDouble",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 110,
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m270",
+  "reference": "beginObject",
+  "suggested": "createJsonObject",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 111,
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m294",
+  "reference": "get",
+  "suggested": "getSingleElement",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 112,
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m296",
+  "reference": "name",
+  "suggested": "writeJsonName",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 113,
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m300",
+  "reference": "value",
+  "suggested": "writeFloat",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 114,
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m301",
+  "reference": "value",
+  "suggested": "writeLong",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 115,
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m303",
+  "reference": "value",
+  "suggested": "writeNumber",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 116,
+  "kind": "METHOD",
+  "owner": "C137",
+  "obfName": "m304",
+  "reference": "value",
+  "suggested": "writeName",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 117,
+  "kind": "CLASS",
+  "owner": "C147",
+  "obfName": "C147",
+  "reference": "ReflectiveTypeAdapterFactory",
+  "suggested": "ReflectionAccessHandler",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 118,
+  "kind": "CLASS",
+  "owner": "C150",
+  "obfName": "C150",
+  "reference": "Adapter",
+  "suggested": "ObjectManipulator",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 119,
+  "kind": "METHOD",
+  "owner": "C150",
+  "obfName": "m59",
+  "reference": "read",
+  "suggested": "processData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 120,
+  "kind": "CLASS",
+  "owner": "C154",
+  "obfName": "C154",
+  "reference": "RecordAdapter",
+  "suggested": "ConstructorManager",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 121,
+  "kind": "METHOD",
+  "owner": "C155",
+  "obfName": "m58",
+  "reference": "getSerializationDelegate",
+  "suggested": "getBaseObject",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 122,
+  "kind": "METHOD",
+  "owner": "C156",
+  "obfName": "m58",
+  "reference": "getSerializationDelegate",
+  "suggested": "getObject",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 123,
+  "kind": "METHOD",
+  "owner": "C158",
+  "obfName": "m157",
+  "reference": "serialize",
+  "suggested": "convertObject",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 124,
+  "kind": "CLASS",
+  "owner": "C160",
+  "obfName": "C160",
+  "reference": "TypeAdapterRuntimeTypeWrapper",
+  "suggested": "TypeHandler",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 125,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f189",
+  "reference": "BOOLEAN",
+  "suggested": "BOOLEAN_SERIALIZER",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 126,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f197",
+  "reference": "CHARACTER_FACTORY",
+  "suggested": "INSTANCE_FACTORY",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 127,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f202",
+  "reference": "DOUBLE",
+  "suggested": "DEFAULT_VALUE",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 128,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f205",
+  "reference": "INET_ADDRESS",
+  "suggested": "DEFAULT_VALUE",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 129,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f207",
+  "reference": "INTEGER",
+  "suggested": "CONFIGURATION_CONSTANT_7",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 130,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f208",
+  "reference": "INTEGER_FACTORY",
+  "suggested": "FACTORY_TYPE_8",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 131,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f224",
+  "reference": "URI_FACTORY",
+  "suggested": "CLASS_INSTANCE_FACTORY",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 132,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f226",
+  "reference": "URL_FACTORY",
+  "suggested": "CLASS_INSTANCE_FACTORY",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 133,
+  "kind": "FIELD",
+  "owner": "C161",
+  "obfName": "f227",
+  "reference": "UUID",
+  "suggested": "CONFIGURATION_CONSTANT_1",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 134,
+  "kind": "METHOD",
+  "owner": "C161",
+  "obfName": "m335",
+  "reference": "newTypeHierarchyFactory",
+  "suggested": "createFactory",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 135,
+  "kind": "CLASS",
+  "owner": "C2",
+  "obfName": "C2",
+  "reference": "FieldAttributes",
+  "suggested": "FieldWrapper",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 136,
+  "kind": "METHOD",
+  "owner": "C2",
+  "obfName": "m6",
+  "reference": "getDeclaredType",
+  "suggested": "getGenericType",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 137,
+  "kind": "CLASS",
+  "owner": "C20",
+  "obfName": "C20",
+  "reference": "GsonBuilder",
+  "suggested": "ConfigurationProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 138,
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m62",
+  "reference": "addDeserializationExclusionStrategy",
+  "suggested": "updateWithObject",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 139,
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m68",
+  "reference": "disableHtmlEscaping",
+  "suggested": "disableFeature",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 140,
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m70",
+  "reference": "disableJdkUnsafe",
+  "suggested": "disableFeature",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 141,
+  "kind": "METHOD",
+  "owner": "C20",
+  "obfName": "m88",
+  "reference": "setLongSerializationPolicy",
+  "suggested": "setC36",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 142,
+  "kind": "METHOD",
+  "owner": "C204",
+  "obfName": "m351",
+  "reference": "getAccessor",
+  "suggested": "getMethodForField",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 143,
+  "kind": "CLASS",
+  "owner": "C205",
+  "obfName": "C205",
+  "reference": "RecordNotSupportedHelper",
+  "suggested": "UnsupportedRecordHandler",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 144,
+  "kind": "METHOD",
+  "owner": "C211",
+  "obfName": "m362",
+  "reference": "write",
+  "suggested": "setTimestamp",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 145,
+  "kind": "FIELD",
+  "owner": "C213",
+  "obfName": "f246",
+  "reference": "TIME_FACTORY",
+  "suggested": "TIMESTAMP_FACTORY",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 146,
+  "kind": "METHOD",
+  "owner": "C217",
+  "obfName": "m364",
+  "reference": "get",
+  "suggested": "getInstanceForClass",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 147,
+  "kind": "METHOD",
+  "owner": "C217",
+  "obfName": "m366",
+  "reference": "getArray",
+  "suggested": "createTypeToken",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 148,
+  "kind": "METHOD",
+  "owner": "C217",
+  "obfName": "m371",
+  "reference": "isAssignableFrom",
+  "suggested": "isCompatibleType",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 149,
+  "kind": "METHOD",
+  "owner": "C219",
+  "obfName": "m92",
+  "reference": "setStrictness",
+  "suggested": "setC45",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 150,
+  "kind": "METHOD",
+  "owner": "C22",
+  "obfName": "m112",
+  "reference": "getAsInt",
+  "suggested": "getSize",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 151,
+  "kind": "METHOD",
+  "owner": "C22",
+  "obfName": "m117",
+  "reference": "getAsString",
+  "suggested": "getElementAsString",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 152,
+  "kind": "METHOD",
+  "owner": "C22",
+  "obfName": "m97",
+  "reference": "add",
+  "suggested": "addCharacter",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 153,
+  "kind": "FIELD",
+  "owner": "C222",
+  "obfName": "f302",
+  "reference": "NAME",
+  "suggested": "TOKEN_NAME",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 154,
+  "kind": "FIELD",
+  "owner": "C222",
+  "obfName": "f303",
+  "reference": "NULL",
+  "suggested": "NULL_VALUE",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 155,
+  "kind": "FIELD",
+  "owner": "C222",
+  "obfName": "f305",
+  "reference": "STRING",
+  "suggested": "JSON_STRING",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 156,
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m269",
+  "reference": "beginArray",
+  "suggested": "writeJson",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 157,
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m295",
+  "reference": "jsonValue",
+  "suggested": "writeString",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 158,
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m299",
+  "reference": "value",
+  "suggested": "writeDouble",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 159,
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m300",
+  "reference": "value",
+  "suggested": "writeFloat",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 160,
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m411",
+  "reference": "setHtmlSafe",
+  "suggested": "setFlag",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 161,
+  "kind": "METHOD",
+  "owner": "C223",
+  "obfName": "m86",
+  "reference": "setFormattingStyle",
+  "suggested": "processObject",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 162,
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m123",
+  "reference": "deserialize",
+  "suggested": "convert",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 163,
+  "kind": "METHOD",
+  "owner": "C25",
+  "obfName": "m129",
+  "reference": "isJsonArray",
+  "suggested": "isJsonNull",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 164,
+  "kind": "CLASS",
+  "owner": "C28",
+  "obfName": "C28",
+  "reference": "JsonObject",
+  "suggested": "DataMap",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 165,
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m118",
+  "reference": "isEmpty",
+  "suggested": "isSingleEntry",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 166,
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m135",
+  "reference": "addProperty",
+  "suggested": "setCharacterValue",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 167,
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m138",
+  "reference": "asMap",
+  "suggested": "getMap",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 168,
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m144",
+  "reference": "has",
+  "suggested": "containsKey",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 169,
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m109",
+  "reference": "getAsCharacter",
+  "suggested": "getFirstCharacter",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 170,
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m110",
+  "reference": "getAsDouble",
+  "suggested": "getDoubleValue",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 171,
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m115",
+  "reference": "getAsShort",
+  "suggested": "toShort",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 172,
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m117",
+  "reference": "getAsString",
+  "suggested": "toStringRepresentation",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 173,
+  "kind": "METHOD",
+  "owner": "C32",
+  "obfName": "m158",
+  "reference": "serialize",
+  "suggested": "convertWithTypeInfo",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 174,
+  "kind": "METHOD",
+  "owner": "C52",
+  "obfName": "m59",
+  "reference": "read",
+  "suggested": "processData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 175,
+  "kind": "CLASS",
+  "owner": "C54",
+  "obfName": "C54",
+  "reference": "TypeAdapterFactory",
+  "suggested": "Transformer",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 176,
+  "kind": "CLASS",
+  "owner": "C63",
+  "obfName": "C63",
+  "reference": "Preconditions",
+  "suggested": "ConstraintValidator",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 177,
+  "kind": "METHOD",
+  "owner": "C64",
+  "obfName": "m188",
+  "reference": "requiresOwnerType",
+  "suggested": "isTypeStatic",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 178,
+  "kind": "FIELD",
+  "owner": "C89",
+  "obfName": "f88",
+  "reference": "DEFAULT",
+  "suggested": "DEFAULT_INSTANCE",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 179,
+  "kind": "CLASS",
+  "owner": "C93",
+  "obfName": "C93",
+  "reference": "JsonReaderInternalAccess",
+  "suggested": "AbstractProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 180,
+  "kind": "CLASS",
+  "owner": "C94",
+  "obfName": "C94",
+  "reference": "LazilyParsedNumber",
+  "suggested": "StringNumber",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 181,
+  "kind": "METHOD",
+  "owner": "C100",
+  "obfName": "m79",
+  "reference": "reset",
+  "suggested": "resetFields",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 182,
+  "kind": "CLASS",
+  "owner": "C102",
+  "obfName": "C102",
+  "reference": "State",
+  "suggested": "ConstantValues",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 183,
+  "kind": "METHOD",
+  "owner": "C104",
+  "obfName": "m237",
+  "reference": "decodeBit",
+  "suggested": "processData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 184,
+  "kind": "METHOD",
+  "owner": "C104",
+  "obfName": "m240",
+  "reference": "decodeReverseBitTree",
+  "suggested": "processShortArray",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 185,
+  "kind": "METHOD",
+  "owner": "C105",
+  "obfName": "m242",
+  "reference": "isFinished",
+  "suggested": "isValid",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 186,
+  "kind": "METHOD",
+  "owner": "C106",
+  "obfName": "m241",
+  "reference": "normalize",
+  "suggested": "readData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 187,
+  "kind": "METHOD",
+  "owner": "C107",
+  "obfName": "m244",
+  "reference": "encodeBit",
+  "suggested": "processShortArray",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 188,
+  "kind": "CLASS",
+  "owner": "C108",
+  "obfName": "C108",
+  "reference": "RangeEncoderToBuffer",
+  "suggested": "ByteArrayProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 189,
+  "kind": "METHOD",
+  "owner": "C108",
+  "obfName": "m144",
+  "reference": "putArraysToCache",
+  "suggested": "processData",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 190,
+  "kind": "METHOD",
+  "owner": "C108",
+  "obfName": "m31",
+  "reference": "finish",
+  "suggested": "validateState",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 191,
+  "kind": "CLASS",
+  "owner": "C114",
+  "obfName": "C114",
+  "reference": "SPARC",
+  "suggested": "ByteProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 192,
+  "kind": "CLASS",
+  "owner": "C115",
+  "obfName": "C115",
+  "reference": "SimpleFilter",
+  "suggested": "ByteProcessor",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 193,
+  "kind": "METHOD",
+  "owner": "C14",
+  "obfName": "m29",
+  "reference": "getUnpaddedSize",
+  "suggested": "computeValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 194,
+  "kind": "CLASS",
+  "owner": "C19",
+  "obfName": "C19",
+  "reference": "DeltaCoder",
+  "suggested": "ConfigConstants",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 195,
+  "kind": "FIELD",
+  "owner": "C19",
+  "obfName": "f40",
+  "reference": "FILTER_ID",
+  "suggested": "THREE",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 196,
+  "kind": "CLASS",
+  "owner": "C20",
+  "obfName": "C20",
+  "reference": "DeltaDecoder",
+  "suggested": "StreamProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 197,
+  "kind": "METHOD",
+  "owner": "C21",
+  "obfName": "m17",
+  "reference": "getFilterProps",
+  "suggested": "getBytes",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 198,
+  "kind": "CLASS",
+  "owner": "C23",
+  "obfName": "C23",
+  "reference": "DeltaOptions",
+  "suggested": "StreamProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 199,
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m20",
+  "reference": "getEncoderMemoryUsage",
+  "suggested": "getStreamValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 200,
+  "kind": "METHOD",
+  "owner": "C23",
+  "obfName": "m33",
+  "reference": "getDistance",
+  "suggested": "getConstantValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 201,
+  "kind": "CLASS",
+  "owner": "C25",
+  "obfName": "C25",
+  "reference": "FilterCoder",
+  "suggested": "BooleanCheck",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 202,
+  "kind": "METHOD",
+  "owner": "C25",
+  "obfName": "m11",
+  "reference": "changesSize",
+  "suggested": "isSupported",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 203,
+  "kind": "METHOD",
+  "owner": "C25",
+  "obfName": "m13",
+  "reference": "lastOK",
+  "suggested": "isSupported",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 204,
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m19",
+  "reference": "getDecoderMemoryUsage",
+  "suggested": "getElementCount",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 205,
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m20",
+  "reference": "getEncoderMemoryUsage",
+  "suggested": "getValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 206,
+  "kind": "METHOD",
+  "owner": "C28",
+  "obfName": "m3",
+  "reference": "getOutputStream",
+  "suggested": "processC29WithC3",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 207,
+  "kind": "CLASS",
+  "owner": "C29",
+  "obfName": "C29",
+  "reference": "FinishableOutputStream",
+  "suggested": "CustomOutputStream",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 208,
+  "kind": "CLASS",
+  "owner": "C3",
+  "obfName": "C3",
+  "reference": "ArrayCache",
+  "suggested": "DataProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 209,
+  "kind": "METHOD",
+  "owner": "C3",
+  "obfName": "m7",
+  "reference": "getIntArray",
+  "suggested": "generateIntArray",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 210,
+  "kind": "METHOD",
+  "owner": "C3",
+  "obfName": "m9",
+  "reference": "putArray",
+  "suggested": "processArray",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 211,
+  "kind": "CLASS",
+  "owner": "C30",
+  "obfName": "C30",
+  "reference": "FinishableWrapperOutputStream",
+  "suggested": "DataOutputStreamWrapper",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 212,
+  "kind": "CLASS",
+  "owner": "C31",
+  "obfName": "C31",
+  "reference": "IA64Options",
+  "suggested": "StreamManipulator",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 213,
+  "kind": "METHOD",
+  "owner": "C31",
+  "obfName": "m2",
+  "reference": "getInputStream",
+  "suggested": "wrapInputStream",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 214,
+  "kind": "METHOD",
+  "owner": "C33",
+  "obfName": "m11",
+  "reference": "changesSize",
+  "suggested": "isValid",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 215,
+  "kind": "METHOD",
+  "owner": "C35",
+  "obfName": "m18",
+  "reference": "supportsFlushing",
+  "suggested": "isValid",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 216,
+  "kind": "CLASS",
+  "owner": "C36",
+  "obfName": "C36",
+  "reference": "LZMA2InputStream",
+  "suggested": "DataStream",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 217,
+  "kind": "METHOD",
+  "owner": "C36",
+  "obfName": "m42",
+  "reference": "getMemoryUsage",
+  "suggested": "calculateBufferSize",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 218,
+  "kind": "FIELD",
+  "owner": "C37",
+  "obfName": "f67",
+  "reference": "DICT_SIZE_DEFAULT",
+  "suggested": "MEMORY_SIZE_23",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 219,
+  "kind": "FIELD",
+  "owner": "C37",
+  "obfName": "f70",
+  "reference": "LP_DEFAULT",
+  "suggested": "DEFAULT_VALUE",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 220,
+  "kind": "FIELD",
+  "owner": "C37",
+  "obfName": "f71",
+  "reference": "MF_BT4",
+  "suggested": "DEFAULT_VALUE",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 221,
+  "kind": "FIELD",
+  "owner": "C37",
+  "obfName": "f79",
+  "reference": "PB_MAX",
+  "suggested": "FOUR",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 222,
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m50",
+  "reference": "getNiceLen",
+  "suggested": "getMatchFinder",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 223,
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m51",
+  "reference": "getPb",
+  "suggested": "getCompressionLevel",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 224,
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m52",
+  "reference": "getPresetDict",
+  "suggested": "getBytes",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 225,
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m56",
+  "reference": "setLcLp",
+  "suggested": "validateParameters",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 226,
+  "kind": "METHOD",
+  "owner": "C37",
+  "obfName": "m61",
+  "reference": "setPb",
+  "suggested": "validatePb",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 227,
+  "kind": "METHOD",
+  "owner": "C38",
+  "obfName": "m31",
+  "reference": "finish",
+  "suggested": "finalize",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 228,
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m11",
+  "reference": "changesSize",
+  "suggested": "isValid",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 229,
+  "kind": "METHOD",
+  "owner": "C4",
+  "obfName": "m14",
+  "reference": "nonLastOK",
+  "suggested": "isPositive",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 230,
+  "kind": "METHOD",
+  "owner": "C40",
+  "obfName": "m28",
+  "reference": "getUncompressedSize",
+  "suggested": "getLongValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 231,
+  "kind": "METHOD",
+  "owner": "C40",
+  "obfName": "m31",
+  "reference": "finish",
+  "suggested": "closeAndReset",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 232,
+  "kind": "METHOD",
+  "owner": "C44",
+  "obfName": "m79",
+  "reference": "reset",
+  "suggested": "processLists",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 233,
+  "kind": "METHOD",
+  "owner": "C47",
+  "obfName": "m80",
+  "reference": "length",
+  "suggested": "calculateSkip",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 234,
+  "kind": "METHOD",
+  "owner": "C47",
+  "obfName": "m82",
+  "reference": "seek",
+  "suggested": "skipBytes",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 235,
+  "kind": "METHOD",
+  "owner": "C48",
+  "obfName": "m81",
+  "reference": "position",
+  "suggested": "getStreamPosition",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 236,
+  "kind": "METHOD",
+  "owner": "C48",
+  "obfName": "m98",
+  "reference": "seekToBlock",
+  "suggested": "validateXzBlock",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 237,
+  "kind": "CLASS",
+  "owner": "C5",
+  "obfName": "C5",
+  "reference": "BCJDecoder",
+  "suggested": "StreamProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 238,
+  "kind": "CLASS",
+  "owner": "C50",
+  "obfName": "C50",
+  "reference": "SimpleOutputStream",
+  "suggested": "BufferedOutputStreamExt",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 239,
+  "kind": "FIELD",
+  "owner": "C55",
+  "obfName": "f135",
+  "reference": "CHECK_CRC64",
+  "suggested": "FOUR",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 240,
+  "kind": "CLASS",
+  "owner": "C56",
+  "obfName": "C56",
+  "reference": "XZFormatException",
+  "suggested": "Constants",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 241,
+  "kind": "METHOD",
+  "owner": "C59",
+  "obfName": "m31",
+  "reference": "finish",
+  "suggested": "closeStream",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 242,
+  "kind": "METHOD",
+  "owner": "C60",
+  "obfName": "m111",
+  "reference": "update",
+  "suggested": "updateChecksum",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 243,
+  "kind": "METHOD",
+  "owner": "C61",
+  "obfName": "m31",
+  "reference": "finish",
+  "suggested": "calculateChecksum",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 244,
+  "kind": "CLASS",
+  "owner": "C62",
+  "obfName": "C62",
+  "reference": "Check",
+  "suggested": "DataProcessor",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 245,
+  "kind": "METHOD",
+  "owner": "C62",
+  "obfName": "m112",
+  "reference": "getInstance",
+  "suggested": "createCheck",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 246,
+  "kind": "CLASS",
+  "owner": "C63",
+  "obfName": "C63",
+  "reference": "None",
+  "suggested": "C63Extended",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 247,
+  "kind": "METHOD",
+  "owner": "C66",
+  "obfName": "m122",
+  "reference": "writeCRC32",
+  "suggested": "writeWithChecksum",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 248,
+  "kind": "CLASS",
+  "owner": "C68",
+  "obfName": "C68",
+  "reference": "Util",
+  "suggested": "SizeConstants",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 249,
+  "kind": "FIELD",
+  "owner": "C68",
+  "obfName": "f154",
+  "reference": "BACKWARD_SIZE_MAX",
+  "suggested": "POWER_OF_TWO_34",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 250,
+  "kind": "FIELD",
+  "owner": "C68",
+  "obfName": "f156",
+  "reference": "STREAM_HEADER_SIZE",
+  "suggested": "MAX_VALUE_12",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 251,
+  "kind": "CLASS",
+  "owner": "C69",
+  "obfName": "C69",
+  "reference": "DeltaCoder",
+  "suggested": "ByteArrayConstants",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 252,
+  "kind": "FIELD",
+  "owner": "C72",
+  "obfName": "f164",
+  "reference": "uncompressedOffset",
+  "suggested": "uncompressedSize",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 253,
+  "kind": "FIELD",
+  "owner": "C72",
+  "obfName": "f33",
+  "reference": "uncompressedSize",
+  "suggested": "size",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 254,
+  "kind": "METHOD",
+  "owner": "C74",
+  "obfName": "m133",
+  "reference": "getRecordCount",
+  "suggested": "getIndex",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 255,
+  "kind": "METHOD",
+  "owner": "C74",
+  "obfName": "m137",
+  "reference": "locateBlock",
+  "suggested": "processData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 256,
+  "kind": "METHOD",
+  "owner": "C74",
+  "obfName": "m92",
+  "reference": "getLargestBlockSize",
+  "suggested": "getLongValue",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 257,
+  "kind": "METHOD",
+  "owner": "C76",
+  "obfName": "m128",
+  "reference": "add",
+  "suggested": "processData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 258,
+  "kind": "CLASS",
+  "owner": "C77",
+  "obfName": "C77",
+  "reference": "IndexRecord",
+  "suggested": "DataStorage",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 259,
+  "kind": "METHOD",
+  "owner": "C8",
+  "obfName": "m7",
+  "reference": "getIntArray",
+  "suggested": "fillIntArray",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 260,
+  "kind": "CLASS",
+  "owner": "C10",
+  "obfName": "C10",
+  "reference": "CacheMap",
+  "suggested": "EntryCache",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 261,
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m157",
+  "reference": "getPos",
+  "suggested": "getPosition",
+  "verdict": "ACCEPT"
+ },
+ {
+  "id": 262,
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m158",
+  "reference": "hasPending",
+  "suggested": "isConditionMet",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 263,
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m163",
+  "reference": "setLimit",
+  "suggested": "updateStreamPosition",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 264,
+  "kind": "METHOD",
+  "owner": "C82",
+  "obfName": "m79",
+  "reference": "reset",
+  "suggested": "processData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 265,
+  "kind": "FIELD",
+  "owner": "C83",
+  "obfName": "f71",
+  "reference": "MF_BT4",
+  "suggested": "DEFAULT_LIMIT",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 266,
+  "kind": "METHOD",
+  "owner": "C83",
+  "obfName": "m144",
+  "reference": "putArraysToCache",
+  "suggested": "processData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 267,
+  "kind": "METHOD",
+  "owner": "C83",
+  "obfName": "m174",
+  "reference": "isStarted",
+  "suggested": "isValid",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 268,
+  "kind": "METHOD",
+  "owner": "C83",
+  "obfName": "m181",
+  "reference": "setPresetDict",
+  "suggested": "processData",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 269,
+  "kind": "METHOD",
+  "owner": "C83",
+  "obfName": "m182",
+  "reference": "verifyMatches",
+  "suggested": "validateC84",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 270,
+  "kind": "FIELD",
+  "owner": "C84",
+  "obfName": "f216",
+  "reference": "dist",
+  "suggested": "itemCounts",
+  "verdict": "UNCERTAIN"
+ },
+ {
+  "id": 271,
+  "kind": "CLASS",
+  "owner": "C85",
+  "obfName": "C85",
+  "reference": "LZMACoder",
+  "suggested": "GameSettings",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 272,
+  "kind": "CLASS",
+  "owner": "C87",
+  "obfName": "C87",
+  "reference": "LiteralCoder",
+  "suggested": "MathOperations",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 273,
+  "kind": "METHOD",
+  "owner": "C89",
+  "obfName": "m188",
+  "reference": "endMarkerDetected",
+  "suggested": "isValid",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 274,
+  "kind": "METHOD",
+  "owner": "C89",
+  "obfName": "m79",
+  "reference": "reset",
+  "suggested": "performAction",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 275,
+  "kind": "CLASS",
+  "owner": "C94",
+  "obfName": "C94",
+  "reference": "LZMAEncoder",
+  "suggested": "MemoryConfig",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 276,
+  "kind": "METHOD",
+  "owner": "C94",
+  "obfName": "m201",
+  "reference": "getLZEncoder",
+  "suggested": "getC83",
+  "verdict": "REJECT"
+ },
+ {
+  "id": 277,
+  "kind": "METHOD",
+  "owner": "C94",
+  "obfName": "m79",
+  "reference": "reset",
+  "suggested": "updateState",
+  "verdict": "REJECT"
+ }
+]

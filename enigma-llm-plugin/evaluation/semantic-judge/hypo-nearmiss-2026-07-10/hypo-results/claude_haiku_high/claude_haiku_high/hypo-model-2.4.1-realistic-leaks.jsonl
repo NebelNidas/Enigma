@@ -1,0 +1,15 @@
+{"owner":"obf/C38","channel":"string-literal","matchKind":"member","realName":"SHORT","strict":true,"context":"SHORT"}
+{"owner":"obf/C38","channel":"string-literal","matchKind":"member","realName":"FLOAT","strict":true,"context":"FLOAT"}
+{"owner":"obf/C38","channel":"string-literal","matchKind":"member","realName":"DOUBLE","strict":true,"context":"DOUBLE"}
+{"owner":"obf/C38","channel":"string-literal","matchKind":"member","realName":"BOOLEAN","strict":true,"context":"BOOLEAN"}
+{"owner":"obf/C1","channel":"string-literal","matchKind":"class","realName":"ClassData","strict":false,"context":"ClassData requested before decorating ClassDataProvider"}
+{"owner":"obf/C1","channel":"string-literal","matchKind":"class","realName":"ClassDataProvider","strict":false,"context":"ClassData requested before decorating ClassDataProvider"}
+{"owner":"obf/C34","channel":"string-literal","matchKind":"member","realName":"PUBLIC","strict":true,"context":"PUBLIC"}
+{"owner":"obf/C34","channel":"string-literal","matchKind":"member","realName":"PACKAGE","strict":true,"context":"PACKAGE"}
+{"owner":"obf/C34","channel":"string-literal","matchKind":"member","realName":"PROTECTED","strict":true,"context":"PROTECTED"}
+{"owner":"obf/C34","channel":"string-literal","matchKind":"member","realName":"PRIVATE","strict":true,"context":"PRIVATE"}
+{"owner":"obf/C26","channel":"string-literal","matchKind":"class","realName":"HypoKey","strict":false,"context":"HypoKey[\u0001]"}
+{"owner":"obf/C22","channel":"string-literal","matchKind":"member","realName":"CLASS","strict":true,"context":"CLASS"}
+{"owner":"obf/C22","channel":"string-literal","matchKind":"member","realName":"ABSTRACT_CLASS","strict":true,"context":"ABSTRACT_CLASS"}
+{"owner":"obf/C16","channel":"string-literal","matchKind":"class","realName":"ClassDataProvider","strict":false,"context":"ClassDataProvider not set on \u0001"}
+{"owner":"obf/C35","channel":"string-literal","matchKind":"member","realName":"dimension","strict":false,"context":"Invalid array dimension: \u0001"}
