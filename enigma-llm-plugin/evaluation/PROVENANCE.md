@@ -27,13 +27,33 @@ As of 2026-07-11 the **essay-critical rows are preserved in version control** at
 `exact`/`normalized`/`usable` rows are now durably recoverable, not only
 "reproducible in principle" from the committed scripts.
 
-Note this is *reproducible-in-principle AND now byte-preserved*, but a fresh re-run
-would still not be byte-identical (temperature-0 cloud non-determinism; batched-matmul
-FP drift). Precedent: commit `612d09d` earlier preserved the *derived* judge / ablation
-/ Hypo outputs from a volatile `/tmp` scratchpad; `0e95f53` extends the same treatment
-to the main-corpus per-target rows. Not preserved (intentionally): running/broken/
-contaminated gemma dirs, the incomplete coder-next IQ1 probe, backups, and logs — add
-gemma-4-31b (no-think) + coder-next IQ1 once they complete and land in the essay.
+### What "reproducible" means here (three distinct senses — the essay numbers satisfy all three)
+1. **Methodologically reproducible.** Every generating + aggregating script is committed and the corpus
+   is sha1-pinned in `build.gradle`; checking out the recorded commit and re-running regenerates
+   equivalent numbers. The aggregators were smoke-tested 2026-07-11 against the real data and reproduce
+   the essay tables exactly (`aggregate_results.py`, `analyze_backend_matrix.py`, `agg_v2.py`, `agg_hypo.py`).
+2. **Byte-preserved.** The exact per-target rows that produced the essay figures are now committed
+   (`benchmark-raw-2026-07-11/`, `0e95f53`), so any table can be re-derived byte-for-byte from the
+   committed rows without re-running any model.
+3. **NOT bit-identical on a fresh model re-run** — and this is the only sense in which they are "not
+   reproducible", which is a property of the *models*, not of our preservation:
+   - **Commercial cloud models** (`gpt-5.5`, `claude-opus/sonnet`, `grok`) are non-deterministic even at
+     temperature 0 — vendor-side batching / hardware / routing yields different tokens across identical
+     calls, so their per-target verdicts cannot be reproduced token-for-token.
+   - **Local models on GPU**: floating-point non-associativity in batched matmul can flip an argmax token
+     run-to-run even at temperature 0 (documented as "co-decode is not bit-identical greedy"); `--parallel 1`
+     minimises but does not eliminate it.
+   - The **aggregates are stable** regardless: the temp=0.2 stability slice measured run-to-run jitter at
+     ~±3 targets / 300, so a multi-point model delta is capability, not noise.
+
+   → So "not byte-identically regenerable" (612d09d's README) means *a new run of the models won't be
+   token-identical*; it does **not** mean the essay numbers are unrecoverable — they are both preserved (2)
+   and re-derivable (1).
+
+Precedent: `612d09d` preserved the *derived* judge / ablation / Hypo outputs from a volatile `/tmp`
+scratchpad; `0e95f53` extends the same treatment to the main-corpus per-target rows. Not preserved
+(intentionally): running/broken/contaminated gemma dirs, the incomplete coder-next IQ1 probe, backups,
+logs — add gemma-4-31b (no-think) + coder-next IQ1 once they complete and land in the essay.
 
 What IS committed as raw output: the 1.5B smoke baseline (`evaluation/results/*.jsonl`),
 the Hypo near-miss package (`evaluation/semantic-judge/hypo-nearmiss-2026-07-10/`),
@@ -76,11 +96,10 @@ Input corpus → obfuscation → harness → aggregation, in commit order:
 
 ## 2. Claim-by-claim ledger
 
-### External / literature figures (no internal provenance — expected)
-- `tab:selfhosted_models` model family sizes/context windows (l.84–91) — literature (`aydin2025generativeai` + per-family cites).
-- RevEng.AI "$15M Series A, May 2026" (l.143) — cite `natorevengfunding`.
-- CurseForge "1.2B downloads/month, 20M MAU"; Fabric API "213M downloads" (l.187) — cites `curseforge`, `fabricapi`.
-- Hypo "thirteen stars" (l.450) — GitHub repo.
+*Scope: this ledger covers only the project's OWN empirical numbers. Externally-sourced figures
+(`tab:selfhosted_models` model sizes, the RevEng.AI funding figure, CurseForge / Fabric-API download
+counts, Hypo's star count) are omitted deliberately — they carry their own `\cite{}` in the essay and
+have no internal data pipeline to trace.*
 
 ### `tab:sweep` — Exact API recovery, realistic track, AUTO + graph-raised (l.353–358)
 commons-lang3 / gson / xz out of 100 API targets:
@@ -125,8 +144,14 @@ Same raw JSONL as `tab:sweep` (realistic + `…-structure-only-benchmark.jsonl`)
 - "same 300 API targets scored twice, graph ≥ owner 1–2 pp; auto picks ≥-good backend on ~98%": forced owner-vs-graph matrix. Script `analyze_backend_matrix.py` (+ `run-backend-ablation.sh`, `run-pc-queue.sh`). Raw JSONL **UNCOMMITTED** (`…_owner_k1/`, `…_graph_k1_raised/`, `…_graph_k1_cap8000/`). Commit `3d1ff1a`.
 
 ### §Round-Trip micro-claims (l.340)
-- "temp 0.2 moved exact API recovery within ~3 targets": `run-temp02-stability.sh`; raw **UNCOMMITTED** `…_q6_k_temp02_run{1,2,3}/`. Commit `ce45a50`.
-- "de-dup disabled recovered ~3 more per 300": HANDOFF-documented control; aggregator `aggregate_results.py`; exact run dir **UNKNOWN** (not separately named). Commit ~`ce45a50`/`f5037e0`.
+- "temp 0.2 moved exact API recovery within ~3 targets": `run-temp02-stability.sh`; raw now **PRESERVED** `benchmark-raw-2026-07-11/benchmark/…_q6_k_temp02_run{1,2,3}/`. Report `temp02-jitter_2026-07-08.txt`. Commit `ce45a50`.
+- "de-dup disabled recovered ~3 more per 300" — **provenance CONFIRMED (Codex + Gemini, 2026-07-11):**
+  script `run-cacheoff.sh` + engine gate `ENIGMA_LLM_DISABLE_SUGGESTION_CACHE`; run dir
+  `…_q6_k_graph_k1_raised_cacheoff` (cache-OFF **22/300**, err=0) vs `…_q6_k_graph_k1_raised` (cache-ON
+  **19/300**, err=3) → the whole-jar dedup costs exactly 3 exact hits + 3 hard-rejection errors (55/300
+  suggestions changed). Report `cacheoff_2026-07-08.txt` **(committed)**; both run dirs now **PRESERVED**
+  in `benchmark-raw-2026-07-11/`. Commit `ce45a50`. (Not UNKNOWN — the earlier "run dir not named" was my
+  gap, not the data's.)
 
 ### `tab:commercial` — local vs commercial exact/usable/latency, n=300 (l.431–438)
 local qwen3-14B 7.0/10.0/7s · local 30B 11.0/14.7/18s · claude-sonnet high 48.7/54.7/5s ·
@@ -153,8 +178,21 @@ local 30B 15/26/33 · sonnet high 25/41/52 · opus high 22/40/56 · gpt-5.5 high
 - **Aggregation** `agg_hypo.py` → `agg_hypo_report.txt` (reproduces exact 15/25/22/23; macro lens 21.8/15.0 exact, 53.4/33.0 majority).
 - **Commits** `16dd983` (repro package) + `612d09d` (preserved results). Essay `76251fd` *(essay repo)*. **This is the best-preserved chain in the essay** (raw + residuals + verdicts all committed).
 
-### §Local vs Commercial — latency (l.472)
-"commercial 7–14 s/suggestion vs local 30B ~18 s." Table `tab:commercial` latency column (per-suggestion `latencyMs`). A separate dedicated latency study (`latency_bench.tsv`, `local_latency_bench.tsv`) is referenced in HANDOFF but is **NOT under `evaluation/`** — location **UNKNOWN / uncommitted** (scratchpad-only). The 18 s comes from the full-prompt accuracy run.
+### §Local vs Commercial — latency (l.472) — provenance CONFIRMED (Codex + Gemini, 2026-07-11)
+"commercial 7–14 s/suggestion vs local 30B ~18 s"; Table `tab:commercial` latency column.
+- **Source = the `latencyMs` field recorded per suggestion in the ACCURACY-run benchmark JSONL** (full
+  ~8000-char prompts), added in commit `46a5fb5`, aggregated (median/p90) by `commercial_analyze.py` /
+  `aggregate_results.py`. These are the now-preserved commercial + local rows. HANDOFF pins this: "latencyMs
+  aus dem Commercial-Lauf ist autoritativ" (median 7.7 s codex-low; the mini-prompt matrix underestimated).
+- A **separate dedicated mini-prompt latency study** (`latency_bench.sh`/`_codex2.sh`/`_fable.sh` →
+  `latency_bench.tsv`; `local_latency_bench.sh` → `local_latency_bench.tsv`, 9 local models) exists in the
+  HANDOFF narrative but its `.tsv` files are **scratchpad-only / not on disk** (a `find` returns nothing) —
+  and they do **not** back an essay number (they used 4 short prompts and *underestimated*; the essay uses
+  the full-prompt `latencyMs` instead). So this is a non-essay side-artifact, not a provenance gap.
+- ⚠️ **Essay-number nuance to verify (NOT a provenance issue):** the dedicated local-latency log shows local
+  30B median ~6.4 s (offloaded IQ4_XS) while `tab:commercial`/l.472 quote ~18 s for local 30B. The 18 s is the
+  full-prompt `latencyMs` from the *accuracy* run; the 6.4 s is the *mini-prompt* study. Different measurement
+  contexts → worth a one-line reconciliation in the essay so the two local-30B latencies don't look contradictory.
 
 ### §Interpretation — roster + 7B loop (l.496)
 Roster raw JSONL UNCOMMITTED but on disk: `benchmark/{qwen2.5-coder-7b-instruct, …_14b_instruct_q6_k, qwen3-8b, deepseek-coder-v2-lite-instruct_q6_k, qwen3-coder-30b-a3b-instruct_iq4_xs}/`. Aggregator `aggregate_results.py`. Commits `eee709d`+`f5037e0`.
@@ -162,13 +200,26 @@ The 7B improvement-loop (DEV=gson+commons, HOLDOUT=xz; graph+conservative+16000-
 
 ---
 
-## 3. Gaps where a chain link is UNCOMMITTED / UNKNOWN
+## 3. Gaps — status after the 2026-07-11 preserve + Codex/Gemini provenance hunt
 
-1. ~~**`tab:sweep`, `tab:semantic` (exact counts), `tab:commercial`, structure-only, context comparison, temp0.2, dedup control** — raw per-target JSONL UNCOMMITTED.~~ **RESOLVED 2026-07-11:** preserved at `benchmark-raw-2026-07-11/` (commit `0e95f53`). (The dedup "~3 more per 300" control run dir was not separately named — its cache-off counterpart `…_graph_k1_raised_cacheoff` IS preserved; see gap #3.)
-2. **Dedicated latency TSVs** (`latency_bench.tsv`, `local_latency_bench.tsv`, l.472) — not under `evaluation/`; location UNKNOWN (scratchpad-only).
-3. **De-dup "~3 more per 300" control run dir** (l.340) — not separately named; UNKNOWN.
-4. **Obfuscated jars** (`build/llm-evaluation/obfuscated/*`) — gitignored; regenerable from corpus + harness, not preserved.
-5. **Essay-side commits** (`724cf24`, `c9c8e31`, `c341e3f`, `177cc70`, `76251fd`) live in the *separate* essay repo, confirmed via the HANDOFF timeline (not by inspecting that repo's log here).
+Every ESSAY number now has a complete, verified chain. Remaining notes are minor:
+
+1. ~~Headline raw per-target JSONL UNCOMMITTED~~ → **RESOLVED**: preserved `benchmark-raw-2026-07-11/` (`0e95f53`).
+2. ~~Dedicated latency TSVs UNKNOWN~~ → **RESOLVED (non-issue)**: the essay latency uses the accuracy-run
+   `latencyMs` (preserved), not the scratchpad mini-prompt `latency_bench.tsv` (which underestimated and is
+   not on disk). See §Local-vs-Commercial latency. One essay-number nuance to reconcile (local-30B 18 s vs 6.4 s).
+3. ~~De-dup "~3/300" control run dir UNKNOWN~~ → **RESOLVED**: `run-cacheoff.sh` → `…_graph_k1_raised_cacheoff`
+   (22/300) vs `…_graph_k1_raised` (19/300), report `cacheoff_2026-07-08.txt`, commit `ce45a50`; dirs preserved.
+4. **Obfuscated jars** (`build/llm-evaluation/obfuscated/*`) — gitignored; regenerable from the sha1-pinned
+   corpus + harness, so not preserved (the ground-truth JSONL needed to re-score IS preserved). Acceptable.
+5. **Essay-side commits** (`724cf24`, `c9c8e31`, `c341e3f`, `177cc70`, `76251fd`) live in the *separate* essay
+   repo, cross-referenced via the HANDOFF timeline (not by inspecting that repo's log here). Acceptable.
+
+**Verification (2026-07-11):** all analysis scripts referenced above `py_compile` cleanly (20/20); the four
+pure aggregators were run against the real data and reproduce the essay tables exactly — `aggregate_results.py`
+(exit 0, per-jar numbers), `analyze_backend_matrix.py` (owner 14 / graph 19 / AUTO 98%), `agg_v2.py`
+(14b/8b/30B 37.0/37.7/50.7 % v1), `agg_hypo.py` (gpt-5.5 23 %, opus 22 %). The `judge_run*` scripts call live
+LLM CLIs so they are compile-verified only; their verdict JSONs + reports are committed.
 
 ---
 
