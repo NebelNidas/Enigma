@@ -35,3 +35,11 @@ VRAM-overflowed → CPU-offload → collapsed, exact=8) was cut short at n~52 wh
 terminated to free the GPU. A FULL n=100 completion is queued (overnight, after the gemma run) so the
 "IQ1 is unsuitable for this task" claim rests on a complete run rather than an aborted one; the full
 result will replace the partial. Until then: do NOT use in headline tables.
+
+## 2026-07-11 — Grok rerun of the 33 unparseable verdicts
+`ablfull_grok.json` had 33/796 grok verdicts as MISSING (unparseable), conservatively counted as
+not-plausible → the essay's "33 unparseable" caveat. Re-ran ONLY those 33 through grok (seeded partial,
+`judge_ablated2.py grok`): **21 ACCEPT, 11 REJECT, 1 UNCERTAIN**. Full re-judged verdicts in
+`ablfull_grok_rerun.json`. Recomputed separation (Codex + Gemini confirmed): panel majority 82/24 → **84/25%**,
+grok-alone 70/18 → **74/19%**, per-judge range 74–87% vs 19–38%. Essay updated (commit 90ceba4); the "33
+unparseable" caveat is DROPPED. `ablfull_grok.json` kept as the pre-rerun provenance.
