@@ -1,0 +1,50 @@
+{"owner":"obf/C57$C58","channel":"string-literal","matchKind":"class","realName":"CsvEscaper","strict":false,"context":"CsvEscaper should never reach the [1] index"}
+{"owner":"obf/C71$C72","channel":"string-literal","matchKind":"member","realName":"BIT_32","strict":true,"context":"BIT_32"}
+{"owner":"obf/C71$C72","channel":"string-literal","matchKind":"member","realName":"BIT_64","strict":true,"context":"BIT_64"}
+{"owner":"obf/C71$C72","channel":"string-literal","matchKind":"member","realName":"UNKNOWN","strict":true,"context":"UNKNOWN"}
+{"owner":"obf/C24","channel":"string-literal","matchKind":"member","realName":"between","strict":false,"context":"nibble value not between 0 and 15: "}
+{"owner":"obf/C16","channel":"string-literal","matchKind":"member","realName":"range","strict":false,"context":" is not in the range '0' - '9'"}
+{"owner":"obf/C279","channel":"string-literal","matchKind":"member","realName":"componentType","strict":true,"context":"componentType"}
+{"owner":"obf/C279","channel":"string-literal","matchKind":"member","realName":"wildcardType","strict":true,"context":"wildcardType"}
+{"owner":"obf/C279","channel":"string-literal","matchKind":"class","realName":"Type","strict":false,"context":"Wait... What!? Type of rawType: "}
+{"owner":"obf/C314","channel":"string-literal","matchKind":"member","realName":"prefixMatcher","strict":true,"context":"prefixMatcher"}
+{"owner":"obf/C114$C116","channel":"string-literal","matchKind":"class","realName":"JsonToStringStyle","strict":false,"context":"Field names are mandatory when using JsonToStringStyle"}
+{"owner":"obf/C114$C116","channel":"string-literal","matchKind":"class","realName":"JsonToStringStyle","strict":false,"context":"FullDetail must be true when using JsonToStringStyle"}
+{"owner":"obf/C99","channel":"string-literal","matchKind":"member","realName":"diffList","strict":true,"context":"diffList"}
+{"owner":"obf/C291$C294","channel":"string-literal","matchKind":"member","realName":"stream","strict":false,"context":"This stream is already terminated."}
+{"owner":"obf/C291$C294","channel":"string-literal","matchKind":"member","realName":"terminated","strict":false,"context":"This stream is already terminated."}
+{"owner":"obf/C347$C359","channel":"string-literal","matchKind":"member","realName":"strategy","strict":true,"context":"strategy"}
+{"owner":"obf/C347$C359","channel":"string-literal","matchKind":"class","realName":"StrategyAndWidth","strict":false,"context":"StrategyAndWidth [strategy="}
+{"owner":"obf/C347$C359","channel":"string-literal","matchKind":"member","realName":"strategy","strict":false,"context":"StrategyAndWidth [strategy="}
+{"owner":"obf/C347$C359","channel":"string-literal","matchKind":"member","realName":"width","strict":false,"context":", width="}
+{"owner":"obf/C297","channel":"string-literal","matchKind":"member","realName":"format","strict":false,"context":"Unreadable format element at position "}
+{"owner":"obf/C297","channel":"string-literal","matchKind":"member","realName":"format","strict":false,"context":"Unterminated format element at position "}
+{"owner":"obf/C297","channel":"string-literal","matchKind":"member","realName":"format","strict":false,"context":"Invalid format argument index at position "}
+{"owner":"obf/C291$C292","channel":"string-literal","matchKind":"member","realName":"elementType","strict":true,"context":"elementType"}
+{"owner":"obf/C315","channel":"string-literal","matchKind":"member","realName":"remove","strict":false,"context":"remove() is unsupported"}
+{"owner":"obf/C315","channel":"string-literal","matchKind":"class","realName":"StrTokenizer","strict":false,"context":"StrTokenizer[not tokenized yet]"}
+{"owner":"obf/C315","channel":"string-literal","matchKind":"class","realName":"StrTokenizer","strict":true,"context":"StrTokenizer"}
+{"owner":"obf/C345","channel":"string-literal","matchKind":"class","realName":"FastDateFormat","strict":false,"context":"FastDateFormat["}
+{"owner":"obf/C136","channel":"string-literal","matchKind":"member","realName":"future","strict":true,"context":"future"}
+{"owner":"obf/C347$C357","channel":"string-literal","matchKind":"member","realName":"pattern","strict":false,"context":" [pattern="}
+{"owner":"obf/C159","channel":"string-literal","matchKind":"class","realName":"ConstantInitializer","strict":false,"context":"ConstantInitializer@%d [ object = %s ]"}
+{"owner":"obf/C196","channel":"string-literal","matchKind":"member","realName":"getCause","strict":true,"context":"getCause"}
+{"owner":"obf/C196","channel":"string-literal","matchKind":"member","realName":"getException","strict":true,"context":"getException"}
+{"owner":"obf/C196","channel":"string-literal","matchKind":"member","realName":"getRootCause","strict":true,"context":"getRootCause"}
+{"owner":"obf/C48","channel":"string-literal","matchKind":"member","realName":"range","strict":false,"context":"Cannot calculate intersection with non-overlapping range %s"}
+{"owner":"obf/C103","channel":"string-literal","matchKind":"class","realName":"HashCodeBuilder","strict":false,"context":"HashCodeBuilder requires an odd initial value"}
+{"owner":"obf/C103","channel":"string-literal","matchKind":"class","realName":"HashCodeBuilder","strict":false,"context":"HashCodeBuilder requires an odd multiplier"}
+{"owner":"obf/C61","channel":"string-literal","matchKind":"member","realName":"locale","strict":false,"context":"java.locale.providers"}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"calendar","strict":true,"context":"calendar"}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"pattern","strict":true,"context":"pattern"}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"timeZone","strict":true,"context":"timeZone"}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"locale","strict":false,"context":" locale does not support dates before 1868 AD)\nUnparseable date: \""}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"class","realName":"FastDateParser","strict":false,"context":"FastDateParser["}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"class","realName":"FastDateParser","strict":false,"context":"FastDateParser [pattern="}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"pattern","strict":false,"context":"FastDateParser [pattern="}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"timeZone","strict":false,"context":", timeZone="}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"locale","strict":false,"context":", locale="}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"century","strict":false,"context":", century="}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"startYear","strict":false,"context":", startYear="}
+{"owner":"obf/C347","channel":"string-literal","matchKind":"member","realName":"patterns","strict":false,"context":", patterns="}
+{"owner":"obf/C338","channel":"string-literal","matchKind":"member","realName":"calendar","strict":true,"context":"calendar"}

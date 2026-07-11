@@ -1,0 +1,30 @@
+{"owner":"META-INF/MANIFEST.MF","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"Bundle-Description: Gson JSON library"}
+{"owner":"META-INF/MANIFEST.MF","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"Bundle-Name: Gson"}
+{"owner":"META-INF/MANIFEST.MF","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"Bundle-Vendor: Google Gson Project"}
+{"owner":"META-INF/maven/com.google.code.gson/gson/pom.xml","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"  <name>Gson</name>"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"### Gson ProGuard and R8 rules which are relevant for all users"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"### - These rules are additive; don't include anything here which is not spec..."}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"# Keep Gson annotations"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"# Note: Cannot perform finer selection here to only cover Gson annotations, s..."}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"TypeToken","strict":false,"context":"# Keep class TypeToken (respectively its generic signature) if present"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"TypeToken","strict":false,"context":"-if class com.google.gson.reflect.TypeToken"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"TypeToken","strict":false,"context":"-keep,allowobfuscation class com.google.gson.reflect.TypeToken"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"TypeToken","strict":false,"context":"# Keep any (anonymous) classes extending TypeToken"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"TypeToken","strict":false,"context":"-keep,allowobfuscation class * extends com.google.gson.reflect.TypeToken"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"JsonAdapter","strict":false,"context":"# Keep classes with @JsonAdapter annotation"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"JsonAdapter","strict":false,"context":"-keep,allowobfuscation,allowoptimization @com.google.gson.annotations.JsonAda..."}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"Gson","strict":false,"context":"# Keep fields with any other Gson annotation"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"SerializedName","strict":false,"context":"# Also allow obfuscation, assuming that users will additionally use @Serializ..."}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"Expose","strict":false,"context":"  @com.google.gson.annotations.Expose <fields>;"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"JsonAdapter","strict":false,"context":"  @com.google.gson.annotations.JsonAdapter <fields>;"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"Since","strict":false,"context":"  @com.google.gson.annotations.Since <fields>;"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"Until","strict":false,"context":"  @com.google.gson.annotations.Until <fields>;"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"JsonAdapter","strict":false,"context":"# Keep no-args constructor of classes which can be used with @JsonAdapter"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"TypeAdapter","strict":false,"context":"-keepclassmembers class * extends com.google.gson.TypeAdapter {"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"TypeAdapterFactory","strict":false,"context":"-keepclassmembers class * implements com.google.gson.TypeAdapterFactory {"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"JsonSerializer","strict":false,"context":"-keepclassmembers class * implements com.google.gson.JsonSerializer {"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"JsonDeserializer","strict":false,"context":"-keepclassmembers class * implements com.google.gson.JsonDeserializer {"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"SerializedName","strict":false,"context":"# Keep fields annotated with @SerializedName for classes which are referenced."}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"SerializedName","strict":false,"context":"# If classes with fields annotated with @SerializedName have a no-args"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"SerializedName","strict":false,"context":"  @com.google.gson.annotations.SerializedName <fields>;"}
+{"owner":"META-INF/proguard/gson.pro","channel":"resource","matchKind":"class","realName":"SerializedName","strict":false,"context":"  @com.google.gson.annotations.SerializedName <fields>;"}

@@ -1,0 +1,3 @@
+{"owner":"obf/C26","channel":"string-literal","matchKind":"class","realName":"HypoKey","strict":false,"context":"HypoKey[\u0001]"}
+{"owner":"obf/C16","channel":"string-literal","matchKind":"class","realName":"ClassDataProvider","strict":false,"context":"ClassDataProvider not set on \u0001"}
+{"owner":"obf/C35","channel":"string-literal","matchKind":"member","realName":"dimension","strict":false,"context":"Invalid array dimension: \u0001"}
