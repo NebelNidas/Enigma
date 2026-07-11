@@ -178,6 +178,16 @@ local 30B 15/26/33 · sonnet high 25/41/52 · opus high 22/40/56 · gpt-5.5 high
 - **Aggregation** `agg_hypo.py` → `agg_hypo_report.txt` (reproduces exact 15/25/22/23; macro lens 21.8/15.0 exact, 53.4/33.0 majority).
 - **Commits** `16dd983` (repro package) + `612d09d` (preserved results). Essay `76251fd` *(essay repo)*. **This is the best-preserved chain in the essay** (raw + residuals + verdicts all committed).
 
+### coder-next IQ1 on Hypo (pending essay "IQ1 limitation" row, 2026-07-11)
+qwen3-coder-next @ IQ1_S (~1-bit 80B MoE) on Hypo, full n=100, ROCm clean run (hardened, own IQ1 server):
+**realistic api exact=13/100 usable=15/100** (err=6); structure-only exact=9/12 (err=7). ≈ local-30B Hypo (exact 15)
+→ the 1-bit quant is usable, not collapsed. (Note: earlier chat mis-cited exact=9 — that was the structure-only track;
+the realistic headline is 13.)
+- **Input** Hypo obf corpus **COMMITTED** `hypo-nearmiss-2026-07-10/harness/hypo-obf-model/` (obf jars + groundtruth) + classpath `harness/harness_cp.txt`.
+- **Generating** `.dk-eval-scripts/codernext_iq1_rocm.sh` → `LlmObfuscationBenchmarkHarness` against the ROCm llama-server IQ1 model.
+- **Raw output COMMITTED** `hypo-results/coder_next_iq1_rocm/qwen3-coder-next/hypo-model-2.4.1-{realistic,structure-only}-benchmark.jsonl` (+ run.out).
+- **Aggregation** deterministic harness counts (recompute from JSONL); `agg_hypo.py` when judged. **Commit** `bb06cab`.
+
 ### §Threats to Validity — judge self-preference (added 2026-07-11, essay `c73da8b`)
 "Local roster judged entirely cross-family (bias impossible); on the commercial side small + not one-directional:
 OpenAI judge slightly stricter on gpt-5.5 (−3 to −8 pt), Anthropic judge +13 pt on Claude (only +8 pt vs the most
