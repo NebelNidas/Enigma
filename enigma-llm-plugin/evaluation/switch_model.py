@@ -60,6 +60,15 @@ def _parallel():
     return int(raw)
 
 
+def _gpu():
+    # GPU offload ratio passed straight to `lms load --gpu`: "off", "max", or a 0.0-1.0
+    # fraction of layers to place on the GPU. When unset we omit the flag and let LM Studio
+    # auto-decide. Needed for models that ALMOST fit VRAM (e.g. gemma-4-31b Q4_K_M = 18.7 GB
+    # weights + 1.2 GB mmproj on a 16 GB card): the auto-heuristic offloads too aggressively
+    # and the Vulkan queue OOM-crashes mid-run, so we cap the ratio explicitly.
+    return os.environ.get("SWITCH_GPU", "").strip()
+
+
 def _unload_all(client):
     unloaded = []
     for m in client.llm.list_loaded():
@@ -92,6 +101,7 @@ def main():
 
         ctx = _context_length()
         par = _parallel()
+        gpu = _gpu()
         import subprocess
         lms_bin = os.path.expanduser("~/.lmstudio/bin/lms")
         # Unload via the CLI, not the SDK: `lms unload --all` reliably clears suffixed (":2")
@@ -99,15 +109,15 @@ def main():
         # parallel-N instance shadowing the freshly loaded one under the same model id.
         subprocess.run([lms_bin, "unload", "--all"], capture_output=True, text=True)
         print(f"unloaded: (lms unload --all)")
-        print(f"loading {target} (contextLength={ctx}, parallel={par}) via lms CLI ...")
+        print(f"loading {target} (contextLength={ctx}, parallel={par}, gpu={gpu or 'auto'}) via lms CLI ...")
         t0 = time.monotonic()
         # The SDK cannot set the parallel slot count (no field on LlmLoadModelConfig), and
         # that count determines the per-request context ceiling (n_ctx/slots). So load via
         # the `lms` CLI, which exposes --parallel. --parallel 1 => full n_ctx per request.
-        proc = subprocess.run(
-            [lms_bin, "load", target, "--context-length", str(ctx), "--parallel", str(par), "-y"],
-            capture_output=True, text=True,
-        )
+        load_cmd = [lms_bin, "load", target, "--context-length", str(ctx), "--parallel", str(par), "-y"]
+        if gpu:
+            load_cmd += ["--gpu", gpu]
+        proc = subprocess.run(load_cmd, capture_output=True, text=True)
         if proc.returncode != 0:
             sys.stderr.write(proc.stdout[-800:] + "\n" + proc.stderr[-800:] + "\n")
             print(f"error: lms load failed for {target} (rc={proc.returncode})")
