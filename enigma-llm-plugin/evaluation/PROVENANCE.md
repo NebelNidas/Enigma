@@ -15,27 +15,25 @@ repo unless marked *(essay repo)* — the essay lives in a **separate** git repo
 
 ---
 
-## 0. The single biggest provenance gap (read this first)
+## 0. Where the raw rows live (gap now closed)
 
-**The main-corpus raw benchmark JSONL is NOT committed.** The headline round-trip
-outputs behind Tables `tab:sweep`, `tab:semantic` (exact-match counts),
-`tab:commercial`, the structure-only track, and the context comparison live under
-`enigma-llm-plugin/build/llm-evaluation/**`, which is **git-ignored**. Those files
-exist on the local disk now but are ephemeral and not preserved in version control
-(`git check-ignore` confirms e.g.
-`build/llm-evaluation/benchmark/qwen3-coder-30b-a3b-instruct_iq4_xs_graph_k1_raised`
-is ignored).
+The headline round-trip outputs behind Tables `tab:sweep`, `tab:semantic`
+(exact-match counts), `tab:commercial`, the structure-only track, the context
+comparison, temp0.2 and cache-off are written to
+`enigma-llm-plugin/build/llm-evaluation/**`, which is **git-ignored** and ephemeral.
+As of 2026-07-11 the **essay-critical rows are preserved in version control** at
+[`benchmark-raw-2026-07-11/`](benchmark-raw-2026-07-11/) (commit `0e95f53`, 393 files
+/ ~18 MB, OSS corpus only) — see its README for the dir→claim map. So the per-target
+`exact`/`normalized`/`usable` rows are now durably recoverable, not only
+"reproducible in principle" from the committed scripts.
 
-Per the standing reproducibility mechanism this is *reproducible in principle* —
-every generating + aggregating script IS committed, and re-running the recorded
-commit against the corpus regenerates equivalent numbers — but it is **not
-byte-identical** (temperature-0 cloud non-determinism; batched-matmul FP drift) and
-the raw rows are not durably archived. Commit `612d09d` ("preserve completed
-benchmark outputs from ephemeral scratchpad") rescued the *derived* judge / ablation
-/ Hypo outputs from a volatile `/tmp` scratchpad and its README states they "are not
-byte-identically regenerable" and stand as "PROVENANCE for numbers already in the
-essay." **The full per-target main-corpus rows have NOT been given the same
-treatment — that is the open action (see §3).**
+Note this is *reproducible-in-principle AND now byte-preserved*, but a fresh re-run
+would still not be byte-identical (temperature-0 cloud non-determinism; batched-matmul
+FP drift). Precedent: commit `612d09d` earlier preserved the *derived* judge / ablation
+/ Hypo outputs from a volatile `/tmp` scratchpad; `0e95f53` extends the same treatment
+to the main-corpus per-target rows. Not preserved (intentionally): running/broken/
+contaminated gemma dirs, the incomplete coder-next IQ1 probe, backups, and logs — add
+gemma-4-31b (no-think) + coder-next IQ1 once they complete and land in the essay.
 
 What IS committed as raw output: the 1.5B smoke baseline (`evaluation/results/*.jsonl`),
 the Hypo near-miss package (`evaluation/semantic-judge/hypo-nearmiss-2026-07-10/`),
@@ -166,7 +164,7 @@ The 7B improvement-loop (DEV=gson+commons, HOLDOUT=xz; graph+conservative+16000-
 
 ## 3. Gaps where a chain link is UNCOMMITTED / UNKNOWN
 
-1. **`tab:sweep`, `tab:semantic` (exact counts), `tab:commercial`, structure-only, context comparison, temp0.2, dedup control** — raw per-target JSONL is **UNCOMMITTED** (`build/llm-evaluation/**`, gitignored). On disk now, not in VCS, not byte-identically regenerable. **Primary weakness. Open action: preserve these to a durable committed location (as `612d09d` did for the judge/Hypo outputs) or accept the "reproducible-in-principle via committed scripts" standard and state it explicitly in the essay's reproducibility note.**
+1. ~~**`tab:sweep`, `tab:semantic` (exact counts), `tab:commercial`, structure-only, context comparison, temp0.2, dedup control** — raw per-target JSONL UNCOMMITTED.~~ **RESOLVED 2026-07-11:** preserved at `benchmark-raw-2026-07-11/` (commit `0e95f53`). (The dedup "~3 more per 300" control run dir was not separately named — its cache-off counterpart `…_graph_k1_raised_cacheoff` IS preserved; see gap #3.)
 2. **Dedicated latency TSVs** (`latency_bench.tsv`, `local_latency_bench.tsv`, l.472) — not under `evaluation/`; location UNKNOWN (scratchpad-only).
 3. **De-dup "~3 more per 300" control run dir** (l.340) — not separately named; UNKNOWN.
 4. **Obfuscated jars** (`build/llm-evaluation/obfuscated/*`) — gitignored; regenerable from corpus + harness, not preserved.
