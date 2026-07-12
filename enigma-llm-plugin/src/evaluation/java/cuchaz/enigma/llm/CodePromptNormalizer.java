@@ -133,33 +133,63 @@ public final class CodePromptNormalizer {
 				}
 			}
 
-			// 4. Canonicalize local names
-			Matcher m = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*").matcher(text);
-			StringBuilder replaced = new StringBuilder();
-
+			// 4. Canonicalize decompiler-synthetic local names. Scan manually and skip string/char literals so
+			// the realistic track (where string payloads are kept) never mutates an identifier-looking substring
+			// inside a string literal -- only real code identifiers are renamed.
+			StringBuilder replaced = new StringBuilder(text.length());
 			Map<String, String> localRenames = new HashMap<>();
 			int[] localCounter = {1};
-
 			Map<String, String> captureRenames = new HashMap<>();
 			int[] captureCounter = {0};
+			int textLen = text.length();
+			int pos = 0;
 
-			while (m.find()) {
-				String id = m.group();
-				if (id.matches("var\\d+")) {
-					String newName = localRenames.computeIfAbsent(id, k -> "local" + (localCounter[0]++));
-					m.appendReplacement(replaced, Matcher.quoteReplacement(newName));
-				} else if (id.matches("this\\$\\d+") || id.startsWith("val$")) {
-					String newName = captureRenames.computeIfAbsent(id, k -> "capture" + (captureCounter[0]++));
-					m.appendReplacement(replaced, Matcher.quoteReplacement(newName));
-				} else if (id.matches("lambda\\$[A-Za-z0-9_$]+\\$\\d+")) {
-					int lastDollar = id.lastIndexOf('$');
-					String newName = id.substring(0, lastDollar);
-					m.appendReplacement(replaced, Matcher.quoteReplacement(newName));
+			while (pos < textLen) {
+				char c = text.charAt(pos);
+
+				if (c == '"' || c == '\'') {
+					int end = pos + 1;
+
+					while (end < textLen) {
+						char e = text.charAt(end);
+
+						if (e == '\\') {
+							end += 2;
+						} else if (e == c) {
+							end++;
+							break;
+						} else {
+							end++;
+						}
+					}
+
+					replaced.append(text, pos, Math.min(end, textLen));
+					pos = Math.min(end, textLen);
+				} else if (Character.isJavaIdentifierStart(c) || c == '$') {
+					int start = pos;
+					pos++;
+
+					while (pos < textLen && (Character.isJavaIdentifierPart(text.charAt(pos)) || text.charAt(pos) == '$')) {
+						pos++;
+					}
+
+					String id = text.substring(start, pos);
+
+					if (id.matches("var\\d+")) {
+						replaced.append(localRenames.computeIfAbsent(id, k -> "local" + (localCounter[0]++)));
+					} else if (id.matches("this\\$\\d+") || id.startsWith("val$")) {
+						replaced.append(captureRenames.computeIfAbsent(id, k -> "capture" + (captureCounter[0]++)));
+					} else if (id.matches("lambda\\$[A-Za-z0-9_$]+\\$\\d+")) {
+						replaced.append(id, 0, id.lastIndexOf('$'));
+					} else {
+						replaced.append(id);
+					}
 				} else {
-					m.appendReplacement(replaced, Matcher.quoteReplacement(id));
+					replaced.append(c);
+					pos++;
 				}
 			}
-			m.appendTail(replaced);
+
 			text = replaced.toString();
 
 			// 5. Trim trailing whitespace & collapse blank lines

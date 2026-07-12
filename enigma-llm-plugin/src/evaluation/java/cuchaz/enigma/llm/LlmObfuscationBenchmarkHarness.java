@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -225,6 +226,17 @@ public final class LlmObfuscationBenchmarkHarness {
 	private static final boolean CODE_CONTEXT = Boolean.parseBoolean(
 			System.getenv().getOrDefault("ENIGMA_LLM_BENCH_CODE", "false"));
 
+	// When ENIGMA_LLM_DUMP_PROMPTS=<dir> is set, each scored target's fully rendered system+user prompt is
+	// written (with its ground truth) to <dir>/<jar>-<track>-prompts.jsonl. This lets an offline structural
+	// run (no endpoint) export the exact v2 prompts for replay through a model that has no HTTP endpoint
+	// (e.g. Claude Fable via the subscription-only Agent tool), then score the replies offline.
+	private static final Path DUMP_PROMPTS_DIR = resolveDumpDir();
+
+	private static Path resolveDumpDir() {
+		String dir = System.getenv("ENIGMA_LLM_DUMP_PROMPTS");
+		return dir == null || dir.isBlank() ? null : Path.of(dir);
+	}
+
 	private record PreparedUnit(String base, Track track, Path obfJar, List<GroundTruthSymbol> symbols,
 			ProjectView project, LlmNameProposalPlugin plugin, LlmSuggestionEngine engine, Path resultsFile,
 			DecompiledMethodBodyProvider codeProvider) {
@@ -264,6 +276,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			Set<String> wanted = retryKeys.getOrDefault(unit.base() + "::" + unit.track().label(), Set.of());
 
 			if (wanted.isEmpty()) {
+				closeQuietly(unit.codeProvider());
 				return report;
 			}
 
@@ -328,8 +341,21 @@ public final class LlmObfuscationBenchmarkHarness {
 			report.leaks = auditLeaks(unit.obfJar(), unit.symbols(), resultsDir, unit.base(), unit.track());
 		}
 
+		closeQuietly(unit.codeProvider());
 		System.out.println(report.line(online));
 		return report;
+	}
+
+	private static void closeQuietly(AutoCloseable closeable) {
+		if (closeable == null) {
+			return;
+		}
+
+		try {
+			closeable.close();
+		} catch (Exception ignored) {
+			// Best effort: a failure to release the decompiler's jar handle must not fail the run.
+		}
 	}
 
 	/**
@@ -458,6 +484,10 @@ public final class LlmObfuscationBenchmarkHarness {
 		int codeChars = codeSection == null ? 0 : codeSection.length();
 		String contextMode = codeIncluded ? "metadata+code" : (CODE_CONTEXT ? "metadata_only(code-unavailable)" : "metadata_only");
 
+		if (DUMP_PROMPTS_DIR != null) {
+			dumpPrompt(config, track, symbol, loggedPrompt, codeIncluded);
+		}
+
 		if (!online) {
 			return TargetScore.structural(symbol, resolved, contextBackend, autoBackend, promptChars, promptTruncated,
 					contextMode, codeIncluded, codeChars);
@@ -525,6 +555,33 @@ public final class LlmObfuscationBenchmarkHarness {
 				: CodePromptNormalizer.Track.STRUCTURE_ONLY;
 		String normalized = CodePromptNormalizer.normalize(raw.get(), normTrack);
 		return normalized == null || normalized.isBlank() ? null : normalized;
+	}
+
+	private static synchronized void dumpPrompt(LlmConfig config, Track track, GroundTruthSymbol symbol,
+			String userPrompt, boolean codeIncluded) {
+		try {
+			Files.createDirectories(DUMP_PROMPTS_DIR);
+			Path file = DUMP_PROMPTS_DIR.resolve(symbol.jar() + "-" + track.label() + "-prompts.jsonl");
+			JsonObject object = new JsonObject();
+			object.addProperty("jar", symbol.jar());
+			object.addProperty("kind", symbol.kind().name());
+			object.addProperty("slice", symbol.slice());
+			object.addProperty("preservationControl", !symbol.obfuscated());
+			object.addProperty("obfOwner", symbol.obfOwner());
+			object.addProperty("obfName", symbol.obfName());
+			object.addProperty("obfDesc", symbol.obfDesc());
+			object.addProperty("localIndex", symbol.localIndex());
+			object.addProperty("expected", symbol.realName());
+			JsonArray acceptable = new JsonArray();
+			symbol.acceptableRealNames().forEach(acceptable::add);
+			object.add("acceptable", acceptable);
+			object.addProperty("codeIncluded", codeIncluded);
+			object.addProperty("systemPrompt", OpenAiCompatibleClient.systemMessage(config));
+			object.addProperty("userPrompt", userPrompt);
+			Files.writeString(file, object + "\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			System.err.println("prompt dump failed for " + symbol.obfName() + ": " + e.getMessage());
+		}
 	}
 
 	private static EntryKey keyFor(GroundTruthSymbol symbol) {

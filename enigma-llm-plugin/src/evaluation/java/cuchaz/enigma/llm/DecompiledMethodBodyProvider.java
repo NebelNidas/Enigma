@@ -91,6 +91,12 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 	 * {@code argCount} is preferred; abstract/interface methods (no body, terminated by {@code ;}) are skipped.
 	 */
 	private static Optional<String> extractMethod(String classText, String methodName, int argCount) {
+		// Constructors (<init>) and static initializers (<clinit>) decompile under the class name / no name,
+		// so they are never located by their bytecode name; they are also excluded from the scored ground truth.
+		if (methodName.startsWith("<")) {
+			return Optional.empty();
+		}
+
 		Optional<String> fallback = Optional.empty();
 		int from = 0;
 
@@ -103,8 +109,11 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 
 			from = nameAt + methodName.length();
 
-			// Require a token boundary before the name so "m3" does not match inside "m31".
-			if (nameAt > 0 && isIdentifierPart(classText.charAt(nameAt - 1))) {
+			// Reject a use of the name that is a member call (obj.m34(...)) or a substring of a longer
+			// identifier -- only a declaration is preceded by a type/modifier boundary, never '.'.
+			char before = nameAt > 0 ? classText.charAt(nameAt - 1) : ' ';
+
+			if (isIdentifierPart(before) || before == '.') {
 				continue;
 			}
 
@@ -115,10 +124,11 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 				continue;
 			}
 
-			// After the parameter list a method body opens with '{'; a ';' (abstract/native) has no body.
-			int bodyBrace = nextNonSpace(classText, closeParen + 1);
+			// A declaration opens its body with '{' after the ')', possibly past a 'throws' clause; a call is
+			// followed by ';', ')', '.', an operator, etc. Anything but a body brace means this is not the decl.
+			int bodyBrace = methodBodyBrace(classText, closeParen + 1);
 
-			if (bodyBrace < 0 || classText.charAt(bodyBrace) != '{') {
+			if (bodyBrace < 0) {
 				continue;
 			}
 
@@ -184,19 +194,28 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 		return i;
 	}
 
-	private static int matchParen(String text, int openParen) {
-		int depth = 0;
+	/** Skips whitespace and an optional {@code throws} clause after {@code )}, returning the body '{' or -1. */
+	private static int methodBodyBrace(String text, int from) {
+		int i = nextNonSpace(text, from);
 
-		for (int i = openParen; i < text.length(); i++) {
-			char c = text.charAt(i);
+		if (i < 0) {
+			return -1;
+		}
 
-			if (c == '(') {
-				depth++;
-			} else if (c == ')') {
-				depth--;
+		if (text.charAt(i) == '{') {
+			return i;
+		}
 
-				if (depth == 0) {
-					return i;
+		if (text.startsWith("throws", i) && (i + 6 >= text.length() || !isIdentifierPart(text.charAt(i + 6)))) {
+			for (int j = i + 6; j < text.length(); j++) {
+				char c = text.charAt(j);
+
+				if (c == '{') {
+					return j;
+				}
+
+				if (c == ';') {
+					return -1;
 				}
 			}
 		}
@@ -204,38 +223,75 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 		return -1;
 	}
 
-	private static int matchBrace(String text, int openBrace) {
-		int depth = 0;
-		boolean inString = false;
-		boolean inChar = false;
+	private static int matchParen(String text, int openParen) {
+		return matchBracket(text, openParen, '(', ')');
+	}
 
-		for (int i = openBrace; i < text.length(); i++) {
+	private static int matchBrace(String text, int openBrace) {
+		return matchBracket(text, openBrace, '{', '}');
+	}
+
+	/** Index of the bracket closing the one at {@code openIndex}, skipping strings, chars and comments. */
+	private static int matchBracket(String text, int openIndex, char open, char close) {
+		int depth = 0;
+		int i = openIndex;
+		int len = text.length();
+
+		while (i < len) {
 			char c = text.charAt(i);
 
-			if (inString) {
-				if (c == '\\') {
-					i++;
-				} else if (c == '"') {
-					inString = false;
+			if (c == '/' && i + 1 < len && text.charAt(i + 1) == '/') {
+				int nl = text.indexOf('\n', i + 2);
+				i = nl < 0 ? len : nl + 1;
+				continue;
+			}
+
+			if (c == '/' && i + 1 < len && text.charAt(i + 1) == '*') {
+				int end = text.indexOf("*/", i + 2);
+
+				if (end < 0) {
+					return -1;
 				}
-			} else if (inChar) {
-				if (c == '\\') {
-					i++;
-				} else if (c == '\'') {
-					inChar = false;
+
+				i = end + 2;
+				continue;
+			}
+
+			if (c == '"' || c == '\'') {
+				i = skipQuoted(text, i, c);
+
+				if (i < 0) {
+					return -1;
 				}
-			} else if (c == '"') {
-				inString = true;
-			} else if (c == '\'') {
-				inChar = true;
-			} else if (c == '{') {
+
+				continue;
+			}
+
+			if (c == open) {
 				depth++;
-			} else if (c == '}') {
+			} else if (c == close) {
 				depth--;
 
 				if (depth == 0) {
 					return i;
 				}
+			}
+
+			i++;
+		}
+
+		return -1;
+	}
+
+	/** Given the index of an opening quote, returns the index just past the matching closing quote (or -1). */
+	private static int skipQuoted(String text, int quoteIndex, char quote) {
+		for (int i = quoteIndex + 1; i < text.length(); i++) {
+			char c = text.charAt(i);
+
+			if (c == '\\') {
+				i++;
+			} else if (c == quote) {
+				return i + 1;
 			}
 		}
 

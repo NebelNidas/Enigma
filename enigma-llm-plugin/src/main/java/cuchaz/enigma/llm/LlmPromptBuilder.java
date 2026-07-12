@@ -124,7 +124,9 @@ class LlmPromptBuilder {
 			return prompt;
 		}
 
-		int markerIndex = prompt.indexOf(RESPONSE_INSTRUCTIONS_MARKER);
+		// lastIndexOf, not indexOf: the response-instructions block is appended last, so if an appended
+		// decompiled code body happens to contain the marker text, the genuine trailing marker still wins.
+		int markerIndex = prompt.lastIndexOf(RESPONSE_INSTRUCTIONS_MARKER);
 
 		if (markerIndex < 0) {
 			return prompt.substring(0, MAX_PROMPT_CHARS)
