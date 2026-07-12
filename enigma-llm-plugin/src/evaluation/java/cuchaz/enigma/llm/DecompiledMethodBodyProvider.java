@@ -97,11 +97,16 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 			return Optional.empty();
 		}
 
+		// Locate declarations on a masked copy where comment and string/char/text-block CONTENT is blanked to
+		// spaces (same indices). This makes the search and the brace/paren matching immune to a method name or a
+		// stray '{' / '}' / '(' / ')' that appears inside a literal or comment; the snippet is then cut from the
+		// ORIGINAL text at those indices so the returned code is verbatim.
+		String masked = maskLiterals(classText);
 		Optional<String> fallback = Optional.empty();
 		int from = 0;
 
 		while (true) {
-			int nameAt = classText.indexOf(methodName + "(", from);
+			int nameAt = masked.indexOf(methodName + "(", from);
 
 			if (nameAt < 0) {
 				break;
@@ -111,14 +116,14 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 
 			// Reject a use of the name that is a member call (obj.m34(...)) or a substring of a longer
 			// identifier -- only a declaration is preceded by a type/modifier boundary, never '.'.
-			char before = nameAt > 0 ? classText.charAt(nameAt - 1) : ' ';
+			char before = nameAt > 0 ? masked.charAt(nameAt - 1) : ' ';
 
 			if (isIdentifierPart(before) || before == '.') {
 				continue;
 			}
 
 			int openParen = nameAt + methodName.length();
-			int closeParen = matchParen(classText, openParen);
+			int closeParen = matchParen(masked, openParen);
 
 			if (closeParen < 0) {
 				continue;
@@ -126,21 +131,21 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 
 			// A declaration opens its body with '{' after the ')', possibly past a 'throws' clause; a call is
 			// followed by ';', ')', '.', an operator, etc. Anything but a body brace means this is not the decl.
-			int bodyBrace = methodBodyBrace(classText, closeParen + 1);
+			int bodyBrace = methodBodyBrace(masked, closeParen + 1);
 
 			if (bodyBrace < 0) {
 				continue;
 			}
 
-			int bodyEnd = matchBrace(classText, bodyBrace);
+			int bodyEnd = matchBrace(masked, bodyBrace);
 
 			if (bodyEnd < 0) {
 				continue;
 			}
 
-			int signatureStart = signatureStart(classText, nameAt);
+			int signatureStart = signatureStart(masked, nameAt);
 			String snippet = classText.substring(signatureStart, bodyEnd + 1).strip();
-			int params = countParameters(classText, openParen, closeParen);
+			int params = countParameters(masked, openParen, closeParen);
 
 			if (argCount < 0 || params == argCount) {
 				return Optional.of(snippet);
@@ -192,6 +197,69 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 		}
 
 		return i;
+	}
+
+	/**
+	 * Returns a same-length copy of {@code text} in which the CONTENT of line comments, block comments and
+	 * string / char / text-block literals (including their delimiters) is replaced by spaces, with newlines
+	 * kept. Indices are preserved, so a declaration located in the mask maps back to the same span in the
+	 * original. This is what makes declaration search and brace matching literal- and comment-safe.
+	 */
+	private static String maskLiterals(String text) {
+		char[] out = text.toCharArray();
+		int n = text.length();
+		int i = 0;
+
+		while (i < n) {
+			char c = text.charAt(i);
+
+			if (c == '/' && i + 1 < n && text.charAt(i + 1) == '/') {
+				int nl = text.indexOf('\n', i + 2);
+				int end = nl < 0 ? n : nl;
+				blank(out, i, end);
+				i = end;
+			} else if (c == '/' && i + 1 < n && text.charAt(i + 1) == '*') {
+				int e = text.indexOf("*/", i + 2);
+				int end = e < 0 ? n : e + 2;
+				blank(out, i, end);
+				i = end;
+			} else if (c == '"' && i + 2 < n && text.charAt(i + 1) == '"' && text.charAt(i + 2) == '"') {
+				int e = text.indexOf("\"\"\"", i + 3);
+				int end = e < 0 ? n : e + 3;
+				blank(out, i, end);
+				i = end;
+			} else if (c == '"' || c == '\'') {
+				int j = i + 1;
+
+				while (j < n) {
+					char d = text.charAt(j);
+
+					if (d == '\\') {
+						j += 2;
+					} else if (d == c || d == '\n') {
+						j++;
+						break;
+					} else {
+						j++;
+					}
+				}
+
+				blank(out, i, Math.min(j, n));
+				i = j;
+			} else {
+				i++;
+			}
+		}
+
+		return new String(out);
+	}
+
+	private static void blank(char[] out, int start, int end) {
+		for (int i = start; i < end && i < out.length; i++) {
+			if (out[i] != '\n') {
+				out[i] = ' ';
+			}
+		}
 	}
 
 	/** Skips whitespace and an optional {@code throws} clause after {@code )}, returning the body '{' or -1. */

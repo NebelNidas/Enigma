@@ -267,6 +267,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			throws IOException {
 		JarReport report = new JarReport(unit.base());
 
+		try {
 		// Retry mode: resolve THIS unit's manifest targets up front. Skip units with none (no empty result
 		// file, no leak audit), and fail loud if any manifest key does not resolve to a ground-truth symbol
 		// (the corpus changed since the run being retried), rather than silently scoring fewer rows.
@@ -276,7 +277,6 @@ public final class LlmObfuscationBenchmarkHarness {
 			Set<String> wanted = retryKeys.getOrDefault(unit.base() + "::" + unit.track().label(), Set.of());
 
 			if (wanted.isEmpty()) {
-				closeQuietly(unit.codeProvider());
 				return report;
 			}
 
@@ -341,9 +341,11 @@ public final class LlmObfuscationBenchmarkHarness {
 			report.leaks = auditLeaks(unit.obfJar(), unit.symbols(), resultsDir, unit.base(), unit.track());
 		}
 
-		closeQuietly(unit.codeProvider());
 		System.out.println(report.line(online));
 		return report;
+		} finally {
+			closeQuietly(unit.codeProvider());
+		}
 	}
 
 	private static void closeQuietly(AutoCloseable closeable) {
