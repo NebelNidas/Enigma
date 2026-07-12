@@ -86,6 +86,8 @@ public final class ObfuscateCorpusTool {
 				object.addProperty("slice", symbol.slice());
 				object.addProperty("recoverableSlice", symbol.isRecoverableSlice());
 				object.addProperty("obfuscated", symbol.obfuscated());
+				object.addProperty("localIndex", symbol.localIndex());
+				object.addProperty("localName", symbol.localName());
 				writer.write(object.toString());
 				writer.write('\n');
 			}

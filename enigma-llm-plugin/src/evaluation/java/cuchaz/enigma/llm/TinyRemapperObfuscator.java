@@ -1,11 +1,8 @@
 package cuchaz.enigma.llm;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.io.InputStream;
 import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
@@ -14,6 +11,7 @@ import java.util.Comparator;
 import java.util.Deque;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -27,23 +25,46 @@ import net.fabricmc.tinyremapper.IMappingProvider;
 import net.fabricmc.tinyremapper.NonClassCopyMode;
 import net.fabricmc.tinyremapper.OutputConsumerPath;
 import net.fabricmc.tinyremapper.TinyRemapper;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InnerClassNode;
+import org.objectweb.asm.tree.LocalVariableNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.ParameterNode;
 
 /**
  * Baseline obfuscator: renames project classes, methods and fields to opaque tokens and applies the
  * map with tiny-remapper (which propagates method renames across override groups, keeping the jar
  * self-consistent).
  *
- * <p>The rename map is derived by reflecting over the input jar through a private
- * {@link URLClassLoader}. Reflection hands us synthetic/bridge flags and access modifiers for free
- * and, crucially, lets us skip methods that override a member declared outside the jar (JDK/library
- * contracts such as {@code toString}, {@code iterator}, {@code compareTo}) — renaming those would
- * both break the override and hand the model a trivially memorisable name.
+ * <p>The rename map is derived by parsing every class's bytecode with ASM ({@link ClassReader} into a
+ * {@link ClassNode}) — never loading or linking the corpus classes. This avoids executing any
+ * untrusted third-party bytecode just to enumerate members, sidesteps dependency-resolution drift,
+ * and — crucially — reads the {@code MethodParameters}/{@code LocalVariableTable} debug attributes
+ * directly so parameter names (and their JVM slots) become ground truth. Synthetic/bridge flags and
+ * access modifiers come straight off the parsed nodes; the override check that skips members declared
+ * outside the jar (JDK/library contracts such as {@code toString}, {@code iterator}, {@code compareTo})
+ * walks the class hierarchy over the parsed nodes plus ASM-parsed platform classes, without ever
+ * calling {@code Class.forName}.
  */
 final class TinyRemapperObfuscator implements Obfuscator {
 	private static final String FLAT_PACKAGE = "obf/";
 	/** How many members per jar to leave un-renamed as the preservation control (Grok/Codex: 5–15). */
 	private static final int PRESERVE_PER_JAR = 12;
+
+	/**
+	 * Conservative library-contract names used ONLY when an external supertype cannot be resolved on
+	 * the platform classpath (so we cannot inspect its declared methods). The primary override check is
+	 * the ASM hierarchy walk; this denylist is a fallback so an unresolved supertype never lets a
+	 * memorisable contract name slip through into the scored slice.
+	 */
+	private static final Set<String> CONTRACT_NAMES = Set.of(
+			"toString", "hashCode", "equals", "compareTo", "iterator", "spliterator",
+			"close", "run", "call", "get", "accept", "apply", "test", "add", "remove",
+			"read", "write", "flush");
 
 	private final String flatPackage;
 
@@ -62,8 +83,9 @@ final class TinyRemapperObfuscator implements Obfuscator {
 
 	@Override
 	public ObfuscationResult obfuscate(Path inputJar, Path outputJar) throws IOException {
-		List<String> classNames = readClassNames(inputJar);
-		Set<String> projectClasses = new HashSet<>(classNames);
+		// Parse every class into a deterministic (sorted) node map. LVT is needed for the parameter
+		// fallback, so we keep code/debug — only SKIP_FRAMES (stack-map frames are irrelevant here).
+		Map<String, ClassNode> nodes = readClassNodes(inputJar);
 
 		OpaqueNames names = new OpaqueNames(flatPackage);
 		// Pass 1: rename EVERY class (except module-info) up front — including anonymous and
@@ -72,7 +94,7 @@ final class TinyRemapperObfuscator implements Obfuscator {
 		// populated class map. Anonymous / package-info classes are renamed but not scored.
 		List<String> renamedClasses = new ArrayList<>();
 
-		for (String internalName : classNames) {
+		for (String internalName : nodes.keySet()) {
 			if (internalName.endsWith("module-info")) {
 				continue;
 			}
@@ -89,47 +111,18 @@ final class TinyRemapperObfuscator implements Obfuscator {
 			mappings.add(Mapping.forClass(internalName, names.classToken(internalName)));
 		}
 
-		// Parent = platform loader (JDK only), NOT the app classpath. The plugin itself bundles gson,
-		// so delegating to the app loader would resolve e.g. com.google.gson classes from the plugin's
-		// gson instead of the corpus jar under test — silently mixing a different library version's
-		// members into the ground truth. Platform-first isolation forces every corpus class to load
-		// from inputJar; anything that then fails to link (a missing external dep) is caught below and
-		// simply left unscored. Our corpus jars are self-contained (JDK-only deps), so this is safe.
-		try (URLClassLoader loader = new URLClassLoader(new URL[] {inputJar.toUri().toURL()},
-				ClassLoader.getPlatformClassLoader())) {
-			for (String internalName : renamedClasses) {
-				if (isUnscoredClass(internalName)) {
-					continue;
-				}
+		// Cache of ASM-parsed platform (JDK/external) supertypes, so each external class is read once.
+		Map<String, ExternalInfo> externalCache = new LinkedHashMap<>();
 
-				Class<?> cls;
-
-				try {
-					cls = Class.forName(internalName.replace('/', '.'), false, loader);
-				} catch (Throwable unresolved) {
-					// Class can't be linked here (missing optional dep). tiny-remapper still remaps its
-					// bytecode consistently via propagation; we simply don't score it.
-					continue;
-				}
-
-				// Reflecting over the members (getDeclaredMethods/Fields, field.getType, getSuperclass)
-				// can still throw linkage errors later if a member signature references an absent type.
-				// Collect into per-class buffers and merge only on full success, so one unlinkable class
-				// is skipped (its bytecode is still remapped) rather than aborting the whole corpus.
-				List<ObfuscatedSymbol> classSymbols = new ArrayList<>();
-				List<MemberEntry> classMembers = new ArrayList<>();
-
-				try {
-					collectClass(internalName, cls, names, classSymbols);
-					collectMethods(internalName, cls, projectClasses, names, classMembers);
-					collectFields(internalName, cls, names, classMembers);
-				} catch (Throwable linkage) {
-					continue;
-				}
-
-				symbols.addAll(classSymbols);
-				members.addAll(classMembers);
+		for (String internalName : renamedClasses) {
+			if (isUnscoredClass(internalName)) {
+				continue;
 			}
+
+			ClassNode node = nodes.get(internalName);
+			collectClass(internalName, node, names, symbols);
+			collectMethods(internalName, node, nodes, externalCache, names, members);
+			collectFields(internalName, node, names, members);
 		}
 
 		// Preservation control: leave a small, stratified, seeded sample of members un-renamed (real
@@ -139,12 +132,24 @@ final class TinyRemapperObfuscator implements Obfuscator {
 
 		for (int i = 0; i < members.size(); i++) {
 			MemberEntry member = members.get(i);
+			ObfuscatedSymbol symbol;
 
 			if (preserved.contains(i)) {
-				symbols.add(member.symbol().asPreserved());
+				symbol = member.symbol().asPreserved();
+				symbols.add(symbol);
 			} else {
-				symbols.add(member.symbol());
+				symbol = member.symbol();
+				symbols.add(symbol);
 				mappings.add(member.mapping());
+			}
+
+			// Parameters are located by their owning method's FINAL obf identity (obfName is the token,
+			// or the real name if the method is preserved) plus the JVM slot. Params are never renamed or
+			// preserved themselves — they ride along with whatever the method became.
+			for (PendingParam param : member.params()) {
+				symbols.add(new ObfuscatedSymbol(EntryKind.PARAMETER, symbol.obfOwner(), symbol.obfName(),
+						symbol.obfDesc(), member.symbol().realOwner(), param.name(), Set.of(param.name()),
+						param.access(), true, param.slot(), ""));
 			}
 		}
 
@@ -155,65 +160,188 @@ final class TinyRemapperObfuscator implements Obfuscator {
 		return new ObfuscationResult(name(), outputJar, symbols);
 	}
 
-	private void collectClass(String internalName, Class<?> cls, OpaqueNames names, List<ObfuscatedSymbol> symbols) {
-		if (cls.isSynthetic()) {
+	private void collectClass(String internalName, ClassNode node, OpaqueNames names, List<ObfuscatedSymbol> symbols) {
+		int access = classAccess(node);
+
+		// Preserve the reflection quirk: a synthetic class produces NO class symbol, but its methods and
+		// fields are still collected (the whole class is NOT skipped).
+		if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
 			return;
 		}
 
 		String obfInternal = names.classToken(internalName);
 		symbols.add(new ObfuscatedSymbol(EntryKind.CLASS, obfInternal, simpleName(obfInternal),
 				"", internalName, simpleName(internalName), Set.of(simpleName(internalName)),
-				cls.getModifiers(), true));
+				access, true, -1, ""));
 	}
 
-	private void collectMethods(String internalName, Class<?> cls, Set<String> projectClasses,
-			OpaqueNames names, List<MemberEntry> members) {
-		Method[] declared = cls.getDeclaredMethods();
-		java.util.Arrays.sort(declared, Comparator
-				.comparing(Method::getName)
-				.thenComparing(method -> Type.getMethodDescriptor(method)));
-		for (Method method : declared) {
-			if (method.isSynthetic() || method.isBridge()) {
+	private void collectMethods(String internalName, ClassNode node, Map<String, ClassNode> nodes,
+			Map<String, ExternalInfo> externalCache, OpaqueNames names, List<MemberEntry> members) {
+		boolean isEnum = (node.access & Opcodes.ACC_ENUM) != 0;
+		List<MethodNode> declared = new ArrayList<>(node.methods);
+		declared.sort(Comparator
+				.comparing((MethodNode method) -> method.name)
+				.thenComparing(method -> method.desc));
+
+		for (MethodNode method : declared) {
+			// Reflection's getDeclaredMethods() never returned constructors or the static initialiser.
+			if (method.name.equals("<init>") || method.name.equals("<clinit>")) {
+				continue;
+			}
+
+			if ((method.access & (Opcodes.ACC_SYNTHETIC | Opcodes.ACC_BRIDGE)) != 0) {
 				continue;
 			}
 
 			// Enum values()/valueOf() are compiler-generated; their names are fixed, not recovered.
-			if (cls.isEnum() && (method.getName().equals("values") || method.getName().equals("valueOf"))) {
+			if (isEnum && (method.name.equals("values") || method.name.equals("valueOf"))) {
 				continue;
 			}
 
-			if (overridesExternal(cls, method.getName(), projectClasses)) {
+			if (overridesExternal(internalName, method.name, nodes, externalCache)) {
 				continue;
 			}
 
-			String desc = Type.getMethodDescriptor(method);
-			String token = names.methodToken(method.getName(), desc);
-			Mapping mapping = Mapping.forMethod(internalName, method.getName(), desc, token);
+			String desc = method.desc;
+			String token = names.methodToken(method.name, desc);
+			String remappedDesc = remapMethodDescriptor(desc, names);
+			Mapping mapping = Mapping.forMethod(internalName, method.name, desc, token);
 			ObfuscatedSymbol symbol = new ObfuscatedSymbol(EntryKind.METHOD, names.classToken(internalName), token,
-					remapMethodDescriptor(desc, names), internalName, method.getName(),
-					Set.of(method.getName()), method.getModifiers(), true);
-			members.add(new MemberEntry(symbol, mapping));
+					remappedDesc, internalName, method.name,
+					Set.of(method.name), method.access, true, -1, "");
+			members.add(new MemberEntry(symbol, mapping, collectParameters(method)));
 		}
 	}
 
-	private void collectFields(String internalName, Class<?> cls, OpaqueNames names, List<MemberEntry> members) {
-		Field[] declared = cls.getDeclaredFields();
-		java.util.Arrays.sort(declared, Comparator
-				.comparing(Field::getName)
-				.thenComparing(f -> Type.getDescriptor(f.getType())));
-		for (Field field : declared) {
-			if (field.isSynthetic()) {
+	private void collectFields(String internalName, ClassNode node, OpaqueNames names, List<MemberEntry> members) {
+		List<FieldNode> declared = new ArrayList<>(node.fields);
+		declared.sort(Comparator
+				.comparing((FieldNode field) -> field.name)
+				.thenComparing(field -> field.desc));
+
+		for (FieldNode field : declared) {
+			if ((field.access & Opcodes.ACC_SYNTHETIC) != 0) {
 				continue;
 			}
 
-			String desc = Type.getDescriptor(field.getType());
-			String token = names.fieldToken(field.getName(), desc);
-			Mapping mapping = Mapping.forField(internalName, field.getName(), desc, token);
+			String desc = field.desc;
+			String token = names.fieldToken(field.name, desc);
+			Mapping mapping = Mapping.forField(internalName, field.name, desc, token);
 			ObfuscatedSymbol symbol = new ObfuscatedSymbol(EntryKind.FIELD, names.classToken(internalName), token,
-					remapType(desc, names), internalName, field.getName(),
-					Set.of(field.getName()), field.getModifiers(), true);
-			members.add(new MemberEntry(symbol, mapping));
+					remapType(desc, names), internalName, field.name,
+					Set.of(field.name), field.access, true, -1, "");
+			members.add(new MemberEntry(symbol, mapping, List.of()));
 		}
+	}
+
+	/**
+	 * Collects the real-named parameters of a scored method as {@link PendingParam}s (slot + name +
+	 * the method's access). Precedence: {@code MethodParameters} (authoritative, carries synthetic /
+	 * mandated flags) then, ONLY if that attribute is absent, the {@code LocalVariableTable}. One row
+	 * per JVM argument slot at most; slots without a real name are dropped.
+	 */
+	private static List<PendingParam> collectParameters(MethodNode method) {
+		boolean isStatic = (method.access & Opcodes.ACC_STATIC) != 0;
+		Type[] argTypes = Type.getArgumentTypes(method.desc);
+
+		// Ordinal -> JVM slot, and the set of valid argument slots (this=0 if instance, wide types +2).
+		int[] paramSlots = new int[argTypes.length];
+		Set<Integer> argSlots = new HashSet<>();
+		int slot = isStatic ? 0 : 1;
+
+		for (int i = 0; i < argTypes.length; i++) {
+			paramSlots[i] = slot;
+			argSlots.add(slot);
+			slot += argTypes[i].getSize();
+		}
+
+		// slot -> name; deterministic, at most one entry per slot.
+		Map<Integer, String> named = new TreeMap<>();
+
+		List<ParameterNode> parameters = method.parameters;
+
+		if (parameters != null && !parameters.isEmpty()) {
+			// MethodParameters present: authoritative. Match each entry to its argument slot by ordinal.
+			for (int i = 0; i < parameters.size() && i < paramSlots.length; i++) {
+				ParameterNode parameter = parameters.get(i);
+
+				if ((parameter.access & (Opcodes.ACC_SYNTHETIC | Opcodes.ACC_MANDATED)) != 0) {
+					continue;
+				}
+
+				String name = parameter.name;
+
+				if (name == null || name.isBlank()) {
+					continue;
+				}
+
+				named.put(paramSlots[i], name);
+			}
+		} else if (method.localVariables != null) {
+			// Fallback: LVT. Only entries whose slot is an argument slot; skip synthetic-looking names.
+			// Do NOT merge LVT into MethodParameters — this branch runs only when the attribute is absent.
+			//
+			// A parameter's local occupies its slot from method entry; other locals may later reuse the
+			// same slot, and ASM does not guarantee LVT order. So for each argument slot pick the entry
+			// whose scope STARTS EARLIEST (lowest instruction index of local.start) — that is the actual
+			// parameter — THEN apply the name filters. One name per slot; no fallback to a later local.
+			Map<Integer, LocalVariableNode> earliest = new TreeMap<>();
+			Map<Integer, Integer> earliestPos = new TreeMap<>();
+
+			for (LocalVariableNode local : method.localVariables) {
+				if (!argSlots.contains(local.index)) {
+					continue;
+				}
+
+				int pos = method.instructions.indexOf(local.start);
+				Integer best = earliestPos.get(local.index);
+
+				if (best == null || pos < best) {
+					earliestPos.put(local.index, pos);
+					earliest.put(local.index, local);
+				}
+			}
+
+			for (Map.Entry<Integer, LocalVariableNode> entry : earliest.entrySet()) {
+				String name = entry.getValue().name;
+
+				if (name == null || name.equals("this") || name.startsWith("$") || name.matches("arg\\d+")) {
+					continue;
+				}
+
+				named.put(entry.getKey(), name);
+			}
+		}
+
+		if (named.isEmpty()) {
+			return List.of();
+		}
+
+		List<PendingParam> params = new ArrayList<>();
+
+		for (Map.Entry<Integer, String> entry : named.entrySet()) {
+			params.add(new PendingParam(entry.getKey(), entry.getValue(), method.access));
+		}
+
+		return params;
+	}
+
+	/**
+	 * Reflection reports a nested class's modifiers from the {@code InnerClasses} attribute, not the
+	 * class file's top-level {@code access_flags} (which for a nested class lacks its
+	 * private/protected/static visibility and carries {@code ACC_SUPER}). Mirror that so the derived
+	 * visibility / slice / synthetic checks match the old reflection output exactly.
+	 */
+	private static int classAccess(ClassNode node) {
+		if (node.innerClasses != null) {
+			for (InnerClassNode inner : node.innerClasses) {
+				if (inner.name.equals(node.name)) {
+					return inner.access;
+				}
+			}
+		}
+
+		return node.access;
 	}
 
 	/**
@@ -269,50 +397,113 @@ final class TinyRemapperObfuscator implements Obfuscator {
 	 * ignored) on purpose: it is conservative (never breaks an override) and deliberately also drops
 	 * library-contract names like {@code close}/{@code run}/{@code compareTo} that are memorisable
 	 * rather than genuinely recoverable.
+	 *
+	 * <p>The hierarchy is walked over the parsed project nodes and ASM-parsed external classes — no
+	 * class loading. Transitive over the WHOLE tree: both superclasses and every super-interface,
+	 * recursively (missing that would let a JDK override like {@code Consumer.accept} slip through and
+	 * get renamed, breaking the jar).
+	 *
+	 * <p>Conservative on an INCOMPLETE hierarchy: if any external supertype cannot be resolved on the
+	 * platform classpath (e.g. a non-shaded library dep), we cannot prove the method is NOT an override
+	 * of it, so we drop the method rather than risk renaming a real external override (which would break
+	 * the jar). This mirrors the old reflection tool, which skipped a whole class on a linkage failure.
+	 * (Only the method is dropped here; the containing class/field symbols are still emitted.)
 	 */
-	private static boolean overridesExternal(Class<?> owner, String methodName, Set<String> projectClasses) {
-		Set<Class<?>> visited = new HashSet<>();
-		Deque<Class<?>> queue = new ArrayDeque<>();
-		enqueueSupertypes(owner, queue);
+	private boolean overridesExternal(String ownerInternal, String methodName, Map<String, ClassNode> nodes,
+			Map<String, ExternalInfo> externalCache) {
+		Set<String> visited = new HashSet<>();
+		Deque<String> queue = new ArrayDeque<>();
+		enqueueSupertypes(ownerInternal, nodes, externalCache, queue);
+		boolean hierarchyIncomplete = false;
 
 		while (!queue.isEmpty()) {
-			Class<?> type = queue.poll();
+			String type = queue.poll();
 
 			if (type == null || !visited.add(type)) {
 				continue;
 			}
 
-			String internal = type.getName().replace('.', '/');
+			if (!nodes.containsKey(type)) {
+				ExternalInfo info = resolveExternal(type, externalCache);
 
-			if (!projectClasses.contains(internal)) {
-				for (Method candidate : declaredMethodsQuietly(type)) {
-					if (candidate.getName().equals(methodName)) {
+				if (info == null) {
+					// Unresolved external supertype: the hierarchy is incomplete. Keep the contract
+					// denylist as an additional early-positive, but remember the gap for the final verdict.
+					hierarchyIncomplete = true;
+
+					if (CONTRACT_NAMES.contains(methodName)) {
 						return true;
 					}
+				} else if (info.methodNames().contains(methodName)) {
+					return true;
 				}
 			}
 
-			enqueueSupertypes(type, queue);
+			enqueueSupertypes(type, nodes, externalCache, queue);
 		}
 
-		return false;
+		// Not matched against any resolved supertype — but if the walk hit an unresolvable external type,
+		// we cannot rule out an override, so drop conservatively (safe: never renames a real override).
+		return hierarchyIncomplete;
 	}
 
-	private static void enqueueSupertypes(Class<?> type, Deque<Class<?>> queue) {
-		Class<?> superClass = type.getSuperclass();
+	private void enqueueSupertypes(String type, Map<String, ClassNode> nodes,
+			Map<String, ExternalInfo> externalCache, Deque<String> queue) {
+		ClassNode node = nodes.get(type);
 
-		if (superClass != null) {
-			queue.add(superClass);
+		if (node != null) {
+			if (node.superName != null) {
+				queue.add(node.superName);
+			}
+
+			queue.addAll(node.interfaces);
+			return;
 		}
 
-		queue.addAll(java.util.Arrays.asList(type.getInterfaces()));
+		ExternalInfo info = resolveExternal(type, externalCache);
+
+		if (info != null) {
+			if (info.superName() != null) {
+				queue.add(info.superName());
+			}
+
+			queue.addAll(info.interfaces());
+		}
 	}
 
-	private static Method[] declaredMethodsQuietly(Class<?> type) {
-		try {
-			return type.getDeclaredMethods();
-		} catch (Throwable t) {
-			return new Method[0];
+	/**
+	 * Parses an external (non-project) class off the platform classpath with ASM, collecting its
+	 * declared method names plus its own supertypes, and caches the result. Returns {@code null} if the
+	 * class cannot be resolved (not on the platform classpath) — callers then apply the denylist. Never
+	 * loads or initialises the class.
+	 */
+	private ExternalInfo resolveExternal(String internalName, Map<String, ExternalInfo> cache) {
+		ExternalInfo cached = cache.get(internalName);
+
+		if (cached != null) {
+			return cached == ExternalInfo.UNRESOLVED ? null : cached;
+		}
+
+		try (InputStream in = ClassLoader.getPlatformClassLoader().getResourceAsStream(internalName + ".class")) {
+			if (in == null) {
+				cache.put(internalName, ExternalInfo.UNRESOLVED);
+				return null;
+			}
+
+			ClassNode node = new ClassNode();
+			new ClassReader(in).accept(node, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+			Set<String> methodNames = new HashSet<>();
+
+			for (MethodNode method : node.methods) {
+				methodNames.add(method.name);
+			}
+
+			ExternalInfo info = new ExternalInfo(methodNames, node.superName, new ArrayList<>(node.interfaces));
+			cache.put(internalName, info);
+			return info;
+		} catch (Throwable unresolved) {
+			cache.put(internalName, ExternalInfo.UNRESOLVED);
+			return null;
 		}
 	}
 
@@ -344,8 +535,9 @@ final class TinyRemapperObfuscator implements Obfuscator {
 		}
 	}
 
-	private static List<String> readClassNames(Path jar) throws IOException {
-		Set<String> names = new TreeSet<>();
+	/** Parses every {@code .class} entry into a deterministic (sorted) internal-name -> node map. */
+	private static Map<String, ClassNode> readClassNodes(Path jar) throws IOException {
+		Map<String, ClassNode> nodes = new TreeMap<>();
 
 		try (ZipFile zip = new ZipFile(jar.toFile())) {
 			Enumeration<? extends ZipEntry> entries = zip.entries();
@@ -358,11 +550,16 @@ final class TinyRemapperObfuscator implements Obfuscator {
 					continue;
 				}
 
-				names.add(entryName.substring(0, entryName.length() - ".class".length()));
+				try (InputStream in = zip.getInputStream(entry)) {
+					ClassNode node = new ClassNode();
+					// Keep code + debug (LVT feeds the parameter fallback); frames are irrelevant here.
+					new ClassReader(in).accept(node, ClassReader.SKIP_FRAMES);
+					nodes.put(node.name, node);
+				}
 			}
 		}
 
-		return new ArrayList<>(names);
+		return nodes;
 	}
 
 	/**
@@ -421,8 +618,18 @@ final class TinyRemapperObfuscator implements Obfuscator {
 		}
 	}
 
-	/** A collected member: its scored ground-truth symbol paired with the rename that would apply it. */
-	private record MemberEntry(ObfuscatedSymbol symbol, Mapping mapping) {
+	/** A collected member: its scored ground-truth symbol, the rename that would apply it, and any params. */
+	private record MemberEntry(ObfuscatedSymbol symbol, Mapping mapping, List<PendingParam> params) {
+	}
+
+	/** A real-named method parameter awaiting emission: its JVM slot, name, and the owning method's access. */
+	private record PendingParam(int slot, String name, int access) {
+	}
+
+	/** A cached, ASM-parsed external supertype: its declared method names and its own supertypes. */
+	private record ExternalInfo(Set<String> methodNames, String superName, List<String> interfaces) {
+		/** Sentinel cached for a class that could not be resolved on the platform classpath. */
+		static final ExternalInfo UNRESOLVED = new ExternalInfo(Set.of(), null, List.of());
 	}
 
 	/** A single rename fed to tiny-remapper, keyed on the original identity. */
