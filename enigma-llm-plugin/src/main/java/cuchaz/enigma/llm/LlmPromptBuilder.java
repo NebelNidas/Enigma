@@ -50,9 +50,19 @@ class LlmPromptBuilder {
 
 	String build(EntryKey key, ProjectView project, LlmProjectIndex index, LlmContextBackend backend,
 			Set<LlmAnalysisHint> analysisHints, List<BatchSuggestion> batchSuggestions) {
+		return build(key, project, index, backend, analysisHints, batchSuggestions, null);
+	}
+
+	/**
+	 * Builds the suggestion prompt. When {@code codeSection} is non-blank (the code-inclusive context arm)
+	 * the normalized decompiled body of the target method is appended after the metadata context, so the
+	 * metadata prefix stays byte-identical to the metadata-only arm and the two differ only by the added code.
+	 */
+	String build(EntryKey key, ProjectView project, LlmProjectIndex index, LlmContextBackend backend,
+			Set<LlmAnalysisHint> analysisHints, List<BatchSuggestion> batchSuggestions, String codeSection) {
 		StringBuilder prompt = new StringBuilder();
 		prompt.append("Target kind: ").append(key.kind()).append('\n');
-		prompt.append("Target obfuscated name: ").append(key.displayName()).append('\n');
+		prompt.append("Target name: ").append(key.displayName()).append('\n');
 		appendTargetDetails(prompt, key, index);
 
 		appendMapping(prompt, project, "Target mapped name", key);
@@ -62,6 +72,7 @@ class LlmPromptBuilder {
 		appendAnalysisHints(prompt, index, key, analysisHints);
 		appendBatchSuggestions(prompt, key, batchSuggestions);
 		appendContext(prompt, project, index, key, backend);
+		appendCodeSection(prompt, codeSection);
 
 		prompt.append("\nRespond with JSON only:\n");
 		prompt.append("{\"reasoning\":\"short explanation\",\"alternatives\":[\"NameA\",\"NameB\"],\"suggestedName\":\"BestName\",\"confidence\":0.0}\n");
@@ -72,6 +83,16 @@ class LlmPromptBuilder {
 
 	String build(EntryKey key, ProjectView project, LlmProjectIndex index) {
 		return build(key, project, index, LlmContextBackend.OWNER);
+	}
+
+	private static void appendCodeSection(StringBuilder prompt, String codeSection) {
+		if (codeSection == null || codeSection.isBlank()) {
+			return;
+		}
+
+		prompt.append("\nDecompiled body of the target method (identifiers are the same obfuscated names; local variable ")
+				.append("names such as local1 or capture0 are decompiler placeholders, not meaningful):\n");
+		prompt.append(codeSection).append('\n');
 	}
 
 	private static void appendContext(StringBuilder prompt, ProjectView project, LlmProjectIndex index, EntryKey key, LlmContextBackend backend) {

@@ -12,9 +12,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
@@ -71,6 +74,18 @@ import cuchaz.enigma.api.view.ProjectView;
  */
 public final class LlmObfuscationBenchmarkHarness {
 	private static final String LIMIT_ENV = "ENIGMA_LLM_BENCH_LIMIT";
+	/**
+	 * Targeted re-run: when {@code ENIGMA_LLM_BENCH_RETRY_MANIFEST} points at a JSONL of
+	 * {@code {jar, track, kind, obfOwner, obfName, obfDesc, localIndex}} keys, the harness skips its
+	 * normal stratified sampling and scores ONLY those symbols (used to re-run infra-errored rows —
+	 * timeout / context-overflow / 5xx — from a prior sweep without re-billing the rows that succeeded).
+	 * Results land in a fresh {@code resultsDir} and are merged back by {@code retry_failed.py}; the
+	 * preserved raw is never overwritten. The per-unit duplicate-name dedup starts empty over the retry
+	 * subset (acceptable: the retried rows produced no suggestion originally, so held no prior name claim).
+	 */
+	private static final String RETRY_MANIFEST_ENV = "ENIGMA_LLM_BENCH_RETRY_MANIFEST";
+	/** {@code base + "::" + trackLabel} -> symbol key-strings to retry; {@code null} = normal (full-sample) mode. */
+	private static Map<String, Set<String>> retryKeys = null;
 
 	private LlmObfuscationBenchmarkHarness() {
 	}
@@ -96,6 +111,14 @@ public final class LlmObfuscationBenchmarkHarness {
 		}
 
 		Files.createDirectories(resultsDir);
+
+		retryKeys = loadRetryManifest();
+
+		if (retryKeys != null) {
+			int keyCount = retryKeys.values().stream().mapToInt(Set::size).sum();
+			System.out.printf("  RETRY MODE: %d unit(s), %d target key(s) from %s%n",
+					retryKeys.size(), keyCount, System.getenv(RETRY_MANIFEST_ENV));
+		}
 
 		if (online) {
 			System.out.printf("Endpoint: %s model=%s%n  results -> %s%n", config.baseUrl(), config.model(), resultsDir);
@@ -196,8 +219,15 @@ public final class LlmObfuscationBenchmarkHarness {
 	}
 
 	/** An opened, indexed jar-track ready to score. Prepared sequentially; scored (possibly) in parallel. */
+	// Code-inclusive context arm (M+C): when ENIGMA_LLM_BENCH_CODE=true, each METHOD/PARAMETER target's
+	// decompiled (and track-normalized) body is appended to the metadata prompt, so the arm differs from the
+	// metadata-only arm only by the added code. Off by default -> the existing metadata-only runs are unchanged.
+	private static final boolean CODE_CONTEXT = Boolean.parseBoolean(
+			System.getenv().getOrDefault("ENIGMA_LLM_BENCH_CODE", "false"));
+
 	private record PreparedUnit(String base, Track track, Path obfJar, List<GroundTruthSymbol> symbols,
-			ProjectView project, LlmNameProposalPlugin plugin, LlmSuggestionEngine engine, Path resultsFile) {
+			ProjectView project, LlmNameProposalPlugin plugin, LlmSuggestionEngine engine, Path resultsFile,
+			DecompiledMethodBodyProvider codeProvider) {
 	}
 
 	/**
@@ -212,7 +242,8 @@ public final class LlmObfuscationBenchmarkHarness {
 		plugin.setIndex(buildIndex(obfJar));
 		LlmSuggestionEngine engine = new LlmSuggestionEngine(plugin);
 		Path resultsFile = resultsDir.resolve(base + "-" + track.label() + "-benchmark.jsonl");
-		return new PreparedUnit(base, track, obfJar, symbols, project, plugin, engine, resultsFile);
+		DecompiledMethodBodyProvider codeProvider = CODE_CONTEXT ? new DecompiledMethodBodyProvider(obfJar) : null;
+		return new PreparedUnit(base, track, obfJar, symbols, project, plugin, engine, resultsFile, codeProvider);
 	}
 
 	/**
@@ -222,31 +253,81 @@ public final class LlmObfuscationBenchmarkHarness {
 	 */
 	private static JarReport runUnit(PreparedUnit unit, Path resultsDir, LlmConfig config, boolean online)
 			throws IOException {
-		Map<Bucket, List<GroundTruthSymbol>> buckets = new EnumMap<>(Bucket.class);
-
-		for (Bucket bucket : Bucket.values()) {
-			buckets.put(bucket, new ArrayList<>());
-		}
-
-		for (GroundTruthSymbol symbol : unit.symbols()) {
-			buckets.get(bucketFor(symbol)).add(symbol);
-		}
-
 		JarReport report = new JarReport(unit.base());
 
+		// Retry mode: resolve THIS unit's manifest targets up front. Skip units with none (no empty result
+		// file, no leak audit), and fail loud if any manifest key does not resolve to a ground-truth symbol
+		// (the corpus changed since the run being retried), rather than silently scoring fewer rows.
+		List<GroundTruthSymbol> retryTargets = null;
+
+		if (retryKeys != null) {
+			Set<String> wanted = retryKeys.getOrDefault(unit.base() + "::" + unit.track().label(), Set.of());
+
+			if (wanted.isEmpty()) {
+				return report;
+			}
+
+			retryTargets = new ArrayList<>();
+			Set<String> matched = new HashSet<>();
+
+			for (GroundTruthSymbol symbol : unit.symbols()) {
+				if (wanted.contains(symbolKey(symbol))) {
+					retryTargets.add(symbol);
+					matched.add(symbolKey(symbol));
+				}
+			}
+
+			if (!matched.containsAll(wanted)) {
+				Set<String> unresolved = new HashSet<>(wanted);
+				unresolved.removeAll(matched);
+				throw new IllegalStateException("retry manifest has " + unresolved.size()
+						+ " key(s) with no ground-truth symbol in " + unit.base() + "::" + unit.track().label()
+						+ " (corpus changed?): " + unresolved);
+			}
+
+			retryTargets.sort(SAMPLE_ORDER);
+		}
+
 		try (BufferedWriter writer = Files.newBufferedWriter(unit.resultsFile(), StandardCharsets.UTF_8)) {
-			for (Bucket bucket : Bucket.values()) {
-				for (GroundTruthSymbol symbol : sample(unit.base(), bucket, buckets.get(bucket))) {
-					TargetScore score = scoreTarget(unit.engine(), config, unit.project(), unit.plugin().getIndex(),
-							symbol, online);
-					report.add(score, bucket);
+			if (retryTargets != null) {
+				// Targeted re-run: score ONLY the manifest symbols, in the deterministic SAMPLE_ORDER,
+				// keeping each symbol's real bucket for the summary.
+				for (GroundTruthSymbol symbol : retryTargets) {
+					TargetScore score = scoreTarget(unit.engine(), unit.codeProvider(), unit.track(), config,
+							unit.project(), unit.plugin().getIndex(), symbol, online);
+					report.add(score, bucketFor(symbol));
 					writer.write(score.toJson().toString());
 					writer.write('\n');
+				}
+			} else {
+				Map<Bucket, List<GroundTruthSymbol>> buckets = new EnumMap<>(Bucket.class);
+
+				for (Bucket bucket : Bucket.values()) {
+					buckets.put(bucket, new ArrayList<>());
+				}
+
+				for (GroundTruthSymbol symbol : unit.symbols()) {
+					buckets.get(bucketFor(symbol)).add(symbol);
+				}
+
+				for (Bucket bucket : Bucket.values()) {
+					for (GroundTruthSymbol symbol : sample(unit.base(), bucket, buckets.get(bucket))) {
+						TargetScore score = scoreTarget(unit.engine(), unit.codeProvider(), unit.track(), config,
+								unit.project(), unit.plugin().getIndex(), symbol, online);
+						report.add(score, bucket);
+						writer.write(score.toJson().toString());
+						writer.write('\n');
+					}
 				}
 			}
 		}
 
-		report.leaks = auditLeaks(unit.obfJar(), unit.symbols(), resultsDir, unit.base(), unit.track());
+		// The leak audit is a full-population diagnostic; it is meaningless for a targeted retry subset, so
+		// skip it in retry mode (the merge never consumes leaks files anyway).
+		if (retryKeys == null) {
+			report.leaks = auditLeaks(unit.obfJar(), unit.symbols(), resultsDir, unit.base(), unit.track());
+		}
+
 		System.out.println(report.line(online));
 		return report;
 	}
@@ -349,10 +430,14 @@ public final class LlmObfuscationBenchmarkHarness {
 		return leaks;
 	}
 
-	private static TargetScore scoreTarget(LlmSuggestionEngine engine, LlmConfig config, ProjectView project,
+	private static TargetScore scoreTarget(LlmSuggestionEngine engine, DecompiledMethodBodyProvider codeProvider,
+			Track track, LlmConfig config, ProjectView project,
 			LlmProjectIndex index, GroundTruthSymbol symbol, boolean online) {
 		EntryKey key = keyFor(symbol);
 		boolean resolved = index.entry(key).isPresent();
+		// Code-inclusive arm: the normalized decompiled body of the target method (METHOD/PARAMETER only),
+		// or null when the arm is off, the kind is out of scope, or the body cannot be extracted.
+		String codeSection = codeSection(codeProvider, track, symbol, key);
 		// AUTO resolves per-target to graph or simple context; tag it per row so the api headline can be
 		// split by backend post-hoc (otherwise one model can look better only because it drew richer contexts).
 		String contextBackend = LlmPromptBuilder.resolveBackend(key, index, config.contextBackend()).configValue();
@@ -365,12 +450,17 @@ public final class LlmObfuscationBenchmarkHarness {
 		// client-side char cap fired. Prompt construction is local (no network) so this also populates the
 		// structural/offline path -> a no-endpoint run is a GPU-free prompt/truncation audit. Batch suggestions
 		// are empty on the per-target api slice, so this matches what requestSuggestion sends.
-		String loggedPrompt = new LlmPromptBuilder().build(key, project, index, config.contextBackend());
+		String loggedPrompt = new LlmPromptBuilder().build(key, project, index, config.contextBackend(),
+				config.analysisHints(), List.of(), codeSection);
 		int promptChars = loggedPrompt.length();
 		boolean promptTruncated = loggedPrompt.contains(LlmPromptBuilder.TRUNCATION_MARKER);
+		boolean codeIncluded = codeSection != null;
+		int codeChars = codeSection == null ? 0 : codeSection.length();
+		String contextMode = codeIncluded ? "metadata+code" : (CODE_CONTEXT ? "metadata_only(code-unavailable)" : "metadata_only");
 
 		if (!online) {
-			return TargetScore.structural(symbol, resolved, contextBackend, autoBackend, promptChars, promptTruncated);
+			return TargetScore.structural(symbol, resolved, contextBackend, autoBackend, promptChars, promptTruncated,
+					contextMode, codeIncluded, codeChars);
 		}
 
 		String suggested = null;
@@ -383,7 +473,9 @@ public final class LlmObfuscationBenchmarkHarness {
 		long startNanos = System.nanoTime();
 
 		try {
-			LlmSuggestion suggestion = engine.requestSuggestion(config, project, key);
+			LlmSuggestion suggestion = codeSection != null
+					? engine.requestSuggestion(config, project, key, codeSection)
+					: engine.requestSuggestion(config, project, key);
 			suggested = suggestion.suggestedName();
 			alternatives = suggestion.alternatives();
 			confidence = suggestion.confidence();
@@ -391,16 +483,61 @@ public final class LlmObfuscationBenchmarkHarness {
 			error = ex.getClass().getSimpleName() + (ex.getMessage() == null ? "" : ": " + ex.getMessage());
 		}
 
+		// Preservation-control correction: on a preservation target (never obfuscated) the correct action is to
+		// KEEP the name, but the engine rejects "suggest the current name" as a no-op rename
+		// (LlmNameValidator: !name.equals(key.name())) and throws, which would otherwise be logged as an error
+		// instead of a correct preservation -- so the control could never credit a correct keep (empirically
+		// clean-preservation count was 0). Detect that exact case from the validation message and score it as
+		// the correct kept name. Gated on !obfuscated AND the parsed name equalling the real name, so it never
+		// masks a genuine invalid-identifier failure on a recovery target.
+		if (error != null && !symbol.obfuscated()
+				&& error.contains("Invalid Java identifier suggested for")
+				&& error.endsWith(": " + symbol.realName())) {
+			suggested = symbol.realName();
+			error = null;
+		}
+
 		long latencyMs = (System.nanoTime() - startNanos) / 1_000_000L;
 
 		return TargetScore.scored(symbol, resolved, contextBackend, autoBackend, promptChars, promptTruncated,
-				suggested, alternatives, confidence, error, latencyMs);
+				suggested, alternatives, confidence, error, latencyMs, contextMode, codeIncluded, codeChars);
+	}
+
+	/**
+	 * The normalized decompiled body to append for the code arm, or {@code null} when the arm is off, the
+	 * target is not a METHOD/PARAMETER (FIELD/CLASS code is deferred), or the body cannot be decompiled/found.
+	 * For a PARAMETER the containing method's body is used (the symbol carries that method's name/descriptor).
+	 */
+	private static String codeSection(DecompiledMethodBodyProvider codeProvider, Track track,
+			GroundTruthSymbol symbol, EntryKey key) {
+		if (codeProvider == null || (key.kind() != EntryKind.METHOD && key.kind() != EntryKind.PARAMETER)) {
+			return null;
+		}
+
+		Optional<String> raw = codeProvider.methodSource(symbol.obfOwner(), symbol.obfName(), symbol.obfDesc());
+
+		if (raw.isEmpty()) {
+			return null;
+		}
+
+		CodePromptNormalizer.Track normTrack = track.label().startsWith("realistic")
+				? CodePromptNormalizer.Track.REALISTIC
+				: CodePromptNormalizer.Track.STRUCTURE_ONLY;
+		String normalized = CodePromptNormalizer.normalize(raw.get(), normTrack);
+		return normalized == null || normalized.isBlank() ? null : normalized;
 	}
 
 	private static EntryKey keyFor(GroundTruthSymbol symbol) {
 		if (symbol.kind() == EntryKind.CLASS) {
 			// EntryKey for a class carries the full internal name in both owner and name.
 			return new EntryKey(EntryKind.CLASS, symbol.obfOwner(), symbol.obfOwner(), "");
+		}
+
+		if (symbol.kind() == EntryKind.PARAMETER) {
+			// Parameters are located by the owning method plus the JVM local-variable slot; localName is
+			// left blank (never the truth name -- EntryKey ignores it for equality and it must not leak).
+			return new EntryKey(EntryKind.PARAMETER, symbol.obfOwner(), symbol.obfName(), symbol.obfDesc(),
+					symbol.localIndex(), "");
 		}
 
 		return new EntryKey(symbol.kind(), symbol.obfOwner(), symbol.obfName(), symbol.obfDesc());
@@ -430,6 +567,50 @@ public final class LlmObfuscationBenchmarkHarness {
 		}
 
 		return builder.build();
+	}
+
+	/**
+	 * Stable identity of a symbol within its (jar, track): the same tuple {@link #keyFor} keys the index on,
+	 * flattened to a string so it can be matched against the retry manifest without reconstructing EntryKeys.
+	 */
+	private static String symbolKey(GroundTruthSymbol symbol) {
+		return symbol.kind().name() + "|" + symbol.obfOwner() + "|" + symbol.obfName() + "|"
+				+ symbol.obfDesc() + "|" + symbol.localIndex();
+	}
+
+	/**
+	 * Loads the optional retry manifest ({@link #RETRY_MANIFEST_ENV}) into {@code base::track -> {symbolKey}}.
+	 * Returns {@code null} when the env var is unset/blank (normal full-sample mode). Each manifest line is
+	 * {@code {jar, track, kind, obfOwner, obfName, obfDesc, localIndex}}; {@code jar} is the corpus base name
+	 * and {@code track} the track label ("realistic" / "structure-only"), matching {@code prepareUnit}.
+	 */
+	private static Map<String, Set<String>> loadRetryManifest() throws IOException {
+		String path = System.getenv(RETRY_MANIFEST_ENV);
+
+		if (path == null || path.isBlank()) {
+			return null;
+		}
+
+		Map<String, Set<String>> map = new HashMap<>();
+
+		try (BufferedReader reader = Files.newBufferedReader(Path.of(path), StandardCharsets.UTF_8)) {
+			String line;
+
+			while ((line = reader.readLine()) != null) {
+				if (line.isBlank()) {
+					continue;
+				}
+
+				JsonObject object = JsonParser.parseString(line).getAsJsonObject();
+				String unitKey = object.get("jar").getAsString() + "::" + object.get("track").getAsString();
+				String symKey = object.get("kind").getAsString() + "|" + object.get("obfOwner").getAsString() + "|"
+						+ object.get("obfName").getAsString() + "|" + object.get("obfDesc").getAsString() + "|"
+						+ (object.has("localIndex") ? object.get("localIndex").getAsInt() : -1);
+				map.computeIfAbsent(unitKey, k -> new HashSet<>()).add(symKey);
+			}
+		}
+
+		return map;
 	}
 
 	private static List<GroundTruthSymbol> loadGroundTruth(Path file, String jar) throws IOException {
@@ -470,7 +651,9 @@ public final class LlmObfuscationBenchmarkHarness {
 						visibility,
 						slice,
 						recoverable,
-						object.get("obfuscated").getAsBoolean()));
+						object.get("obfuscated").getAsBoolean(),
+						object.has("localIndex") ? object.get("localIndex").getAsInt() : -1,
+						object.has("localName") ? object.get("localName").getAsString() : ""));
 			}
 		}
 
@@ -503,9 +686,11 @@ public final class LlmObfuscationBenchmarkHarness {
 	}
 
 	private static final Comparator<GroundTruthSymbol> SAMPLE_ORDER =
-			Comparator.comparing(GroundTruthSymbol::obfOwner)
+			Comparator.comparing((GroundTruthSymbol symbol) -> symbol.kind().name())
+					.thenComparing(GroundTruthSymbol::obfOwner)
 					.thenComparing(GroundTruthSymbol::obfName)
-					.thenComparing(GroundTruthSymbol::obfDesc);
+					.thenComparing(GroundTruthSymbol::obfDesc)
+					.thenComparingInt(GroundTruthSymbol::localIndex);
 
 	private static final long SAMPLE_SEED = readEnvInt("ENIGMA_LLM_BENCH_SEED", 1234567);
 
@@ -622,28 +807,32 @@ public final class LlmObfuscationBenchmarkHarness {
 	/** One ground-truth row loaded back from the {@code -groundtruth.jsonl}. */
 	private record GroundTruthSymbol(String jar, EntryKind kind, String obfOwner, String obfName, String obfDesc,
 			String realOwner, String realName, Set<String> acceptableRealNames, String visibility, String slice,
-			boolean recoverable, boolean obfuscated) {
+			boolean recoverable, boolean obfuscated, int localIndex, String localName) {
 	}
 
 	/** The outcome of one target: structural resolution plus (if online) the scored suggestion. */
 	private record TargetScore(GroundTruthSymbol symbol, boolean resolvedInIndex, boolean attempted,
 			String contextBackend, String autoBackend, int promptChars, boolean promptTruncated,
 			String suggested, List<String> alternatives, double confidence, String error,
-			boolean exact, boolean normalized, boolean usable, long latencyMs) {
+			boolean exact, boolean normalized, boolean usable, long latencyMs,
+			String contextMode, boolean codeIncluded, int codeChars) {
 		static TargetScore structural(GroundTruthSymbol symbol, boolean resolved, String contextBackend,
-				String autoBackend, int promptChars, boolean promptTruncated) {
+				String autoBackend, int promptChars, boolean promptTruncated,
+				String contextMode, boolean codeIncluded, int codeChars) {
 			return new TargetScore(symbol, resolved, false, contextBackend, autoBackend, promptChars, promptTruncated,
-					null, List.of(), 0.0, null, false, false, false, -1L);
+					null, List.of(), 0.0, null, false, false, false, -1L, contextMode, codeIncluded, codeChars);
 		}
 
 		static TargetScore scored(GroundTruthSymbol symbol, boolean resolved, String contextBackend,
 				String autoBackend, int promptChars, boolean promptTruncated, String suggested,
-				List<String> alternatives, double confidence, String error, long latencyMs) {
+				List<String> alternatives, double confidence, String error, long latencyMs,
+				String contextMode, boolean codeIncluded, int codeChars) {
 			boolean exact = suggested != null && symbol.acceptableRealNames().contains(suggested);
 			boolean normalized = suggested != null && matchesNormalized(symbol.acceptableRealNames(), suggested);
 			boolean usable = exact || normalized || matchesAny(symbol.acceptableRealNames(), alternatives);
 			return new TargetScore(symbol, resolved, true, contextBackend, autoBackend, promptChars, promptTruncated,
-					suggested, alternatives, confidence, error, exact, normalized, usable, latencyMs);
+					suggested, alternatives, confidence, error, exact, normalized, usable, latencyMs,
+					contextMode, codeIncluded, codeChars);
 		}
 
 		private static boolean matchesNormalized(Set<String> acceptable, String candidate) {
@@ -678,6 +867,8 @@ public final class LlmObfuscationBenchmarkHarness {
 			object.addProperty("obfOwner", this.symbol.obfOwner());
 			object.addProperty("obfName", this.symbol.obfName());
 			object.addProperty("obfDesc", this.symbol.obfDesc());
+			object.addProperty("localIndex", this.symbol.localIndex());
+			object.addProperty("localName", this.symbol.localName());
 			object.addProperty("expected", this.symbol.realName());
 			JsonArray acceptable = new JsonArray();
 			this.symbol.acceptableRealNames().forEach(acceptable::add);
@@ -697,6 +888,9 @@ public final class LlmObfuscationBenchmarkHarness {
 			object.addProperty("normalized", this.normalized);
 			object.addProperty("usable", this.usable);
 			object.addProperty("latencyMs", this.latencyMs);
+			object.addProperty("contextMode", this.contextMode);
+			object.addProperty("codeIncluded", this.codeIncluded);
+			object.addProperty("codeChars", this.codeChars);
 			object.addProperty("error", this.error);
 			return object;
 		}

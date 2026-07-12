@@ -53,6 +53,31 @@ class LlmSuggestionEngine {
 		}
 	}
 
+	/**
+	 * Code-inclusive variant: identical to {@link #requestSuggestion(LlmConfig, ProjectView, EntryKey)}
+	 * except the (already normalized) decompiled body of the target method is appended to the prompt. The
+	 * metadata prefix is unchanged, so this arm differs from the metadata-only arm only by the added code.
+	 */
+	LlmSuggestion requestSuggestion(LlmConfig config, ProjectView project, EntryKey key, String codeSection) {
+		try {
+			if (!this.plugin.isProjectCurrent(project)) {
+				throw new ProjectChangedException();
+			}
+
+			LlmContextBackend resolvedBackend = LlmPromptBuilder.resolveBackend(key, this.plugin.getIndex(), config.contextBackend());
+			String prompt = this.promptBuilder.build(key, project, this.plugin.getIndex(), config.contextBackend(),
+					config.analysisHints(), List.of(), codeSection);
+			return requestSuggestion(config, project, key, resolvedBackend, prompt);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new RuntimeException(e);
+		} catch (ProjectChangedException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private LlmSuggestion requestBatchSuggestion(LlmConfig config, ProjectView project, EntryKey key,
 			List<BatchSuggestion> batchSuggestions) {
 		try {

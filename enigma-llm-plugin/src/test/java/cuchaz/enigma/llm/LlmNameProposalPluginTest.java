@@ -519,7 +519,7 @@ public class LlmNameProposalPluginTest {
 		String prompt = new LlmPromptBuilder().build(key, new FakeProjectView(), LlmProjectIndex.empty());
 
 		assertThat(prompt, containsString("Target kind: FIELD"));
-		assertThat(prompt, containsString("Target obfuscated name: missing/Foo.a : I"));
+		assertThat(prompt, containsString("Target name: missing/Foo.a : I"));
 		assertThat(prompt, containsString("Target owner: missing/Foo"));
 		assertThat(prompt, containsString("Target name: a"));
 		assertThat(prompt, containsString("Target descriptor: I"));
@@ -1128,7 +1128,7 @@ public class LlmNameProposalPluginTest {
 			assertThat(server.lastAccept, equalTo("application/json"));
 			assertThat(server.lastRequestBody, containsString("\"model\":\"test-model\""));
 			assertThat(server.lastRequestBody, containsString("Target field: a"));
-			assertThat(server.lastRequestBody, containsString("Default naming rules, adapted from Yarn"));
+			assertThat(server.lastRequestBody, containsString("Default Java naming conventions"));
 			assertThat(server.lastRequestBody, containsString("UPPER_SNAKE_CASE"));
 
 			JsonObject request = JsonParser.parseString(server.lastRequestBody).getAsJsonObject();
@@ -1177,7 +1177,7 @@ public class LlmNameProposalPluginTest {
 			service.requestSuggestion(config, project, key);
 
 			assertThat(server.lastRequestBody, containsString("Target kind: PARAMETER"));
-			assertThat(server.lastRequestBody, containsString("Target obfuscated name: example/Foo.a(I)V arg 1 (p_1_)"));
+			assertThat(server.lastRequestBody, containsString("Target name: example/Foo.a(I)V arg 1 (p_1_)"));
 		}
 	}
 
@@ -1707,7 +1707,10 @@ public class LlmNameProposalPluginTest {
 		assertFalse(validator.isValid(EntryKind.FIELD, "class"));
 		assertFalse(validator.isValid(EntryKind.FIELD, "cONSTANT_A"));
 		assertFalse(validator.isValid(EntryKind.FIELD, "constant_a"));
-		assertFalse(validator.isValid(EntryKind.FIELD, "constantAB"));
+		// Embedded acronyms (consecutive uppercase) are accepted: the rule was relaxed because the JDK and
+		// real code use them and hard-rejecting them only discarded otherwise-valid suggestions.
+		assertTrue(validator.isValid(EntryKind.FIELD, "constantAB"));
+		assertTrue(validator.isValid(EntryKind.METHOD, "parseURL"));
 		assertFalse(validator.isValid(EntryKind.FIELD, "net/minecraft/itemCount"));
 		assertFalse(validator.isValid(EntryKind.METHOD, "render-block"));
 	}

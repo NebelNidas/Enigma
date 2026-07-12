@@ -210,9 +210,9 @@ class OpenAiCompatibleClient {
 				You are an expert Java reverse engineer working on decompiled and bytecode-derived context.
 				Suggest one precise Java identifier for the requested obfuscated target.
 				Focus only on the target; use surrounding members as context.
-				Use only evidence from the supplied bytecode context. Do not guess domain-specific names from the project, jar, package, or game alone.
+				Use only evidence from the supplied bytecode context. Do not guess domain-specific names from the project, jar, or package alone.
 
-				Default naming rules, adapted from Yarn's general naming conventions:
+				Default Java naming conventions:
 				- Use UpperCamelCase for class names, such as FileReader, ColorPalette, or BoundingBox.
 				- Use lowerCamelCase for method names, parameter names, local variable names, and fields that are not both static and final.
 				- Use UPPER_SNAKE_CASE for fields that are both static and final, such as DEFAULT_TIMEOUT or MAX_VALUE.
@@ -232,6 +232,7 @@ class OpenAiCompatibleClient {
 				For top-level classes, you may return either a simple class name or a JVM internal name with package separators.
 				Do not suggest generic names such as Manager, Loader, Handler, Registry, Data, or Utils unless fields, methods, inheritance, or call sites directly prove that role.
 				For fields, methods, and parameters, do not append a short unchanged obfuscated target token, such as ak -> createAk.
+				Only keep the target's existing name unchanged when it is already a descriptive, conventional source-level identifier that communicates purpose, such as bufferSize or MAX_VALUE; return that exact name in that case instead of inventing a new one. Treat any single-letter, very short, letter-plus-digit, or otherwise cryptic token as a placeholder that must be renamed, and when in doubt, propose a new name rather than keeping the existing one. Do not return the existing name merely because it is valid Java, and base the confidence field on your genuine certainty, not on whether you kept the name.
 				If the evidence is weak or only suggests a broad category, choose a conservative descriptive name and set confidence below 0.50.
 				The confidence field is a rough model self-assessment score for ranking suggestions, not a calibrated probability.
 				Generate 2-4 alternatives before choosing the best suggestion.
