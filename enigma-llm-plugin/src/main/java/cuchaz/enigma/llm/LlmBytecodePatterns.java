@@ -52,7 +52,7 @@ final class LlmBytecodePatterns {
 	static boolean isPreservedOriginalName(LlmProjectIndex index, EntryKey key) {
 		return switch (key.kind()) {
 		case CLASS -> isReadableClassName(simpleClassName(key.owner()));
-		case FIELD -> false;
+		case FIELD -> isReadableFieldName(key.name());
 		case METHOD -> isReadableMethodName(index, key);
 		case PARAMETER -> false;
 		};
@@ -72,12 +72,45 @@ final class LlmBytecodePatterns {
 		return isMeaningfulLowerCamelName(key.name(), 4);
 	}
 
+	private static boolean isReadableFieldName(String name) {
+		// A field name counts as already-meaningful if it is either an UPPER_CASE constant (MAX_VALUE,
+		// UTF_8, LOGGER, INSTANCE, ID) or a readable lowerCamelCase name (>=4 chars, same conventional-name
+		// test used for methods). The obfuscator (OpaqueNames) only ever emits lowercase-led "f"+digits
+		// tokens, so an uppercase-led name is never its output, and the lowerCamel test rejects those
+		// tokens by requiring at least two letters — keeping the gate conservative so a genuine rename is
+		// never suppressed by mistake.
+		return isUpperCaseConstant(name) || isMeaningfulLowerCamelName(name, 4);
+	}
+
+	private static boolean isUpperCaseConstant(String name) {
+		// UPPER_CASE, optionally underscore-segmented. Single-word constants (LOGGER, INSTANCE, ID) count
+		// too: obfuscator field tokens are always lowercase-led, so an uppercase-led name cannot collide
+		// with them; we only reject degenerate single characters and malformed underscore placement.
+		if (name.length() < 2 || !Character.isUpperCase(name.codePointAt(0))) {
+			return false;
+		}
+
+		if (name.startsWith("_") || name.endsWith("_") || name.contains("__")) {
+			return false;
+		}
+
+		return name.codePoints().allMatch(cp -> cp == '_'
+				|| (Character.isLetterOrDigit(cp) && !Character.isLowerCase(cp)));
+	}
+
 	private static boolean isReadableClassName(String simpleName) {
 		if (simpleName.length() < 4 || !Character.isUpperCase(simpleName.codePointAt(0))) {
 			return false;
 		}
 
-		return simpleName.codePoints().allMatch(Character::isLetterOrDigit);
+		if (!simpleName.codePoints().allMatch(Character::isLetterOrDigit)) {
+			return false;
+		}
+
+		// The obfuscator (OpaqueNames) emits class tokens "C"+counter (e.g. C1234): one letter plus digits.
+		// A real class name carries at least two letters, so this closes the same synthetic-token hole the
+		// field and method gates guard against.
+		return simpleName.codePoints().filter(Character::isLetter).count() >= 2;
 	}
 
 	private static boolean isStaticFactoryOf(LlmProjectIndex index, EntryKey key) {
@@ -104,8 +137,13 @@ final class LlmBytecodePatterns {
 			return false;
 		}
 
-		return name.codePoints().allMatch(Character::isLetterOrDigit)
-				&& !looksGeneratedLocalName(name);
+		if (!name.codePoints().allMatch(Character::isLetterOrDigit) || looksGeneratedLocalName(name)) {
+			return false;
+		}
+
+		// A single leading letter followed by digits (the OpaqueNames obfuscator's "f789"/"m456" tokens,
+		// and synthetic single-letter names generally) is not a real identifier; require two letters.
+		return name.codePoints().filter(Character::isLetter).count() >= 2;
 	}
 
 	private static boolean looksGeneratedLocalName(String name) {

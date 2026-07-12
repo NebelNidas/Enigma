@@ -220,6 +220,45 @@ public class LlmGuiServiceTest {
 	}
 
 	@Test
+	public void readableOriginalNameDetectionCoversMeaningfulFieldNames() {
+		// UPPER_CASE constants (segmented or single-word) and readable lowerCamelCase fields are meaningful.
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("MAX_VALUE")));
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("DEFAULT_BUFFER_SIZE")));
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("UTF_8")));
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("LOGGER")));
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("INSTANCE")));
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("ID")));
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("bufferSize")));
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("utf8")));
+
+		// Obfuscator (OpaqueNames "f"+digits), SRG output and degenerate shapes must stay renameable.
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("a")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("f789")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("f_12345_a")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("field_1234")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("MAX_value")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("A__B")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("_LEADING")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("arg0")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), field("var0")));
+	}
+
+	private static EntryKey field(String name) {
+		return new EntryKey(EntryKind.FIELD, "example/Foo", name, "I");
+	}
+
+	@Test
+	public void readableOriginalNameDetectionRejectsObfuscatorClassTokens() {
+		// The obfuscator emits "C"+digits class tokens (one letter + digits); real names carry >=2 letters.
+		assertTrue(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), classKey("example/RotationAxis")));
+		assertFalse(LlmBytecodePatterns.isPreservedOriginalName(LlmProjectIndex.empty(), classKey("example/C1234")));
+	}
+
+	private static EntryKey classKey(String internalName) {
+		return new EntryKey(EntryKind.CLASS, internalName, internalName, "");
+	}
+
+	@Test
 	public void readableTargetFormatsMappedMethodDescriptor() {
 		EntryKey classKey = new EntryKey(EntryKind.CLASS, "a", "a", "");
 		EntryKey methodKey = new EntryKey(EntryKind.METHOD, "a", "of", "(Lorg/joml/Vector3f;)La;");
