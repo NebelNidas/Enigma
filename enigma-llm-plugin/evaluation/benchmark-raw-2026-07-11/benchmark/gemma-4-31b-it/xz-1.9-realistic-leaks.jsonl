@@ -1,0 +1,31 @@
+{"owner":"obf/C61","channel":"string-literal","matchKind":"class","realName":"CRC64","strict":true,"context":"CRC64"}
+{"owner":"obf/C65","channel":"string-literal","matchKind":"member","realName":"options","strict":false,"context":"Unsupported options in XZ Stream Header"}
+{"owner":"obf/C65","channel":"string-literal","matchKind":"member","realName":"options","strict":false,"context":"Unsupported options in XZ Stream Footer"}
+{"owner":"obf/C13","channel":"string-literal","matchKind":"member","realName":"options","strict":false,"context":"Unsupported options in XZ Block Header"}
+{"owner":"obf/C13","channel":"string-literal","matchKind":"member","realName":"check","strict":false,"context":"Integrity check ("}
+{"owner":"obf/C23","channel":"string-literal","matchKind":"member","realName":"distance","strict":false,"context":"Delta distance must be in the range [1, 256]: "}
+{"owner":"obf/C23","channel":"string-literal","matchKind":"member","realName":"range","strict":false,"context":"Delta distance must be in the range [1, 256]: "}
+{"owner":"obf/C52","channel":"string-literal","matchKind":"member","realName":"finished","strict":false,"context":"Stream finished or closed"}
+{"owner":"obf/C37","channel":"string-literal","matchKind":"member","realName":"matches","strict":false,"context":"Minimum nice length of matches is 8 bytes: "}
+{"owner":"obf/C37","channel":"string-literal","matchKind":"member","realName":"matches","strict":false,"context":"Maximum nice length of matches is 273: "}
+{"owner":"obf/C37","channel":"string-literal","matchKind":"member","realName":"limit","strict":false,"context":"Depth limit cannot be negative: "}
+{"owner":"obf/C41","channel":"string-literal","matchKind":"member","realName":"limit","strict":false,"context":" KiB of memory would be needed; limit was "}
+{"owner":"obf/C60","channel":"string-literal","matchKind":"class","realName":"CRC32","strict":true,"context":"CRC32"}
+{"owner":"obf/C63","channel":"string-literal","matchKind":"class","realName":"None","strict":true,"context":"None"}
+{"owner":"obf/C48","channel":"string-literal","matchKind":"member","realName":"position","strict":false,"context":"Negative seek position: "}
+{"owner":"obf/C48","channel":"string-literal","matchKind":"member","realName":"uncompressed","strict":false,"context":"Invalid uncompressed position: "}
+{"owner":"obf/C48","channel":"string-literal","matchKind":"member","realName":"position","strict":false,"context":"Invalid uncompressed position: "}
+{"owner":"obf/C62","channel":"string-literal","matchKind":"class","realName":"Check","strict":false,"context":"Unsupported Check ID "}
+{"owner":"obf/C24","channel":"string-literal","matchKind":"member","realName":"finished","strict":false,"context":"Stream finished"}
+{"owner":"obf/C24","channel":"string-literal","matchKind":"member","realName":"finished","strict":false,"context":"Stream finished or closed"}
+{"owner":"obf/C59","channel":"string-literal","matchKind":"member","realName":"options","strict":false,"context":"Changing filter options in the middle of a XZ Block not implemented"}
+{"owner":"obf/C59","channel":"string-literal","matchKind":"member","realName":"chain","strict":false,"context":"XZ filter chain must be 1-4 filters"}
+{"owner":"obf/C59","channel":"string-literal","matchKind":"member","realName":"filters","strict":false,"context":"XZ filter chain must be 1-4 filters"}
+{"owner":"obf/C59","channel":"string-literal","matchKind":"member","realName":"finished","strict":false,"context":"Stream finished or closed"}
+{"owner":"obf/C43","channel":"string-literal","matchKind":"member","realName":"chain","strict":false,"context":"Unsupported XZ filter chain"}
+{"owner":"obf/C50","channel":"string-literal","matchKind":"member","realName":"finished","strict":false,"context":"Stream finished or closed"}
+{"owner":"obf/C38","channel":"string-literal","matchKind":"member","realName":"finished","strict":false,"context":"Stream finished or closed"}
+{"owner":"obf/C40","channel":"string-literal","matchKind":"member","realName":"finished","strict":false,"context":"Stream finished or closed"}
+{"owner":"obf/C40","channel":"string-literal","matchKind":"member","realName":"uncompressed","strict":false,"context":"Expected uncompressed input size ("}
+{"owner":"obf/C40","channel":"string-literal","matchKind":"class","realName":"LZMAOutputStream","strict":false,"context":"LZMAOutputStream does not support flushing"}
+{"owner":"obf/C40","channel":"string-literal","matchKind":"member","realName":"uncompressed","strict":false,"context":"Expected uncompressed size ("}

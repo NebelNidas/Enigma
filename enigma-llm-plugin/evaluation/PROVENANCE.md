@@ -178,6 +178,17 @@ local 30B 15/26/33 · sonnet high 25/41/52 · opus high 22/40/56 · gpt-5.5 high
 - **Aggregation** `agg_hypo.py` → `agg_hypo_report.txt` (reproduces exact 15/25/22/23; macro lens 21.8/15.0 exact, 53.4/33.0 majority).
 - **Commits** `16dd983` (repro package) + `612d09d` (preserved results). Essay `76251fd` *(essay repo)*. **This is the best-preserved chain in the essay** (raw + residuals + verdicts all committed).
 
+### gemma-4-31b (no-think) roster point (2026-07-12, VALID clean run)
+gemma-4-31b-it Q4_K_M no-think, ROCm hardened run (547m, all validity guards passed), realistic-track API slice
+(excl. preservation, n=300 pooled): **exact=57/300=19.0%, usable=75/300=25.0%, err=0** (per-jar realistic: commons 22/25,
+gson 23/28, xz 12/22). => NEW local leader (prior best local = 30B-MoE ~11% pooled exact). Structure-only: exact=34/300=11.3%.
+err=0 = harness retry-on-invalid-identifier (documented first-pass-vs-after-repair caveat), NOT masking (Gemini flag, explained).
+- **Input** corpus jars -> obfuscated by the harness (AUTO backend, default config, temp0, --parallel1).
+- **Generating** `.dk-eval-scripts/gemma_rocm_bench.sh` (flock+identity-guard+post-run-validity, Codex-reviewed) -> LlmObfuscationBenchmarkHarness via ROCm llama-server (gemma-4-31B-it-Q4_K_M.gguf, -ngl 33, no-think).
+- **Raw output PRESERVED** `benchmark-raw-2026-07-11/benchmark/gemma-4-31b-it/` (6 benchmark + 6 leaks jsonl).
+- **Aggregation** deterministic harness scores; recomputed from JSONL. **Cross-checked: Codex (exact recompute match) + Gemini (plausibility).**
+- Compare Q3_K_S 50/303=16.5% (older config -> "measure-first" before treating as a clean quant-ladder point). Commit: pending (essay integration TBD with Julian).
+
 ### coder-next IQ1 on Hypo (pending essay "IQ1 limitation" row, 2026-07-11)
 qwen3-coder-next @ IQ1_S (~1-bit 80B MoE) on Hypo, full n=100, ROCm clean run (hardened, own IQ1 server):
 **realistic api exact=13/100 usable=15/100** (err=6); structure-only exact=9/12 (err=7). ≈ local-30B Hypo (exact 15)
