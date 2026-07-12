@@ -60,6 +60,20 @@ class LlmPromptBuilder {
 	 */
 	String build(EntryKey key, ProjectView project, LlmProjectIndex index, LlmContextBackend backend,
 			Set<LlmAnalysisHint> analysisHints, List<BatchSuggestion> batchSuggestions, String codeSection) {
+		return build(key, project, index, backend, analysisHints, batchSuggestions, codeSection, false);
+	}
+
+	/**
+	 * Same as the 7-argument {@code build}, but when {@code lengthControlPadding} is true the {@code codeSection}
+	 * is appended as an explicitly-labelled length-control ("M++") padding block rather than as the target's
+	 * decompiled body. This is the token-volume control arm: {@code codeSection} then holds sterile, unrelated
+	 * boilerplate character-matched to the real body, so the prompt matches M+C in length while carrying no
+	 * code content of the target. The label tells the model to ignore the block, avoiding a metadata-vs-body
+	 * contradiction confound.
+	 */
+	String build(EntryKey key, ProjectView project, LlmProjectIndex index, LlmContextBackend backend,
+			Set<LlmAnalysisHint> analysisHints, List<BatchSuggestion> batchSuggestions, String codeSection,
+			boolean lengthControlPadding) {
 		StringBuilder prompt = new StringBuilder();
 		prompt.append("Target kind: ").append(key.kind()).append('\n');
 		prompt.append("Target name: ").append(key.displayName()).append('\n');
@@ -72,7 +86,7 @@ class LlmPromptBuilder {
 		appendAnalysisHints(prompt, index, key, analysisHints);
 		appendBatchSuggestions(prompt, key, batchSuggestions);
 		appendContext(prompt, project, index, key, backend);
-		appendCodeSection(prompt, codeSection);
+		appendCodeSection(prompt, codeSection, lengthControlPadding);
 
 		prompt.append("\nRespond with JSON only:\n");
 		prompt.append("{\"reasoning\":\"short explanation\",\"alternatives\":[\"NameA\",\"NameB\"],\"suggestedName\":\"BestName\",\"confidence\":0.0}\n");
@@ -85,13 +99,22 @@ class LlmPromptBuilder {
 		return build(key, project, index, LlmContextBackend.OWNER);
 	}
 
-	private static void appendCodeSection(StringBuilder prompt, String codeSection) {
+	private static void appendCodeSection(StringBuilder prompt, String codeSection, boolean lengthControlPadding) {
 		if (codeSection == null || codeSection.isBlank()) {
 			return;
 		}
 
-		prompt.append("\nDecompiled body of the target method (identifiers are the same obfuscated names; local variable ")
-				.append("names such as local1 or capture0 are decompiler placeholders, not meaningful):\n");
+		if (lengthControlPadding) {
+			// Token-volume control (M++): the block is unrelated sterile boilerplate, length-matched to the real
+			// body, and explicitly disclaimed so the model does not read it as the target's code (which would be a
+			// metadata-vs-body contradiction rather than a neutral length control).
+			prompt.append("\nLength-control padding below (unrelated boilerplate included only to match prompt length; ")
+					.append("it is NOT the target method's code and must be ignored when choosing the name):\n");
+		} else {
+			prompt.append("\nDecompiled body of the target method (identifiers are the same obfuscated names; local variable ")
+					.append("names such as local1 or capture0 are decompiler placeholders, not meaningful):\n");
+		}
+
 		prompt.append(codeSection).append('\n');
 	}
 

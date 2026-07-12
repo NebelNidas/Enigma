@@ -59,6 +59,17 @@ class LlmSuggestionEngine {
 	 * metadata prefix is unchanged, so this arm differs from the metadata-only arm only by the added code.
 	 */
 	LlmSuggestion requestSuggestion(LlmConfig config, ProjectView project, EntryKey key, String codeSection) {
+		return requestSuggestion(config, project, key, codeSection, false);
+	}
+
+	/**
+	 * Same as {@link #requestSuggestion(LlmConfig, ProjectView, EntryKey, String)}, but when
+	 * {@code lengthControlPadding} is true the {@code codeSection} is appended as an explicitly-labelled
+	 * length-control ("M++") padding block instead of the target's decompiled body. Used by the token-volume
+	 * control arm, where {@code codeSection} is sterile boilerplate matched to the real body's length.
+	 */
+	LlmSuggestion requestSuggestion(LlmConfig config, ProjectView project, EntryKey key, String codeSection,
+			boolean lengthControlPadding) {
 		try {
 			if (!this.plugin.isProjectCurrent(project)) {
 				throw new ProjectChangedException();
@@ -66,7 +77,7 @@ class LlmSuggestionEngine {
 
 			LlmContextBackend resolvedBackend = LlmPromptBuilder.resolveBackend(key, this.plugin.getIndex(), config.contextBackend());
 			String prompt = this.promptBuilder.build(key, project, this.plugin.getIndex(), config.contextBackend(),
-					config.analysisHints(), List.of(), codeSection);
+					config.analysisHints(), List.of(), codeSection, lengthControlPadding);
 			return requestSuggestion(config, project, key, resolvedBackend, prompt);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();

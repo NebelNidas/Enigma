@@ -226,6 +226,31 @@ public final class LlmObfuscationBenchmarkHarness {
 	private static final boolean CODE_CONTEXT = Boolean.parseBoolean(
 			System.getenv().getOrDefault("ENIGMA_LLM_BENCH_CODE", "false"));
 
+	// Token-volume control arm (M++): when ENIGMA_LLM_BENCH_CODE_CONTROL=sterile (requires CODE_CONTEXT=true),
+	// every METHOD/PARAMETER target that WOULD receive its real decompiled body instead receives a sterile,
+	// unrelated boilerplate block character-matched to that body's length and labelled as padding. So M++ equals
+	// M+C in prompt length but carries no code content of the target -> M+C-vs-M++ isolates code CONTENT from
+	// token VOLUME. Pairs exactly with M+C: filler is emitted only where the real body could be extracted.
+	private static final boolean CODE_CONTROL = "sterile".equalsIgnoreCase(
+			System.getenv().getOrDefault("ENIGMA_LLM_BENCH_CODE_CONTROL", "off").strip());
+
+	// Rotates the sterile pool start (pad-choice sensitivity check); default 0. Only used when CODE_CONTROL is on.
+	private static final int CODE_CONTROL_SEED = resolveControlSeed();
+
+	private static int resolveControlSeed() {
+		String raw = System.getenv("ENIGMA_LLM_BENCH_CODE_CONTROL_SEED");
+
+		if (raw == null || raw.isBlank()) {
+			return 0;
+		}
+
+		try {
+			return Integer.parseInt(raw.strip());
+		} catch (NumberFormatException ex) {
+			return 0;
+		}
+	}
+
 	// When ENIGMA_LLM_DUMP_PROMPTS=<dir> is set, each scored target's fully rendered system+user prompt is
 	// written (with its ground truth) to <dir>/<jar>-<track>-prompts.jsonl. This lets an offline structural
 	// run (no endpoint) export the exact v2 prompts for replay through a model that has no HTTP endpoint
@@ -479,15 +504,17 @@ public final class LlmObfuscationBenchmarkHarness {
 		// structural/offline path -> a no-endpoint run is a GPU-free prompt/truncation audit. Batch suggestions
 		// are empty on the per-target api slice, so this matches what requestSuggestion sends.
 		String loggedPrompt = new LlmPromptBuilder().build(key, project, index, config.contextBackend(),
-				config.analysisHints(), List.of(), codeSection);
+				config.analysisHints(), List.of(), codeSection, CODE_CONTROL);
 		int promptChars = loggedPrompt.length();
 		boolean promptTruncated = loggedPrompt.contains(LlmPromptBuilder.TRUNCATION_MARKER);
+		// A code-shaped block is present (real body in M+C, sterile filler in M++). codeIncluded stays true for
+		// both so the block's presence and codeChars are logged; contextMode is the authoritative arm label.
 		boolean codeIncluded = codeSection != null;
 		int codeChars = codeSection == null ? 0 : codeSection.length();
-		String contextMode = codeIncluded ? "metadata+code" : (CODE_CONTEXT ? "metadata_only(code-unavailable)" : "metadata_only");
+		String contextMode = contextMode(codeIncluded);
 
 		if (DUMP_PROMPTS_DIR != null) {
-			dumpPrompt(config, track, symbol, loggedPrompt, codeIncluded);
+			dumpPrompt(config, track, symbol, loggedPrompt, codeIncluded, contextMode);
 		}
 
 		if (!online) {
@@ -506,7 +533,7 @@ public final class LlmObfuscationBenchmarkHarness {
 
 		try {
 			LlmSuggestion suggestion = codeSection != null
-					? engine.requestSuggestion(config, project, key, codeSection)
+					? engine.requestSuggestion(config, project, key, codeSection, CODE_CONTROL)
 					: engine.requestSuggestion(config, project, key);
 			suggested = suggestion.suggestedName();
 			alternatives = suggestion.alternatives();
@@ -540,6 +567,15 @@ public final class LlmObfuscationBenchmarkHarness {
 	 * target is not a METHOD/PARAMETER (FIELD/CLASS code is deferred), or the body cannot be decompiled/found.
 	 * For a PARAMETER the containing method's body is used (the symbol carries that method's name/descriptor).
 	 */
+	/** The arm label for a scored row. Distinguishes M+C (real code) from M++ (sterile length-control padding). */
+	private static String contextMode(boolean codeIncluded) {
+		if (codeIncluded) {
+			return CODE_CONTROL ? "metadata+lengthcontrol" : "metadata+code";
+		}
+
+		return CODE_CONTEXT ? "metadata_only(code-unavailable)" : "metadata_only";
+	}
+
 	private static String codeSection(DecompiledMethodBodyProvider codeProvider, Track track,
 			GroundTruthSymbol symbol, EntryKey key) {
 		if (codeProvider == null || (key.kind() != EntryKind.METHOD && key.kind() != EntryKind.PARAMETER)) {
@@ -556,11 +592,24 @@ public final class LlmObfuscationBenchmarkHarness {
 				? CodePromptNormalizer.Track.REALISTIC
 				: CodePromptNormalizer.Track.STRUCTURE_ONLY;
 		String normalized = CodePromptNormalizer.normalize(raw.get(), normTrack);
-		return normalized == null || normalized.isBlank() ? null : normalized;
+
+		if (normalized == null || normalized.isBlank()) {
+			return null;
+		}
+
+		// M++ token-volume control: replace the real body with a sterile block of the SAME character length.
+		// Keyed on the real body's length so M++ pairs one-to-one with M+C (same targets, same length), but the
+		// block carries no code content of the target. Emitted only here, so a target the code arm skipped
+		// (no body) is skipped by the control arm too.
+		if (CODE_CONTROL) {
+			return CodePromptControl.sterileFiller(normalized.length(), CODE_CONTROL_SEED);
+		}
+
+		return normalized;
 	}
 
 	private static synchronized void dumpPrompt(LlmConfig config, Track track, GroundTruthSymbol symbol,
-			String userPrompt, boolean codeIncluded) {
+			String userPrompt, boolean codeIncluded, String contextMode) {
 		try {
 			Files.createDirectories(DUMP_PROMPTS_DIR);
 			Path file = DUMP_PROMPTS_DIR.resolve(symbol.jar() + "-" + track.label() + "-prompts.jsonl");
@@ -578,6 +627,7 @@ public final class LlmObfuscationBenchmarkHarness {
 			symbol.acceptableRealNames().forEach(acceptable::add);
 			object.add("acceptable", acceptable);
 			object.addProperty("codeIncluded", codeIncluded);
+			object.addProperty("contextMode", contextMode);
 			object.addProperty("systemPrompt", OpenAiCompatibleClient.systemMessage(config));
 			object.addProperty("userPrompt", userPrompt);
 			Files.writeString(file, object + "\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
