@@ -268,24 +268,23 @@ LLM CLIs so they are compile-verified only; their verdict JSONs + reports are co
 | `evaluation/semantic-judge/hypo-nearmiss-2026-07-10/agg_hypo.py` | `tab:hypo`, Hypo macro lens | `16dd983`, `612d09d` |
 | `evaluation/7b-loop/analyze_*.py` | l.496 roster support | `8502160` |
 | `evaluation/model-benchmark-runs.tsv` + `evaluation/results/*.jsonl` | smoke baseline, 6-case context fixture | `96bb9dd` |
-| `evaluation/reproduce_preserved_reports.py` | per-evaluation offline replay of preserved reports | pending |
+| `evaluation/write_evaluation_reports.py` | per-evaluation offline report writing from committed artifacts | pending |
 
 **Reports that reproduce essay numbers verbatim:** `results_2026-07-08.txt`,
 `results-v2_2026-07-09.txt`, `reference-ablation-fullpool-v2_2026-07-09.txt`,
 `agg_hypo_report.txt`, `7b-loop/results_2026-07-08.txt`.
 
-**Offline reproduction tasks (2026-07-13):** run
-`./gradlew :enigma-llm-plugin:reproduceAllPreservedEvaluationReports` from the repository root, or the backwards-
-compatible alias `:enigma-llm-plugin:reproducePreservedEvaluationReports`. This executes only deterministic
-aggregators over committed/preserved JSONL and judge-verdict artifacts, writing one subdirectory per evaluation under
-`build/llm-evaluation/reproduced-reports/`; it does not call live model CLIs or HTTP endpoints. Individual tasks:
-`reproduceMainBenchmarkReport`, `reproduceCommercialBenchmarkReport`, `reproduceBackendMatrixReports`,
-`reproduceSemanticJudgeV2Report`, `reproduceReferenceAblationReport`, `reproduceHypoNearMissReport`,
-`reproduceFixedJsonlSummaries`, and `collectReportOnlyArtifacts`. The replay script refuses output outside
-`build/llm-evaluation` and only regenerates marked task-owned output directories, so pointing `-PreproOut` at
-preserved `evaluation/` data fails instead of overwriting old result files. Historical reports whose raw directories
-are not committed are copied into the `report-only/` task output and explicitly marked as
-preserved-but-not-byte-rederived. Fresh historical generators are exposed separately as Gradle wrapper tasks
+**Offline report tasks (2026-07-13):** run
+`./gradlew :enigma-llm-plugin:writeEvaluationReports` from the repository root. This executes only deterministic
+aggregators over committed JSONL and judge-verdict artifacts, writing report files to their
+canonical locations in the committed `evaluation/` tree; it does not call live model CLIs or HTTP endpoints.
+Individual tasks: `writeMainBenchmarkReport`, `writeCommercialBenchmarkReport`, `writeBackendMatrixReports`,
+`writeSemanticJudgeV2Report`, `writeReferenceAblationReport`, `writeHypoNearMissReport`,
+`writeFixedJsonlSummaries`, and `collectReportOnlyArtifacts`. If target outputs already exist, the driver prompts
+before overwriting them; non-interactive runs abort unless `-PreportOverwrite=true` is passed. Use
+`-PreportDryRun=true` to list target paths without writing. Historical reports whose raw directories are not
+committed are copied by `collectReportOnlyArtifacts` and explicitly marked as report-only. Fresh
+historical generators are exposed separately as Gradle wrapper tasks
 (`runHistoricalObfuscationSweep`, `runHistoricalBackendAblation`, `runHistoricalCacheOffAblation`,
 `runHistoricalTemp02Stability`, `runHistoricalQuantAblation`, `runHistorical7bSweep`,
 `runHistorical7bPromptExtension`, `runHistorical7bHoldout`) so they are discoverable without making the safe offline

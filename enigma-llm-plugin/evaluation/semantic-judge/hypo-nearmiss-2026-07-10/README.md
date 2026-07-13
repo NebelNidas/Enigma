@@ -22,7 +22,7 @@ to audit exact-match misses on obscure code.
 - `hypo-results/**/hypo-model-2.4.1-realistic-benchmark.jsonl` - minimal
   benchmark inputs needed by `agg_hypo.py` for exact counts and denominators.
 
-## Reproduce
+## Write Reports
 
 Run from this directory:
 
@@ -31,7 +31,8 @@ python3 -m py_compile agg_hypo.py judge_run_hypo.py judge_run_hypo_strict.py
 python3 agg_hypo.py
 ```
 
-`agg_hypo.py` rewrites `agg_hypo_report.txt` and `agg_hypo_report.json`.
+`agg_hypo.py` writes `agg_hypo_report.txt` and `agg_hypo_report.json`. The
+Gradle `writeHypoNearMissReport` task prompts before replacing those files.
 
 ## Final headline
 

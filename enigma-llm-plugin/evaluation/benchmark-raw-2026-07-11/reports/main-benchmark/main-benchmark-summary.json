@@ -1,0 +1,6935 @@
+[
+  {
+    "model": "deepseek-coder-v2-lite-instruct_q6_k",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 1,
+        "correct": 4,
+        "usable": 6,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 5,
+        "resolved": 12,
+        "pres_violation": 7
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 1,
+        "correct": 3,
+        "usable": 5,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 6,
+        "resolved": 12,
+        "pres_violation": 6
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 7,
+        "norm": 0,
+        "correct": 7,
+        "usable": 8,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 9,
+        "resolved": 12,
+        "pres_violation": 3
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 8,
+        "resolved": 12,
+        "pres_violation": 4
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 1,
+        "error": 5,
+        "resolved": 12,
+        "pres_violation": 7
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 1,
+        "error": 5,
+        "resolved": 12,
+        "pres_violation": 7
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 0
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 4
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 0
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 3
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 1
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 6
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 1
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 0
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 1
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 1
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.01,
+        "lo": 0.0,
+        "hi": 0.03,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.06,
+        "lo": 0.01,
+        "hi": 0.11,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.0,
+        "lo": -0.03,
+        "hi": 0.03,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "gemma-4-31b-it",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 22,
+        "norm": 1,
+        "correct": 23,
+        "usable": 25,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 9,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 19,
+        "norm": 1,
+        "correct": 20,
+        "usable": 22,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 6,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 23,
+        "norm": 0,
+        "correct": 23,
+        "usable": 28,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 6,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 9,
+        "resolved": 12,
+        "pres_violation": 3
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 9,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 8,
+        "resolved": 12,
+        "pres_violation": 4
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 12,
+        "norm": 3,
+        "correct": 15,
+        "usable": 22,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 1,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 10,
+        "norm": 1,
+        "correct": 11,
+        "usable": 15,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 1,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 11
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 12
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 10
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 10
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 13
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 10
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 2
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 3
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 12
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 3
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 11
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.18,
+        "lo": 0.11,
+        "hi": 0.26,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.04,
+        "lo": 0.0,
+        "hi": 0.09,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q5_k_m",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 9,
+        "norm": 1,
+        "correct": 10,
+        "usable": 11,
+        "error": 2,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 5,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 1,
+        "correct": 7,
+        "usable": 8,
+        "error": 2,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 9,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 9,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 5,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 10,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 5
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 5
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 3
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 3
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 3
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 1
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 0
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 0
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.03,
+        "lo": -0.01,
+        "hi": 0.08,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.05,
+        "lo": 0.01,
+        "hi": 0.1,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.0,
+        "lo": -0.03,
+        "hi": 0.03,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q6_k",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 9,
+        "norm": 0,
+        "correct": 9,
+        "usable": 11,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 7,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 9,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 7,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 4,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 5
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 4
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 3
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 3
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 1
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 3
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 1
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 0
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 2
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 2
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.03,
+        "lo": -0.01,
+        "hi": 0.08,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.03,
+        "lo": -0.01,
+        "hi": 0.07,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.01,
+        "lo": 0.0,
+        "hi": 0.03,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q6_k_graph_k1_cap8000",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 10,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 6,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 6,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 7,
+        "norm": 0,
+        "correct": 7,
+        "usable": 10,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 8
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 7
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.04,
+        "lo": 0.01,
+        "hi": 0.08,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.06,
+        "lo": 0.01,
+        "hi": 0.12,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.01,
+        "lo": 0.0,
+        "hi": 0.03,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q6_k_graph_k1_raised",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 10,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 6,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 6,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 9,
+        "norm": 0,
+        "correct": 9,
+        "usable": 9,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 1,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 4,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 8
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 9
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 2
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.04,
+        "lo": 0.01,
+        "hi": 0.08,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.08,
+        "lo": 0.02,
+        "hi": 0.14,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.02,
+        "lo": 0.0,
+        "hi": 0.05,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q6_k_graph_k1_raised_cacheoff",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 10,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 6,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 12,
+        "norm": 0,
+        "correct": 12,
+        "usable": 14,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 8
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 12
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 2
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.04,
+        "lo": 0.01,
+        "hi": 0.08,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.11,
+        "lo": 0.05,
+        "hi": 0.17,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.02,
+        "lo": 0.0,
+        "hi": 0.05,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q6_k_owner_k1",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 10,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 8,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 8,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 7,
+        "norm": 0,
+        "correct": 7,
+        "usable": 9,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 100,
+        "correct": 6
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 100,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 100,
+        "correct": 7
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.02,
+        "lo": 0.0,
+        "hi": 0.05,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.06,
+        "lo": 0.02,
+        "hi": 0.11,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.01,
+        "lo": 0.0,
+        "hi": 0.03,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q6_k_temp02_run1",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 10,
+        "norm": 0,
+        "correct": 10,
+        "usable": 12,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 7,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 10,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 6,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 10
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 8
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 4
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.06,
+        "lo": 0.02,
+        "hi": 0.11,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.07,
+        "lo": 0.02,
+        "hi": 0.13,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.04,
+        "lo": 0.01,
+        "hi": 0.08,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q6_k_temp02_run2",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 9,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 6,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 9,
+        "norm": 0,
+        "correct": 9,
+        "usable": 11,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 1,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 6
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 3
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 9
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 2
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 1
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.08,
+        "lo": 0.02,
+        "hi": 0.14,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.01,
+        "lo": -0.02,
+        "hi": 0.05,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-14b-instruct_q6_k_temp02_run3",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 8,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 7,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 13,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 1,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 1,
+        "pres_violation": 1
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 6
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 5
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 8
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 2
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 2
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 2
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.01,
+        "lo": -0.03,
+        "hi": 0.05,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.06,
+        "lo": 0.01,
+        "hi": 0.12,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.0,
+        "lo": -0.04,
+        "hi": 0.04,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen2.5-coder-7b-instruct",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 1,
+        "correct": 2,
+        "usable": 3,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 1,
+        "correct": 3,
+        "usable": 4,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 6,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 1,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 16,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 10,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 1,
+        "error": 5,
+        "resolved": 12,
+        "pres_violation": 7
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 13,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 11,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 5,
+        "resolved": 12,
+        "pres_violation": 7
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 1
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 1
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 2
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 1
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 0
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 3
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 1
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 0
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 0
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 0
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": -0.01,
+        "lo": -0.03,
+        "hi": 0.0,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.02,
+        "lo": -0.02,
+        "hi": 0.06,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.01,
+        "lo": 0.0,
+        "hi": 0.03,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-14b",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 9,
+        "norm": 0,
+        "correct": 9,
+        "usable": 12,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 6,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 9,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 7,
+        "norm": 0,
+        "correct": 7,
+        "usable": 10,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 1,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 1,
+        "error": 9,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 1,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 10,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 5
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 4
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 4
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 2
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 5
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 1
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 0
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 0
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.01,
+        "lo": -0.03,
+        "hi": 0.06,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.05,
+        "lo": 0.0,
+        "hi": 0.11,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.01,
+        "lo": 0.0,
+        "hi": 0.03,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-8b",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 14,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 6,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 11,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 7,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 7,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 4
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 4
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 5
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 3
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 0
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 6
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 1
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 0
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 2
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.0,
+        "lo": -0.03,
+        "hi": 0.03,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.05,
+        "lo": 0.0,
+        "hi": 0.1,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.02,
+        "lo": -0.02,
+        "hi": 0.06,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-8b_graph_k1_cap8000",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 9,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 7,
+        "norm": 0,
+        "correct": 7,
+        "usable": 7,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 7,
+        "norm": 0,
+        "correct": 7,
+        "usable": 9,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 10,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 5,
+        "resolved": 12,
+        "pres_violation": 7
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 5,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 6
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 7
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 6
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 0
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 3
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": -0.01,
+        "lo": -0.05,
+        "hi": 0.02,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.06,
+        "lo": 0.02,
+        "hi": 0.11,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-8b_graph_k1_raised",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 9,
+        "norm": 0,
+        "correct": 9,
+        "usable": 11,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 9,
+        "norm": 0,
+        "correct": 9,
+        "usable": 9,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 6,
+        "norm": 0,
+        "correct": 6,
+        "usable": 8,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 10,
+        "norm": 0,
+        "correct": 10,
+        "usable": 13,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 5,
+        "resolved": 12,
+        "pres_violation": 7
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 5,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 9
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 6
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 10
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 3
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.09,
+        "lo": 0.04,
+        "hi": 0.15,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-8b_owner_k1",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 12,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 6,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 7,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 11,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 100,
+        "correct": 8
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 100,
+        "correct": 5
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 100,
+        "correct": 8
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 100,
+        "correct": 2
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 100,
+        "correct": 2
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.06,
+        "lo": 0.01,
+        "hi": 0.12,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.02,
+        "lo": 0.0,
+        "hi": 0.05,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-coder-30b-a3b-instruct",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 12,
+        "norm": 0,
+        "correct": 12,
+        "usable": 15,
+        "error": 2,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 7,
+        "norm": 0,
+        "correct": 7,
+        "usable": 7,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 10,
+        "norm": 0,
+        "correct": 10,
+        "usable": 12,
+        "error": 2,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 12,
+        "norm": 0,
+        "correct": 12,
+        "usable": 17,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 6,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 5,
+        "norm": 1,
+        "correct": 6,
+        "usable": 7,
+        "error": 9,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 9,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 2,
+        "error": 8,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 8,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 5,
+        "resolved": 12,
+        "pres_violation": 7
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 7
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 5
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 7
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 3
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 8
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 3
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 5
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.02,
+        "lo": -0.02,
+        "hi": 0.06,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.08,
+        "lo": 0.02,
+        "hi": 0.14,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.05,
+        "lo": 0.0,
+        "hi": 0.1,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-coder-30b-a3b-instruct_iq4_xs",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 12,
+        "norm": 0,
+        "correct": 12,
+        "usable": 16,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 8,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 12,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 15,
+        "norm": 0,
+        "correct": 15,
+        "usable": 18,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 6,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 5,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 6
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 6
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 3
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 5
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 7
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 8
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 3
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 2
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 2
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 0
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.04,
+        "lo": 0.01,
+        "hi": 0.08,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.1,
+        "lo": 0.04,
+        "hi": 0.17,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-coder-30b-a3b-instruct_iq4_xs_graph_k1_cap8000",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 10,
+        "norm": 0,
+        "correct": 10,
+        "usable": 12,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 8,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 7,
+        "norm": 1,
+        "correct": 8,
+        "usable": 10,
+        "error": 1,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 16,
+        "norm": 0,
+        "correct": 16,
+        "usable": 21,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 7,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 7,
+        "norm": 0,
+        "correct": 7,
+        "usable": 8,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 10
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 8
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 16
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 4
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 7
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 2
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.02,
+        "lo": -0.02,
+        "hi": 0.06,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.12,
+        "lo": 0.05,
+        "hi": 0.2,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.05,
+        "lo": 0.01,
+        "hi": 0.1,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-coder-30b-a3b-instruct_iq4_xs_graph_k1_raised",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 12,
+        "norm": 0,
+        "correct": 12,
+        "usable": 16,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 9,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 1,
+        "correct": 9,
+        "usable": 12,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 5,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 16,
+        "norm": 0,
+        "correct": 16,
+        "usable": 25,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 4,
+        "resolved": 12,
+        "pres_violation": 8
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 11,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 11,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 100,
+        "correct": 12
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 100,
+        "correct": 9
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 100,
+        "correct": 16
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 100,
+        "correct": 8
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 100,
+        "correct": 5
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 100,
+        "correct": 2
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.03,
+        "lo": -0.01,
+        "hi": 0.08,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.08,
+        "lo": 0.0,
+        "hi": 0.16,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-coder-30b-a3b-instruct_iq4_xs_owner_k1",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 11,
+        "norm": 0,
+        "correct": 11,
+        "usable": 16,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 5,
+        "norm": 0,
+        "correct": 5,
+        "usable": 6,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 10,
+        "norm": 0,
+        "correct": 10,
+        "usable": 15,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 12,
+        "norm": 0,
+        "correct": 12,
+        "usable": 19,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 7,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 6,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 1,
+        "error": 1,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 12,
+        "pres_violation": 12
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 100,
+        "correct": 11
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 100,
+        "correct": 10
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 100,
+        "correct": 12
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 100,
+        "correct": 3
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 100,
+        "correct": 3
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 100,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.01,
+        "lo": -0.02,
+        "hi": 0.05,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.09,
+        "lo": 0.04,
+        "hi": 0.15,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.03,
+        "lo": 0.0,
+        "hi": 0.07,
+        "pairs": 100
+      }
+    }
+  },
+  {
+    "model": "qwen3-coder-30b-a3b-instruct_q3_k_m",
+    "buckets": {
+      "commons-lang3-3.14.0|realistic|api": {
+        "n": 100,
+        "exact": 13,
+        "norm": 0,
+        "correct": 13,
+        "usable": 16,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|package": {
+        "n": 30,
+        "exact": 8,
+        "norm": 0,
+        "correct": 8,
+        "usable": 9,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|private": {
+        "n": 10,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "commons-lang3-3.14.0|structure-only|api": {
+        "n": 100,
+        "exact": 11,
+        "norm": 0,
+        "correct": 11,
+        "usable": 14,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|package": {
+        "n": 30,
+        "exact": 4,
+        "norm": 0,
+        "correct": 4,
+        "usable": 4,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|private": {
+        "n": 10,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "commons-lang3-3.14.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "gson-2.11.0|realistic|api": {
+        "n": 100,
+        "exact": 13,
+        "norm": 0,
+        "correct": 13,
+        "usable": 18,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|package": {
+        "n": 30,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 3,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "gson-2.11.0|structure-only|api": {
+        "n": 100,
+        "exact": 3,
+        "norm": 0,
+        "correct": 3,
+        "usable": 7,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|package": {
+        "n": 30,
+        "exact": 2,
+        "norm": 0,
+        "correct": 2,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "gson-2.11.0|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 3,
+        "resolved": 12,
+        "pres_violation": 9
+      },
+      "xz-1.9|realistic|api": {
+        "n": 100,
+        "exact": 0,
+        "norm": 1,
+        "correct": 1,
+        "usable": 2,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 2,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|realistic|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 1,
+        "resolved": 12,
+        "pres_violation": 11
+      },
+      "xz-1.9|structure-only|api": {
+        "n": 100,
+        "exact": 1,
+        "norm": 0,
+        "correct": 1,
+        "usable": 3,
+        "error": 0,
+        "resolved": 100,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|package": {
+        "n": 30,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 1,
+        "error": 0,
+        "resolved": 30,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|private": {
+        "n": 10,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 0,
+        "resolved": 10,
+        "pres_violation": 0
+      },
+      "xz-1.9|structure-only|preservation": {
+        "n": 12,
+        "exact": 0,
+        "norm": 0,
+        "correct": 0,
+        "usable": 0,
+        "error": 2,
+        "resolved": 12,
+        "pres_violation": 10
+      }
+    },
+    "api_backend": {
+      "commons-lang3-3.14.0|realistic|graph": {
+        "n": 74,
+        "correct": 8
+      },
+      "commons-lang3-3.14.0|realistic|owner": {
+        "n": 26,
+        "correct": 5
+      },
+      "commons-lang3-3.14.0|structure-only|graph": {
+        "n": 74,
+        "correct": 7
+      },
+      "commons-lang3-3.14.0|structure-only|owner": {
+        "n": 26,
+        "correct": 4
+      },
+      "gson-2.11.0|realistic|graph": {
+        "n": 62,
+        "correct": 5
+      },
+      "gson-2.11.0|realistic|owner": {
+        "n": 38,
+        "correct": 8
+      },
+      "gson-2.11.0|structure-only|graph": {
+        "n": 62,
+        "correct": 2
+      },
+      "gson-2.11.0|structure-only|owner": {
+        "n": 38,
+        "correct": 1
+      },
+      "xz-1.9|realistic|graph": {
+        "n": 63,
+        "correct": 0
+      },
+      "xz-1.9|realistic|owner": {
+        "n": 37,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|graph": {
+        "n": 63,
+        "correct": 1
+      },
+      "xz-1.9|structure-only|owner": {
+        "n": 37,
+        "correct": 0
+      }
+    },
+    "paired_api_realistic_minus_structure": {
+      "commons-lang3-3.14.0": {
+        "delta": 0.02,
+        "lo": 0.0,
+        "hi": 0.05,
+        "pairs": 100
+      },
+      "gson-2.11.0": {
+        "delta": 0.1,
+        "lo": 0.05,
+        "hi": 0.16,
+        "pairs": 100
+      },
+      "xz-1.9": {
+        "delta": 0.0,
+        "lo": -0.03,
+        "hi": 0.03,
+        "pairs": 100
+      }
+    }
+  }
+]

@@ -460,7 +460,7 @@ def evaluationPythonScripts = [
 		file("${project.projectDir}/evaluation/aggregate_results.py"),
 		file("${project.projectDir}/evaluation/analyze_backend_matrix.py"),
 		file("${project.projectDir}/evaluation/prepare_codex_prompt_batches.py"),
-		file("${project.projectDir}/evaluation/reproduce_preserved_reports.py"),
+		file("${project.projectDir}/evaluation/write_evaluation_reports.py"),
 		file("${project.projectDir}/evaluation/run_codex_prompt_batch.py"),
 		file("${project.projectDir}/evaluation/score_prompt_batch.py"),
 		file("${project.projectDir}/evaluation/semantic-judge/agg.py"),
@@ -472,82 +472,82 @@ def evaluationPythonScripts = [
 
 tasks.register('checkEvaluationAnalysisScripts', Exec) {
 	group = 'verification'
-	description = 'Syntax-checks committed Python evaluation analysis/reproduction scripts.'
+	description = 'Syntax-checks committed Python evaluation analysis/report scripts.'
 
 	def pythonArg = project.findProperty('codexPython') ?: 'python3'
 	commandLine ([pythonArg, '-m', 'py_compile'] + evaluationPythonScripts.collect { it.path })
 }
 
-def preservedEvaluationReportRoot = file(project.findProperty('reproOut') ?: "${project.buildDir}/llm-evaluation/reproduced-reports")
-def preservedEvaluationReportTasks = []
-def registerPreservedEvaluationReportTask = { String taskName, String mode, String taskDescription ->
-	preservedEvaluationReportTasks << taskName
+def evaluationReportTasks = []
+def registerEvaluationReportTask = { String taskName, String mode, String taskDescription ->
+	evaluationReportTasks << taskName
 	tasks.register(taskName, Exec) {
 		group = 'verification'
 		description = taskDescription
 		dependsOn 'checkEvaluationAnalysisScripts'
 
-		def outArg = new File(preservedEvaluationReportRoot, mode)
-		def resamplesArg = (project.findProperty('reproResamples') ?: '5000').toString()
+		def resamplesArg = (project.findProperty('reportResamples') ?: '5000').toString()
 		def pythonArg = project.findProperty('codexPython') ?: 'python3'
-		def scriptArg = file("${project.projectDir}/evaluation/reproduce_preserved_reports.py")
+		def scriptArg = file("${project.projectDir}/evaluation/write_evaluation_reports.py")
 
-		outputs.dir(outArg)
-		commandLine pythonArg, scriptArg.path, '--only', mode, '--out', outArg.path, '--resamples', resamplesArg
+		commandLine pythonArg, scriptArg.path, '--only', mode, '--resamples', resamplesArg
+		if (project.hasProperty('reportOut')) {
+			args '--out', file(project.property('reportOut')).path
+		}
+		if (project.hasProperty('reportOverwrite') && project.property('reportOverwrite').toString().toBoolean()) {
+			args '--overwrite'
+		}
+		if (project.hasProperty('reportDryRun') && project.property('reportDryRun').toString().toBoolean()) {
+			args '--dry-run'
+		}
 	}
 }
 
-registerPreservedEvaluationReportTask(
-		'reproduceMainBenchmarkReport',
+registerEvaluationReportTask(
+		'writeMainBenchmarkReport',
 		'main-benchmark',
-		'Re-derives the preserved local/main benchmark aggregate without live model calls.'
+		'Writes the local/main benchmark aggregate report without live model calls.'
 )
-registerPreservedEvaluationReportTask(
-		'reproduceCommercialBenchmarkReport',
+registerEvaluationReportTask(
+		'writeCommercialBenchmarkReport',
 		'commercial-benchmark',
-		'Re-derives the preserved commercial benchmark aggregate without live model calls.'
+		'Writes the commercial benchmark aggregate report without live model calls.'
 )
-registerPreservedEvaluationReportTask(
-		'reproduceBackendMatrixReports',
+registerEvaluationReportTask(
+		'writeBackendMatrixReports',
 		'backend-matrix',
-		'Re-derives preserved owner/graph backend matrix reports without live model calls.'
+		'Writes owner/graph backend matrix reports without live model calls.'
 )
-registerPreservedEvaluationReportTask(
-		'reproduceSemanticJudgeV2Report',
+registerEvaluationReportTask(
+		'writeSemanticJudgeV2Report',
 		'semantic-v2',
-		'Re-derives the semantic-judge v2 adoption report from committed verdict artifacts.'
+		'Writes the semantic-judge v2 adoption report from committed verdict artifacts.'
 )
-registerPreservedEvaluationReportTask(
-		'reproduceReferenceAblationReport',
+registerEvaluationReportTask(
+		'writeReferenceAblationReport',
 		'reference-ablation',
-		'Re-derives the reference-ablation full-pool report from committed verdict artifacts.'
+		'Writes the reference-ablation full-pool report from committed verdict artifacts.'
 )
-registerPreservedEvaluationReportTask(
-		'reproduceHypoNearMissReport',
+registerEvaluationReportTask(
+		'writeHypoNearMissReport',
 		'hypo-nearmiss',
-		'Re-derives the Hypo near-miss report from committed raw outputs and verdict artifacts.'
+		'Writes the Hypo near-miss report from committed raw outputs and verdict artifacts.'
 )
-registerPreservedEvaluationReportTask(
-		'reproduceFixedJsonlSummaries',
+registerEvaluationReportTask(
+		'writeFixedJsonlSummaries',
 		'fixed-jsonl',
 		'Summarizes committed fixed JSONL smoke/context outputs without live model calls.'
 )
-registerPreservedEvaluationReportTask(
+registerEvaluationReportTask(
 		'collectReportOnlyArtifacts',
 		'report-only',
 		'Collects committed historical report-only artifacts that are not regenerated by the offline replay tasks.'
 )
 
-tasks.register('reproduceAllPreservedEvaluationReports') {
+tasks.register('writeEvaluationReports') {
 	group = 'verification'
-	description = 'Runs every preserved offline evaluation report task without live model calls.'
-	dependsOn preservedEvaluationReportTasks
-}
-
-tasks.register('reproducePreservedEvaluationReports') {
-	group = 'verification'
-	description = 'Alias for reproduceAllPreservedEvaluationReports.'
-	dependsOn 'reproduceAllPreservedEvaluationReports'
+	description = 'Runs every offline evaluation report task without live model calls.'
+	dependsOn evaluationReportTasks
 }
 
 def registerEvaluationShellTask = { String taskName, String scriptPath, String taskDescription ->

@@ -123,34 +123,33 @@ Keep three artifacts per model:
 The TSV file is intentionally simple so it can be copied into the report or
 opened in a spreadsheet.
 
-## Preserved-Output Reproduction
+## Evaluation Reports
 
-For historical essay numbers, use the committed/preserved artifacts first. These
-tasks do not start LM Studio and do not call Codex, Claude, Grok, Gemini, or any
-OpenAI-compatible endpoint:
+For historical essay numbers, use the committed artifacts first. These tasks do
+not start LM Studio and do not call Codex, Claude, Grok, Gemini, or any
+OpenAI-compatible endpoint. Use `writeEvaluationReports` for the full offline
+report set:
 
 ```sh
 JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
 PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
 GRADLE_USER_HOME="$PWD/.gradle" \
-./gradlew :enigma-llm-plugin:reproducePreservedEvaluationReports
+./gradlew :enigma-llm-plugin:writeEvaluationReports
 ```
 
-`reproducePreservedEvaluationReports` is a backwards-compatible alias for
-`reproduceAllPreservedEvaluationReports`. The all-task runs one offline task per
-evaluation:
+Individual report tasks are:
 
-- `reproduceMainBenchmarkReport`
-- `reproduceCommercialBenchmarkReport`
-- `reproduceBackendMatrixReports`
-- `reproduceSemanticJudgeV2Report`
-- `reproduceReferenceAblationReport`
-- `reproduceHypoNearMissReport`
-- `reproduceFixedJsonlSummaries`
+- `writeMainBenchmarkReport`
+- `writeCommercialBenchmarkReport`
+- `writeBackendMatrixReports`
+- `writeSemanticJudgeV2Report`
+- `writeReferenceAblationReport`
+- `writeHypoNearMissReport`
+- `writeFixedJsonlSummaries`
 - `collectReportOnlyArtifacts`
 
-Each task writes to its own subdirectory below
-`enigma-llm-plugin/build/llm-evaluation/reproduced-reports/` from:
+Each task writes to the report's canonical location in the committed
+`evaluation/` tree, using these inputs:
 
 - `evaluation/benchmark-raw-2026-07-11/benchmark/`
 - `evaluation/benchmark-raw-2026-07-11/commercial/`
@@ -159,14 +158,14 @@ Each task writes to its own subdirectory below
 - `evaluation/judge-ablation-provenance-2026-07-11/`
 - `evaluation/semantic-judge/hypo-nearmiss-2026-07-10/`
 
-Use `-PreproOut=...` to change the output root and `-PreproResamples=N` to
-reduce or increase bootstrap resamples for the preserved aggregate reports. The
-reproduction script refuses to clean or write outside `build/llm-evaluation`,
-and it only regenerates marked task-owned output directories, so accidentally
-pointing it at `evaluation/` or other preserved result folders fails before any
-old result file is overwritten. Historical reports whose raw directories are not
-committed are copied into the `report-only/` task output and explicitly marked
-as preserved-but-not-byte-rederived.
+Use `-PreportOut=...` to override a task output root and
+`-PreportResamples=N` to reduce or increase bootstrap resamples for the
+aggregate reports. If any target output already exists, the Python
+driver prompts before overwriting it; in non-interactive mode it aborts unless
+`-PreportOverwrite=true` is passed. Use `-PreportDryRun=true` to list target
+files and whether they already exist without writing anything. Historical
+reports whose raw directories are not committed are copied by
+`collectReportOnlyArtifacts` and explicitly marked as report-only by that task.
 
 Fresh historical generator runs are intentionally separate, because they depend
 on local model state, SSH model switching, LM Studio, or subscription-backed

@@ -1,0 +1,222 @@
+# Report-only evaluation artifacts
+
+These historical outputs are committed as reports, but their raw per-target
+inputs are either already covered by another generated report in this
+directory, incomplete for a non-mutating replay, or not committed in this
+repo snapshot. They are therefore committed and citable; the notes below
+make the distinction explicit.
+
+## semantic-judge/results_2026-07-08.txt
+
+Semantic recovery judge (blind, 2 cross-family judges Grok+GPT/codex + Claude tie-break on disagreements)
+graph-raised config (cap16000), api realistic, n=300. Residual-only judging with decompiled obfuscated
+method bodies (+1-hop). ACCEPT/REJECT/UNCERTAIN; UNCERTAIN counts as NOT recovered. Generated 2026-07-08 08:58:06
+
+model             exact  ACCEPT  REJECT  UNCRT  sem-use  exact%   sem%        Wilson95  kappa  disag
+------------------------------------------------------------------------------------------------------------
+14b q6_k             19      92     175     11      111    6.3%  37.0%     [31.7,42.6]   0.75    12%
+qwen3-8b             22      91     177     10      113    7.3%  37.7%     [32.4,43.3]   0.62    18%
+30B-MoE iq4_xs       33     119     142      6      152   11.0%  50.7%     [45.0,56.3]   0.75    12%
+
+Rate B (ACCEPT / judged residuals) and no-suggestion misses:
+  14b: ACCEPT 92/278 judged = 33.1% ; no-suggestion misses=3 (counted as not recovered)
+  8b: ACCEPT 91/278 judged = 32.7% ; no-suggestion misses=0 (counted as not recovered)
+  30b: ACCEPT 119/267 judged = 44.6% ; no-suggestion misses=0 (counted as not recovered)
+
+
+## semantic-judge/results-v2_2026-07-09.txt
+
+Semantic recovery judge -- v2 (maintainer-adoption rubric), PRIMARY essay metric.
+Blind, 2 cross-family judges + Claude tie-break on disagreements. graph-raised config (cap16000),
+api realistic, n=300. Residual-only judging with decompiled obfuscated method bodies (+1-hop).
+ACCEPT/REJECT/UNCERTAIN; UNCERTAIN counts as NOT recovered.
+
+v2 vs v1 difference is a JOINT protocol change (do not decompose):
+  - rubric: v1 = "behaviourally plausible name?"  ->  v2 = "would a maintainer ADOPT this name?"
+    (v2 rejects well-known-type collisions e.g. FailableConsumer->Consumer, dropped qualifiers,
+     wrong granularity).
+  - Grok judge: v1 = grok-composer-2.5-fast ("Schnell" tier)  ->  v2 = grok-build ("Grok 4.3" flagship).
+  - GPT judge = gpt-5.5 (high reasoning effort, via Codex CLI); Claude tie-break = claude-opus-4-8 (high).
+Exact-match counts are unchanged (deterministic); the entire v1->v2 delta is reclassification of
+residual non-exact suggestions. grok-build is also stricter than grok-composer-2.5-fast on the SAME
+residuals (130 vs 146 shared ACCEPTs), so the tightening is rubric AND judge.
+
+Regenerate: python3 agg_v2.py  (reads judged_v2_{grok,codex}_{14b,8b,30b}.json + tiebreak_v2_*.json;
+exact counts from build/llm-evaluation/benchmark/<pass>).  Cohen's kappa (grok-build vs gpt-5.5, binary
+ACCEPT-vs-rest, MISSING dropped): 14b 0.70 (n=278), 8b 0.74 (n=278), 30b 0.75 (n=256).
+
+model            ver  exact   ACC   REJ   UNC  sem-use   sem%       Wilson95  pend
+--------------------------------------------------------------------------------------------
+14b q6_k          v1     19    92   175    11      111  37.0%  [31.7,42.6]     0
+14b q6_k          v2     19    68   199    11       87  29.0%  [24.2,34.4]     0
+qwen3-8b          v1     22    91   177    10      113  37.7%  [32.4,43.3]     0
+qwen3-8b          v2     22    46   215    17       68  22.7%  [18.3,27.7]     0
+30B-MoE iq4_xs    v1     33   119   142     6      152  50.7%  [45.0,56.3]     0
+30B-MoE iq4_xs    v2     33    82   171    14      115  38.3%  [33.0,43.9]     0
+
+Essay Table (tab:semantic): exact | adoption(=v2) | lenient(=v1)
+  14B  6.3% | 29.0% | 37.0%     8B  7.3% | 22.7% | 37.7%     30B-MoE 11.0% | 38.3% | 50.7%
+
+
+## semantic-judge/reference-ablation-fullpool-v2_2026-07-09.txt
+
+Reference-ablation (anti-anchoring), full pool -- v2 with grok-build (PRIMARY).
+Re-judge ALL accepted (302) and rejected (494) residuals with the reference name WITHHELD (code +
+suggestion only). "plausible" = judge would still accept the suggestion as a name for the behaviour.
+Judges: grok-build ("Grok 4.3"), gpt-5.5 (high, Codex CLI), claude-opus-4-8 (high). Only Grok was
+re-run for v2 (grok-composer-2.5-fast -> grok-build); codex/claude were already flagship and unchanged.
+grok-build returns prose instead of JSON on 33/796 ablation prompts (after 3 refill passes); these are
+counted CONSERVATIVELY as "not plausible", so they depress grok's rates slightly.
+
+Regenerate: python3 ablfull_combine.py (reads ablfull_{grok,codex,claude}.json).
+
+n rows = 796
+judge          ACCEPT plausible       REJECT plausible
+grok       212/302  =  70%         87/494  =  18%
+codex      254/302  =  84%        116/494  =  23%
+claude     262/302  =  87%        187/494  =  38%
+
+majority(>=2/3 ACCEPT): accepted 249/302 = 82%   rejected 119/494 = 24%
+
+Interpretation: the accept/reject split survives with the reference withheld (majority 82% vs 24%),
+so acceptances track observed behaviour, not string similarity to the reference name. Compared with
+v1/grok-fast (grok 83%/35%, majority 86%/32%), the stricter grok-build widens the low end (70% accept),
+but the separation direction is unchanged. Essay range: accepted 70-87% (majority 82%) vs rejected
+18-38% (majority 24%).
+
+Provenance: the v1/grok-fast run is preserved in reference-ablation-fullpool_2026-07-08.txt and
+reference-ablation-fullpool_grok.json (grok-composer-2.5-fast). The grok-build verdicts for this v2
+table are in reference-ablation-fullpool-v2_grok.json.
+
+
+## semantic-judge/hypo-nearmiss-2026-07-10/agg_hypo_report.txt
+
+=== Hypo semantic-judge aggregation :: 3 lenses (auto-discovered coverage) ===
+
+## gpt-5.5 high (commercial)   [OK]   api n=100 exact=23 (23.0%) residuals=76  self-family=codex
+   [lenient] avail=['claude', 'codex', 'gemini', 'grok'] cross=['claude', 'gemini', 'grok']
+             per-judge ACCEPT: claude=37/76(49%)  codex=34/76(45%)  gemini=35/76(46%)  grok=31/65(48%)
+             cross-family: MAJORITY=36/76(47%) perm=39/76(51%) strict=30/76(39%) miss=5%
+             uniform['gemini', 'grok']: MAJORITY=31/76(41%) strict=31/76(41%)
+             combined /api: exact=23.0%  cross-MAJORITY=59.0% (0.492, 0.681)  cross-perm=62.0%  cross-strict=53.0%
+             SELF-PREF: self(codex)=45% vs cross-mean=48% (delta=-3%)  vs most-lenient-cross(claude)=49% (delta_vs_max=-4%)  n=76
+   [strict ] avail=['claude', 'codex', 'gemini', 'grok'] cross=['claude', 'gemini', 'grok']
+             per-judge ACCEPT: claude=37/76(49%)  codex=26/76(34%)  gemini=29/76(38%)  grok=16/43(37%)
+             cross-family: MAJORITY=30/76(39%) perm=38/76(50%) strict=27/76(36%) miss=14%
+             uniform['gemini', 'grok']: MAJORITY=28/76(37%) strict=28/76(37%)
+             combined /api: exact=23.0%  cross-MAJORITY=53.0% (0.433, 0.625)  cross-perm=61.0%  cross-strict=50.0%
+             SELF-PREF: self(codex)=34% vs cross-mean=42% (delta=-8%)  vs most-lenient-cross(claude)=49% (delta_vs_max=-14%)  n=76
+
+## opus high (commercial)   [OK]   api n=100 exact=22 (22.0%) residuals=78  self-family=claude
+   [lenient] avail=['claude', 'codex', 'gemini', 'grok'] cross=['codex', 'gemini', 'grok']
+             per-judge ACCEPT: claude=43/78(55%)  codex=34/78(44%)  gemini=37/78(47%)  grok=27/78(35%)
+             cross-family: MAJORITY=34/78(44%) perm=39/78(50%) strict=25/78(32%) miss=0%
+             uniform['gemini', 'grok']: MAJORITY=26/78(33%) strict=26/78(33%)
+             combined /api: exact=22.0%  cross-MAJORITY=56.0% (0.462, 0.653)  cross-perm=61.0%  cross-strict=47.0%
+             SELF-PREF: self(claude)=55% vs cross-mean=42% (delta=+13%)  vs most-lenient-cross(gemini)=47% (delta_vs_max=+8%)  n=78
+   [strict ] avail=['claude', 'codex', 'gemini', 'grok'] cross=['codex', 'gemini', 'grok']
+             per-judge ACCEPT: claude=35/78(45%)  codex=18/78(23%)  gemini=26/78(33%)  grok=21/67(31%)
+             cross-family: MAJORITY=18/78(23%) perm=31/78(40%) strict=16/78(21%) miss=5%
+             uniform['gemini', 'grok']: MAJORITY=18/78(23%) strict=18/78(23%)
+             combined /api: exact=22.0%  cross-MAJORITY=40.0% (0.309, 0.498)  cross-perm=53.0%  cross-strict=38.0%
+             SELF-PREF: self(claude)=45% vs cross-mean=29% (delta=+16%)  vs most-lenient-cross(gemini)=33% (delta_vs_max=+12%)  n=78
+
+## local 30B (local)   [OK]   api n=100 exact=15 (15.0%) residuals=85  self-family=None
+   [lenient] avail=['claude', 'codex', 'gemini', 'grok'] cross=['claude', 'codex', 'gemini', 'grok']
+             per-judge ACCEPT: claude=28/85(33%)  codex=21/85(25%)  gemini=23/85(27%)  grok=12/74(16%)
+             cross-family: MAJORITY=18/85(21%) perm=34/85(40%) strict=11/85(13%) miss=3%
+             uniform['gemini', 'grok']: MAJORITY=16/85(19%) strict=16/85(19%)
+             combined /api: exact=15.0%  cross-MAJORITY=33.0% (0.246, 0.427)  cross-perm=49.0%  cross-strict=26.0%
+   [strict ] avail=['claude', 'codex', 'gemini', 'grok'] cross=['claude', 'codex', 'gemini', 'grok']
+             per-judge ACCEPT: claude=27/85(32%)  codex=8/85(9%)  gemini=11/85(13%)  grok=10/77(13%)
+             cross-family: MAJORITY=11/85(13%) perm=28/85(33%) strict=5/85(6%) miss=2%
+             uniform['gemini', 'grok']: MAJORITY=8/85(9%) strict=8/85(9%)
+             combined /api: exact=15.0%  cross-MAJORITY=26.0% (0.184, 0.354)  cross-perm=43.0%  cross-strict=20.0%
+
+## gemini Pro high (commercial)   [OK]   api n=100 exact=25 (25.0%) residuals=75  self-family=gemini
+   [lenient] avail=['claude', 'codex'] cross=['claude', 'codex']
+             per-judge ACCEPT: claude=44/75(59%)  codex=41/75(55%)
+             cross-family: MAJORITY=39/75(52%) perm=46/75(61%) strict=39/75(52%) miss=0%
+             combined /api: exact=25.0%  cross-MAJORITY=64.0% (0.542, 0.727)  cross-perm=71.0%  cross-strict=64.0%
+   [strict ] avail=['claude', 'codex'] cross=['claude', 'codex']
+             per-judge ACCEPT: claude=39/75(52%)  codex=25/75(33%)
+             cross-family: MAJORITY=23/75(31%) perm=41/75(55%) strict=23/75(31%) miss=0%
+             combined /api: exact=25.0%  cross-MAJORITY=48.0% (0.385, 0.577)  cross-perm=66.0%  cross-strict=48.0%
+
+## sonnet high (commercial)   [OK]   api n=100 exact=25 (25.0%) residuals=73  self-family=claude
+   [lenient] avail=['codex', 'gemini'] cross=['codex', 'gemini']
+             per-judge ACCEPT: codex=29/73(40%)  gemini=30/73(41%)
+             cross-family: MAJORITY=27/73(37%) perm=32/73(44%) strict=27/73(37%) miss=0%
+             uniform['gemini']: MAJORITY=30/73(41%) strict=30/73(41%)
+             combined /api: exact=25.0%  cross-MAJORITY=52.0% (0.423, 0.615)  cross-perm=57.0%  cross-strict=52.0%
+   [strict ] avail=['codex', 'gemini'] cross=['codex', 'gemini']
+             per-judge ACCEPT: codex=19/73(26%)  gemini=21/73(29%)
+             cross-family: MAJORITY=16/73(22%) perm=24/73(33%) strict=16/73(22%) miss=0%
+             uniform['gemini']: MAJORITY=21/73(29%) strict=21/73(29%)
+             combined /api: exact=25.0%  cross-MAJORITY=41.0% (0.319, 0.508)  cross-perm=49.0%  cross-strict=41.0%
+
+## grok-build (commercial)   [OK]   api n=100 exact=14 (14.0%) residuals=44  self-family=grok
+   [lenient] avail=['claude', 'codex', 'gemini'] cross=['claude', 'codex', 'gemini']
+             per-judge ACCEPT: claude=24/44(55%)  codex=21/44(48%)  gemini=22/44(50%)
+             cross-family: MAJORITY=22/44(50%) perm=26/44(59%) strict=19/44(43%) miss=0%
+             uniform['gemini']: MAJORITY=22/44(50%) strict=22/44(50%)
+             combined /api: exact=14.0%  cross-MAJORITY=36.0% (0.273, 0.458)  cross-perm=40.0%  cross-strict=33.0%
+   [strict ] avail=['claude', 'codex', 'gemini'] cross=['claude', 'codex', 'gemini']
+             per-judge ACCEPT: claude=22/44(50%)  codex=12/44(27%)  gemini=20/44(45%)
+             cross-family: MAJORITY=20/44(45%) perm=22/44(50%) strict=12/44(27%) miss=0%
+             uniform['gemini']: MAJORITY=20/44(45%) strict=20/44(45%)
+             combined /api: exact=14.0%  cross-MAJORITY=34.0% (0.255, 0.437)  cross-perm=36.0%  cross-strict=26.0%
+
+=== LENS 1 :: self-preference (lenient, commercial models) ===
+   gpt-5.5 high (commercial): self=45%  cross-mean=47% (d=-3%)  most-lenient-cross(claude)=49% (d_vs_max=-4%)  n=76
+   opus high (commercial): self=55%  cross-mean=42% (d=+13%)  most-lenient-cross(gemini)=47% (d_vs_max=+8%)  n=78
+   mean delta vs cross-mean = +5.3%;  mean delta vs MOST-LENIENT cross = +1.9%
+   -> self-edge vanishes against the most lenient cross judge (weak/no self-preference)
+
+=== LENS 2 :: commercial vs local (cross-family, lenient) ===
+   (macro-mean over models per class; absolute points lead, ratio secondary)
+   EXACT only                : commercial=21.8% local=15.0%  (delta +6.8%, ratio 1.45x)
+   +near-miss (MAJORITY)     : commercial=53.4% local=33.0%  (delta +20.4%, ratio 1.62x)
+   +near-miss (perm, sens.)  : commercial=58.2% local=49.0%  (delta +9.2%, ratio 1.19x)
+   +near-miss (strict, sens.): commercial=49.8% local=26.0%  (delta +23.8%, ratio 1.92x)
+
+=== LENS 3 :: judge agreement on local 30B (lenient) ===
+   claude~codex: 65/85 (76%)
+   claude~gemini: 73/85 (86%)
+   claude~grok: 51/74 (69%)
+   codex~gemini: 67/85 (79%)
+   codex~grok: 52/74 (70%)
+   gemini~grok: 58/74 (78%)
+
+
+## 7b-loop/results_2026-07-08.txt
+
+7B improvement loop (qwen2.5-coder-7b-instruct Q4) -- DEV=gson+commons, HOLDOUT=xz. temp=0, --parallel 1.
+Reviewed by Codex + GPT (gpt-5.5) and Grok before running.
+
+TEIL A -- wired-knob 9-cell grid (backend x hints), DEV api=50/jar (n=102), realistic:
+  cell                     usable exact
+  graph_conservative(cap16000) 10   8   <- WINNER
+  graph_all(cap16000)           9   8
+  owner_off                     8   8
+  auto_off                      8   7
+  graph_off(cap16000)           8   6
+  auto_all / auto_conservative  6   6/5
+  owner_all / owner_conservative 5  5
+  => graph + conservative hints + raised 16000-char cap wins (+4 usable / +3 exact over the
+     product-default auto/conservative/8000 baseline); no per-jar regression.
+
+TEIL B -- crafted PROMPT_EXTENSION A/B on the winner config, DEV api=150/jar (n=302 paired):
+  config          usable exact   paired usable (wins/losses/net)
+  none (baseline)   19    16      --
+  grok-ext          24    17      13/8/+5
+  codex-ext         25    19      13/7/+6   <- best (ext_codex.txt)
+  => small, consistent, direction-positive gain; sign test p~=0.13 (suggestive, not significant).
+
+HOLDOUT confirmation (xz, api, n=151 paired), winner (graph+conservative+codex-ext) vs none:
+  usable 2 -> 3, exact 2 -> 3 (wins 1 / losses 0) -- no regression, generalises; xz recovery near floor.
+
+CONCLUSION: cheap prompt/context tuning gives the weak 7B a small, consistent, non-regressing lift but
+does not transform it. Model capability is the binding constraint, not prompt engineering. Honest caveat:
+at usable ~5-10 % the per-config differences are near the noise floor; paired win/loss + n>=300 were used
+to keep the direction trustworthy, and the effect is reported as modest, not a breakthrough.

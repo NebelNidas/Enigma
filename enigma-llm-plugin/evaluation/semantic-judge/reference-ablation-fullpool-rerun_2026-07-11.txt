@@ -1,0 +1,15 @@
+$ /usr/bin/python3 /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/semantic-judge/ablfull_combine.py
+
+## stdout
+n rows = 796
+grok source = ablfull_grok_rerun.json
+judge          ACCEPT plausible       REJECT plausible
+grok       224/302  =  74%         96/494  =  19%
+codex      254/302  =  84%        116/494  =  23%
+claude     262/302  =  87%        187/494  =  38%
+
+majority(>=2/3 ACCEPT): accepted 253/302 = 84%   rejected 123/494 = 25%
+
+## stderr
+
+## exit=0

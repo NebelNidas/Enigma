@@ -1,0 +1,29 @@
+$ /usr/bin/python3 /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/analyze_backend_matrix.py /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/benchmark-raw-2026-07-11/benchmark qwen3-8b
+
+## stdout
+# backend matrix — model=qwen3-8b track=realistic slice=api
+
+pass                  n        exact  ctx_err  client_trunc    promptChars p50/p90/max
+owner_k1            300   18   6.0%        0     98  32.7%     5092/8000/8000
+graph_k1_raised     300   22   7.3%        0     70  23.3%     9227/16000/16000
+graph_k1_cap8000    300   15   5.0%        0    174  58.0%     8000/8000/8000
+
+## Q1 — AUTO routing optimality (paired owner-best vs graph-best)
+paired targets: 300   graph-ctx-overflow EXCLUDED: 0   verdict base n=300
+(AUTO would route: owner=101, graph=199)
+AUTO picked the >= better backend on 295/300 (98.3%)
+AUTO REGRET (non-chosen backend strictly wins): 5/300 (1.7%)
+    AUTO->graph but owner recovered it: 2
+    AUTO->owner but graph recovered it: 3
+recovery — AUTO routing: 22 (7.3%)   oracle best-of-both: 27 (9.0%)   gap AUTO->oracle: 5 (1.7pp)
+baselines — always-owner: 18 (6.0%)   always-graph: 22 (7.3%)
+
+## Q2 — graph client-cap truncation (exact recovery, api; --parallel 1 => no server overflow)
+graph cap-raised 16000 (untruncated): 22/300 (7.3%)
+graph cap-8000         (client cap):  15/300 (5.0%)
+  client-cap truncation cost (raised - cap8000): +7 targets (+2.3pp)
+  intrinsic backend gap (owner - graph raised): -4 (-1.3pp) [both untruncated; residual = backend quality + AUTO-forced-difficulty]
+
+## stderr
+
+## exit=0

@@ -1,0 +1,4 @@
+# Fixed JSONL evaluation summaries
+
+- context-backend-comparison-qwen2.5-coder-1.5b-q4km-2026-07-03.jsonl: n=12 accepted=12 exact=2 usable=7 failed=0 avgLatencyMillis=4694.3 kinds={'FIELD': 4, 'METHOD': 4, 'PARAMETER': 4}
+- qwen2.5-coder-1.5b-q4km-2026-07-03.jsonl: n=25 accepted=25 exact=4 usable=9 failed=0 avgLatencyMillis=4490.2 kinds={'CLASS': 4, 'FIELD': 11, 'METHOD': 5, 'PARAMETER': 5}

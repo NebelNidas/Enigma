@@ -1,0 +1,1290 @@
+$ /usr/bin/python3 /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/aggregate_results.py /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/benchmark-raw-2026-07-11/benchmark --json /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/benchmark-raw-2026-07-11/reports/main-benchmark/.write-main-vnuycn6_/main-benchmark-summary.json --resamples 5000
+
+## stdout
+benchmark dir: /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/benchmark-raw-2026-07-11/benchmark
+models found : 23
+
+==============================================================================
+MODEL: deepseek-coder-v2-lite-instruct_q6_k   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  4.0% (exact=  3 norm=  1)  usable=  6.0%  err=  0  Wilson95=[  1.6%,  9.8%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  5  violations=  7
+    [structure-only]
+      api          n=100  correct=  3.0% (exact=  2 norm=  1)  usable=  5.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  6  violations=  6
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  7.0% (exact=  7 norm=  0)  usable=  8.0%  err=  0  Wilson95=[  3.4%, 13.7%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  9  violations=  3
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  8  violations=  4
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  8.3% (exact=  0 norm=  1)  usable=  8.3%  err=  5  violations=  7
+    [structure-only]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  8.3% (exact=  0 norm=  1)  usable=  8.3%  err=  5  violations=  7
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct=  0.0%  Wilson95=[  0.0%,  4.9%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 15.4%  Wilson95=[  6.1%, 33.5%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  0.0%  Wilson95=[  0.0%,  4.9%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 11.5%  Wilson95=[  4.0%, 29.0%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct=  1.6%  Wilson95=[  0.3%,  8.6%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct= 15.8%  Wilson95=[  7.4%, 30.4%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  1.6%  Wilson95=[  0.3%,  8.6%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  0.0%  Wilson95=[  0.0%,  9.2%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  1.6%  Wilson95=[  0.3%,  8.5%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  1.6%  Wilson95=[  0.3%,  8.5%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  1.0%  CI=[  0.0%,  3.0%]  pairs=100
+      gson-2.11.0              delta=  6.0%  CI=[  1.0%, 11.0%]  pairs=100
+      xz-1.9                   delta=  0.0%  CI=[ -3.0%,  3.0%]  pairs=100
+
+==============================================================================
+MODEL: gemma-4-31b-it   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 23.0% (exact= 22 norm=  1)  usable= 25.0%  err=  0  Wilson95=[ 15.8%, 32.2%]
+      package      n= 30  correct= 26.7% (exact=  8 norm=  0)  usable= 30.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4  violations=  8
+    [structure-only]
+      api          n=100  correct= 20.0% (exact= 19 norm=  1)  usable= 22.0%  err=  0  Wilson95=[ 13.3%, 28.9%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 20.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3  violations=  9
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 23.0% (exact= 23 norm=  0)  usable= 28.0%  err=  0  Wilson95=[ 15.8%, 32.2%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 20.0%  err=  0
+      private      n= 10  correct= 20.0% (exact=  2 norm=  0)  usable= 30.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  9  violations=  3
+    [structure-only]
+      api          n=100  correct=  5.0% (exact=  5 norm=  0)  usable=  9.0%  err=  0  Wilson95=[  2.2%, 11.2%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  8  violations=  4
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct= 15.0% (exact= 12 norm=  3)  usable= 22.0%  err=  0  Wilson95=[  9.3%, 23.3%]
+      package      n= 30  correct= 13.3% (exact=  4 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  8.3% (exact=  0 norm=  1)  usable=  8.3%  err=  3  violations=  9
+    [structure-only]
+      api          n=100  correct= 11.0% (exact= 10 norm=  1)  usable= 15.0%  err=  0  Wilson95=[  6.3%, 18.6%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  8.3% (exact=  0 norm=  1)  usable=  8.3%  err=  3  violations=  9
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct= 14.9%  Wilson95=[  8.5%, 24.7%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 46.2%  Wilson95=[ 28.8%, 64.5%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct= 13.5%  Wilson95=[  7.5%, 23.1%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 38.5%  Wilson95=[ 22.4%, 57.5%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct= 21.0%  Wilson95=[ 12.7%, 32.6%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct= 26.3%  Wilson95=[ 15.0%, 42.0%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  3.2%  Wilson95=[  0.9%, 11.0%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  7.9%  Wilson95=[  2.7%, 20.8%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct= 19.0%  Wilson95=[ 11.2%, 30.4%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  8.1%  Wilson95=[  2.8%, 21.3%]
+      xz-1.9                   [structure-only] graph  n= 63  correct= 17.5%  Wilson95=[ 10.0%, 28.6%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+      gson-2.11.0              delta= 18.0%  CI=[ 11.0%, 26.0%]  pairs=100
+      xz-1.9                   delta=  4.0%  CI=[  0.0%,  9.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q5_k_m   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 10.0% (exact=  9 norm=  1)  usable= 11.0%  err=  2  Wilson95=[  5.5%, 17.4%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 16.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  7.0% (exact=  6 norm=  1)  usable=  8.0%  err=  2  Wilson95=[  3.4%, 13.7%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable=  9.0%  err=  0  Wilson95=[  2.8%, 12.5%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  2.0%  err=  9  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  5
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3  violations=  9
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err= 10  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct=  6.8%  Wilson95=[  2.9%, 14.9%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 19.2%  Wilson95=[  8.5%, 37.9%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  4.1%  Wilson95=[  1.4%, 11.3%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 15.4%  Wilson95=[  6.1%, 33.5%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct=  4.8%  Wilson95=[  1.7%, 13.3%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct=  7.9%  Wilson95=[  2.7%, 20.8%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  1.6%  Wilson95=[  0.3%,  8.6%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  0.0%  Wilson95=[  0.0%,  9.2%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  0.0%  Wilson95=[ -0.0%,  5.7%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  1.6%  Wilson95=[  0.3%,  8.5%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  3.0%  CI=[ -1.0%,  8.0%]  pairs=100
+      gson-2.11.0              delta=  5.0%  CI=[  1.0%, 10.0%]  pairs=100
+      xz-1.9                   delta=  0.0%  CI=[ -3.0%,  3.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q6_k   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  9.0% (exact=  9 norm=  0)  usable= 11.0%  err=  1  Wilson95=[  4.8%, 16.2%]
+      package      n= 30  correct= 13.3% (exact=  4 norm=  0)  usable= 23.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable=  9.0%  err=  1  Wilson95=[  2.8%, 12.5%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  7.0%  err=  0  Wilson95=[  1.6%,  9.8%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  4.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct=  6.8%  Wilson95=[  2.9%, 14.9%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 15.4%  Wilson95=[  6.1%, 33.5%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  4.1%  Wilson95=[  1.4%, 11.3%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 11.5%  Wilson95=[  4.0%, 29.0%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct=  1.6%  Wilson95=[  0.3%,  8.6%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct=  7.9%  Wilson95=[  2.7%, 20.8%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  1.6%  Wilson95=[  0.3%,  8.6%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  0.0%  Wilson95=[  0.0%,  9.2%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  3.2%  Wilson95=[  0.9%, 10.9%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  3.2%  Wilson95=[  0.9%, 10.9%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  3.0%  CI=[ -1.0%,  8.0%]  pairs=100
+      gson-2.11.0              delta=  3.0%  CI=[ -1.0%,  7.0%]  pairs=100
+      xz-1.9                   delta=  1.0%  CI=[  0.0%,  3.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q6_k_graph_k1_cap8000   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 10.0%  err=  1  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 20.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  6.0%  err=  1  Wilson95=[  1.6%,  9.8%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  7.0% (exact=  7 norm=  0)  usable= 10.0%  err=  0  Wilson95=[  3.4%, 13.7%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  1  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  4.0%  Wilson95=[  1.6%,  9.8%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct=  7.0%  Wilson95=[  3.4%, 13.7%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  4.0%  CI=[  1.0%,  8.0%]  pairs=100
+      gson-2.11.0              delta=  6.0%  CI=[  1.0%, 12.0%]  pairs=100
+      xz-1.9                   delta=  1.0%  CI=[  0.0%,  3.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q6_k_graph_k1_raised   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 10.0%  err=  1  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 20.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  6.0%  err=  1  Wilson95=[  1.6%,  9.8%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  9.0% (exact=  9 norm=  0)  usable=  9.0%  err=  1  Wilson95=[  4.8%, 16.2%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  1
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  4.0%  err=  1  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  4.0%  Wilson95=[  1.6%,  9.8%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct=  9.0%  Wilson95=[  4.8%, 16.2%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  4.0%  CI=[  1.0%,  8.0%]  pairs=100
+      gson-2.11.0              delta=  8.0%  CI=[  2.0%, 14.0%]  pairs=100
+      xz-1.9                   delta=  2.0%  CI=[  0.0%,  5.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q6_k_graph_k1_raised_cacheoff   (618 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 10.0%  err=  0  Wilson95=[  4.1%, 15.0%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  6.0%  err=  0  Wilson95=[  1.6%,  9.8%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 12.0% (exact= 12 norm=  0)  usable= 14.0%  err=  0  Wilson95=[  7.0%, 19.8%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=100.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  4.0%  Wilson95=[  1.6%,  9.8%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct= 12.0%  Wilson95=[  7.0%, 19.8%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  4.0%  CI=[  1.0%,  8.0%]  pairs=100
+      gson-2.11.0              delta= 11.0%  CI=[  5.0%, 17.0%]  pairs=100
+      xz-1.9                   delta=  2.0%  CI=[  0.0%,  5.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q6_k_owner_k1   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable= 10.0%  err=  0  Wilson95=[  2.8%, 12.5%]
+      package      n= 30  correct= 20.0% (exact=  6 norm=  0)  usable= 26.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  8.0%  err=  0  Wilson95=[  1.6%,  9.8%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  7.0% (exact=  7 norm=  0)  usable=  9.0%  err=  0  Wilson95=[  3.4%, 13.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] owner  n=100  correct=  6.0%  Wilson95=[  2.8%, 12.5%]
+      commons-lang3-3.14.0     [structure-only] owner  n=100  correct=  4.0%  Wilson95=[  1.6%,  9.8%]
+      gson-2.11.0              [realistic     ] owner  n=100  correct=  7.0%  Wilson95=[  3.4%, 13.7%]
+      gson-2.11.0              [structure-only] owner  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [realistic     ] owner  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [structure-only] owner  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  2.0%  CI=[  0.0%,  5.0%]  pairs=100
+      gson-2.11.0              delta=  6.0%  CI=[  2.0%, 11.0%]  pairs=100
+      xz-1.9                   delta=  1.0%  CI=[  0.0%,  3.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q6_k_temp02_run1   (618 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 10.0% (exact= 10 norm=  0)  usable= 12.0%  err=  1  Wilson95=[  5.5%, 17.4%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  7.0%  err=  0  Wilson95=[  1.6%,  9.8%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 10.0%  err=  1  Wilson95=[  4.1%, 15.0%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=100.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  6.0%  err=  0  Wilson95=[  1.6%,  9.8%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct= 10.0%  Wilson95=[  5.5%, 17.4%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  4.0%  Wilson95=[  1.6%,  9.8%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  4.0%  Wilson95=[  1.6%,  9.8%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  6.0%  CI=[  2.0%, 11.0%]  pairs=100
+      gson-2.11.0              delta=  7.0%  CI=[  2.0%, 13.0%]  pairs=100
+      xz-1.9                   delta=  4.0%  CI=[  1.0%,  8.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q6_k_temp02_run2   (618 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable=  9.0%  err=  1  Wilson95=[  2.8%, 12.5%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  6.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  9.0% (exact=  9 norm=  0)  usable= 11.0%  err=  0  Wilson95=[  4.8%, 16.2%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=100.0% (exact=  1 norm=  0)  usable=100.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  2.0%  err=  1  Wilson95=[  0.6%,  7.0%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct=  6.0%  Wilson95=[  2.8%, 12.5%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  3.0%  Wilson95=[  1.0%,  8.5%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct=  9.0%  Wilson95=[  4.8%, 16.2%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+      gson-2.11.0              delta=  8.0%  CI=[  2.0%, 14.0%]  pairs=100
+      xz-1.9                   delta=  1.0%  CI=[ -2.0%,  5.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-14b-instruct_q6_k_temp02_run3   (618 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable=  8.0%  err=  1  Wilson95=[  2.8%, 12.5%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  5.0% (exact=  5 norm=  0)  usable=  7.0%  err=  1  Wilson95=[  2.2%, 11.2%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 13.0%  err=  0  Wilson95=[  4.1%, 15.0%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+    [structure-only]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n=  1  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations=  1
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct=  6.0%  Wilson95=[  2.8%, 12.5%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  5.0%  Wilson95=[  2.2%, 11.2%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  1.0%  CI=[ -3.0%,  5.0%]  pairs=100
+      gson-2.11.0              delta=  6.0%  CI=[  1.0%, 12.0%]  pairs=100
+      xz-1.9                   delta=  0.0%  CI=[ -4.0%,  4.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen2.5-coder-7b-instruct   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  2.0% (exact=  1 norm=  1)  usable=  3.0%  err=  1  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  3.0% (exact=  2 norm=  1)  usable=  4.0%  err=  1  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  6.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  1
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  1.0%  err= 16  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err= 10
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1
+      preservation n= 12  correct=  8.3% (exact=  0 norm=  1)  usable=  8.3%  err=  5  violations=  7
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  1.0%  err= 13  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err= 11
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  5  violations=  7
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct=  1.4%  Wilson95=[  0.2%,  7.3%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct=  3.8%  Wilson95=[  0.7%, 18.9%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  2.7%  Wilson95=[  0.7%,  9.3%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct=  3.8%  Wilson95=[  0.7%, 18.9%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct=  0.0%  Wilson95=[ -0.0%,  5.8%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct=  7.9%  Wilson95=[  2.7%, 20.8%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  1.6%  Wilson95=[  0.3%,  8.6%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  0.0%  Wilson95=[  0.0%,  9.2%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  0.0%  Wilson95=[ -0.0%,  5.7%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  0.0%  Wilson95=[ -0.0%,  5.7%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta= -1.0%  CI=[ -3.0%,  0.0%]  pairs=100
+      gson-2.11.0              delta=  2.0%  CI=[ -2.0%,  6.0%]  pairs=100
+      xz-1.9                   delta=  1.0%  CI=[  0.0%,  3.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-14b   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  9.0% (exact=  9 norm=  0)  usable= 12.0%  err=  1  Wilson95=[  4.8%, 16.2%]
+      package      n= 30  correct= 13.3% (exact=  4 norm=  0)  usable= 20.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable=  9.0%  err=  1  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  7.0% (exact=  7 norm=  0)  usable= 10.0%  err=  0  Wilson95=[  3.4%, 13.7%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  6.7%  err=  1
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  1.0% (exact=  0 norm=  1)  usable=  1.0%  err=  9  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  1
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err= 10  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct=  6.8%  Wilson95=[  2.9%, 14.9%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 15.4%  Wilson95=[  6.1%, 33.5%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  5.4%  Wilson95=[  2.1%, 13.1%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 15.4%  Wilson95=[  6.1%, 33.5%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct=  3.2%  Wilson95=[  0.9%, 11.0%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct= 13.2%  Wilson95=[  5.8%, 27.3%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  1.6%  Wilson95=[  0.3%,  8.6%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  2.6%  Wilson95=[  0.5%, 13.5%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  0.0%  Wilson95=[ -0.0%,  5.7%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  0.0%  Wilson95=[ -0.0%,  5.7%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  1.0%  CI=[ -3.0%,  6.0%]  pairs=100
+      gson-2.11.0              delta=  5.0%  CI=[  0.0%, 11.0%]  pairs=100
+      xz-1.9                   delta=  1.0%  CI=[  0.0%,  3.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-8b   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 14.0%  err=  0  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct= 20.0% (exact=  6 norm=  0)  usable= 20.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3  violations=  9
+    [structure-only]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 11.0%  err=  0  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable=  7.0%  err=  0  Wilson95=[  2.8%, 12.5%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4  violations=  8
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  7.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct=  5.4%  Wilson95=[  2.1%, 13.1%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 15.4%  Wilson95=[  6.1%, 33.5%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  6.8%  Wilson95=[  2.9%, 14.9%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 11.5%  Wilson95=[  4.0%, 29.0%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct=  0.0%  Wilson95=[ -0.0%,  5.8%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct= 15.8%  Wilson95=[  7.4%, 30.4%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  1.6%  Wilson95=[  0.3%,  8.6%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  0.0%  Wilson95=[  0.0%,  9.2%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  3.2%  Wilson95=[  0.9%, 10.9%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  1.6%  Wilson95=[  0.3%,  8.5%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  0.0%  CI=[ -3.0%,  3.0%]  pairs=100
+      gson-2.11.0              delta=  5.0%  CI=[  0.0%, 10.0%]  pairs=100
+      xz-1.9                   delta=  2.0%  CI=[ -2.0%,  6.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-8b_graph_k1_cap8000   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable=  9.0%  err=  0  Wilson95=[  2.8%, 12.5%]
+      package      n= 30  correct= 23.3% (exact=  7 norm=  0)  usable= 23.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  7.0% (exact=  7 norm=  0)  usable=  9.0%  err=  0  Wilson95=[  3.4%, 13.7%]
+      package      n= 30  correct= 13.3% (exact=  4 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable= 10.0%  err=  0  Wilson95=[  2.8%, 12.5%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  5  violations=  7
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 20.0% (exact=  2 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4  violations=  8
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  5.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct=  6.0%  Wilson95=[  2.8%, 12.5%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  7.0%  Wilson95=[  3.4%, 13.7%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct=  6.0%  Wilson95=[  2.8%, 12.5%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  3.0%  Wilson95=[  1.0%,  8.5%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta= -1.0%  CI=[ -5.0%,  2.0%]  pairs=100
+      gson-2.11.0              delta=  6.0%  CI=[  2.0%, 11.0%]  pairs=100
+      xz-1.9                   delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-8b_graph_k1_raised   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  9.0% (exact=  9 norm=  0)  usable= 11.0%  err=  0  Wilson95=[  4.8%, 16.2%]
+      package      n= 30  correct= 30.0% (exact=  9 norm=  0)  usable= 30.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  6.0% (exact=  6 norm=  0)  usable=  8.0%  err=  0  Wilson95=[  2.8%, 12.5%]
+      package      n= 30  correct= 13.3% (exact=  4 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct= 20.0% (exact=  2 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 10.0% (exact= 10 norm=  0)  usable= 13.0%  err=  0  Wilson95=[  5.5%, 17.4%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  5  violations=  7
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4  violations=  8
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  5.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct=  9.0%  Wilson95=[  4.8%, 16.2%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  6.0%  Wilson95=[  2.8%, 12.5%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct= 10.0%  Wilson95=[  5.5%, 17.4%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  1.0%  Wilson95=[  0.2%,  5.4%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  3.0%  Wilson95=[  1.0%,  8.5%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+      gson-2.11.0              delta=  9.0%  CI=[  4.0%, 15.0%]  pairs=100
+      xz-1.9                   delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-8b_owner_k1   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 12.0%  err=  0  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 20.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+    [structure-only]
+      api          n=100  correct=  5.0% (exact=  5 norm=  0)  usable=  7.0%  err=  0  Wilson95=[  2.2%, 11.2%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 11.0%  err=  0  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+    [structure-only]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  2.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3  violations=  9
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3  violations=  9
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] owner  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      commons-lang3-3.14.0     [structure-only] owner  n=100  correct=  5.0%  Wilson95=[  2.2%, 11.2%]
+      gson-2.11.0              [realistic     ] owner  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      gson-2.11.0              [structure-only] owner  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+      xz-1.9                   [realistic     ] owner  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+      xz-1.9                   [structure-only] owner  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+      gson-2.11.0              delta=  6.0%  CI=[  1.0%, 12.0%]  pairs=100
+      xz-1.9                   delta=  2.0%  CI=[  0.0%,  5.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-coder-30b-a3b-instruct   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 12.0% (exact= 12 norm=  0)  usable= 15.0%  err=  2  Wilson95=[  7.0%, 19.8%]
+      package      n= 30  correct= 23.3% (exact=  7 norm=  0)  usable= 23.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+    [structure-only]
+      api          n=100  correct= 10.0% (exact= 10 norm=  0)  usable= 12.0%  err=  2  Wilson95=[  5.5%, 17.4%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 12.0% (exact= 12 norm=  0)  usable= 17.0%  err=  0  Wilson95=[  7.0%, 19.8%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3  violations=  9
+    [structure-only]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  6.0%  err=  0  Wilson95=[  1.6%,  9.8%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4  violations=  8
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  6.0% (exact=  5 norm=  1)  usable=  7.0%  err=  9  Wilson95=[  2.8%, 12.5%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable= 10.0%  err=  9
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  8.3%  err=  4  violations=  8
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  2.0%  err=  8  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  8
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  5  violations=  7
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct=  9.5%  Wilson95=[  4.7%, 18.3%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 19.2%  Wilson95=[  8.5%, 37.9%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  9.5%  Wilson95=[  4.7%, 18.3%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 11.5%  Wilson95=[  4.0%, 29.0%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct=  6.5%  Wilson95=[  2.5%, 15.4%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct= 21.1%  Wilson95=[ 11.1%, 36.3%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  4.8%  Wilson95=[  1.7%, 13.3%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  2.6%  Wilson95=[  0.5%, 13.5%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  7.9%  Wilson95=[  3.4%, 17.3%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  1.6%  Wilson95=[  0.3%,  8.5%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  2.0%  CI=[ -2.0%,  6.0%]  pairs=100
+      gson-2.11.0              delta=  8.0%  CI=[  2.0%, 14.0%]  pairs=100
+      xz-1.9                   delta=  5.0%  CI=[  0.0%, 10.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-coder-30b-a3b-instruct_iq4_xs   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 12.0% (exact= 12 norm=  0)  usable= 16.0%  err=  0  Wilson95=[  7.0%, 19.8%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 26.7%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 12.0%  err=  0  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 15.0% (exact= 15 norm=  0)  usable= 18.0%  err=  0  Wilson95=[  9.3%, 23.3%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4  violations=  8
+    [structure-only]
+      api          n=100  correct=  5.0% (exact=  5 norm=  0)  usable=  6.0%  err=  0  Wilson95=[  2.2%, 11.2%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4  violations=  8
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  5.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  8.3%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  8.3% (exact=  0 norm=  1)  usable=  8.3%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct=  8.1%  Wilson95=[  3.8%, 16.6%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 23.1%  Wilson95=[ 11.0%, 42.1%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  4.1%  Wilson95=[  1.4%, 11.3%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 19.2%  Wilson95=[  8.5%, 37.9%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct= 11.3%  Wilson95=[  5.6%, 21.5%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct= 21.1%  Wilson95=[ 11.1%, 36.3%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  4.8%  Wilson95=[  1.7%, 13.3%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  5.3%  Wilson95=[  1.5%, 17.3%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  3.2%  Wilson95=[  0.9%, 10.9%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  0.0%  Wilson95=[ -0.0%,  5.7%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  4.0%  CI=[  1.0%,  8.0%]  pairs=100
+      gson-2.11.0              delta= 10.0%  CI=[  4.0%, 17.0%]  pairs=100
+      xz-1.9                   delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-coder-30b-a3b-instruct_iq4_xs_graph_k1_cap8000   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 10.0% (exact= 10 norm=  0)  usable= 12.0%  err=  1  Wilson95=[  5.5%, 17.4%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 26.7%  err=  0
+      private      n= 10  correct= 20.0% (exact=  2 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  8.0% (exact=  7 norm=  1)  usable= 10.0%  err=  1  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct= 20.0% (exact=  2 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 16.0% (exact= 16 norm=  0)  usable= 21.0%  err=  0  Wilson95=[ 10.1%, 24.4%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+    [structure-only]
+      api          n=100  correct=  4.0% (exact=  4 norm=  0)  usable=  7.0%  err=  0  Wilson95=[  1.6%,  9.8%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3  violations=  9
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  7.0% (exact=  7 norm=  0)  usable=  8.0%  err=  0  Wilson95=[  3.4%, 13.7%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  8.3%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  8.3%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct= 10.0%  Wilson95=[  5.5%, 17.4%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct= 16.0%  Wilson95=[ 10.1%, 24.4%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  4.0%  Wilson95=[  1.6%,  9.8%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  7.0%  Wilson95=[  3.4%, 13.7%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  2.0%  CI=[ -2.0%,  6.0%]  pairs=100
+      gson-2.11.0              delta= 12.0%  CI=[  5.0%, 20.0%]  pairs=100
+      xz-1.9                   delta=  5.0%  CI=[  1.0%, 10.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-coder-30b-a3b-instruct_iq4_xs_graph_k1_raised   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 12.0% (exact= 12 norm=  0)  usable= 16.0%  err=  0  Wilson95=[  7.0%, 19.8%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 30.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  9.0% (exact=  8 norm=  1)  usable= 12.0%  err=  0  Wilson95=[  4.8%, 16.2%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable= 16.7%  err=  0
+      private      n= 10  correct= 20.0% (exact=  2 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 16.0% (exact= 16 norm=  0)  usable= 25.0%  err=  0  Wilson95=[ 10.1%, 24.4%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  4  violations=  8
+    [structure-only]
+      api          n=100  correct=  8.0% (exact=  8 norm=  0)  usable= 11.0%  err=  0  Wilson95=[  4.1%, 15.0%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  3  violations=  9
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  5.0% (exact=  5 norm=  0)  usable= 11.0%  err=  0  Wilson95=[  2.2%, 11.2%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  8.3% (exact=  0 norm=  1)  usable=  8.3%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  2.0% (exact=  2 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.6%,  7.0%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n=100  correct= 12.0%  Wilson95=[  7.0%, 19.8%]
+      commons-lang3-3.14.0     [structure-only] graph  n=100  correct=  9.0%  Wilson95=[  4.8%, 16.2%]
+      gson-2.11.0              [realistic     ] graph  n=100  correct= 16.0%  Wilson95=[ 10.1%, 24.4%]
+      gson-2.11.0              [structure-only] graph  n=100  correct=  8.0%  Wilson95=[  4.1%, 15.0%]
+      xz-1.9                   [realistic     ] graph  n=100  correct=  5.0%  Wilson95=[  2.2%, 11.2%]
+      xz-1.9                   [structure-only] graph  n=100  correct=  2.0%  Wilson95=[  0.6%,  7.0%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  3.0%  CI=[ -1.0%,  8.0%]  pairs=100
+      gson-2.11.0              delta=  8.0%  CI=[  0.0%, 16.0%]  pairs=100
+      xz-1.9                   delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-coder-30b-a3b-instruct_iq4_xs_owner_k1   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 11.0% (exact= 11 norm=  0)  usable= 16.0%  err=  0  Wilson95=[  6.3%, 18.6%]
+      package      n= 30  correct= 16.7% (exact=  5 norm=  0)  usable= 20.0%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct= 10.0% (exact= 10 norm=  0)  usable= 15.0%  err=  0  Wilson95=[  5.5%, 17.4%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct= 10.0% (exact=  1 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 12.0% (exact= 12 norm=  0)  usable= 19.0%  err=  0  Wilson95=[  7.0%, 19.8%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+    [structure-only]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  7.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  6.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  3.3% (exact=  1 norm=  0)  usable=  3.3%  err=  1
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+    [structure-only]
+      api          n=100  correct=  0.0% (exact=  0 norm=  0)  usable=  1.0%  err=  0  Wilson95=[  0.0%,  3.7%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable= 10.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0  violations= 12
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] owner  n=100  correct= 11.0%  Wilson95=[  6.3%, 18.6%]
+      commons-lang3-3.14.0     [structure-only] owner  n=100  correct= 10.0%  Wilson95=[  5.5%, 17.4%]
+      gson-2.11.0              [realistic     ] owner  n=100  correct= 12.0%  Wilson95=[  7.0%, 19.8%]
+      gson-2.11.0              [structure-only] owner  n=100  correct=  3.0%  Wilson95=[  1.0%,  8.5%]
+      xz-1.9                   [realistic     ] owner  n=100  correct=  3.0%  Wilson95=[  1.0%,  8.5%]
+      xz-1.9                   [structure-only] owner  n=100  correct=  0.0%  Wilson95=[  0.0%,  3.7%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  1.0%  CI=[ -2.0%,  5.0%]  pairs=100
+      gson-2.11.0              delta=  9.0%  CI=[  4.0%, 15.0%]  pairs=100
+      xz-1.9                   delta=  3.0%  CI=[  0.0%,  7.0%]  pairs=100
+
+==============================================================================
+MODEL: qwen3-coder-30b-a3b-instruct_q3_k_m   (912 attempted-or-structural rows)
+==============================================================================
+
+  --- commons-lang3-3.14.0 ---
+    [realistic]
+      api          n=100  correct= 13.0% (exact= 13 norm=  0)  usable= 16.0%  err=  0  Wilson95=[  7.8%, 21.0%]
+      package      n= 30  correct= 26.7% (exact=  8 norm=  0)  usable= 30.0%  err=  0
+      private      n= 10  correct= 20.0% (exact=  2 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct= 11.0% (exact= 11 norm=  0)  usable= 14.0%  err=  0  Wilson95=[  6.3%, 18.6%]
+      package      n= 30  correct= 13.3% (exact=  4 norm=  0)  usable= 13.3%  err=  0
+      private      n= 10  correct= 20.0% (exact=  2 norm=  0)  usable= 20.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+
+  --- gson-2.11.0 ---
+    [realistic]
+      api          n=100  correct= 13.0% (exact= 13 norm=  0)  usable= 18.0%  err=  0  Wilson95=[  7.8%, 21.0%]
+      package      n= 30  correct= 10.0% (exact=  3 norm=  0)  usable= 10.0%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  8.3%  err=  3  violations=  9
+    [structure-only]
+      api          n=100  correct=  3.0% (exact=  3 norm=  0)  usable=  7.0%  err=  0  Wilson95=[  1.0%,  8.5%]
+      package      n= 30  correct=  6.7% (exact=  2 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  8.3%  err=  3  violations=  9
+
+  --- xz-1.9 ---
+    [realistic]
+      api          n=100  correct=  1.0% (exact=  0 norm=  1)  usable=  2.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  6.7%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  1  violations= 11
+    [structure-only]
+      api          n=100  correct=  1.0% (exact=  1 norm=  0)  usable=  3.0%  err=  0  Wilson95=[  0.2%,  5.4%]
+      package      n= 30  correct=  0.0% (exact=  0 norm=  0)  usable=  3.3%  err=  0
+      private      n= 10  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  0
+      preservation n= 12  correct=  0.0% (exact=  0 norm=  0)  usable=  0.0%  err=  2  violations= 10
+
+    api by contextBackend (owner vs graph):
+      commons-lang3-3.14.0     [realistic     ] graph  n= 74  correct= 10.8%  Wilson95=[  5.6%, 19.9%]
+      commons-lang3-3.14.0     [realistic     ] owner  n= 26  correct= 19.2%  Wilson95=[  8.5%, 37.9%]
+      commons-lang3-3.14.0     [structure-only] graph  n= 74  correct=  9.5%  Wilson95=[  4.7%, 18.3%]
+      commons-lang3-3.14.0     [structure-only] owner  n= 26  correct= 15.4%  Wilson95=[  6.1%, 33.5%]
+      gson-2.11.0              [realistic     ] graph  n= 62  correct=  8.1%  Wilson95=[  3.5%, 17.5%]
+      gson-2.11.0              [realistic     ] owner  n= 38  correct= 21.1%  Wilson95=[ 11.1%, 36.3%]
+      gson-2.11.0              [structure-only] graph  n= 62  correct=  3.2%  Wilson95=[  0.9%, 11.0%]
+      gson-2.11.0              [structure-only] owner  n= 38  correct=  2.6%  Wilson95=[  0.5%, 13.5%]
+      xz-1.9                   [realistic     ] graph  n= 63  correct=  0.0%  Wilson95=[ -0.0%,  5.7%]
+      xz-1.9                   [realistic     ] owner  n= 37  correct=  2.7%  Wilson95=[  0.5%, 13.8%]
+      xz-1.9                   [structure-only] graph  n= 63  correct=  1.6%  Wilson95=[  0.3%,  8.5%]
+      xz-1.9                   [structure-only] owner  n= 37  correct=  0.0%  Wilson95=[  0.0%,  9.4%]
+
+    paired  realistic - structure-only  (api correct-rate, 95% bootstrap):
+      commons-lang3-3.14.0     delta=  2.0%  CI=[  0.0%,  5.0%]  pairs=100
+      gson-2.11.0              delta= 10.0%  CI=[  5.0%, 16.0%]  pairs=100
+      xz-1.9                   delta=  0.0%  CI=[ -3.0%,  3.0%]  pairs=100
+
+wrote aggregate JSON -> /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/benchmark-raw-2026-07-11/reports/main-benchmark/.write-main-vnuycn6_/main-benchmark-summary.json
+
+## stderr
+
+## exit=0

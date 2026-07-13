@@ -1,0 +1,18 @@
+$ /usr/bin/python3 /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/evaluation/semantic-judge/agg_v2.py
+
+## stdout
+model            ver  exact   ACC   REJ   UNC  sem-use   sem%       Wilson95  pend
+--------------------------------------------------------------------------------------------
+14b q6_k          v1  (missing files)
+14b q6_k          v2     19    68   199    11       87  29.0%  [24.2,34.4]     0
+
+qwen3-8b          v1  (missing files)
+qwen3-8b          v2     22    46   215    17       68  22.7%  [18.3,27.7]     0
+
+30B-MoE iq4_xs    v1  (missing files)
+30B-MoE iq4_xs    v2     33    82   171    14      115  38.3%  [33.0,43.9]     0
+
+
+## stderr
+
+## exit=0
