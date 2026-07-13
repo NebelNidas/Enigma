@@ -1,0 +1,42 @@
+RETRY-SCOPE REPORT (generated 2026-07-12) — per preserved run, retryable-infra vs llm-quality errors
+
+ RETRY run                                                          tot  err  err% llmQ  guard
+-----------------------------------------------------------------------------------------------
+   861 commercial/claude_sonnet_high/claude_sonnet_high             912  861   94%    0   DEAD
+   274 commercial/grok_grok-build/grok_grok-build                   623  274   44%    0     ok
+    91 commercial/grok_build_hypo/grok_grok-build                   212   91   43%    0     ok
+    62 benchmark/qwen2.5-coder-7b-instruct                          912   72    8%   10     ok
+    50 benchmark/qwen3-coder-30b-a3b-instruct                       912   62    7%   12     ok
+    36 benchmark/qwen2.5-coder-14b-instruct_q5_k_m                  912   41    4%    5     ok
+    32 benchmark/qwen3-14b                                          912   33    4%    1     ok
+    29 commercial/gemini_pro_famous/gemini_Gemini_3.1_Pro_High_     666   29    4%    0     ok
+    14 commercial/codex_gpt-5.5_high/codex_gpt-5.5_high             912   14    2%    0     ok
+    10 commercial/claude_sonnet_high2/claude_sonnet_high            912   17    2%    7     ok
+     8 commercial/codex_gpt-5.5_xhigh/codex_gpt-5.5_xhigh           198    8    4%    0     ok
+     6 commercial/codex_gpt-5.5_medium/codex_gpt-5.5_medium         912    6    1%    0     ok
+     2 benchmark/qwen2.5-coder-14b-instruct_q6_k_graph_k1_raised    912    7    1%    5     ok
+     2 commercial/codex_gpt-5.5_low/codex_gpt-5.5_low               912    2    0%    0     ok
+     1 commercial/claude_opus_high/claude_opus_high                 912    2    0%    1     ok
+     1 commercial/gemini_pro_hypo/gemini_Gemini_3.1_Pro_High_       212    1    0%    0     ok
+     0 benchmark-seq-reference/qwen2.5-coder-14b-instruct_q6_k      912    6    1%    6     ok
+     0 benchmark/deepseek-coder-v2-lite-instruct_q6_k               912   38    4%   38     ok
+     0 benchmark/qwen2.5-coder-14b-instruct_q6_k                    912    6    1%    6     ok
+     0 benchmark/qwen2.5-coder-14b-instruct_q6_k_graph_k1_cap8000   912    4    0%    4     ok
+     0 benchmark/qwen2.5-coder-14b-instruct_q6_k_owner_k1           912    2    0%    2     ok
+     0 benchmark/qwen2.5-coder-14b-instruct_q6_k_temp02_run1        618    2    0%    2     ok
+     0 benchmark/qwen2.5-coder-14b-instruct_q6_k_temp02_run2        618    2    0%    2     ok
+     0 benchmark/qwen2.5-coder-14b-instruct_q6_k_temp02_run3        618    2    0%    2     ok
+     0 benchmark/qwen3-8b                                           912   14    2%   14     ok
+     0 benchmark/qwen3-8b_graph_k1_cap8000                          912   12    1%   12     ok
+     0 benchmark/qwen3-8b_graph_k1_raised                           912   14    2%   14     ok
+     0 benchmark/qwen3-8b_owner_k1                                  912   12    1%   12     ok
+     0 benchmark/qwen3-coder-30b-a3b-instruct_iq4_xs                912    8    1%    8     ok
+     0 benchmark/qwen3-coder-30b-a3b-instruct_iq4_xs_graph_k1_cap   912    7    1%    7     ok
+     0 benchmark/qwen3-coder-30b-a3b-instruct_iq4_xs_graph_k1_rai   912    8    1%    8     ok
+     0 benchmark/qwen3-coder-30b-a3b-instruct_iq4_xs_owner_k1       912    5    1%    5     ok
+     0 benchmark/qwen3-coder-30b-a3b-instruct_q3_k_m                912   11    1%   11     ok
+     0 benchmark/gemma-4-31b-it                                     912   30    3%   30     ok
+-----------------------------------------------------------------------------------------------
+KEY INSIGHT: essay-canonical LOCAL runs (qwen3-coder-30b_iq4_xs, qwen3-8b, qwen2.5-coder-14b_q6_k, gemma-4-31b-it)
+have 0 retryable-infra errors -> LOCAL RETRY IS MOOT. The 180 local retryable are all in superseded exploratory
+configs. Retry pays off ONLY commercial: grok (274+91), gemini_famous (29), codex_high (14), etc. = budget-gated.
