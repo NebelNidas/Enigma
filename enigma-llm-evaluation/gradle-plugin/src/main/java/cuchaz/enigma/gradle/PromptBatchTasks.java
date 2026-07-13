@@ -169,7 +169,6 @@ final class PromptBatchTasks {
 			project.getTasks().register("dumpCodexMinecraftPrompts" + arm.name, JavaExec.class, task -> {
 				task.setGroup(VERIFICATION_GROUP);
 				task.setDescription("Dumps offline Minecraft prompts for the Codex " + arm.name + " arm.");
-				task.dependsOn("buildMinecraftCorpus");
 				task.setClasspath(mainRuntimeClasspath(project));
 				task.getMainClass().set("cuchaz.enigma.llm.LlmObfuscationBenchmarkHarness");
 				String profile = property(project, "mcProfile", "union").toLowerCase(Locale.ROOT);
@@ -178,9 +177,23 @@ final class PromptBatchTasks {
 					throw new IllegalArgumentException("mcProfile must be one of yarn, mojmap, union; got " + profile);
 				}
 
+				// The MC corpus dir is -P overridable so the same offline dump pipeline can serve the
+				// fresh-MC memorization-control benchmark (buildMinecraftFreshCorpus output) without
+				// duplicating tasks. Left at the default it depends on buildMinecraftCorpus; pointed
+				// elsewhere (mcCorpusRoot=<dir>) the corpus is assumed pre-built. The <profile> subdir
+				// selects mojmap/yarn/union under either root.
+				File corpusDir;
+
+				if (project.hasProperty("mcCorpusRoot")) {
+					corpusDir = new File(project.property("mcCorpusRoot").toString(), profile);
+				} else {
+					task.dependsOn("buildMinecraftCorpus");
+					corpusDir = buildFile(project, "llm-evaluation/minecraft/" + profile);
+				}
+
 				File dumpDir = new File(promptDumpRoot(project), "mc_" + arm.name);
 				File resultsDir = new File(promptDumpRoot(project), "mc_" + arm.name + "_structural");
-				task.args(buildFile(project, "llm-evaluation/minecraft/" + profile).getPath(), resultsDir.getPath());
+				task.args(corpusDir.getPath(), resultsDir.getPath());
 				configurePromptDump(project, task, dumpDir, resultsDir, arm.includeCode, arm.codeControl);
 			});
 		}
