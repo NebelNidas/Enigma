@@ -36,10 +36,14 @@ import net.fabricmc.tinyremapper.TinyRemapper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LocalVariableNode;
+import org.objectweb.asm.tree.LookupSwitchInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TableSwitchInsnNode;
 
 /**
  * Builds the "fresh Minecraft" rename-benchmark corpus: a memorization control whose scored targets are
@@ -488,6 +492,17 @@ public final class MinecraftFreshCorpusTool {
 			return;
 		}
 
+		// Drop trivial method bodies. The frontier prompt pipeline (prepare_codex_prompt_batches.py) keeps
+		// only "interesting" methods, judged from the decompiled body (branches / body-calls / statements);
+		// thin getters/delegators/one-liners are filtered out. New-since-cutoff Minecraft classes (records,
+		// data holders, advancement/registry scaffolding) are dominated by such thin methods, so an unfiltered
+		// sample collapsed to ~7 survivors. Pre-filter here on a bytecode proxy so the sampled methods are the
+		// ones that will actually survive that filter and yield a usable METHOD benchmark.
+		if (!interestingBody(mn)) {
+			dropped.merge("method:thin-body", 1, Integer::sum);
+			return;
+		}
+
 		out.add(Candidate.forMethod(cn, mn, obf, yarnOwner, obfName, mn.name, yarn));
 
 		// Parameters: require BOTH an official LVT name AND a Yarn arg name at the slot so every param row is
@@ -516,6 +531,40 @@ public final class MinecraftFreshCorpusTool {
 
 			out.add(Candidate.forParam(cn, mn, obf, yarnOwner, obfName, slot, officialArg, yarnArg));
 		}
+	}
+
+	/**
+	 * Bytecode proxy for {@code prepare_codex_prompt_batches.py}'s source-based "interesting method" test
+	 * (kept if {@code branches>=1 || body_calls>=2 || statements>=4}). Deliberately a touch stricter than a
+	 * literal translation so survivors reliably clear the decompiled-source filter downstream: keep if the
+	 * body has any branch, three or more invocations, or a non-trivial instruction count.
+	 */
+	private static boolean interestingBody(MethodNode mn) {
+		int branches = 0;
+		int invokes = 0;
+		int real = 0;
+
+		for (AbstractInsnNode insn : mn.instructions) {
+			int type = insn.getType();
+
+			if (type == AbstractInsnNode.LABEL || type == AbstractInsnNode.LINE || type == AbstractInsnNode.FRAME) {
+				continue;
+			}
+
+			real++;
+
+			if (insn instanceof JumpInsnNode || insn instanceof TableSwitchInsnNode || insn instanceof LookupSwitchInsnNode) {
+				branches++;
+			}
+
+			int op = insn.getOpcode();
+
+			if (op >= Opcodes.INVOKEVIRTUAL && op <= Opcodes.INVOKEDYNAMIC) {
+				invokes++;
+			}
+		}
+
+		return branches >= 1 || invokes >= 3 || real >= 14;
 	}
 
 	private static void collectField(ClassNode cn, FieldNode fn, MappingTree.ClassMapping cm, String yarnOwner,
