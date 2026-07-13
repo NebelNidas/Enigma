@@ -1,4 +1,6 @@
 import net.fabricmc.loom.util.download.Download
+import groovy.json.JsonSlurper
+import java.util.zip.ZipFile
 
 buildscript {
 	repositories {
@@ -30,6 +32,17 @@ sourceSets {
 configurations {
 	evaluationImplementation.extendsFrom implementation
 	evaluationRuntimeOnly.extendsFrom runtimeOnly
+
+	minecraftIntermediaryMappings {
+		canBeConsumed = false
+		canBeResolved = true
+		transitive = false
+	}
+	minecraftYarnMappings {
+		canBeConsumed = false
+		canBeResolved = true
+		transitive = false
+	}
 }
 
 dependencies {
@@ -41,6 +54,11 @@ dependencies {
 	// Benchmark-only: tiny-remapper applies the ground-truth rename map to produce the obfuscated
 	// corpus jars. (Same version the yarn build already resolves.) Dev-only — not in `main`.
 	evaluationImplementation 'net.fabricmc:tiny-remapper:0.12.0'
+
+	def minecraftVersion = project.findProperty('mcVersion') ?: '1.21.11'
+	def yarnMappingsVersion = project.findProperty('mcYarnVersion') ?: "${minecraftVersion}+build.6"
+	minecraftIntermediaryMappings "net.fabricmc:intermediary:${minecraftVersion}:v2"
+	minecraftYarnMappings "net.fabricmc:yarn:${yarnMappingsVersion}:v2"
 }
 
 // Ground-truth OSS corpus for the Hybrid 1.1 deobfuscation round-trip benchmark.
@@ -90,6 +108,154 @@ tasks.register('obfuscateCorpus', JavaExec) {
 			corpusDir.path,
 			file("${project.buildDir}/llm-evaluation/obfuscated").path
 	]
+}
+
+def minecraftVersion = project.findProperty('mcVersion') ?: '1.21.11'
+def minecraftInputDir = layout.buildDirectory.dir("llm-evaluation/minecraft-inputs/${minecraftVersion}")
+
+def extractTiny = { File jarFile, File outputFile ->
+	outputFile.parentFile.mkdirs()
+	new ZipFile(jarFile).withCloseable { zip ->
+		def entry = zip.getEntry('mappings/mappings.tiny')
+		if (entry == null) {
+			throw new GradleException("No mappings/mappings.tiny in ${jarFile}")
+		}
+		zip.getInputStream(entry).withCloseable { input ->
+			outputFile.withOutputStream { output -> output << input }
+		}
+	}
+}
+
+tasks.register('prepareMinecraftInputs') {
+	group = 'verification'
+	description = 'Downloads Minecraft client, Mojmap, Intermediary, Yarn and Parchment inputs for the Minecraft benchmark.'
+	notCompatibleWithConfigurationCache('Downloads and resolves external Minecraft/Fabric/Parchment inputs at execution time.')
+
+	def inputDir = minecraftInputDir.get().asFile
+	def versionManifest = new File(inputDir, 'version_manifest_v2.json')
+	def versionJson = new File(inputDir, "${minecraftVersion}.json")
+	def clientJar = new File(inputDir, "minecraft-${minecraftVersion}-client.jar")
+	def mojmapTxt = new File(inputDir, "mojmap-client-${minecraftVersion}.txt")
+	def intermediaryTiny = new File(inputDir, "intermediary-${minecraftVersion}.tiny")
+	def yarnTiny = new File(inputDir, "yarn-${minecraftVersion}.tiny")
+	def parchmentFile = new File(inputDir, "parchment-${minecraftVersion}.zip")
+	def intermediaryMappingFile = configurations.minecraftIntermediaryMappings.elements.map { it.iterator().next().asFile }
+	def yarnMappingFile = configurations.minecraftYarnMappings.elements.map { it.iterator().next().asFile }
+	def parchmentVersion = project.findProperty('mcParchmentVersion') ?: '2025.12.20'
+
+	outputs.files(versionManifest, versionJson, clientJar, mojmapTxt, intermediaryTiny, yarnTiny, parchmentFile)
+
+	doLast {
+		inputDir.mkdirs()
+		Download.create('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json')
+				.maxRetries(3)
+				.downloadPath(versionManifest.toPath())
+
+		def manifest = new JsonSlurper().parse(versionManifest)
+		def versionEntry = manifest.versions.find { it.id == minecraftVersion }
+		if (versionEntry == null) {
+			throw new GradleException("Minecraft version ${minecraftVersion} not found in Mojang version manifest")
+		}
+
+		Download.create(versionEntry.url)
+				.maxRetries(3)
+				.downloadPath(versionJson.toPath())
+
+		def versionData = new JsonSlurper().parse(versionJson)
+		def client = versionData.downloads.client
+		def clientMappings = versionData.downloads.client_mappings
+		Download.create(client.url)
+				.sha1(client.sha1)
+				.maxRetries(3)
+				.downloadPath(clientJar.toPath())
+		Download.create(clientMappings.url)
+				.sha1(clientMappings.sha1)
+				.maxRetries(3)
+				.downloadPath(mojmapTxt.toPath())
+
+		File intermediaryMappingJar = intermediaryMappingFile.get()
+		File yarnMappingJar = yarnMappingFile.get()
+		extractTiny(intermediaryMappingJar, intermediaryTiny)
+		extractTiny(yarnMappingJar, yarnTiny)
+
+		Download.create("https://maven.parchmentmc.org/org/parchmentmc/data/parchment-${minecraftVersion}/${parchmentVersion}/parchment-${minecraftVersion}-${parchmentVersion}.zip")
+				.maxRetries(3)
+				.downloadPath(parchmentFile.toPath())
+
+		logger.lifecycle("minecraft inputs ready in ${inputDir}")
+		logger.lifecycle("intermediary=${intermediaryMappingJar.name}, yarn=${yarnMappingJar.name}")
+	}
+}
+
+tasks.register('buildMinecraftCorpus', JavaExec) {
+	group = 'verification'
+	description = 'Builds the Minecraft full-corpus benchmark from downloaded Mojang/Fabric/Parchment mappings.'
+	dependsOn 'prepareMinecraftInputs'
+	classpath = sourceSets.evaluation.runtimeClasspath
+	mainClass = 'cuchaz.enigma.llm.MinecraftCorpusTool'
+
+	def inputDir = minecraftInputDir.get().asFile
+	def mcJarArg = file(project.findProperty('mcJar') ?: new File(inputDir, "minecraft-${minecraftVersion}-client.jar"))
+	def intermediaryTinyArg = file(project.findProperty('mcIntermediaryTiny') ?: new File(inputDir, "intermediary-${minecraftVersion}.tiny"))
+	def yarnMappingsArg = file(project.findProperty('mcYarnMappings') ?: new File(inputDir, "yarn-${minecraftVersion}.tiny"))
+	def mojmapArg = file(project.findProperty('mcMojmap') ?: new File(inputDir, "mojmap-client-${minecraftVersion}.txt"))
+	def parchmentArg = file(project.findProperty('mcParchment') ?: new File(inputDir, "parchment-${minecraftVersion}.zip"))
+	def outputArg = project.hasProperty('mcOut')
+			? file(project.property('mcOut'))
+			: file("${project.buildDir}/llm-evaluation/minecraft")
+	def baseArg = project.findProperty('mcBase') ?: "minecraft-${minecraftVersion}"
+
+	inputs.files(mcJarArg, intermediaryTinyArg, mojmapArg, parchmentArg)
+	inputs.files(yarnMappingsArg)
+	outputs.dir(outputArg)
+
+	args = [
+			mcJarArg.path,
+			intermediaryTinyArg.path,
+			yarnMappingsArg.path,
+			mojmapArg.path,
+			parchmentArg.path,
+			outputArg.path,
+			baseArg
+	]
+}
+
+tasks.register('benchmarkMinecraftCorpus', JavaExec) {
+	group = 'verification'
+	description = 'Runs the LLM obfuscation benchmark over a downloaded/built Minecraft corpus profile.'
+	dependsOn 'buildMinecraftCorpus'
+	classpath = sourceSets.evaluation.runtimeClasspath
+	mainClass = 'cuchaz.enigma.llm.LlmObfuscationBenchmarkHarness'
+
+	def profile = (project.findProperty('mcProfile') ?: 'union').toString().toLowerCase(Locale.ROOT)
+	if (!['yarn', 'mojmap', 'union'].contains(profile)) {
+		throw new GradleException("mcProfile must be one of yarn, mojmap, union; got ${profile}")
+	}
+
+	def obfDirArg = file("${project.buildDir}/llm-evaluation/minecraft/${profile}")
+	def resultsDirArg = project.hasProperty('mcResultsDir')
+			? file(project.property('mcResultsDir'))
+			: file("${project.buildDir}/llm-evaluation/minecraft-benchmark/${profile}")
+	args = [obfDirArg.path, resultsDirArg.path]
+
+	if (project.hasProperty('limit')) {
+		environment 'ENIGMA_LLM_BENCH_LIMIT', project.property('limit')
+	}
+	if (project.hasProperty('mcDumpPrompts')) {
+		environment 'ENIGMA_LLM_DUMP_PROMPTS', file(project.property('mcDumpPrompts')).path
+	}
+	if (project.hasProperty('mcCode')) {
+		environment 'ENIGMA_LLM_BENCH_CODE', project.property('mcCode')
+	}
+	if (project.hasProperty('mcCodeControl')) {
+		environment 'ENIGMA_LLM_BENCH_CODE_CONTROL', project.property('mcCodeControl')
+	}
+	if (project.hasProperty('mcCodeControlSeed')) {
+		environment 'ENIGMA_LLM_BENCH_CODE_CONTROL_SEED', project.property('mcCodeControlSeed')
+	}
+	if (project.hasProperty('maxPromptChars')) {
+		environment 'ENIGMA_LLM_MAX_PROMPT_CHARS', project.property('maxPromptChars')
+	}
 }
 
 tasks.register('benchmarkObfuscation', JavaExec) {

@@ -18,7 +18,7 @@ subprojects {
 
 	dependencies {
 		implementation 'com.google.code.gson:gson:2.10.1'
-		implementation 'net.fabricmc:mapping-io:0.7.1'
+		implementation 'net.fabricmc:mapping-io:0.8.0'
 		
 		compileOnly 'org.jetbrains:annotations:24.0.1'
 
