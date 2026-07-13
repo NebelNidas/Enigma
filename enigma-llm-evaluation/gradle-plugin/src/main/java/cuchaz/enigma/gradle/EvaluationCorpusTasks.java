@@ -206,14 +206,21 @@ final class EvaluationCorpusTasks {
 	 */
 	private static void registerBuildMinecraftFreshCorpus(Project project) {
 		String version = property(project, "mcFreshVersion", "26.3-snapshot-3");
-		String baseline = property(project, "mcFreshBaselineVersion", "26.2");
+		// The new-class baseline is the last Minecraft version released on or before the LATER of the two
+		// model cutoffs (GPT-5.6 Sol: 2026-02-16; Fable: 2026-01). 26.1-snapshot-7 (2026-02-11) is that
+		// version; the next one, 26.1-snapshot-8 (2026-02-17), is already post-cutoff. Every class new since
+		// snapshot-7 therefore first appeared strictly after both cutoffs, so a correct recovery cannot be
+		// rote recall. This spans ~5 months of development (Feb 17 -> Jul 7), giving a broad, domain-diverse
+		// target set (1219 new classes) rather than the graphics-heavy 26.2->26.3 slice (483). To widen the
+		// safety margin above the cutoff, override -PmcFreshBaselineVersion (e.g. 26.1, released 2026-03-24).
+		String baseline = property(project, "mcFreshBaselineVersion", "26.1-snapshot-7");
 		String yarnVersion = property(project, "mcFreshYarnVersion", version + "+build.4");
 		// The baseline diff MUST come from the same artifact type as the current mappings (both merged
 		// yarn). The pure "intermediary" tiny omits non-obfuscated com/mojang/* classes (official ==
 		// intermediary), while the merged tiny lists them; mixing the two would flag long-existing classes
 		// like blaze3d/platform/GLX as "new" and pollute the memorization control. So both sides use
 		// modern-yarn:*:mergedv2.
-		String baselineYarnVersion = property(project, "mcFreshBaselineYarnVersion", baseline + "+build.1");
+		String baselineYarnVersion = property(project, "mcFreshBaselineYarnVersion", baseline + "+build.5");
 
 		project.getRepositories().maven(repo -> {
 			repo.setName("RelativityMC");
