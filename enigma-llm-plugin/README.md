@@ -77,12 +77,14 @@ The `LLM` menu shows the currently configured model and active context backend w
 
 ## Evaluation
 
-Run the bundled JSONL evaluation set against the configured OpenAI-compatible endpoint:
+Evaluation harnesses, benchmark runners, model-selection notes, and report writers live in
+`../enigma-llm-evaluation`. Run the bundled JSONL evaluation set against the configured
+OpenAI-compatible endpoint:
 
 ```sh
 ENIGMA_LLM_BASE_URL=http://127.0.0.1:1234/v1 \
 ENIGMA_LLM_MODEL=qwen2.5-coder-1.5b-q4km \
-./gradlew :enigma-llm-plugin:runEvaluation
+./gradlew :enigma-llm-evaluation:runEvaluation
 ```
 
 Use `-Pcases=/path/to/cases.jsonl` and `-Pout=/path/to/results.jsonl` for custom runs.
@@ -93,14 +95,14 @@ Run the synthetic owner-vs-graph backend comparison:
 ```sh
 ENIGMA_LLM_BASE_URL=http://127.0.0.1:1234/v1 \
 ENIGMA_LLM_MODEL=qwen2.5-coder-1.5b-q4km \
-./gradlew :enigma-llm-plugin:compareContextBackends
+./gradlew :enigma-llm-evaluation:compareContextBackends
 ```
 
 Summarize an existing JSONL result without calling an LLM:
 
 ```sh
-./gradlew :enigma-llm-plugin:summarizeEvaluation \
-  -Presults=enigma-llm-plugin/evaluation/results/qwen2.5-coder-1.5b-q4km-2026-07-03.jsonl
+./gradlew :enigma-llm-evaluation:summarizeEvaluation \
+  -Presults=enigma-llm-evaluation/evaluation/results/qwen2.5-coder-1.5b-q4km-2026-07-03.jsonl
 ```
 
 The first local 1.5B baseline favored `owner` overall, while `graph` improved one parameter case. Re-test this task with larger local models before deciding which backend should be preferred for demos.
@@ -109,9 +111,9 @@ The first local 1.5B baseline favored `owner` overall, while `graph` improved on
 
 - `docs/PATCH_STACK.md`: suggested review/PR split
 - `docs/DEMO_ROUTE.md`: reproducible manual demo route
-- `docs/EVALUATION.md`: evaluation harness and metrics
-- `docs/BENCHMARK_RUNBOOK.md`: repeatable model benchmark workflow
-- `docs/MODEL_SELECTION.md`: local and remote model candidates by hardware class
+- `../enigma-llm-evaluation/docs/EVALUATION.md`: evaluation harness and metrics
+- `../enigma-llm-evaluation/docs/BENCHMARK_RUNBOOK.md`: repeatable model benchmark workflow
+- `../enigma-llm-evaluation/docs/MODEL_SELECTION.md`: local and remote model candidates by hardware class
 - `docs/SUBSCRIPTION_BRIDGE.md`: optional sidecar design for Codex/Claude/OpenCode-style subscription-backed providers
 - `docs/REPORT_OUTLINE.md`: report structure draft
 

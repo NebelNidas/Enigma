@@ -57,13 +57,15 @@ subprojects {
 		}
 	}
 
-	publishing {
-		publications {
-			"$project.name"(MavenPublication) {
-				groupId = project.group
-				artifactId = project.name
-				version = project.version
-				from components.java
+	if (project.name != 'enigma-llm-evaluation') {
+		publishing {
+			publications {
+				"$project.name"(MavenPublication) {
+					groupId = project.group
+					artifactId = project.name
+					version = project.version
+					from components.java
+				}
 			}
 		}
 	}
