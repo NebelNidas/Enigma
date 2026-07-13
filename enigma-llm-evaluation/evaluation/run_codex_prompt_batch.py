@@ -84,6 +84,40 @@ def extract_json(raw: str) -> dict | None:
         return None
 
 
+# Token-usage fields the codex --json event stream may carry (schema varies across codex versions).
+_USAGE_KEYS = (
+    "input_tokens", "output_tokens", "reasoning_output_tokens", "reasoning_tokens",
+    "cached_input_tokens", "total_tokens",
+)
+
+
+def parse_codex_usage(stdout: str) -> dict:
+    """With --json the codex CLI streams JSONL events to stdout, including a token-count event.
+    Scan the stream and return the last object that looks like a token-usage record (tolerant of
+    schema drift: accepts any nested dict carrying at least one known usage key)."""
+    usage: dict = {}
+    for line in (stdout or "").splitlines():
+        line = line.strip()
+        if not line or not line.startswith("{"):
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+
+        # Depth-first search for the deepest/last dict containing usage keys.
+        stack = [event]
+        while stack:
+            node = stack.pop()
+            if isinstance(node, dict):
+                if any(k in node for k in _USAGE_KEYS):
+                    usage = {k: node[k] for k in _USAGE_KEYS if k in node}
+                stack.extend(node.values())
+            elif isinstance(node, list):
+                stack.extend(node)
+    return usage
+
+
 def prompt_for(row: dict) -> str:
     return f"""You are performing exactly one isolated naming-benchmark call.
 Do not use tools. Do not inspect files. Do not run commands. Use only the benchmark prompt below.
@@ -211,6 +245,7 @@ def main() -> None:
             "-s", "read-only",
             "--output-schema", str(schema),
             "-o", str(out_path),
+            "--json",
             "-",
         ]
 
@@ -225,8 +260,11 @@ def main() -> None:
                 cwd=neutral,
             )
             latency_ms = int((time.time() - start) * 1000)
-            raw = out_path.read_text(encoding="utf-8").strip() if out_path.exists() else (proc.stdout or "").strip()
+            # The answer is written to out_path by -o; --json turns stdout into the JSONL event
+            # stream, which carries token usage.
+            raw = out_path.read_text(encoding="utf-8").strip() if out_path.exists() else ""
             parsed = extract_json(raw)
+            usage = parse_codex_usage(proc.stdout or "")
             rec = {
                 "arm": arm,
                 "key": key,
@@ -242,6 +280,7 @@ def main() -> None:
                 "suggestedName": (parsed or {}).get("suggestedName"),
                 "alternatives": (parsed or {}).get("alternatives", []),
                 "confidence": (parsed or {}).get("confidence"),
+                "usage": usage,
                 "ok": parsed is not None,
                 "rc": proc.returncode,
             }

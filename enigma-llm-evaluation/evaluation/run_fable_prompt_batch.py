@@ -143,6 +143,24 @@ def extract_json(raw: str) -> dict | None:
         return None
 
 
+def parse_claude_envelope(raw: str) -> tuple[str, dict, float | None]:
+    """With --output-format json the claude CLI wraps the answer in a result envelope that also
+    carries token usage and cost. Returns (answer_text, usage, cost_usd); falls back to treating
+    the whole stdout as the answer if it is not the expected envelope."""
+    raw = (raw or "").strip()
+    try:
+        envelope = json.loads(raw)
+    except json.JSONDecodeError:
+        return raw, {}, None
+    if isinstance(envelope, dict) and "result" in envelope:
+        result = envelope.get("result")
+        answer = result if isinstance(result, str) else raw
+        usage = envelope.get("usage") if isinstance(envelope.get("usage"), dict) else {}
+        cost = envelope.get("total_cost_usd")
+        return answer, usage, cost if isinstance(cost, (int, float)) else None
+    return raw, {}, None
+
+
 def load_rows(prompt_root: Path, dataset_name: str, prefix: str, arm: str,
               tracks: set[str], kinds: set[str]) -> dict[str, dict]:
     rows = {}
@@ -241,6 +259,7 @@ def main() -> None:
                 sys_file.flush()
                 cmd = [
                     "claude", "-p",
+                    "--output-format", "json",
                     "--model", args.model,
                     "--effort", args.effort,
                     "--disallowed-tools", *disallowed,
@@ -256,7 +275,8 @@ def main() -> None:
                     cwd=neutral,
                 )
                 latency_ms = int((time.time() - start) * 1000)
-            parsed = extract_json(proc.stdout or "")
+            answer_text, usage, cost_usd = parse_claude_envelope(proc.stdout or "")
+            parsed = extract_json(answer_text)
             rec = {
                 "arm": arm,
                 "key": key,
@@ -272,11 +292,13 @@ def main() -> None:
                 "suggestedName": (parsed or {}).get("suggestedName"),
                 "alternatives": (parsed or {}).get("alternatives", []),
                 "confidence": (parsed or {}).get("confidence"),
+                "usage": usage,
+                "costUsd": cost_usd,
                 "ok": parsed is not None,
                 "rc": proc.returncode,
             }
             if parsed is None:
-                rec["raw"] = (proc.stdout or "")[:1000]
+                rec["raw"] = (answer_text or proc.stdout or "")[:1000]
                 rec["stderr"] = (proc.stderr or "")[-1000:]
             atomic_write_json(dst, rec)
             with lock:
