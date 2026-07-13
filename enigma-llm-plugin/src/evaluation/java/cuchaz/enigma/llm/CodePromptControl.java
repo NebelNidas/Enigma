@@ -170,10 +170,11 @@ final class CodePromptControl {
 	}
 
 	/**
-	 * A sterile filler block whose length is {@code targetChars} characters (trimmed back to the last
-	 * non-identifier boundary so the block never ends mid-token, which keeps the tail a few chars short of the
-	 * target at most). Returns "" for a non-positive target. {@code seed} rotates which pool method the block
-	 * starts with, so the same target can be re-padded differently for a sensitivity check.
+	 * A sterile filler block whose length is {@code targetChars} characters. If the repeated pool would end
+	 * mid-token, the content is cut back to the previous non-identifier boundary and the remaining budget is
+	 * filled with spaces, preserving exact length without adding semantics. Returns "" for a non-positive
+	 * target. {@code seed} rotates which pool method the block starts with, so the same target can be re-padded
+	 * differently for a sensitivity check.
 	 */
 	static String sterileFiller(int targetChars, int seed) {
 		if (targetChars <= 0) {
@@ -206,6 +207,12 @@ final class CodePromptControl {
 			}
 		}
 
-		return sb.substring(0, cut).stripTrailing();
+		StringBuilder out = new StringBuilder(sb.substring(0, cut));
+
+		while (out.length() < targetChars) {
+			out.append(' ');
+		}
+
+		return out.toString();
 	}
 }
