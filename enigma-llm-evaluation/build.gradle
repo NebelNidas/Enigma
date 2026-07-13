@@ -467,6 +467,49 @@ tasks.register('runCodexPromptBatch', Exec) {
 	}
 }
 
+tasks.register('runFablePromptBatch', Exec) {
+	group = 'verification'
+	description = 'Runs dumped prompt JSONL batches through the Claude/Fable CLI in a resumable, auditable layout.'
+	if (!project.hasProperty('fablePromptRoot')) {
+		dependsOn 'prepareCodexPromptBatches'
+	}
+
+	def promptRootArg = file(project.findProperty('fablePromptRoot') ?: "${project.buildDir}/llm-evaluation/prompt-batches")
+	def outArg = file(project.findProperty('fableOut') ?: "${project.buildDir}/llm-evaluation/fable-prompt-batch")
+	def scriptArg = file("${project.projectDir}/evaluation/run_fable_prompt_batch.py")
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+
+	commandLine pythonArg,
+			scriptArg.path,
+			'--prompt-root', promptRootArg.path,
+			'--out', outArg.path,
+			'--model', (project.findProperty('fableModel') ?: 'fable').toString(),
+			'--effort', (project.findProperty('fableEffort') ?: 'high').toString(),
+			'--datasets', (project.findProperty('fableDatasets') ?: 'obscure=batch,mc=mc_batch').toString(),
+			'--arms', (project.findProperty('fableArms') ?: 'M,MC,MPP').toString(),
+			'--tracks', (project.findProperty('fableTracks') ?: 'realistic').toString(),
+			'--kinds', (project.findProperty('fableKinds') ?: 'METHOD').toString(),
+			'--parallel', (project.findProperty('fableParallel') ?: '5').toString(),
+			'--limit', (project.findProperty('fableLimit') ?: '0').toString(),
+			'--timeout-seconds', (project.findProperty('fableTimeoutSeconds') ?: '420').toString()
+
+	if (project.hasProperty('fableNeutralCwd')) {
+		args '--neutral-cwd', file(project.property('fableNeutralCwd')).path
+	}
+	if (project.hasProperty('fableDisallowedTools')) {
+		args '--disallowed-tools', project.property('fableDisallowedTools').toString()
+	}
+	if (project.hasProperty('fableRetryFailed') && project.property('fableRetryFailed').toString().toBoolean()) {
+		args '--retry-failed'
+	}
+	if (project.hasProperty('fableAllowLegacyResume') && project.property('fableAllowLegacyResume').toString().toBoolean()) {
+		args '--allow-legacy-resume'
+	}
+	if (project.hasProperty('fableDryRun') && project.property('fableDryRun').toString().toBoolean()) {
+		args '--dry-run'
+	}
+}
+
 tasks.register('scoreCodexPromptBatch', Exec) {
 	group = 'verification'
 	description = 'Scores runCodexPromptBatch output directories with exact/normalized/usable and latency summaries.'
@@ -478,13 +521,39 @@ tasks.register('scoreCodexPromptBatch', Exec) {
 	commandLine pythonArg, scriptArg.path, outArg.path
 }
 
+tasks.register('scoreFrontierRuns', Exec) {
+	group = 'verification'
+	description = 'Scores paired Fable/Sol M/M+C/M++ frontier output directories and prepares semantic-judge candidates.'
+
+	def fableOutArg = file(project.findProperty('frontierFableOut') ?: "${project.buildDir}/llm-evaluation/fable-prompt-batch")
+	def solOutArg = file(project.findProperty('frontierSolOut') ?: "${project.buildDir}/llm-evaluation/codex-prompt-batch")
+	def scoreOutArg = file(project.findProperty('frontierScoreOut') ?: "${project.buildDir}/llm-evaluation/frontier-scores")
+	def promptRootArg = project.hasProperty('frontierPromptRoot') ? file(project.property('frontierPromptRoot')) : null
+	def scriptArg = file("${project.projectDir}/evaluation/score_frontier_runs.py")
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+
+	commandLine pythonArg,
+				scriptArg.path,
+				'--fable-out', fableOutArg.path,
+				'--sol-out', solOutArg.path,
+				'--out', scoreOutArg.path,
+				'--datasets', (project.findProperty('frontierDatasets') ?: 'obscure=batch,mc=mc_batch').toString(),
+				'--tracks', (project.findProperty('frontierTracks') ?: 'realistic').toString(),
+				'--kinds', (project.findProperty('frontierKinds') ?: 'METHOD').toString()
+	if (promptRootArg != null) {
+		args '--prompt-root', promptRootArg.path
+	}
+}
+
 def evaluationPythonScripts = [
 		file("${project.projectDir}/evaluation/aggregate_results.py"),
 		file("${project.projectDir}/evaluation/analyze_backend_matrix.py"),
 		file("${project.projectDir}/evaluation/prepare_codex_prompt_batches.py"),
 		file("${project.projectDir}/evaluation/write_evaluation_reports.py"),
 		file("${project.projectDir}/evaluation/run_codex_prompt_batch.py"),
+		file("${project.projectDir}/evaluation/run_fable_prompt_batch.py"),
 		file("${project.projectDir}/evaluation/score_prompt_batch.py"),
+		file("${project.projectDir}/evaluation/score_frontier_runs.py"),
 		file("${project.projectDir}/evaluation/semantic-judge/agg.py"),
 		file("${project.projectDir}/evaluation/semantic-judge/agg_v2.py"),
 		file("${project.projectDir}/evaluation/semantic-judge/ablfull_combine.py"),

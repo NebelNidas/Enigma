@@ -97,6 +97,27 @@ The default run consumes `obscure=batch,mc=mc_batch`, arms `M,MC,MPP`, track
 `build/llm-evaluation/codex-prompt-batch/`. Each record includes `latencyMs`,
 measured around the `codex exec` subprocess, so it includes CLI overhead.
 
+Run the matching Fable batch through the Claude CLI only when Anthropic/Fable
+budget is available:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-evaluation:runFablePromptBatch \
+  -PfableEffort=high \
+  -PfableParallel=5
+```
+
+Dry-run first with `-PfableDryRun=true`. The task consumes the same prompt-root
+layout as `runCodexPromptBatch` and writes the same per-arm JSON record shape
+under `build/llm-evaluation/fable-prompt-batch/` by default. Real runs write a
+`run_manifest.json`; a later resume refuses to continue if the model, effort,
+dataset, arm, track, kind, or prompt-root config changed. Existing failed or
+unparsed records are preserved by default; pass `-PfableRetryFailed=true` only
+when deliberately spending budget to retry them. Historical output directories
+without a manifest require `-PfableAllowLegacyResume=true`.
+
 Score the saved outputs:
 
 ```sh
@@ -105,6 +126,27 @@ PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
 GRADLE_USER_HOME="$PWD/.gradle" \
 ./gradlew :enigma-llm-evaluation:scoreCodexPromptBatch
 ```
+
+For the paired frontier comparison between Fable and Sol, use:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-evaluation:scoreFrontierRuns \
+  -PfrontierFableOut=build/llm-evaluation/fable-prompt-batch \
+  -PfrontierSolOut=build/llm-evaluation/codex-prompt-batch \
+  -PfrontierPromptRoot=build/llm-evaluation/prompt-batches \
+  -PfrontierDatasets=obscure=batch,mc=mc_batch \
+  -PfrontierTracks=realistic \
+  -PfrontierKinds=METHOD
+```
+
+This writes `score_fable_high.txt`, `score_gpt_sol.txt`,
+`paired_fable_vs_sol.txt`, and, when `frontierPromptRoot` is provided, the
+semantic-judge candidate JSONL files under
+`build/llm-evaluation/frontier-scores/` by default. Use
+`-PfrontierScoreOut=...` to write a different report directory.
 
 Useful overrides: `-PcodexPromptRoot=...`, `-PcodexOut=...`,
 `-PcodexDatasets=obscure=batch,mc=mc_batch`, `-PcodexTracks=realistic`,
