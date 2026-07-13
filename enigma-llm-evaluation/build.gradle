@@ -295,32 +295,49 @@ def containsCodexModelOutputs = { File dir ->
 		def iterator = stream.iterator()
 		while (!found && iterator.hasNext()) {
 			def path = iterator.next()
-			if (!java.nio.file.Files.isRegularFile(path) || !path.fileName.toString().endsWith('.json')) {
+			// Benchmark/model outputs are *.jsonl (one JSON row per line); prompt dumps are *.json. Recognize
+			// both so the delete guard cannot silently wipe an expensive *-benchmark.jsonl run.
+			def fileName = path.fileName.toString()
+			if (!java.nio.file.Files.isRegularFile(path) || !(fileName.endsWith('.json') || fileName.endsWith('.jsonl'))) {
 				continue
 			}
-			String text = java.nio.file.Files.readString(path)
-			found = text.contains('"requestedModel"') || text.contains('"latencyMs"') ||
-					(text.contains('"ok"') && text.contains('"suggestedName"'))
+			// Scan line-by-line with bounded memory: benchmark *.jsonl outputs hold one JSON row per line and can
+			// be tens of MB, so readString would OOM the build. A real model run is identified by
+			// "attempted":true -- structural prompt dumps (no endpoint) are all attempted:false, so they stay
+			// deletable even though they share the harness row schema (latencyMs etc.). Commercial outputs also
+			// carry requestedModel; the Fable/GPT drivers write ok + suggestedName. Break on the first hit.
+			java.nio.file.Files.newBufferedReader(path, java.nio.charset.StandardCharsets.UTF_8).withCloseable { reader ->
+				String line
+				while (!found && (line = reader.readLine()) != null) {
+					found = line.contains('"attempted":true') || line.contains('"requestedModel"') ||
+							(line.contains('"ok"') && line.contains('"suggestedName"'))
+				}
+			}
 		}
 	}
 	return found
 }
 
+// Capture project-derived values at configuration time so the delete guard (invoked from task doFirst)
+// never touches the Gradle `project` object at execution time, which the configuration cache forbids.
+File codexBuildEvalDir = file("${project.buildDir}/llm-evaluation").canonicalFile
+boolean codexDeleteModelOutputsAllowed = project.hasProperty('codexPromptDeleteModelOutputs')
+boolean codexOverwriteUnmarkedAllowed = project.hasProperty('codexPromptOverwriteUnmarked')
+
 def resetCodexGeneratedDir = { File dir, String label ->
 	File target = dir.canonicalFile
-	File buildEval = file("${project.buildDir}/llm-evaluation").canonicalFile
-	boolean underBuildEval = target.path == buildEval.path || target.path.startsWith(buildEval.path + File.separator)
+	boolean underBuildEval = target.path == codexBuildEvalDir.path || target.path.startsWith(codexBuildEvalDir.path + File.separator)
 	File marker = new File(target, codexPromptPrepMarker)
 	if (target.exists()) {
-		if (containsCodexModelOutputs(target) && !project.hasProperty('codexPromptDeleteModelOutputs')) {
+		if (containsCodexModelOutputs(target) && !codexDeleteModelOutputsAllowed) {
 			throw new GradleException("Refusing to delete ${label} at ${target}: it appears to contain Codex model outputs. " +
 					"Move them, choose another output directory, or pass -PcodexPromptDeleteModelOutputs=true if this is intentional.")
 		}
-		if (!underBuildEval && !marker.exists() && !project.hasProperty('codexPromptOverwriteUnmarked')) {
+		if (!underBuildEval && !marker.exists() && !codexOverwriteUnmarkedAllowed) {
 			throw new GradleException("Refusing to delete unmarked ${label} outside build/llm-evaluation: ${target}. " +
 					"Use a fresh directory or pass -PcodexPromptOverwriteUnmarked=true after checking its contents.")
 		}
-		project.delete(target)
+		target.deleteDir()
 	}
 	target.mkdirs()
 	marker.text = "Owned by prepareCodexPromptBatches; safe to regenerate prompt dumps/batches here.\n"

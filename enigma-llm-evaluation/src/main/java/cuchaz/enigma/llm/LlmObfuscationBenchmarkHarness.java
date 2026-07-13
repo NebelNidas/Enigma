@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -326,7 +327,12 @@ public final class LlmObfuscationBenchmarkHarness {
 				retryTargets.sort(SAMPLE_ORDER);
 			}
 
-			try (BufferedWriter writer = Files.newBufferedWriter(unit.resultsFile(), StandardCharsets.UTF_8)) {
+			// Write to a sibling .partial file and atomically promote it only after the whole unit finishes, so an
+			// interrupted or failed re-run can never truncate a previously complete result file.
+			Path resultsFile = unit.resultsFile();
+			Path partialFile = resultsFile.resolveSibling(resultsFile.getFileName().toString() + ".partial");
+
+			try (BufferedWriter writer = Files.newBufferedWriter(partialFile, StandardCharsets.UTF_8)) {
 				if (retryTargets != null) {
 					// Targeted re-run: score ONLY the manifest symbols, in the deterministic SAMPLE_ORDER,
 					// keeping each symbol's real bucket for the summary.
@@ -360,6 +366,8 @@ public final class LlmObfuscationBenchmarkHarness {
 				}
 			}
 
+			promoteAtomically(partialFile, resultsFile);
+
 			// The leak audit is a full-population diagnostic; it is meaningless for a targeted retry subset, so
 			// skip it in retry mode (the merge never consumes leaks files anyway).
 			if (retryKeys == null) {
@@ -371,6 +379,13 @@ public final class LlmObfuscationBenchmarkHarness {
 		} finally {
 			closeQuietly(unit.codeProvider());
 		}
+	}
+
+	private static void promoteAtomically(Path partial, Path target) throws IOException {
+		// Atomic move only. If the target filesystem cannot do it, fail and leave the prior complete result (and
+		// the .partial) untouched rather than risk a non-atomic replace that could drop it:
+		// AtomicMoveNotSupportedException propagates, so an interrupted run never truncates a good result file.
+		Files.move(partial, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
 	}
 
 	private static void closeQuietly(AutoCloseable closeable) {
@@ -597,12 +612,13 @@ public final class LlmObfuscationBenchmarkHarness {
 			return null;
 		}
 
-		// M++ token-volume control: replace the real body with a sterile block of the SAME character length.
-		// Keyed on the real body's length so M++ pairs one-to-one with M+C (same targets, same length), but the
-		// block carries no code content of the target. Emitted only here, so a target the code arm skipped
-		// (no body) is skipped by the control arm too.
+		// M++ token-volume control: replace the real body with a sterile block matched so the FULL appended
+		// block (header + body) equals the M+C block character-for-character. The padding header is shorter
+		// than the code header, so the filler body absorbs that deficit. Emitted only here, so a
+		// target the code arm skipped (no body) is skipped by the control arm too.
 		if (CODE_CONTROL) {
-			return CodePromptControl.sterileFiller(normalized.length(), CODE_CONTROL_SEED);
+			int fillerChars = normalized.length() + LlmPromptBuilder.lengthControlHeaderDeficit();
+			return CodePromptControl.sterileFiller(fillerChars, CODE_CONTROL_SEED);
 		}
 
 		return normalized;

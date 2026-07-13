@@ -99,6 +99,26 @@ class LlmPromptBuilder {
 		return build(key, project, index, LlmContextBackend.OWNER);
 	}
 
+	static final String CODE_SECTION_HEADER = """
+
+			Decompiled body of the target method (identifiers are the same obfuscated names; local variable \
+			names such as local1 or capture0 are decompiler placeholders, not meaningful):
+			""";
+	static final String LENGTH_CONTROL_HEADER = """
+
+			Length-control padding below (unrelated boilerplate included only to match prompt length; \
+			it is NOT the target method's code and must be ignored when choosing the name):
+			""";
+
+	/**
+	 * Extra filler characters the M++ length-control body needs so the full appended block (header + body)
+	 * matches the M+C block exactly: the padding header is 5 chars shorter than the code header, so without
+	 * this compensation the token-volume control would be 5 chars short of the code arm.
+	 */
+	static int lengthControlHeaderDeficit() {
+		return CODE_SECTION_HEADER.length() - LENGTH_CONTROL_HEADER.length();
+	}
+
 	private static void appendCodeSection(StringBuilder prompt, String codeSection, boolean lengthControlPadding) {
 		if (codeSection == null || codeSection.isBlank()) {
 			return;
@@ -108,11 +128,9 @@ class LlmPromptBuilder {
 			// Token-volume control (M++): the block is unrelated sterile boilerplate, length-matched to the real
 			// body, and explicitly disclaimed so the model does not read it as the target's code (which would be a
 			// metadata-vs-body contradiction rather than a neutral length control).
-			prompt.append("\nLength-control padding below (unrelated boilerplate included only to match prompt length; ")
-					.append("it is NOT the target method's code and must be ignored when choosing the name):\n");
+			prompt.append(LENGTH_CONTROL_HEADER);
 		} else {
-			prompt.append("\nDecompiled body of the target method (identifiers are the same obfuscated names; local variable ")
-					.append("names such as local1 or capture0 are decompiler placeholders, not meaningful):\n");
+			prompt.append(CODE_SECTION_HEADER);
 		}
 
 		prompt.append(codeSection).append('\n');
