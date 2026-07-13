@@ -577,9 +577,30 @@ tasks.register('runFrontierSemanticJudge', Exec) {
 	}
 }
 
+tasks.register('compareFrontierSemanticJudges', Exec) {
+	group = 'verification'
+	description = 'Compares two frontier semantic-judge verdict files by judge_id.'
+
+	def scoreOutArg = file(project.findProperty('frontierScoreOut') ?: "${project.buildDir}/llm-evaluation/frontier-scores")
+	def leftArg = file(project.findProperty('frontierJudgeLeft') ?: "${scoreOutArg.path}/semantic_judge_codex_gpt-5.5_high.json")
+	def rightArg = file(project.findProperty('frontierJudgeRight') ?: "${scoreOutArg.path}/semantic_judge_codex_gpt-5.6-sol_high.json.partial")
+	def outArg = file(project.findProperty('frontierJudgeComparisonOut') ?: "${scoreOutArg.path}/semantic_judge_gpt55_vs_sol_high.txt")
+	def scriptArg = file("${project.projectDir}/evaluation/compare_frontier_semantic_judges.py")
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+
+	commandLine pythonArg,
+			scriptArg.path,
+			'--left', leftArg.path,
+			'--right', rightArg.path,
+			'--left-label', (project.findProperty('frontierJudgeLeftLabel') ?: 'gpt-5.5-high').toString(),
+			'--right-label', (project.findProperty('frontierJudgeRightLabel') ?: 'gpt-5.6-sol-high').toString(),
+			'--out', outArg.path
+}
+
 def evaluationPythonScripts = [
 		file("${project.projectDir}/evaluation/aggregate_results.py"),
 		file("${project.projectDir}/evaluation/analyze_backend_matrix.py"),
+		file("${project.projectDir}/evaluation/compare_frontier_semantic_judges.py"),
 		file("${project.projectDir}/evaluation/prepare_codex_prompt_batches.py"),
 		file("${project.projectDir}/evaluation/write_evaluation_reports.py"),
 		file("${project.projectDir}/evaluation/run_codex_prompt_batch.py"),

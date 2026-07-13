@@ -170,6 +170,22 @@ runs (`gpt-5.5` high via Codex CLI). Dry-run first with
 Useful cost controls: `-PfrontierJudgeLimit=16`,
 `-PfrontierJudgeBatchSize=8`, and `-PfrontierJudgeTimeoutSeconds=600`.
 
+If a secondary judge run exists, compare judge stability without additional
+model calls:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-evaluation:compareFrontierSemanticJudges \
+  -PfrontierScoreOut=build/llm-evaluation/frontier-scores
+```
+
+By default this compares the primary `gpt-5.5` high result against the saved
+`gpt-5.6-sol` high partial, if both files are present. Override with
+`-PfrontierJudgeLeft=...`, `-PfrontierJudgeRight=...`, and
+`-PfrontierJudgeComparisonOut=...`.
+
 Useful overrides: `-PcodexPromptRoot=...`, `-PcodexOut=...`,
 `-PcodexDatasets=obscure=batch,mc=mc_batch`, `-PcodexTracks=realistic`,
 `-PcodexKinds=METHOD`, `-PcodexLimit=10`, `-PcodexTimeoutSeconds=420`, and
