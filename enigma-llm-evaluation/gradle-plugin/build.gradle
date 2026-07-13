@@ -13,9 +13,6 @@ repositories {
 dependencies {
 	implementation gradleApi()
 	implementation 'com.google.code.gson:gson:2.11.0'
-	implementation('net.fabricmc:fabric-loom:1.6.12') {
-		transitive = false
-	}
 }
 
 java {
