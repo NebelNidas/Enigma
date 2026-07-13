@@ -73,10 +73,13 @@ class LlmNameValidator {
 			return false;
 		}
 
+		// Underscores are not camelCase, so they are still rejected. Embedded acronyms (consecutive
+		// uppercase, e.g. getURL / verifyCRC32) are ACCEPTED: the JDK and much real code use them, the
+		// benchmark's normalizer already treats them as equivalent to word-cased forms, and hard-rejecting
+		// them only discards otherwise-valid suggestions. Preferring acronyms-as-words is a soft prompt
+		// guideline, not a validity rule.
 		for (int i = 1; i < name.length(); i++) {
-			char c = name.charAt(i);
-
-			if (c == '_' || Character.isUpperCase(c) && i + 1 < name.length() && Character.isUpperCase(name.charAt(i + 1))) {
+			if (name.charAt(i) == '_') {
 				return false;
 			}
 		}
