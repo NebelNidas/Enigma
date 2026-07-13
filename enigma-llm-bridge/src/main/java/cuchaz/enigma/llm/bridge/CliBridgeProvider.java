@@ -119,6 +119,15 @@ final class CliBridgeProvider implements BridgeProvider {
 			extra.add(prompt);
 			return concat(this.codexCommand, extra);
 		}
+		case "gemini" -> {
+			// Google Antigravity CLI ("agy"), successor to the Gemini CLI. The reasoning effort is baked
+			// into the model id itself (e.g. "Gemini 3.1 Pro (High)"), so the effort segment is unused here.
+			extra.add("--model");
+			extra.add(modelId);
+			extra.add("-p");
+			extra.add(prompt);
+			return concat(List.of("agy"), extra);
+		}
 		default -> throw new IllegalArgumentException("cli provider: unknown vendor '" + vendor + "'");
 		}
 	}
