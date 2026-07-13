@@ -51,6 +51,21 @@ dependencies {
 	minecraftYarnMappings "net.fabricmc:yarn:${yarnMappingsVersion}:v2"
 }
 
+// The root build applies maven-publish to every subproject. This project is a local
+// benchmark harness with unpublished evaluation artifacts, so keep publication disabled
+// even though the plugin-created lifecycle tasks still exist.
+tasks.withType(org.gradle.api.publish.maven.tasks.PublishToMavenRepository).configureEach {
+	enabled = false
+}
+tasks.withType(org.gradle.api.publish.maven.tasks.PublishToMavenLocal).configureEach {
+	enabled = false
+}
+tasks.matching {
+	it.name in ['publish', 'publishToMavenLocal', 'publishAllPublicationsToMavenLocalRepository']
+}.configureEach {
+	enabled = false
+}
+
 // Ground-truth OSS corpus for the Hybrid 1.1 deobfuscation round-trip benchmark.
 // The jars ship real, human-authored names; the obfuscation pipeline renames them to
 // opaque tokens and the LLM is scored on how well it recovers the originals. Jars are
