@@ -8,6 +8,7 @@ uses a resumable partial verdict map. It never calls Anthropic/Fable.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -307,6 +308,7 @@ def main() -> None:
     if args.dry_run:
         return
 
+    stubborn: list[int] = []
     for index in range(0, len(pending), args.batch_size):
         batch_ids = pending[index:index + args.batch_size]
         batch_verdicts, meta = judge_batch(args, by_id, batch_ids)
@@ -315,10 +317,28 @@ def main() -> None:
         if batch_verdicts:
             atomic_write(partial, json.dumps({str(key): value for key, value in sorted(verdicts.items())}, indent=2, sort_keys=True) + "\n")
         if len(batch_verdicts) != len(batch_ids):
+            # Grok occasionally returns no parseable verdict for a specific item even in the
+            # single-item fallback. Do not throw away the whole run: defer these to a final
+            # reconciliation pass so the ~90 min of completed work is never lost.
             missing = sorted(set(batch_ids) - set(batch_verdicts))
-            raise RuntimeError(f"Judge returned {len(batch_verdicts)}/{len(batch_ids)} verdicts; missing {missing[:5]}; meta={meta}")
-        atomic_write(partial, json.dumps({str(key): value for key, value in sorted(verdicts.items())}, indent=2, sort_keys=True) + "\n")
+            stubborn.extend(missing)
+            print(f"  grok deferred {len(missing)} unparseable item(s) {missing[:5]}; meta={meta}", flush=True)
         print(f"  grok judged {len(verdicts)}/{len(items)}; lastLatencyMs={meta['latencyMs']}", flush=True)
+
+    # Reconciliation: retry each stubborn item on its own with extra attempts before giving up.
+    stubborn = sorted({item_id for item_id in stubborn if item_id not in verdicts})
+    if stubborn:
+        print(f"grok reconciliation pass for {len(stubborn)} item(s): {stubborn[:10]}", flush=True)
+        reconcile_args = copy.copy(args)
+        reconcile_args.retries = max(args.retries, 3)
+        for item_id in stubborn:
+            single_verdicts, single_meta = judge_batch(reconcile_args, by_id, [item_id])
+            if item_id in single_verdicts:
+                verdicts[item_id] = single_verdicts[item_id]
+            else:
+                verdicts[item_id] = {"verdict": "MISSING", "reason": "grok-no-parseable-verdict"}
+                print(f"  grok gave up on item {item_id}; recorded MISSING; meta={single_meta}", flush=True)
+            atomic_write(partial, json.dumps({str(key): value for key, value in sorted(verdicts.items())}, indent=2, sort_keys=True) + "\n")
 
     rows = final_rows(items, verdicts, args)
     atomic_write(output, json.dumps(rows, indent=2, sort_keys=True) + "\n")
