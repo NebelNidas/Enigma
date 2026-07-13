@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class CodePromptNormalizer {
-
 	public enum Track {
 		REALISTIC, STRUCTURE_ONLY
 	}
@@ -51,10 +50,12 @@ public final class CodePromptNormalizer {
 					if (c == '\\') {
 						if (track != Track.STRUCTURE_ONLY) {
 							sb.append('\\');
+
 							if (i + 1 < len) {
 								sb.append(rawMethodSource.charAt(i + 1));
 							}
 						}
+
 						i += 2; // skip the escaped char
 					} else if (c == '"') {
 						state = 0;
@@ -64,14 +65,17 @@ public final class CodePromptNormalizer {
 						if (track != Track.STRUCTURE_ONLY) {
 							sb.append(c);
 						}
+
 						i++;
 					}
 				} else if (state == 2) { // CHAR
 					if (c == '\\') {
 						sb.append('\\');
+
 						if (i + 1 < len) {
 							sb.append(rawMethodSource.charAt(i + 1));
 						}
+
 						i += 2;
 					} else if (c == '\'') {
 						state = 0;
@@ -97,6 +101,7 @@ public final class CodePromptNormalizer {
 						if (c == '\n') {
 							sb.append('\n');
 						}
+
 						i++;
 					}
 				}
@@ -110,24 +115,29 @@ public final class CodePromptNormalizer {
 		try {
 			// 2. Strip package and imports
 			StringBuilder lines = new StringBuilder();
+
 			for (String line : text.split("\n", -1)) {
 				String t = line.trim();
+
 				if (t.startsWith("package ") || t.startsWith("import ")) {
 					continue;
 				}
+
 				lines.append(line).append('\n');
 			}
+
 			text = lines.toString();
 
 			// 3. Strip class wrapper if present
 			String trimmed = text.trim();
 			Matcher classMatcher = Pattern.compile(
-				"^(?:@[A-Za-z0-9_.$]+\\s*(?:\\([^)]*\\))?\\s*)*(?:(?:public|private|protected|static|final|abstract|strictfp)\\s+)*(?:class|enum|interface|record)\\b"
+					"^(?:@[A-Za-z0-9_.$]+\\s*(?:\\([^)]*\\))?\\s*)*(?:(?:public|private|protected|static|final|abstract|strictfp)\\s+)*(?:class|enum|interface|record)\\b"
 			).matcher(trimmed);
-			
+
 			if (classMatcher.find()) {
 				int firstBrace = text.indexOf('{');
 				int lastBrace = text.lastIndexOf('}');
+
 				if (firstBrace != -1 && lastBrace > firstBrace) {
 					text = text.substring(firstBrace + 1, lastBrace);
 				}
@@ -196,11 +206,14 @@ public final class CodePromptNormalizer {
 			String[] textLines = text.split("\n", -1);
 			StringBuilder finalOut = new StringBuilder();
 			int blankCount = 0;
+
 			for (String line : textLines) {
 				int end = line.length();
+
 				while (end > 0 && Character.isWhitespace(line.charAt(end - 1))) {
 					end--;
 				}
+
 				line = line.substring(0, end);
 
 				if (line.isEmpty()) {
@@ -209,6 +222,7 @@ public final class CodePromptNormalizer {
 					if (blankCount > 0 && finalOut.length() > 0) {
 						finalOut.append("\n");
 					}
+
 					finalOut.append(line).append("\n");
 					blankCount = 0;
 				}

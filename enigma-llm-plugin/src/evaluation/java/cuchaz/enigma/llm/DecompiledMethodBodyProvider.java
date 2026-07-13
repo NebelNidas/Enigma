@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.objectweb.asm.Type;
+
 import cuchaz.enigma.classprovider.CachingClassProvider;
 import cuchaz.enigma.classprovider.ClassProvider;
 import cuchaz.enigma.classprovider.JarClassProvider;
@@ -13,7 +15,6 @@ import cuchaz.enigma.source.Decompiler;
 import cuchaz.enigma.source.Decompilers;
 import cuchaz.enigma.source.Source;
 import cuchaz.enigma.source.SourceSettings;
-import org.objectweb.asm.Type;
 
 /**
  * Decompiles classes of an <em>obfuscated</em> corpus jar with Vineflower (Enigma's default decompiler,

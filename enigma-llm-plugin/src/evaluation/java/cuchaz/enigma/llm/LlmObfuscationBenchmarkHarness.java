@@ -293,81 +293,81 @@ public final class LlmObfuscationBenchmarkHarness {
 		JarReport report = new JarReport(unit.base());
 
 		try {
-		// Retry mode: resolve THIS unit's manifest targets up front. Skip units with none (no empty result
-		// file, no leak audit), and fail loud if any manifest key does not resolve to a ground-truth symbol
-		// (the corpus changed since the run being retried), rather than silently scoring fewer rows.
-		List<GroundTruthSymbol> retryTargets = null;
+			// Retry mode: resolve THIS unit's manifest targets up front. Skip units with none (no empty result
+			// file, no leak audit), and fail loud if any manifest key does not resolve to a ground-truth symbol
+			// (the corpus changed since the run being retried), rather than silently scoring fewer rows.
+			List<GroundTruthSymbol> retryTargets = null;
 
-		if (retryKeys != null) {
-			Set<String> wanted = retryKeys.getOrDefault(unit.base() + "::" + unit.track().label(), Set.of());
+			if (retryKeys != null) {
+				Set<String> wanted = retryKeys.getOrDefault(unit.base() + "::" + unit.track().label(), Set.of());
 
-			if (wanted.isEmpty()) {
-				return report;
-			}
-
-			retryTargets = new ArrayList<>();
-			Set<String> matched = new HashSet<>();
-
-			for (GroundTruthSymbol symbol : unit.symbols()) {
-				if (wanted.contains(symbolKey(symbol))) {
-					retryTargets.add(symbol);
-					matched.add(symbolKey(symbol));
+				if (wanted.isEmpty()) {
+					return report;
 				}
-			}
 
-			if (!matched.containsAll(wanted)) {
-				Set<String> unresolved = new HashSet<>(wanted);
-				unresolved.removeAll(matched);
-				throw new IllegalStateException("retry manifest has " + unresolved.size()
-						+ " key(s) with no ground-truth symbol in " + unit.base() + "::" + unit.track().label()
-						+ " (corpus changed?): " + unresolved);
-			}
-
-			retryTargets.sort(SAMPLE_ORDER);
-		}
-
-		try (BufferedWriter writer = Files.newBufferedWriter(unit.resultsFile(), StandardCharsets.UTF_8)) {
-			if (retryTargets != null) {
-				// Targeted re-run: score ONLY the manifest symbols, in the deterministic SAMPLE_ORDER,
-				// keeping each symbol's real bucket for the summary.
-				for (GroundTruthSymbol symbol : retryTargets) {
-					TargetScore score = scoreTarget(unit.engine(), unit.codeProvider(), unit.track(), config,
-							unit.project(), unit.plugin().getIndex(), symbol, online);
-					report.add(score, bucketFor(symbol));
-					writer.write(score.toJson().toString());
-					writer.write('\n');
-				}
-			} else {
-				Map<Bucket, List<GroundTruthSymbol>> buckets = new EnumMap<>(Bucket.class);
-
-				for (Bucket bucket : Bucket.values()) {
-					buckets.put(bucket, new ArrayList<>());
-				}
+				retryTargets = new ArrayList<>();
+				Set<String> matched = new HashSet<>();
 
 				for (GroundTruthSymbol symbol : unit.symbols()) {
-					buckets.get(bucketFor(symbol)).add(symbol);
+					if (wanted.contains(symbolKey(symbol))) {
+						retryTargets.add(symbol);
+						matched.add(symbolKey(symbol));
+					}
 				}
 
-				for (Bucket bucket : Bucket.values()) {
-					for (GroundTruthSymbol symbol : sample(unit.base(), bucket, buckets.get(bucket))) {
+				if (!matched.containsAll(wanted)) {
+					Set<String> unresolved = new HashSet<>(wanted);
+					unresolved.removeAll(matched);
+					throw new IllegalStateException("retry manifest has " + unresolved.size()
+							+ " key(s) with no ground-truth symbol in " + unit.base() + "::" + unit.track().label()
+							+ " (corpus changed?): " + unresolved);
+				}
+
+				retryTargets.sort(SAMPLE_ORDER);
+			}
+
+			try (BufferedWriter writer = Files.newBufferedWriter(unit.resultsFile(), StandardCharsets.UTF_8)) {
+				if (retryTargets != null) {
+					// Targeted re-run: score ONLY the manifest symbols, in the deterministic SAMPLE_ORDER,
+					// keeping each symbol's real bucket for the summary.
+					for (GroundTruthSymbol symbol : retryTargets) {
 						TargetScore score = scoreTarget(unit.engine(), unit.codeProvider(), unit.track(), config,
 								unit.project(), unit.plugin().getIndex(), symbol, online);
-						report.add(score, bucket);
+						report.add(score, bucketFor(symbol));
 						writer.write(score.toJson().toString());
 						writer.write('\n');
 					}
+				} else {
+					Map<Bucket, List<GroundTruthSymbol>> buckets = new EnumMap<>(Bucket.class);
+
+					for (Bucket bucket : Bucket.values()) {
+						buckets.put(bucket, new ArrayList<>());
+					}
+
+					for (GroundTruthSymbol symbol : unit.symbols()) {
+						buckets.get(bucketFor(symbol)).add(symbol);
+					}
+
+					for (Bucket bucket : Bucket.values()) {
+						for (GroundTruthSymbol symbol : sample(unit.base(), bucket, buckets.get(bucket))) {
+							TargetScore score = scoreTarget(unit.engine(), unit.codeProvider(), unit.track(), config,
+									unit.project(), unit.plugin().getIndex(), symbol, online);
+							report.add(score, bucket);
+							writer.write(score.toJson().toString());
+							writer.write('\n');
+						}
+					}
 				}
 			}
-		}
 
-		// The leak audit is a full-population diagnostic; it is meaningless for a targeted retry subset, so
-		// skip it in retry mode (the merge never consumes leaks files anyway).
-		if (retryKeys == null) {
-			report.leaks = auditLeaks(unit.obfJar(), unit.symbols(), resultsDir, unit.base(), unit.track());
-		}
+			// The leak audit is a full-population diagnostic; it is meaningless for a targeted retry subset, so
+			// skip it in retry mode (the merge never consumes leaks files anyway).
+			if (retryKeys == null) {
+				report.leaks = auditLeaks(unit.obfJar(), unit.symbols(), resultsDir, unit.base(), unit.track());
+			}
 
-		System.out.println(report.line(online));
-		return report;
+			System.out.println(report.line(online));
+			return report;
 		} finally {
 			closeQuietly(unit.codeProvider());
 		}
