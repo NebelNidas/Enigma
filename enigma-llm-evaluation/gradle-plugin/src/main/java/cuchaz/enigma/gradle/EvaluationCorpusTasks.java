@@ -40,6 +40,7 @@ final class EvaluationCorpusTasks {
 		registerObfuscateCorpus(project);
 		registerPrepareMinecraftInputs(project, intermediaryMappings, yarnMappings);
 		registerBuildMinecraftCorpus(project);
+		registerBuildMinecraftFreshCorpus(project);
 	}
 
 	private static Configuration registerMappingConfiguration(Project project, String name) {
@@ -192,6 +193,104 @@ final class EvaluationCorpusTasks {
 					parchmentFile.getPath(),
 					output.getPath(),
 					property(project, "mcBase", "minecraft-" + minecraftVersion));
+		});
+	}
+
+	/**
+	 * The "fresh Minecraft" memorization-control corpus (post-cutoff classes). Modern Minecraft is shipped
+	 * de-obfuscated, so {@link cuchaz.enigma.llm.MinecraftFreshCorpusTool} obfuscates the official client jar
+	 * itself. Every input is downloaded by the task: the official client jar from Mojang, and the merged
+	 * ({@code official/intermediary/named}) tiny plus the baseline intermediary tiny from RelativityMC's
+	 * public codemc maven. No local RelativityMC build is required. Each path is overridable with a
+	 * {@code -P} property.
+	 */
+	private static void registerBuildMinecraftFreshCorpus(Project project) {
+		String version = property(project, "mcFreshVersion", "26.3-snapshot-3");
+		String baseline = property(project, "mcFreshBaselineVersion", "26.2");
+		String yarnVersion = property(project, "mcFreshYarnVersion", version + "+build.4");
+		// The baseline diff MUST come from the same artifact type as the current mappings (both merged
+		// yarn). The pure "intermediary" tiny omits non-obfuscated com/mojang/* classes (official ==
+		// intermediary), while the merged tiny lists them; mixing the two would flag long-existing classes
+		// like blaze3d/platform/GLX as "new" and pollute the memorization control. So both sides use
+		// modern-yarn:*:mergedv2.
+		String baselineYarnVersion = property(project, "mcFreshBaselineYarnVersion", baseline + "+build.1");
+
+		project.getRepositories().maven(repo -> {
+			repo.setName("RelativityMC");
+			repo.setUrl(project.uri("https://repo.codemc.io/repository/relativitymc/"));
+		});
+
+		Configuration mergedYarn = registerMappingConfiguration(project, "minecraftFreshMergedYarn");
+		Configuration baselineMerged = registerMappingConfiguration(project, "minecraftFreshBaselineMerged");
+		project.getDependencies().add("minecraftFreshMergedYarn", "org.relativitymc:modern-yarn:" + yarnVersion + ":mergedv2");
+		project.getDependencies().add("minecraftFreshBaselineMerged", "org.relativitymc:modern-yarn:" + baselineYarnVersion + ":mergedv2");
+
+		File inputDir = buildFile(project, "llm-evaluation/minecraft-fresh-inputs/" + version);
+		File versionManifest = new File(inputDir, "version_manifest_v2.json");
+		File versionJson = new File(inputDir, version + ".json");
+		File clientJar = new File(inputDir, "minecraft-" + version + "-client.jar");
+		File mergedTiny = new File(inputDir, "merged-" + version + ".tiny");
+		File baselineTiny = new File(inputDir, "merged-baseline-" + baseline + ".tiny");
+
+		TaskProvider<DownloadFileTask> manifestTask = project.getTasks()
+				.register("downloadMinecraftFreshVersionManifest", DownloadFileTask.class, task -> {
+					task.setGroup(VERIFICATION_GROUP);
+					task.setDescription("Downloads the Mojang version manifest for the fresh-MC benchmark.");
+					task.getUrl().set("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json");
+					task.getOutput().set(versionManifest);
+				});
+		TaskProvider<DownloadMinecraftVersionJsonTask> versionJsonTask = project.getTasks()
+				.register("downloadMinecraftFreshVersionJson", DownloadMinecraftVersionJsonTask.class, task -> {
+					task.setGroup(VERIFICATION_GROUP);
+					task.setDescription("Downloads the fresh Minecraft version metadata JSON.");
+					task.dependsOn(manifestTask);
+					task.getManifest().set(versionManifest);
+					task.getMinecraftVersion().set(version);
+					task.getOutput().set(versionJson);
+				});
+		TaskProvider<DownloadMinecraftAssetTask> clientTask = project.getTasks()
+				.register("downloadMinecraftFreshClientJar", DownloadMinecraftAssetTask.class, task -> {
+					task.setGroup(VERIFICATION_GROUP);
+					task.setDescription("Downloads the de-obfuscated fresh Minecraft client jar.");
+					task.dependsOn(versionJsonTask);
+					task.getVersionJson().set(versionJson);
+					task.getDownloadKey().set("client");
+					task.getOutput().set(clientJar);
+				});
+		TaskProvider<ExtractTinyMappingsTask> mergedTinyTask = project.getTasks()
+				.register("extractMinecraftFreshMergedTiny", ExtractTinyMappingsTask.class, task -> {
+					task.setGroup(VERIFICATION_GROUP);
+					task.setDescription("Extracts the merged official/intermediary/named tiny from the RelativityMC modern-yarn artifact.");
+					task.getInput().set(project.getLayout().file(project.provider(() -> singleResolvedFile(mergedYarn))));
+					task.getOutput().set(mergedTiny);
+				});
+		TaskProvider<ExtractTinyMappingsTask> baselineTinyTask = project.getTasks()
+				.register("extractMinecraftFreshBaselineTiny", ExtractTinyMappingsTask.class, task -> {
+					task.setGroup(VERIFICATION_GROUP);
+					task.setDescription("Extracts the baseline merged tiny (new-class diff) from the RelativityMC modern-yarn artifact.");
+					task.getInput().set(project.getLayout().file(project.provider(() -> singleResolvedFile(baselineMerged))));
+					task.getOutput().set(baselineTiny);
+				});
+
+		File officialJarArg = fileProperty(project, "mcFreshOfficialJar", clientJar);
+		File mergedTinyArg = fileProperty(project, "mcFreshMergedTiny", mergedTiny);
+		File baselineTinyArg = fileProperty(project, "mcFreshBaselineTiny", baselineTiny);
+		File output = fileProperty(project, "mcFreshOut", buildFile(project, "llm-evaluation/minecraft-fresh"));
+
+		project.getTasks().register("buildMinecraftFreshCorpus", JavaExec.class, task -> {
+			task.setGroup(VERIFICATION_GROUP);
+			task.setDescription("Builds the fresh-Minecraft memorization-control corpus (post-cutoff classes, locally obfuscated).");
+			task.dependsOn(clientTask, mergedTinyTask, baselineTinyTask);
+			task.setClasspath(mainRuntimeClasspath(project));
+			task.getMainClass().set("cuchaz.enigma.llm.MinecraftFreshCorpusTool");
+			task.getInputs().files(officialJarArg, mergedTinyArg, baselineTinyArg);
+			task.getOutputs().dir(output);
+			task.args(
+					officialJarArg.getPath(),
+					mergedTinyArg.getPath(),
+					baselineTinyArg.getPath(),
+					output.getPath(),
+					property(project, "mcFreshBase", "minecraft-" + version));
 		});
 	}
 
