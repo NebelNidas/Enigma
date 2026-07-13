@@ -2,11 +2,20 @@
 """Combine the three full-pool reference-ablation runs (grok/codex/claude) into one table:
 per-judge ACCEPT-plausible rate for main=ACCEPT vs main=REJECT, plus a majority-vote view."""
 import json
+import os
 from collections import Counter
 
-SP = "/tmp/claude-1000/-home-julian-Dev-Env-Digitalisierungskolleg/32e22798-6bde-488a-b047-83d0956e3383/scratchpad"
+SP = os.environ.get("JUDGE_DIR", os.path.dirname(os.path.abspath(__file__)))
 JUDGES = ["grok", "codex", "claude"]
-data = {j: json.load(open(f"{SP}/ablfull_{j}.json")) for j in JUDGES}
+grok_file = os.environ.get("ABLFULL_GROK_FILE")
+if grok_file is None:
+    rerun = os.path.join(SP, "ablfull_grok_rerun.json")
+    grok_file = rerun if os.path.exists(rerun) else os.path.join(SP, "ablfull_grok.json")
+data = {
+    "grok": json.load(open(grok_file)),
+    "codex": json.load(open(f"{SP}/ablfull_codex.json")),
+    "claude": json.load(open(f"{SP}/ablfull_claude.json")),
+}
 # index by (model,owner,obfName,suggested) which is unique per row
 key = lambda d: (d["model"], d["owner"], d["obfName"], d["suggested"], d["_verdict"])
 rows = {key(d): {"_verdict": d["_verdict"]} for d in data["grok"]}
@@ -15,6 +24,7 @@ for j in JUDGES:
         rows.setdefault(key(d), {"_verdict": d["_verdict"]})[j] = d["ablated"]
 
 print(f"n rows = {len(rows)}")
+print(f"grok source = {os.path.basename(grok_file)}")
 print(f"{'judge':8} {'ACCEPT plausible':>22} {'REJECT plausible':>22}")
 for j in JUDGES:
     acc = Counter(); rej = Counter()

@@ -6,7 +6,9 @@
 # exact recovery. Engine gate reviewed by Codex+Grok; default-off leaves product runs
 # unchanged. Hardened dir stash/restore (guards) like run-temp02-stability.sh.
 set -euo pipefail
-cd /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma || { echo "!! cd failed"; exit 1; }
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$REPO_ROOT" || { echo "!! cd failed"; exit 1; }
 BR=enigma-llm-plugin/build/llm-evaluation/benchmark
 SAFE=qwen2.5-coder-14b-instruct_q6_k
 MODEL=qwen2.5-coder-14b-instruct@q6_k

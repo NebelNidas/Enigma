@@ -2,11 +2,13 @@
 # 7B loop Teil B -- PROMPT_EXTENSION A/B on the DEV winner config (graph + conservative + cap16000).
 # Larger n (api=150/jar = 300 api) for signal, per Codex/Grok "n>=200-300, paired win/loss". temp=0.
 set -euo pipefail
-cd /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma
-B=/home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/build/llm-evaluation
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+cd "$REPO_ROOT"
+B="$REPO_ROOT/enigma-llm-plugin/build/llm-evaluation"
 DEV="$B/obfuscated-dev"
 OUT="$B/dev-ext"
-SP=/tmp/claude-1000/-home-julian-Dev-Env-Digitalisierungskolleg/32e22798-6bde-488a-b047-83d0956e3383/scratchpad
+SP="${SEVENB_PROMPT_EXTENSION_DIR:-$SCRIPT_DIR}"
 
 export ENIGMA_LLM_BASE_URL=http://127.0.0.1:1234/v1
 export ENIGMA_LLM_MODEL=qwen2.5-coder-7b-instruct

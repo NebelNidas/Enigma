@@ -277,9 +277,143 @@ tasks.register('benchmarkObfuscation', JavaExec) {
 	}
 }
 
+def codexPromptDumpRoot = file(project.findProperty('codexPromptDumpRoot') ?: "${project.buildDir}/llm-evaluation/codex-prompt-dumps")
+def codexPromptBatchRoot = file(project.findProperty('codexPromptBatchRoot') ?: "${project.buildDir}/llm-evaluation/prompt-batches")
+def codexPromptPrepMarker = '.codex-prompt-prep-owned'
+
+def containsCodexModelOutputs = { File dir ->
+	if (!dir.exists()) {
+		return false
+	}
+	def found = false
+	java.nio.file.Files.walk(dir.toPath()).withCloseable { stream ->
+		def iterator = stream.iterator()
+		while (!found && iterator.hasNext()) {
+			def path = iterator.next()
+			if (!java.nio.file.Files.isRegularFile(path) || !path.fileName.toString().endsWith('.json')) {
+				continue
+			}
+			String text = java.nio.file.Files.readString(path)
+			found = text.contains('"requestedModel"') || text.contains('"latencyMs"') ||
+					(text.contains('"ok"') && text.contains('"suggestedName"'))
+		}
+	}
+	return found
+}
+
+def resetCodexGeneratedDir = { File dir, String label ->
+	File target = dir.canonicalFile
+	File buildEval = file("${project.buildDir}/llm-evaluation").canonicalFile
+	boolean underBuildEval = target.path == buildEval.path || target.path.startsWith(buildEval.path + File.separator)
+	File marker = new File(target, codexPromptPrepMarker)
+	if (target.exists()) {
+		if (containsCodexModelOutputs(target) && !project.hasProperty('codexPromptDeleteModelOutputs')) {
+			throw new GradleException("Refusing to delete ${label} at ${target}: it appears to contain Codex model outputs. " +
+					"Move them, choose another output directory, or pass -PcodexPromptDeleteModelOutputs=true if this is intentional.")
+		}
+		if (!underBuildEval && !marker.exists() && !project.hasProperty('codexPromptOverwriteUnmarked')) {
+			throw new GradleException("Refusing to delete unmarked ${label} outside build/llm-evaluation: ${target}. " +
+					"Use a fresh directory or pass -PcodexPromptOverwriteUnmarked=true after checking its contents.")
+		}
+		project.delete(target)
+	}
+	target.mkdirs()
+	marker.text = "Owned by prepareCodexPromptBatches; safe to regenerate prompt dumps/batches here.\n"
+}
+
+def configureCodexPromptDump = { JavaExec task, File dumpDir, File resultsDir, boolean includeCode, String codeControl ->
+	task.outputs.dir(dumpDir)
+	task.outputs.dir(resultsDir)
+	task.doFirst {
+		resetCodexGeneratedDir(dumpDir, 'prompt dump directory')
+		resetCodexGeneratedDir(resultsDir, 'structural prompt-dump result directory')
+	}
+	task.environment 'ENIGMA_LLM_MODEL', ''
+	task.environment 'ENIGMA_LLM_DUMP_PROMPTS', dumpDir.path
+	if (includeCode) {
+		task.environment 'ENIGMA_LLM_BENCH_CODE', 'true'
+	}
+	if (codeControl != null) {
+		task.environment 'ENIGMA_LLM_BENCH_CODE_CONTROL', codeControl
+	}
+	if (project.hasProperty('maxPromptChars')) {
+		task.environment 'ENIGMA_LLM_MAX_PROMPT_CHARS', project.property('maxPromptChars')
+	}
+}
+
+[
+		[name: 'M', includeCode: false, codeControl: null],
+		[name: 'MC', includeCode: true, codeControl: null],
+		[name: 'MPP', includeCode: true, codeControl: 'sterile'],
+].each { arm ->
+	tasks.register("dumpCodexObscurePrompts${arm.name}", JavaExec) {
+		group = 'verification'
+		description = "Dumps offline obscure-corpus prompts for the Codex ${arm.name} arm."
+		dependsOn 'obfuscateCorpus'
+		classpath = sourceSets.evaluation.runtimeClasspath
+		mainClass = 'cuchaz.enigma.llm.LlmObfuscationBenchmarkHarness'
+
+		def dumpDir = new File(codexPromptDumpRoot, "obscure_${arm.name}")
+		def resultsDir = new File(codexPromptDumpRoot, "obscure_${arm.name}_structural")
+		args = [
+				file("${project.buildDir}/llm-evaluation/obfuscated").path,
+				resultsDir.path
+		]
+		configureCodexPromptDump(delegate, dumpDir, resultsDir, arm.includeCode, arm.codeControl)
+	}
+
+	tasks.register("dumpCodexMinecraftPrompts${arm.name}", JavaExec) {
+		group = 'verification'
+		description = "Dumps offline Minecraft prompts for the Codex ${arm.name} arm."
+		dependsOn 'buildMinecraftCorpus'
+		classpath = sourceSets.evaluation.runtimeClasspath
+		mainClass = 'cuchaz.enigma.llm.LlmObfuscationBenchmarkHarness'
+
+		def profile = (project.findProperty('mcProfile') ?: 'union').toString().toLowerCase(Locale.ROOT)
+		if (!['yarn', 'mojmap', 'union'].contains(profile)) {
+			throw new GradleException("mcProfile must be one of yarn, mojmap, union; got ${profile}")
+		}
+
+		def dumpDir = new File(codexPromptDumpRoot, "mc_${arm.name}")
+		def resultsDir = new File(codexPromptDumpRoot, "mc_${arm.name}_structural")
+		args = [
+				file("${project.buildDir}/llm-evaluation/minecraft/${profile}").path,
+				resultsDir.path
+		]
+		configureCodexPromptDump(delegate, dumpDir, resultsDir, arm.includeCode, arm.codeControl)
+	}
+}
+
+tasks.register('prepareCodexPromptBatches', Exec) {
+	group = 'verification'
+	description = 'Builds paired M/M+C/M++ prompt batches for Codex/Fable replay from offline benchmark dumps.'
+	dependsOn 'dumpCodexObscurePromptsM', 'dumpCodexObscurePromptsMC', 'dumpCodexObscurePromptsMPP',
+			'dumpCodexMinecraftPromptsM', 'dumpCodexMinecraftPromptsMC', 'dumpCodexMinecraftPromptsMPP'
+
+	def scriptArg = file("${project.projectDir}/evaluation/prepare_codex_prompt_batches.py")
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+
+	outputs.dir(codexPromptBatchRoot)
+	doFirst {
+		resetCodexGeneratedDir(codexPromptBatchRoot, 'filtered prompt batch directory')
+	}
+	commandLine pythonArg,
+			scriptArg.path,
+			'--out', codexPromptBatchRoot.path,
+			'--obscure-arm', "M=${new File(codexPromptDumpRoot, 'obscure_M').path}",
+			'--obscure-arm', "MC=${new File(codexPromptDumpRoot, 'obscure_MC').path}",
+			'--obscure-arm', "MPP=${new File(codexPromptDumpRoot, 'obscure_MPP').path}",
+			'--mc-arm', "M=${new File(codexPromptDumpRoot, 'mc_M').path}",
+			'--mc-arm', "MC=${new File(codexPromptDumpRoot, 'mc_MC').path}",
+			'--mc-arm', "MPP=${new File(codexPromptDumpRoot, 'mc_MPP').path}"
+}
+
 tasks.register('runCodexPromptBatch', Exec) {
 	group = 'verification'
 	description = 'Runs dumped prompt JSONL batches through codex exec in a resumable, auditable layout.'
+	if (!project.hasProperty('codexPromptRoot')) {
+		dependsOn 'prepareCodexPromptBatches'
+	}
 
 	def promptRootArg = file(project.findProperty('codexPromptRoot') ?: "${project.buildDir}/llm-evaluation/prompt-batches")
 	def outArg = file(project.findProperty('codexOut') ?: "${project.buildDir}/llm-evaluation/codex-prompt-batch")
@@ -321,6 +455,150 @@ tasks.register('scoreCodexPromptBatch', Exec) {
 
 	commandLine pythonArg, scriptArg.path, outArg.path
 }
+
+def evaluationPythonScripts = [
+		file("${project.projectDir}/evaluation/aggregate_results.py"),
+		file("${project.projectDir}/evaluation/analyze_backend_matrix.py"),
+		file("${project.projectDir}/evaluation/prepare_codex_prompt_batches.py"),
+		file("${project.projectDir}/evaluation/reproduce_preserved_reports.py"),
+		file("${project.projectDir}/evaluation/run_codex_prompt_batch.py"),
+		file("${project.projectDir}/evaluation/score_prompt_batch.py"),
+		file("${project.projectDir}/evaluation/semantic-judge/agg.py"),
+		file("${project.projectDir}/evaluation/semantic-judge/agg_v2.py"),
+		file("${project.projectDir}/evaluation/semantic-judge/ablfull_combine.py"),
+		file("${project.projectDir}/evaluation/semantic-judge/build_ablation_full.py"),
+		file("${project.projectDir}/evaluation/semantic-judge/hypo-nearmiss-2026-07-10/agg_hypo.py"),
+].findAll { it.exists() }
+
+tasks.register('checkEvaluationAnalysisScripts', Exec) {
+	group = 'verification'
+	description = 'Syntax-checks committed Python evaluation analysis/reproduction scripts.'
+
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+	commandLine ([pythonArg, '-m', 'py_compile'] + evaluationPythonScripts.collect { it.path })
+}
+
+def preservedEvaluationReportRoot = file(project.findProperty('reproOut') ?: "${project.buildDir}/llm-evaluation/reproduced-reports")
+def preservedEvaluationReportTasks = []
+def registerPreservedEvaluationReportTask = { String taskName, String mode, String taskDescription ->
+	preservedEvaluationReportTasks << taskName
+	tasks.register(taskName, Exec) {
+		group = 'verification'
+		description = taskDescription
+		dependsOn 'checkEvaluationAnalysisScripts'
+
+		def outArg = new File(preservedEvaluationReportRoot, mode)
+		def resamplesArg = (project.findProperty('reproResamples') ?: '5000').toString()
+		def pythonArg = project.findProperty('codexPython') ?: 'python3'
+		def scriptArg = file("${project.projectDir}/evaluation/reproduce_preserved_reports.py")
+
+		outputs.dir(outArg)
+		commandLine pythonArg, scriptArg.path, '--only', mode, '--out', outArg.path, '--resamples', resamplesArg
+	}
+}
+
+registerPreservedEvaluationReportTask(
+		'reproduceMainBenchmarkReport',
+		'main-benchmark',
+		'Re-derives the preserved local/main benchmark aggregate without live model calls.'
+)
+registerPreservedEvaluationReportTask(
+		'reproduceCommercialBenchmarkReport',
+		'commercial-benchmark',
+		'Re-derives the preserved commercial benchmark aggregate without live model calls.'
+)
+registerPreservedEvaluationReportTask(
+		'reproduceBackendMatrixReports',
+		'backend-matrix',
+		'Re-derives preserved owner/graph backend matrix reports without live model calls.'
+)
+registerPreservedEvaluationReportTask(
+		'reproduceSemanticJudgeV2Report',
+		'semantic-v2',
+		'Re-derives the semantic-judge v2 adoption report from committed verdict artifacts.'
+)
+registerPreservedEvaluationReportTask(
+		'reproduceReferenceAblationReport',
+		'reference-ablation',
+		'Re-derives the reference-ablation full-pool report from committed verdict artifacts.'
+)
+registerPreservedEvaluationReportTask(
+		'reproduceHypoNearMissReport',
+		'hypo-nearmiss',
+		'Re-derives the Hypo near-miss report from committed raw outputs and verdict artifacts.'
+)
+registerPreservedEvaluationReportTask(
+		'reproduceFixedJsonlSummaries',
+		'fixed-jsonl',
+		'Summarizes committed fixed JSONL smoke/context outputs without live model calls.'
+)
+registerPreservedEvaluationReportTask(
+		'collectReportOnlyArtifacts',
+		'report-only',
+		'Collects committed historical report-only artifacts that are not regenerated by the offline replay tasks.'
+)
+
+tasks.register('reproduceAllPreservedEvaluationReports') {
+	group = 'verification'
+	description = 'Runs every preserved offline evaluation report task without live model calls.'
+	dependsOn preservedEvaluationReportTasks
+}
+
+tasks.register('reproducePreservedEvaluationReports') {
+	group = 'verification'
+	description = 'Alias for reproduceAllPreservedEvaluationReports.'
+	dependsOn 'reproduceAllPreservedEvaluationReports'
+}
+
+def registerEvaluationShellTask = { String taskName, String scriptPath, String taskDescription ->
+	tasks.register(taskName, Exec) {
+		group = 'verification'
+		description = taskDescription
+		workingDir rootProject.projectDir
+		commandLine 'bash', file("${project.projectDir}/${scriptPath}").path
+	}
+}
+
+registerEvaluationShellTask(
+		'runHistoricalObfuscationSweep',
+		'evaluation/run-obfuscation-sweep.sh',
+		'Runs the historical local-model obfuscation sweep generator; requires LM Studio/SSH model switching.'
+)
+registerEvaluationShellTask(
+		'runHistoricalBackendAblation',
+		'evaluation/run-backend-ablation.sh',
+		'Runs the historical forced owner/graph backend ablation generator; requires the configured local model endpoint.'
+)
+registerEvaluationShellTask(
+		'runHistoricalCacheOffAblation',
+		'evaluation/run-cacheoff.sh',
+		'Runs the historical duplicate-name cache-off ablation generator; requires LM Studio locally.'
+)
+registerEvaluationShellTask(
+		'runHistoricalTemp02Stability',
+		'evaluation/run-temp02-stability.sh',
+		'Runs the historical temp=0.2 stability generator; requires LM Studio locally.'
+)
+registerEvaluationShellTask(
+		'runHistoricalQuantAblation',
+		'evaluation/run-quant-ablation.sh',
+		'Runs the historical qwen2.5-coder-14B quantization ablation generator; requires LM Studio/SSH model switching.'
+)
+registerEvaluationShellTask(
+		'runHistorical7bSweep',
+		'evaluation/7b-loop/run-7b-sweep.sh',
+		'Runs the historical 7B DEV backend/hint grid generator; requires a loaded local 7B endpoint.'
+)
+registerEvaluationShellTask(
+		'runHistorical7bPromptExtension',
+		'evaluation/7b-loop/run-7b-ext.sh',
+		'Runs the historical 7B prompt-extension DEV generator; requires a loaded local 7B endpoint.'
+)
+registerEvaluationShellTask(
+		'runHistorical7bHoldout',
+		'evaluation/7b-loop/run-7b-holdout.sh',
+		'Runs the historical 7B xz holdout generator; requires a loaded local 7B endpoint.'
+)
 
 def rootRelativePath = { Object value ->
 	value == null ? null : rootProject.file(value.toString()).path

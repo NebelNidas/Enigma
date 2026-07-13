@@ -264,14 +264,111 @@ LLM CLIs so they are compile-verified only; their verdict JSONs + reports are co
 | `evaluation/aggregate_results.py` | `tab:sweep`, fame gradient, `tab:commercial` | `f5037e0` |
 | `evaluation/analyze_backend_matrix.py` | §Context Comparison | `3d1ff1a` |
 | `evaluation/semantic-judge/{extract_residuals,judge_run,judge_run_v2,tiebreak_v2,agg_v2}.py` | `tab:semantic`, κ | `81f708c`, `879fa05` |
-| `evaluation/semantic-judge/{build_ablation_full,judge_ablated2,ablfull_combine}.py` | anchoring 82/24, 302/494, 33/796 | `8c1169c`, `fb735f2` |
+| `evaluation/semantic-judge/{build_ablation_full,judge_ablated2,ablfull_combine}.py` | anchoring 84/25 after Grok rerun, 302/494 | `8c1169c`, `fb735f2` |
 | `evaluation/semantic-judge/hypo-nearmiss-2026-07-10/agg_hypo.py` | `tab:hypo`, Hypo macro lens | `16dd983`, `612d09d` |
 | `evaluation/7b-loop/analyze_*.py` | l.496 roster support | `8502160` |
 | `evaluation/model-benchmark-runs.tsv` + `evaluation/results/*.jsonl` | smoke baseline, 6-case context fixture | `96bb9dd` |
+| `evaluation/reproduce_preserved_reports.py` | per-evaluation offline replay of preserved reports | pending |
 
 **Reports that reproduce essay numbers verbatim:** `results_2026-07-08.txt`,
 `results-v2_2026-07-09.txt`, `reference-ablation-fullpool-v2_2026-07-09.txt`,
 `agg_hypo_report.txt`, `7b-loop/results_2026-07-08.txt`.
+
+**Offline reproduction tasks (2026-07-13):** run
+`./gradlew :enigma-llm-plugin:reproduceAllPreservedEvaluationReports` from the repository root, or the backwards-
+compatible alias `:enigma-llm-plugin:reproducePreservedEvaluationReports`. This executes only deterministic
+aggregators over committed/preserved JSONL and judge-verdict artifacts, writing one subdirectory per evaluation under
+`build/llm-evaluation/reproduced-reports/`; it does not call live model CLIs or HTTP endpoints. Individual tasks:
+`reproduceMainBenchmarkReport`, `reproduceCommercialBenchmarkReport`, `reproduceBackendMatrixReports`,
+`reproduceSemanticJudgeV2Report`, `reproduceReferenceAblationReport`, `reproduceHypoNearMissReport`,
+`reproduceFixedJsonlSummaries`, and `collectReportOnlyArtifacts`. The replay script refuses output outside
+`build/llm-evaluation` and only regenerates marked task-owned output directories, so pointing `-PreproOut` at
+preserved `evaluation/` data fails instead of overwriting old result files. Historical reports whose raw directories
+are not committed are copied into the `report-only/` task output and explicitly marked as
+preserved-but-not-byte-rederived. Fresh historical generators are exposed separately as Gradle wrapper tasks
+(`runHistoricalObfuscationSweep`, `runHistoricalBackendAblation`, `runHistoricalCacheOffAblation`,
+`runHistoricalTemp02Stability`, `runHistoricalQuantAblation`, `runHistorical7bSweep`,
+`runHistorical7bPromptExtension`, `runHistorical7bHoldout`) so they are discoverable without making the safe offline
+replay spend model budget.
+
+---
+
+## Code-in-prompt frontier batch — GPT-5.6-Sol high via Codex CLI (2026-07-13)
+
+**Purpose:** paired M/M+C/M++ check for whether decompiled target-body text helps frontier models recover
+obfuscated method names, and whether any lift survives a length-matched sterile-padding control.
+
+- **Arms:** `M` = metadata/context only; `M+C` = metadata/context + real decompiled target body; `M++` =
+  metadata/context + sterile unrelated boilerplate with the same character length as the real `M+C` body.
+  Result directories use `MPP` as the shell-safe name for `M++`.
+- **Canonical reproduction:** `docs/BENCHMARK_RUNBOOK.md` section "Codex/Fable Prompt-Batch Frontier Run".
+  The committed Gradle path is `prepareCodexPromptBatches` -> `runCodexPromptBatch` -> `scoreCodexPromptBatch`.
+  It regenerates prompt batches under `build/llm-evaluation/` and does not rely on Julian-local scratchpad paths.
+- **Model invocation:** `codex exec`, model `gpt-5.6-sol`, `model_reasoning_effort="high"`, tool-free/read-only
+  neutral cwd, JSON schema enforced by `evaluation/run_codex_prompt_batch.py`.
+- **Input scope:** default Gradle run uses datasets `obscure=batch,mc=mc_batch`, arms `M,MC,MPP`, track
+  `realistic`, kind `METHOD`; selector keeps semantically interesting methods from the `M+C` prompt dump and
+  filters all arms to the same target keys.
+- **Scorer:** `evaluation/score_prompt_batch.py`, exact / normalized / usable counts plus paired arm contrasts
+  and `latencyMs` summaries. `latencyMs` is wall-clock around `codex exec`, including CLI overhead.
+- **As-run result (all ok, n=180 per arm):** `M` exact 72/180 (40.0 %), normalized 74/180 (41.1 %), usable
+  88/180 (48.9 %); `M+C` exact 80/180 (44.4 %), normalized 81/180 (45.0 %), usable 98/180 (54.4 %);
+  `M++` exact 81/180 (45.0 %), normalized 83/180 (46.1 %), usable 95/180 (52.8 %).
+- **As-run latency:** `M` median 10594 ms / p90 18895 ms / max 36552 ms; `M+C` median 10276 ms / p90 16909 ms /
+  max 44680 ms; `M++` median 10991 ms / p90 22070 ms / max 66700 ms.
+- **Interpretation guardrail:** `M -> M+C` shows only a modest lift (+8 exact, +10 usable), while the primary
+  content-vs-volume contrast is weak (`M+C` 80 exact / 98 usable vs `M++` 81 exact / 95 usable). Treat this as
+  evidence that prompt length/token budget explains much of the apparent M-to-code gain until semantic judging
+  and the paired Fable run are complete.
+
+---
+
+## Frontier-residual probe — Fable 5 on Hypo (2026-07-12)
+
+**Claim (candidate essay material):** on 72 obscure-program (Hypo) symbols where **both** `claude-opus-4-8` (high)
+**and** `gpt-5.5` (high) were non-exact, Anthropic's newest frontier model **`claude-fable-5` recovers only
+6/72 = 8.3 % by strict exact-match** — evidence for the deobfuscation ceiling on non-memorizable code.
+
+- **Residual set (input):** intersection of `judge-ablation-provenance-2026-07-11/resid_hypo_claude_opus_high.json`
+  (78) and `resid_hypo_codex_gpt-5.5_high.json` (76) on key (jar,kind,owner,obfName,descriptor) → **72** (65 METHOD, 7 CLASS).
+  By construction opus-exact = gpt5.5-exact = 0 on this set.
+- **Method:** the identical recorded `context` per residual was replayed through `claude-fable-5` via the Claude Code
+  **Agent tool (Pro subscription, free window ending 2026-07-12)** — NOT the OpenAI-compatible harness. 72 targets
+  batched in one prompt with per-target isolation. Strict case-insensitive identifier exact-match vs `reference`.
+- **Raw preserved:** `frontier-residual-2026-07-12/fable5_hypo_residual.json` (meta + all 72 rows: reference, opus/gpt5.5
+  wrong guesses, fable5 suggestion, per-row exact flag).
+- **CAVEATS (must state if used):** Agent-tool pipeline ≠ harness; exact-match only — **many misses are getter-prefixed
+  synonyms of the truth** (`name`→`getName`, `params`→`getParameterTypes`, `descriptor`→`getDescriptor`), so a
+  semantic/usable score would be materially higher (semantic judging NOT yet run). Batched (not one-call-per-symbol).
+- **NOT yet cross-checked by Codex+Gemini** (RESULT-NUMBER CROSS-CHECK directive) — do that before any essay use.
+- **Pending companion:** same 72 residuals through `gpt-5.6-sol` (once Julian's Codex CLI is updated via yay) for a
+  direct newest-frontier comparison.
+
+---
+
+## REAP-40B-A3B quant ladder (2026-07-12) — pruned+quantized frontier vs smaller dense
+
+**Claim (candidate essay material):** an aggressively pruned 40B model (Qwen3-Coder-Next REAP-40B-A3B) underperforms
+the smaller dense `gemma-4-31b` (19.0 % exact realistic api) at **every** quantization it fits in on this hardware —
+best REAP quant Q2_K reaches only **12.7 %** — so REAP-style pruning plus low-bit quant does not buy back the gap to a
+well-trained smaller dense model.
+
+- **Runs (input):** three quants of the same GGUF family, IDENTICAL harness config (`seed=1234567`, api=100 /
+  package=30 / private=10 / preservation=25 per jar; corpus commons-lang3-3.14.0 + gson-2.11.0 + xz-1.9;
+  tiny-remapper obf; ROCm llama-server, `--reasoning off`). Chain: IQ3_XXS (standalone 11:58), then Q2_K + IQ2_M via
+  `reap_quant_chain.sh` (chain PID 3641400, DONE 21:04, gradle "BUILD SUCCESSFUL").
+- **Verified numbers (realistic / structure-only api, exact %, n=300 rows/track, cross-checked LOG vs RAW JSONL):**
+  IQ3_XXS 12.0 / 6.3 (usable 17.0 / 9.0); Q2_K 12.7 / 5.7 (usable 16.7 / 7.7); IQ2_M 7.7 / 5.0 (usable 11.7 / 8.0).
+  Q2_K (K-quant) beats both I-quants — a known imatrix/architecture effect, not a config difference.
+- **Raw preserved:** `build/llm-evaluation/benchmark/qwen3-coder-next-reap-40b-{iq3_xxs,q2_k,iq2_m}/*-{realistic,
+  structure-only}-benchmark.jsonl` (+ per-unit `-leaks.jsonl`); harness per-unit summaries in
+  `build/llm-evaluation/pc-queue-logs/reap-qwen3-coder-next-reap-40b-{quant}-gradle-full.log`.
+- **CORRECTION:** the live-state file had earlier recorded "IQ3_XXS 9.2 % / 13.0 %"; per-row aggregation of the
+  completed run gives **12.0 % / 17.0 %** — the 9.2 % figure was wrong and must NOT be used. All three quants share
+  one config, so the ladder is apples-to-apples.
+- **Cross-check status:** internal (log-vs-jsonl per-row) DONE and consistent. Codex+Gemini result-number cross-check
+  (per the standing directive) still TODO before essay use; the aggregation is a plain exact/usable count of the api
+  slice excluding preservation controls.
 
 ---
 

@@ -4,9 +4,11 @@
 # Primary metric later = api usable; guardrails = exact not materially worse, length-error / preservation
 # no regression. Each cell writes dev-bench/<cell>/<model>/*-realistic-benchmark.jsonl.
 set -euo pipefail
-cd /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+cd "$REPO_ROOT"
 # -PobfDir/-PresultsDir are file()-resolved relative to the enigma-llm-plugin SUBPROJECT, so pass ABSOLUTE.
-B=/home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/build/llm-evaluation
+B="$REPO_ROOT/enigma-llm-plugin/build/llm-evaluation"
 DEV="$B/obfuscated-dev"
 OUT="$B/dev-bench"
 

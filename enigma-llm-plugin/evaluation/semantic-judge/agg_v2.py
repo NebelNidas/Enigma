@@ -3,8 +3,11 @@
 semantic-usable = exact + ACCEPT residuals; final verdict = grok if grok==codex else claude tie-break."""
 import glob, json, math, os
 
-SP = "/tmp/claude-1000/-home-julian-Dev-Env-Digitalisierungskolleg/32e22798-6bde-488a-b047-83d0956e3383/scratchpad"
-BR = "/home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma/enigma-llm-plugin/build/llm-evaluation/benchmark"
+SP = os.environ.get("JUDGE_DIR", os.path.dirname(os.path.abspath(__file__)))
+BR = os.environ.get(
+    "BENCH_DIR",
+    os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "benchmark-raw-2026-07-11", "benchmark")),
+)
 MODELS = [("14b q6_k", "14b", "qwen2.5-coder-14b-instruct_q6_k_graph_k1_raised"),
           ("qwen3-8b", "8b", "qwen3-8b_graph_k1_raised"),
           ("30B-MoE iq4_xs", "30b", "qwen3-coder-30b-a3b-instruct_iq4_xs_graph_k1_raised")]

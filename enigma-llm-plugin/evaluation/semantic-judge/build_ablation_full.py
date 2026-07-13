@@ -4,9 +4,10 @@
 to re-judge whether each suggestion is a plausible name for the *behaviour* alone. UNCERTAIN
 (main process) items are excluded (they are neither an accept nor a reject)."""
 import json
+import os
 from collections import Counter
 
-SP = "/tmp/claude-1000/-home-julian-Dev-Env-Digitalisierungskolleg/32e22798-6bde-488a-b047-83d0956e3383/scratchpad"
+SP = os.environ.get("JUDGE_DIR", os.path.dirname(os.path.abspath(__file__)))
 MODELS = ["14b", "8b", "30b"]
 
 

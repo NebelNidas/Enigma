@@ -8,7 +8,9 @@
 # Hardened after a past data-loss bug (Codex-reviewed): stash/restore of the clean
 # AUTO dir is guarded so it can never be clobbered.
 set -euo pipefail
-cd /home/julian/Dev-Env/Digitalisierungskolleg/fabric-enigma || { echo "!! cd failed"; exit 1; }
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$REPO_ROOT" || { echo "!! cd failed"; exit 1; }
 BR=enigma-llm-plugin/build/llm-evaluation/benchmark
 SAFE=qwen2.5-coder-14b-instruct_q6_k
 MODEL=qwen2.5-coder-14b-instruct@q6_k

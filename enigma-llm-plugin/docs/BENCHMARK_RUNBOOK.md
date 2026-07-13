@@ -3,7 +3,7 @@
 Status: 2026-07-05 (original) — **UPDATE 2026-07-08 below.**
 
 > **UPDATE 2026-07-08.** The as-run procedure, the final roster, and the actual
-> results now live in the local handoff timeline `LLM_ENIGMA_HANDOFF.local.md`
+> results now live in the local journal timeline `LLM_ENIGMA_JOURNAL.local.md`
 > (2026-07-06 → 2026-07-08) plus `LLM_ENIGMA_STATE.local.md` (live state), and the
 > committed runners/analysers under `enigma-llm-plugin/evaluation/` (obfuscation
 > sweep, `run-pc-queue.sh`, backend-matrix, `semantic-judge/`, `7b-loop/`). The
@@ -29,6 +29,89 @@ context. Use commercial or hosted providers only for:
 Do not put API keys into Gradle properties, result files, screenshots, or the
 TSV notes. Use environment variables only.
 
+## Codex/Fable Prompt-Batch Frontier Run
+
+The code-in-prompt frontier comparison uses three paired prompt arms:
+
+- `M`: metadata/context only. The model sees the target kind, owner, descriptor,
+  access flags, graph/owner context, literals, calls, fields, and already-known
+  mappings, but no decompiled target body.
+- `M+C`: metadata/context plus the real decompiled body for the target method
+  when the body can be extracted.
+- `M++`: metadata/context plus a sterile, unrelated boilerplate block with the
+  same character length as the real `M+C` body. The output directories use the
+  shell-safe arm name `MPP` for this condition.
+
+The intended contrasts are `M -> M+C` for "adding code-shaped material at all"
+and `M++ -> M+C` for "real target-body content beyond token volume". Keep all
+three arms paired on the same target set.
+
+From the `fabric-enigma` root, build the paired prompt batches without model
+calls:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-plugin:prepareCodexPromptBatches
+```
+
+This downloads/regenerates the OSS and Minecraft benchmark inputs as needed,
+dumps offline M/M+C/M++ prompts into `build/llm-evaluation/codex-prompt-dumps/`,
+selects semantically interesting METHOD targets from the `M+C` body dump, and
+writes filtered replay batches to `build/llm-evaluation/prompt-batches/`.
+Minecraft inputs come from Mojang/Fabric/Parchment artifacts; the task does not
+download a Yarn source checkout.
+
+The preparation tasks clean only their own prompt-dump and filtered-batch
+directories. As a guardrail, they refuse to delete directories that appear to
+contain Codex model outputs (`requestedModel`, `latencyMs`, or `ok` +
+`suggestedName` records), and they refuse unmarked directories outside
+`build/llm-evaluation` unless explicitly overridden with
+`-PcodexPromptOverwriteUnmarked=true`. Deleting detected model outputs requires
+the separate `-PcodexPromptDeleteModelOutputs=true` override.
+
+Dry-run the model work queue before spending subscription budget:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-plugin:runCodexPromptBatch -PcodexDryRun=true
+```
+
+Run the default Codex batch with GPT-5.6-Sol high effort:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-plugin:runCodexPromptBatch \
+  -PcodexModel=gpt-5.6-sol \
+  -PcodexEffort=high \
+  -PcodexParallel=2
+```
+
+The default run consumes `obscure=batch,mc=mc_batch`, arms `M,MC,MPP`, track
+`realistic`, kind `METHOD`, and writes resumable one-target JSON files under
+`build/llm-evaluation/codex-prompt-batch/`. Each record includes `latencyMs`,
+measured around the `codex exec` subprocess, so it includes CLI overhead.
+
+Score the saved outputs:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-plugin:scoreCodexPromptBatch
+```
+
+Useful overrides: `-PcodexPromptRoot=...`, `-PcodexOut=...`,
+`-PcodexDatasets=obscure=batch,mc=mc_batch`, `-PcodexTracks=realistic`,
+`-PcodexKinds=METHOD`, `-PcodexLimit=10`, `-PcodexTimeoutSeconds=420`, and
+`-PcodexNeutralCwd=...`. Passing `-PcodexPromptRoot` tells Gradle to use that
+existing prompt root instead of running `prepareCodexPromptBatches`.
+
 ## Result Files
 
 Keep three artifacts per model:
@@ -39,6 +122,64 @@ Keep three artifacts per model:
 
 The TSV file is intentionally simple so it can be copied into the report or
 opened in a spreadsheet.
+
+## Preserved-Output Reproduction
+
+For historical essay numbers, use the committed/preserved artifacts first. These
+tasks do not start LM Studio and do not call Codex, Claude, Grok, Gemini, or any
+OpenAI-compatible endpoint:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-plugin:reproducePreservedEvaluationReports
+```
+
+`reproducePreservedEvaluationReports` is a backwards-compatible alias for
+`reproduceAllPreservedEvaluationReports`. The all-task runs one offline task per
+evaluation:
+
+- `reproduceMainBenchmarkReport`
+- `reproduceCommercialBenchmarkReport`
+- `reproduceBackendMatrixReports`
+- `reproduceSemanticJudgeV2Report`
+- `reproduceReferenceAblationReport`
+- `reproduceHypoNearMissReport`
+- `reproduceFixedJsonlSummaries`
+- `collectReportOnlyArtifacts`
+
+Each task writes to its own subdirectory below
+`enigma-llm-plugin/build/llm-evaluation/reproduced-reports/` from:
+
+- `evaluation/benchmark-raw-2026-07-11/benchmark/`
+- `evaluation/benchmark-raw-2026-07-11/commercial/`
+- `evaluation/results/*.jsonl`
+- `evaluation/semantic-judge/`
+- `evaluation/judge-ablation-provenance-2026-07-11/`
+- `evaluation/semantic-judge/hypo-nearmiss-2026-07-10/`
+
+Use `-PreproOut=...` to change the output root and `-PreproResamples=N` to
+reduce or increase bootstrap resamples for the preserved aggregate reports. The
+reproduction script refuses to clean or write outside `build/llm-evaluation`,
+and it only regenerates marked task-owned output directories, so accidentally
+pointing it at `evaluation/` or other preserved result folders fails before any
+old result file is overwritten. Historical reports whose raw directories are not
+committed are copied into the `report-only/` task output and explicitly marked
+as preserved-but-not-byte-rederived.
+
+Fresh historical generator runs are intentionally separate, because they depend
+on local model state, SSH model switching, LM Studio, or subscription-backed
+CLIs. The Gradle wrappers are:
+
+- `runHistoricalObfuscationSweep`
+- `runHistoricalBackendAblation`
+- `runHistoricalCacheOffAblation`
+- `runHistoricalTemp02Stability`
+- `runHistoricalQuantAblation`
+- `runHistorical7bSweep`
+- `runHistorical7bPromptExtension`
+- `runHistorical7bHoldout`
 
 ## LM Studio Setup
 

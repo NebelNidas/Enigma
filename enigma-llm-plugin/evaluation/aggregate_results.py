@@ -70,7 +70,7 @@ def target_id(row: dict) -> tuple:
 
 def load_model_rows(model_dir: str) -> list[dict]:
     rows = []
-    for path in sorted(glob.glob(os.path.join(model_dir, "*-benchmark.jsonl"))):
+    for path in sorted(glob.glob(os.path.join(model_dir, "**", "*-benchmark.jsonl"), recursive=True)):
         fname = os.path.basename(path)
         # <base>-<track>-benchmark.jsonl ; track is the longest known suffix match
         track = None

@@ -20,12 +20,14 @@ Three lenses:
      Combined semantic recovery over the api slice = (exact + plausible_residual)/n_api, Wilson 95% CI.
   3. JUDGE AGREEMENT: pairwise verdict agreement across all available judges on local_30b.
 
-Usage: agg_hypo.py           (paths relative to this script's dir)
+Usage: agg_hypo.py           (inputs relative to this script's dir)
+Set HYPO_AGG_OUT_DIR to write report files outside the preserved input tree.
 """
 import glob, json, math, os
 
 SP = os.path.dirname(os.path.abspath(__file__))
 HR = os.path.join(SP, "hypo-results")
+OUT_DIR = os.environ.get("HYPO_AGG_OUT_DIR", SP)
 ALL_JUDGES = ["codex", "claude", "gemini", "grok"]
 UNIFORM = ["gemini", "grok"]  # cross-family to every model
 
@@ -298,10 +300,11 @@ def main():
                     agree += (va == vb)
                 lines.append(f"   {ja}~{jb}: {agree}/{same} ({(agree/same if same else 0):.0%})")
 
-    open(os.path.join(SP, "agg_hypo_report.txt"), "w").write("\n".join(lines) + "\n")
-    json.dump(report, open(os.path.join(SP, "agg_hypo_report.json"), "w"), indent=1)
+    os.makedirs(OUT_DIR, exist_ok=True)
+    open(os.path.join(OUT_DIR, "agg_hypo_report.txt"), "w").write("\n".join(lines) + "\n")
+    json.dump(report, open(os.path.join(OUT_DIR, "agg_hypo_report.json"), "w"), indent=1)
     print("\n".join(lines))
-    print(f"\n[written] agg_hypo_report.txt / .json")
+    print(f"\n[written] {os.path.join(OUT_DIR, 'agg_hypo_report.txt')} / .json")
 
 
 if __name__ == "__main__":
