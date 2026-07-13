@@ -283,12 +283,11 @@ Individual tasks: `writeMainBenchmarkReport`, `writeCommercialBenchmarkReport`, 
 `writeFixedJsonlSummaries`, and `collectReportOnlyArtifacts`. If target outputs already exist, the driver prompts
 before overwriting them; non-interactive runs abort unless `-PreportOverwrite=true` is passed. Use
 `-PreportDryRun=true` to list target paths without writing. Historical reports whose raw directories are not
-committed are copied by `collectReportOnlyArtifacts` and explicitly marked as report-only. Fresh
-historical generators are exposed separately as Gradle wrapper tasks
-(`runHistoricalObfuscationSweep`, `runHistoricalBackendAblation`, `runHistoricalCacheOffAblation`,
-`runHistoricalTemp02Stability`, `runHistoricalQuantAblation`, `runHistorical7bSweep`,
-`runHistorical7bPromptExtension`, `runHistorical7bHoldout`) so they are discoverable without making the safe offline
-replay spend model budget.
+committed are copied by `collectReportOnlyArtifacts` and explicitly marked as report-only. Live
+generators are exposed separately as Gradle wrapper tasks (`runObfuscationSweep`, `runBackendAblation`,
+`runCacheOffAblation`, `runTemp02Stability`, `runQuantAblation`, `run7bSweep`,
+`run7bPromptExtension`, `run7bHoldout`) so they are discoverable without making the safe offline replay
+spend model budget.
 
 ---
 

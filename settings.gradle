@@ -1,3 +1,15 @@
+pluginManagement {
+	repositories {
+		maven {
+			name = 'Fabric'
+			url = 'https://maven.fabricmc.net/'
+		}
+		gradlePluginPortal()
+		mavenCentral()
+	}
+	includeBuild 'enigma-llm-evaluation/gradle-plugin'
+}
+
 include 'enigma'
 include 'enigma-swing'
 include 'enigma-server'

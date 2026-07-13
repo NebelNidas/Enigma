@@ -1,0 +1,52 @@
+plugins {
+	id 'java-gradle-plugin'
+	id 'checkstyle'
+	id 'com.diffplug.spotless' version '7.2.1'
+}
+
+repositories {
+	gradlePluginPortal()
+	mavenCentral()
+	maven { url = 'https://maven.fabricmc.net/' }
+}
+
+dependencies {
+	implementation gradleApi()
+	implementation 'com.google.code.gson:gson:2.11.0'
+	implementation('net.fabricmc:fabric-loom:1.6.12') {
+		transitive = false
+	}
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+	options.release = 17
+}
+
+checkstyle {
+	configFile = file('../../checkstyle.xml')
+	toolVersion = '10.12.4'
+}
+
+spotless {
+	lineEndings = com.diffplug.spotless.LineEnding.UNIX
+
+	java {
+		removeUnusedImports()
+		importOrder('java', 'javax', '', 'cuchaz.enigma')
+	}
+}
+
+gradlePlugin {
+	plugins {
+		frontierEvaluation {
+			id = 'enigma.frontier-evaluation'
+			implementationClass = 'cuchaz.enigma.gradle.FrontierEvaluationPlugin'
+		}
+	}
+}

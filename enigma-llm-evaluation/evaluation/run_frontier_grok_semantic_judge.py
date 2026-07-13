@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Judge frontier residual naming suggestions with the semantic-judge v2 rubric.
+"""Judge frontier residual naming suggestions with Grok Build.
 
-Input is the `semantic_judge_required.jsonl` file emitted by
-score_frontier_runs.py. The runner calls `codex exec` in batches and writes a
-resumable partial verdict map plus one final JSON result file. It never calls
-Anthropic/Fable.
+This is the Grok-backed companion to run_frontier_semantic_judge.py. It consumes
+the same `semantic_judge_required.jsonl`, writes the same final JSON shape, and
+uses a resumable partial verdict map. It never calls Anthropic/Fable.
 """
 from __future__ import annotations
 
@@ -15,7 +14,6 @@ from pathlib import Path
 import random
 import re
 import subprocess
-import tempfile
 import time
 
 
@@ -71,6 +69,13 @@ def extract_json(raw: str) -> dict | None:
         return None
     if isinstance(parsed, dict) and isinstance(parsed.get("verdicts"), list):
         return parsed
+    # Some headless CLIs wrap the assistant text in a metadata envelope.
+    for key in ("output", "response", "result", "text"):
+        value = parsed.get(key)
+        if isinstance(value, str):
+            nested = extract_json(value)
+            if nested is not None:
+                return nested
     return None
 
 
@@ -78,15 +83,16 @@ def safe_model_name(model: str) -> str:
     return re.sub(r"[^A-Za-z0-9_.-]+", "_", model)
 
 
+def effective_effort(args: argparse.Namespace) -> str:
+    if args.model == "grok-build":
+        return "default"
+    return args.effort or "default"
+
+
 def atomic_write(path: Path, text: str) -> None:
     tmp = path.with_suffix(path.suffix + ".partial-write")
     tmp.write_text(text, encoding="utf-8")
     tmp.replace(path)
-
-
-def write_schema(path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(SCHEMA, indent=2) + "\n", encoding="utf-8")
 
 
 def load_items(path: Path) -> list[dict]:
@@ -133,12 +139,11 @@ def validate_partial_fingerprint(partial: Path, items: list[dict], dry_run: bool
 def compact_item(item: dict) -> dict:
     target = item.get("target") or {}
     owner = str(target.get("obfOwner") or "").split("/")[-1]
-    descriptor = target.get("obfDesc") or ""
     return {
         "id": int(item["judge_id"]),
         "kind": item.get("kind"),
         "owner": owner,
-        "descriptor": descriptor,
+        "descriptor": target.get("obfDesc") or "",
         "obfuscated": target.get("obfName"),
         "context": item.get("context"),
         "suggested": item.get("suggested"),
@@ -172,51 +177,63 @@ def parse_verdicts(parsed: dict, expected_ids: set[int]) -> dict[int, dict]:
     return verdicts
 
 
-def call_codex(args: argparse.Namespace, schema: Path, prompt: str) -> tuple[dict | None, dict]:
-    with tempfile.NamedTemporaryFile("w", suffix=".out", delete=False, dir=args.neutral_cwd, encoding="utf-8") as out_file:
-        out_path = Path(out_file.name)
+def call_grok(args: argparse.Namespace, prompt: str) -> tuple[dict | None, dict]:
     cmd = [
-        "codex", "exec",
+        "grok",
+        "--disable-web-search",
         "-m", args.model,
-        "-c", f'model_reasoning_effort="{args.effort}"',
-        "-C", str(args.neutral_cwd),
-        "--skip-git-repo-check",
-        "--ephemeral",
-        "--ignore-rules",
-        "-s", "read-only",
-        "--output-schema", str(schema),
-        "-o", str(out_path),
-        "-",
+        "--no-memory",
+        "-p", prompt,
     ]
+    if args.effort and args.effort != "none" and args.model != "grok-build":
+        cmd.extend(["--effort", args.effort])
     start = time.time()
-    try:
-        proc = subprocess.run(
-            cmd,
-            input=prompt,
-            text=True,
-            capture_output=True,
-            timeout=args.timeout_seconds,
-            cwd=args.neutral_cwd,
-        )
-        latency_ms = int((time.time() - start) * 1000)
-        raw = out_path.read_text(encoding="utf-8").strip() if out_path.exists() else (proc.stdout or "").strip()
-        parsed = extract_json(raw)
-        meta = {
-            "rc": proc.returncode,
-            "latencyMs": latency_ms,
-            "stderrTail": (proc.stderr or "")[-1000:],
-            "rawHead": raw[:1000],
-        }
-        return parsed, meta
-    finally:
-        try:
-            out_path.unlink()
-        except FileNotFoundError:
-            pass
+    proc = subprocess.run(
+        cmd,
+        text=True,
+        capture_output=True,
+        timeout=args.timeout_seconds,
+        cwd=args.neutral_cwd,
+    )
+    latency_ms = int((time.time() - start) * 1000)
+    raw = (proc.stdout or "").strip()
+    parsed = extract_json(raw)
+    meta = {
+        "rc": proc.returncode,
+        "latencyMs": latency_ms,
+        "stderrTail": (proc.stderr or "")[-1000:],
+        "rawHead": raw[:1000],
+    }
+    return parsed, meta
+
+
+def judge_batch(args: argparse.Namespace, by_id: dict[int, dict], batch_ids: list[int]) -> tuple[dict[int, dict], dict]:
+    expected_ids = set(batch_ids)
+    last_meta = {}
+    for _ in range(args.retries + 1):
+        parsed, meta = call_grok(args, prompt_for([by_id[item_id] for item_id in batch_ids]))
+        last_meta = meta
+        batch_verdicts = parse_verdicts(parsed or {}, expected_ids)
+        if len(batch_verdicts) == len(batch_ids):
+            return batch_verdicts, meta
+    if len(batch_ids) == 1:
+        return {}, last_meta
+
+    combined: dict[int, dict] = {}
+    latency_ms = int(last_meta.get("latencyMs") or 0)
+    for item_id in batch_ids:
+        single_verdicts, single_meta = judge_batch(args, by_id, [item_id])
+        latency_ms += int(single_meta.get("latencyMs") or 0)
+        combined.update(single_verdicts)
+    fallback_meta = dict(last_meta)
+    fallback_meta["latencyMs"] = latency_ms
+    fallback_meta["fallback"] = "single-item"
+    return combined, fallback_meta
 
 
 def final_rows(items: list[dict], verdicts: dict[int, dict], args: argparse.Namespace) -> list[dict]:
     by_id = {int(item["judge_id"]): item for item in items}
+    judge_effort = effective_effort(args)
     rows = []
     for item_id in sorted(by_id):
         item = by_id[item_id]
@@ -235,7 +252,7 @@ def final_rows(items: list[dict], verdicts: dict[int, dict], args: argparse.Name
             "verdict": verdict.get("verdict"),
             "reason": verdict.get("reason"),
             "judgeModel": args.model,
-            "judgeEffort": args.effort,
+            "judgeEffort": judge_effort,
         })
     return rows
 
@@ -244,27 +261,28 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--required", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--model", default="gpt-5.5")
+    parser.add_argument("--model", default="grok-build")
     parser.add_argument("--effort", default="high")
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--seed", type=int, default=20260713)
     parser.add_argument("--timeout-seconds", type=int, default=600)
+    parser.add_argument("--retries", type=int, default=1)
     parser.add_argument("--neutral-cwd", type=Path)
-    parser.add_argument("--schema", type=Path)
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
     args.required = args.required.resolve()
     args.out = args.out.resolve()
-    args.neutral_cwd = (args.neutral_cwd or args.out / "_codex_judge_cwd").resolve()
-    schema = (args.schema or args.out / "_schema" / "frontier_semantic_judge.schema.json").resolve()
+    args.neutral_cwd = (args.neutral_cwd or args.out / "_grok_judge_cwd").resolve()
     args.out.mkdir(parents=True, exist_ok=True)
     args.neutral_cwd.mkdir(parents=True, exist_ok=True)
-    write_schema(schema)
 
-    output = args.out / f"semantic_judge_codex_{safe_model_name(args.model)}_{args.effort}.json"
+    output_name = f"semantic_judge_grok_{safe_model_name(args.model)}_{effective_effort(args)}"
+    if args.limit > 0:
+        output_name += f".limit-{args.limit}"
+    output = args.out / f"{output_name}.json"
     partial = output.with_suffix(output.suffix + ".partial")
     if output.exists() and not args.overwrite:
         raise SystemExit(f"Refusing to overwrite existing judge output: {output}")
@@ -282,8 +300,8 @@ def main() -> None:
     by_id = {int(item["judge_id"]): item for item in items}
     pending = [item_id for item_id in order if item_id not in verdicts]
     print(
-        f"judge items: {len(items)} pending={len(pending)} model={args.model} "
-        f"effort={args.effort} batch={args.batch_size}",
+        f"grok judge items: {len(items)} pending={len(pending)} model={args.model} "
+        f"effort={effective_effort(args)} batch={args.batch_size}",
         flush=True,
     )
     if args.dry_run:
@@ -291,16 +309,16 @@ def main() -> None:
 
     for index in range(0, len(pending), args.batch_size):
         batch_ids = pending[index:index + args.batch_size]
-        batch = [by_id[item_id] for item_id in batch_ids]
-        parsed, meta = call_codex(args, schema, prompt_for(batch))
-        batch_verdicts = parse_verdicts(parsed or {}, set(batch_ids))
+        batch_verdicts, meta = judge_batch(args, by_id, batch_ids)
+        for item_id, verdict in batch_verdicts.items():
+            verdicts[item_id] = verdict
+        if batch_verdicts:
+            atomic_write(partial, json.dumps({str(key): value for key, value in sorted(verdicts.items())}, indent=2, sort_keys=True) + "\n")
         if len(batch_verdicts) != len(batch_ids):
             missing = sorted(set(batch_ids) - set(batch_verdicts))
             raise RuntimeError(f"Judge returned {len(batch_verdicts)}/{len(batch_ids)} verdicts; missing {missing[:5]}; meta={meta}")
-        for item_id, verdict in batch_verdicts.items():
-            verdicts[item_id] = verdict
         atomic_write(partial, json.dumps({str(key): value for key, value in sorted(verdicts.items())}, indent=2, sort_keys=True) + "\n")
-        print(f"  judged {len(verdicts)}/{len(items)}; lastLatencyMs={meta['latencyMs']}", flush=True)
+        print(f"  grok judged {len(verdicts)}/{len(items)}; lastLatencyMs={meta['latencyMs']}", flush=True)
 
     rows = final_rows(items, verdicts, args)
     atomic_write(output, json.dumps(rows, indent=2, sort_keys=True) + "\n")

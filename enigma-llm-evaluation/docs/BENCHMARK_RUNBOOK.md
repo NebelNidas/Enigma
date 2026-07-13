@@ -184,6 +184,45 @@ runs (`gpt-5.5` high via Codex CLI). Dry-run first with
 Useful cost controls: `-PfrontierJudgeLimit=16`,
 `-PfrontierJudgeBatchSize=8`, and `-PfrontierJudgeTimeoutSeconds=600`.
 
+Run the same residual judge set through Grok Build, also without web search:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-evaluation:runFrontierGrokSemanticJudge \
+  -PfrontierScoreOut=build/llm-evaluation/frontier-scores \
+  -PfrontierGrokJudgeModel=grok-build
+```
+
+This consumes the same `semantic_judge_required.jsonl`, uses the same rubric and
+result shape, resumes from
+`semantic_judge_grok_<model>_<effort>.json.partial`, and refuses to overwrite a
+final result unless `-PfrontierGrokJudgeOverwrite=true` is passed. Dry-run first
+with `-PfrontierGrokJudgeDryRun=true`; use `-PfrontierGrokJudgeLimit=16` for a
+cheap wiring check. `grok-build` does not expose a reasoning-effort flag through
+the CLI, so these outputs are labeled `default`. If Grok returns no parseable
+JSON for a multi-item batch, the runner retries and then falls back to
+single-item calls for that batch; tune with `-PfrontierGrokJudgeRetries=...`.
+Partial fallback progress is written before aborting, so a rerun resumes from
+the last successfully parsed item.
+
+Summarize the finished semantic-judge verdicts without additional model calls:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-evaluation:summarizeFrontierSemanticJudge \
+  -PfrontierScoreOut=build/llm-evaluation/frontier-scores
+```
+
+This writes `semantic_judge_gpt55_summary.txt` and
+`semantic_judge_gpt55_summary.json`. The scope is the
+`semantic_judge_required.jsonl` residual-cell judge set; it intentionally does
+not claim coverage for non-required residual candidates. Existing summary files
+are not overwritten unless `-PfrontierJudgeSummaryOverwrite=true` is passed.
+
 If a secondary judge run exists, compare judge stability without additional
 model calls:
 
@@ -261,18 +300,18 @@ files and whether they already exist without writing anything. Historical
 reports whose raw directories are not committed are copied by
 `collectReportOnlyArtifacts` and explicitly marked as report-only by that task.
 
-Fresh historical generator runs are intentionally separate, because they depend
-on local model state, SSH model switching, LM Studio, or subscription-backed
-CLIs. The Gradle wrappers are:
+Live generator runs are intentionally separate, because they depend on local
+model state, SSH model switching, LM Studio, or subscription-backed CLIs. The
+Gradle wrappers are:
 
-- `runHistoricalObfuscationSweep`
-- `runHistoricalBackendAblation`
-- `runHistoricalCacheOffAblation`
-- `runHistoricalTemp02Stability`
-- `runHistoricalQuantAblation`
-- `runHistorical7bSweep`
-- `runHistorical7bPromptExtension`
-- `runHistorical7bHoldout`
+- `runObfuscationSweep`
+- `runBackendAblation`
+- `runCacheOffAblation`
+- `runTemp02Stability`
+- `runQuantAblation`
+- `run7bSweep`
+- `run7bPromptExtension`
+- `run7bHoldout`
 
 ## LM Studio Setup
 
