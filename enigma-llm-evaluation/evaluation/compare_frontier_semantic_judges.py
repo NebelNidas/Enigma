@@ -32,6 +32,33 @@ def load_verdicts(path: Path) -> dict[int, str]:
     raise ValueError(f"Unsupported judge verdict file shape: {path}")
 
 
+def load_keys(path: Path) -> dict[int, str]:
+    """judge_id -> target key, only from the final list form (the .partial map carries no key)."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, list):
+        return {}
+    keys: dict[int, str] = {}
+    for row in data:
+        if row.get("key") is not None and row.get("judge_id") is not None:
+            keys[int(row["judge_id"])] = row["key"]
+    return keys
+
+
+def assert_same_targets(left_keys: dict[int, str], right_keys: dict[int, str]) -> None:
+    """Guard against comparing two judge files whose numeric judge_id maps to different targets
+    (e.g. produced from different required lists / prompt roots). Only checks ids present in both."""
+    mismatched = [
+        i for i in set(left_keys) & set(right_keys) if left_keys[i] != right_keys[i]
+    ]
+    if mismatched:
+        example = mismatched[0]
+        raise SystemExit(
+            f"Refusing to compare: {len(mismatched)} judge_id(s) map to different targets across the two files "
+            f"(e.g. id {example}: {left_keys[example]!r} vs {right_keys[example]!r}). "
+            "The files were built from different required lists; regenerate one so the ids align."
+        )
+
+
 def pct(num: int, den: int) -> str:
     return "n/a" if den == 0 else f"{100 * num / den:.1f}%"
 
@@ -60,6 +87,7 @@ def main() -> None:
 
     left = load_verdicts(args.left)
     right = load_verdicts(args.right)
+    assert_same_targets(load_keys(args.left), load_keys(args.right))
     keys = sorted(set(left) & set(right))
     left_only = sorted(set(left) - set(right))
     right_only = sorted(set(right) - set(left))

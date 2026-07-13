@@ -90,14 +90,34 @@ def exact_mcnemar_p(left_only: int, right_only: int) -> str:
     return f"{min(1.0, 2 * probability):.4g}"
 
 
+def _track_of_key(raw_key: str) -> str | None:
+    parts = raw_key.split("|")
+    if len(parts) >= 7 and parts[1] in {"realistic", "structure-only"}:
+        return parts[1]
+    return None
+
+
 def load_arm(outdir: Path, arm: str) -> dict[str, dict]:
     rows = {}
+    seen_track: dict[str, str | None] = {}
     for path in sorted((outdir / arm).glob("*.json")):
         try:
             record = json.loads(path.read_text(encoding="utf-8"))
         except Exception as exc:
             record = {"key": path.stem, "ok": False, "error": f"json-read:{type(exc).__name__}"}
-        key = canonical_key(record.get("key") or path.stem)
+        raw_key = record.get("key") or path.stem
+        key = canonical_key(raw_key)
+        track = _track_of_key(raw_key)
+        # canonical_key intentionally strips the track so Fable's track-less keys pair with Sol's
+        # track-ful keys. That is safe only for single-track runs: if realistic and structure-only rows
+        # for the same target collapse to one canonical key they would silently overwrite each other and
+        # cross-pair. Fail loud instead so a future multi-track run gets track-aware keying first.
+        if key in seen_track and track is not None and seen_track[key] is not None and seen_track[key] != track:
+            raise SystemExit(
+                f"canonical key collision across tracks for {key} in arm {arm}: "
+                f"{seen_track[key]} vs {track}. Multi-track scoring needs track-aware pairing keys."
+            )
+        seen_track[key] = track
         record["_canonicalKey"] = key
         record["_dataset"] = dataset_of(record)
         record["_corpus"] = corpus_of(record)
