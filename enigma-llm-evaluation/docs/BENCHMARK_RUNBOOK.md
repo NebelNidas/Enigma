@@ -148,6 +148,28 @@ semantic-judge candidate JSONL files under
 `build/llm-evaluation/frontier-scores/` by default. Use
 `-PfrontierScoreOut=...` to write a different report directory.
 
+Run the GPT/Codex semantic judge over the required residuals only after the
+score step has produced `semantic_judge_required.jsonl`:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-evaluation:runFrontierSemanticJudge \
+  -PfrontierScoreOut=build/llm-evaluation/frontier-scores \
+  -PfrontierJudgeModel=gpt-5.5 \
+  -PfrontierJudgeEffort=high
+```
+
+This uses the same GPT judge model family as the preserved semantic-judge-v2
+runs (`gpt-5.5` high via Codex CLI). Dry-run first with
+`-PfrontierJudgeDryRun=true`. The task resumes from a
+`.partial` verdict map, refuses to overwrite an existing final judge JSON unless
+`-PfrontierJudgeOverwrite=true` is passed, and writes
+`semantic_judge_codex_<model>_<effort>.json` in the frontier score directory.
+Useful cost controls: `-PfrontierJudgeLimit=16`,
+`-PfrontierJudgeBatchSize=8`, and `-PfrontierJudgeTimeoutSeconds=600`.
+
 Useful overrides: `-PcodexPromptRoot=...`, `-PcodexOut=...`,
 `-PcodexDatasets=obscure=batch,mc=mc_batch`, `-PcodexTracks=realistic`,
 `-PcodexKinds=METHOD`, `-PcodexLimit=10`, `-PcodexTimeoutSeconds=420`, and

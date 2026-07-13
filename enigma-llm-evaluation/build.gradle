@@ -545,6 +545,38 @@ tasks.register('scoreFrontierRuns', Exec) {
 	}
 }
 
+tasks.register('runFrontierSemanticJudge', Exec) {
+	group = 'verification'
+	description = 'Runs the GPT/Codex semantic-judge v2 rubric over frontier residual candidates.'
+
+	def scoreOutArg = file(project.findProperty('frontierScoreOut') ?: "${project.buildDir}/llm-evaluation/frontier-scores")
+	def requiredArg = file(project.findProperty('frontierJudgeRequired') ?: "${scoreOutArg.path}/semantic_judge_required.jsonl")
+	def scriptArg = file("${project.projectDir}/evaluation/run_frontier_semantic_judge.py")
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+
+	commandLine pythonArg,
+			scriptArg.path,
+			'--required', requiredArg.path,
+			'--out', scoreOutArg.path,
+			'--model', (project.findProperty('frontierJudgeModel') ?: 'gpt-5.5').toString(),
+			'--effort', (project.findProperty('frontierJudgeEffort') ?: 'high').toString(),
+			'--batch-size', (project.findProperty('frontierJudgeBatchSize') ?: '8').toString(),
+			'--limit', (project.findProperty('frontierJudgeLimit') ?: '0').toString(),
+			'--timeout-seconds', (project.findProperty('frontierJudgeTimeoutSeconds') ?: '600').toString()
+	if (project.hasProperty('frontierJudgeNeutralCwd')) {
+		args '--neutral-cwd', file(project.property('frontierJudgeNeutralCwd')).path
+	}
+	if (project.hasProperty('frontierJudgeSchema')) {
+		args '--schema', file(project.property('frontierJudgeSchema')).path
+	}
+	if (project.hasProperty('frontierJudgeOverwrite') && project.property('frontierJudgeOverwrite').toString().toBoolean()) {
+		args '--overwrite'
+	}
+	if (project.hasProperty('frontierJudgeDryRun') && project.property('frontierJudgeDryRun').toString().toBoolean()) {
+		args '--dry-run'
+	}
+}
+
 def evaluationPythonScripts = [
 		file("${project.projectDir}/evaluation/aggregate_results.py"),
 		file("${project.projectDir}/evaluation/analyze_backend_matrix.py"),
@@ -552,6 +584,7 @@ def evaluationPythonScripts = [
 		file("${project.projectDir}/evaluation/write_evaluation_reports.py"),
 		file("${project.projectDir}/evaluation/run_codex_prompt_batch.py"),
 		file("${project.projectDir}/evaluation/run_fable_prompt_batch.py"),
+		file("${project.projectDir}/evaluation/run_frontier_semantic_judge.py"),
 		file("${project.projectDir}/evaluation/score_prompt_batch.py"),
 		file("${project.projectDir}/evaluation/score_frontier_runs.py"),
 		file("${project.projectDir}/evaluation/semantic-judge/agg.py"),
