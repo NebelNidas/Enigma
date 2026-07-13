@@ -277,6 +277,51 @@ tasks.register('benchmarkObfuscation', JavaExec) {
 	}
 }
 
+tasks.register('runCodexPromptBatch', Exec) {
+	group = 'verification'
+	description = 'Runs dumped prompt JSONL batches through codex exec in a resumable, auditable layout.'
+
+	def promptRootArg = file(project.findProperty('codexPromptRoot') ?: "${project.buildDir}/llm-evaluation/prompt-batches")
+	def outArg = file(project.findProperty('codexOut') ?: "${project.buildDir}/llm-evaluation/codex-prompt-batch")
+	def scriptArg = file("${project.projectDir}/evaluation/run_codex_prompt_batch.py")
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+
+	commandLine pythonArg,
+			scriptArg.path,
+			'--prompt-root', promptRootArg.path,
+			'--out', outArg.path,
+			'--model', (project.findProperty('codexModel') ?: 'gpt-5.6-sol').toString(),
+			'--effort', (project.findProperty('codexEffort') ?: 'high').toString(),
+			'--datasets', (project.findProperty('codexDatasets') ?: 'obscure=batch,mc=mc_batch').toString(),
+			'--arms', (project.findProperty('codexArms') ?: 'M,MC,MPP').toString(),
+			'--tracks', (project.findProperty('codexTracks') ?: 'realistic').toString(),
+			'--kinds', (project.findProperty('codexKinds') ?: 'METHOD').toString(),
+			'--parallel', (project.findProperty('codexParallel') ?: '2').toString(),
+			'--limit', (project.findProperty('codexLimit') ?: '0').toString(),
+			'--timeout-seconds', (project.findProperty('codexTimeoutSeconds') ?: '420').toString()
+
+	if (project.hasProperty('codexNeutralCwd')) {
+		args '--neutral-cwd', file(project.property('codexNeutralCwd')).path
+	}
+	if (project.hasProperty('codexSchema')) {
+		args '--schema', file(project.property('codexSchema')).path
+	}
+	if (project.hasProperty('codexDryRun') && project.property('codexDryRun').toString().toBoolean()) {
+		args '--dry-run'
+	}
+}
+
+tasks.register('scoreCodexPromptBatch', Exec) {
+	group = 'verification'
+	description = 'Scores runCodexPromptBatch output directories with exact/normalized/usable and latency summaries.'
+
+	def outArg = file(project.findProperty('codexOut') ?: "${project.buildDir}/llm-evaluation/codex-prompt-batch")
+	def scriptArg = file("${project.projectDir}/evaluation/score_prompt_batch.py")
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+
+	commandLine pythonArg, scriptArg.path, outArg.path
+}
+
 def rootRelativePath = { Object value ->
 	value == null ? null : rootProject.file(value.toString()).path
 }
