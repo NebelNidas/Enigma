@@ -80,7 +80,7 @@ class LlmGraphContextBuilder {
 		}
 
 		prompt.append("\n=== ").append(title).append(" ===\n");
-		methods.stream().limit(MEMBER_LIMIT).forEach(method -> {
+		methods.stream().sorted(LlmProjectIndex.methodComparator()).limit(MEMBER_LIMIT).forEach(method -> {
 			prompt.append("- ")
 					.append(method.key().owner())
 					.append('.')
@@ -117,7 +117,7 @@ class LlmGraphContextBuilder {
 		}
 
 		prompt.append("\n=== ").append(title).append(" ===\n");
-		fields.stream().limit(MEMBER_LIMIT).forEach(field -> {
+		fields.stream().sorted(LlmProjectIndex.fieldComparator()).limit(MEMBER_LIMIT).forEach(field -> {
 			prompt.append("- ")
 					.append(field.key().owner())
 					.append('.')
@@ -137,7 +137,10 @@ class LlmGraphContextBuilder {
 		}
 
 		prompt.append("\n=== ").append(title).append(" ===\n");
-		nonEmptyClasses.stream().limit(NEIGHBOR_CLASS_LIMIT).forEach(clazz -> appendClassSummary(prompt, project, clazz));
+		nonEmptyClasses.stream()
+				.sorted(LlmProjectIndex.classComparator())
+				.limit(NEIGHBOR_CLASS_LIMIT)
+				.forEach(clazz -> appendClassSummary(prompt, project, clazz));
 	}
 
 	private static void appendClassSummary(StringBuilder prompt, ProjectView project, IndexedClass clazz) {
@@ -149,7 +152,7 @@ class LlmGraphContextBuilder {
 			prompt.append("  superclass: ").append(clazz.superName()).append('\n');
 		}
 
-		clazz.fields().stream().limit(MEMBER_LIMIT).forEach(field -> {
+		clazz.fields().stream().sorted(LlmProjectIndex.fieldComparator()).limit(MEMBER_LIMIT).forEach(field -> {
 			prompt.append("  field ")
 					.append(field.key().name())
 					.append(" : ")
@@ -167,6 +170,7 @@ class LlmGraphContextBuilder {
 
 		clazz.methods().stream()
 				.filter(method -> !method.key().name().startsWith("<"))
+				.sorted(LlmProjectIndex.methodComparator())
 				.limit(MEMBER_LIMIT)
 				.forEach(method -> {
 					prompt.append("  method ")

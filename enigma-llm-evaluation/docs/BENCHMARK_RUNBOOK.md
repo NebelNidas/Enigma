@@ -148,6 +148,20 @@ semantic-judge candidate JSONL files under
 `build/llm-evaluation/frontier-scores/` by default. Use
 `-PfrontierScoreOut=...` to write a different report directory.
 
+After preparing prompt batches, verify that `M+C` and `M++` share the same
+non-code context before comparing them:
+
+```sh
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk \
+PATH=/usr/lib/jvm/java-21-openjdk/bin:$PATH \
+GRADLE_USER_HOME="$PWD/.gradle" \
+./gradlew :enigma-llm-evaluation:verifyCodexPromptPairing \
+  -PcodexPromptRoot=build/llm-evaluation/prompt-batches
+```
+
+The verifier strips only the real-code or sterile-padding block and fails if
+the remaining normalized context differs for paired `MC`/`MPP` rows.
+
 Run the GPT/Codex semantic judge over the required residuals only after the
 score step has produced `semantic_judge_required.jsonl`:
 

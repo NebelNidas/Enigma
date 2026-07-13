@@ -597,6 +597,23 @@ tasks.register('compareFrontierSemanticJudges', Exec) {
 			'--out', outArg.path
 }
 
+tasks.register('verifyCodexPromptPairing', Exec) {
+	group = 'verification'
+	description = 'Verifies that M+C and M++ prompt batches share the same non-code context.'
+
+	def promptRootArg = file(project.findProperty('codexPromptRoot') ?: "${project.buildDir}/llm-evaluation/prompt-batches")
+	def outArg = project.hasProperty('codexPromptPairingReport') ? file(project.property('codexPromptPairingReport')) : null
+	def scriptArg = file("${project.projectDir}/evaluation/verify_prompt_pairing.py")
+	def pythonArg = project.findProperty('codexPython') ?: 'python3'
+
+	commandLine pythonArg,
+			scriptArg.path,
+			'--prompt-root', promptRootArg.path
+	if (outArg != null) {
+		args '--out', outArg.path
+	}
+}
+
 def evaluationPythonScripts = [
 		file("${project.projectDir}/evaluation/aggregate_results.py"),
 		file("${project.projectDir}/evaluation/analyze_backend_matrix.py"),
@@ -608,6 +625,7 @@ def evaluationPythonScripts = [
 		file("${project.projectDir}/evaluation/run_frontier_semantic_judge.py"),
 		file("${project.projectDir}/evaluation/score_prompt_batch.py"),
 		file("${project.projectDir}/evaluation/score_frontier_runs.py"),
+		file("${project.projectDir}/evaluation/verify_prompt_pairing.py"),
 		file("${project.projectDir}/evaluation/semantic-judge/agg.py"),
 		file("${project.projectDir}/evaluation/semantic-judge/agg_v2.py"),
 		file("${project.projectDir}/evaluation/semantic-judge/ablfull_combine.py"),

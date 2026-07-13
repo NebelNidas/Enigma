@@ -65,6 +65,7 @@ class LlmProjectIndex {
 		return this.classes.values().stream()
 				.flatMap(owner -> owner.methods().stream())
 				.filter(method -> method.calls().contains(callTarget))
+				.sorted(methodComparator())
 				.toList();
 	}
 
@@ -73,6 +74,7 @@ class LlmProjectIndex {
 		return this.classes.values().stream()
 				.flatMap(owner -> owner.methods().stream())
 				.filter(method -> method.fieldUses().contains(fieldTarget))
+				.sorted(methodComparator())
 				.toList();
 	}
 
@@ -92,6 +94,7 @@ class LlmProjectIndex {
 				.filter(method -> descriptorReferences(method.key().descriptor(), targetOwner)
 						|| method.calls().stream().anyMatch(call -> ownerBeforeDot(call).equals(targetOwner))
 						|| method.fieldUses().stream().anyMatch(field -> ownerBeforeDot(field).equals(targetOwner) || descriptorReferences(descriptorAfterColon(field), targetOwner)))
+				.sorted(methodComparator())
 				.toList();
 	}
 
@@ -101,7 +104,24 @@ class LlmProjectIndex {
 				.flatMap(owner -> owner.fields().stream())
 				.filter(field -> !field.key().owner().equals(targetOwner))
 				.filter(field -> descriptorReferences(field.key().descriptor(), targetOwner))
+				.sorted(fieldComparator())
 				.toList();
+	}
+
+	static Comparator<IndexedClass> classComparator() {
+		return Comparator.comparing(clazz -> clazz.key().owner());
+	}
+
+	static Comparator<IndexedField> fieldComparator() {
+		return Comparator.comparing((IndexedField field) -> field.key().owner())
+				.thenComparing(field -> field.key().name())
+				.thenComparing(field -> field.key().descriptor());
+	}
+
+	static Comparator<IndexedMethod> methodComparator() {
+		return Comparator.comparing((IndexedMethod method) -> method.key().owner())
+				.thenComparing(method -> method.key().name())
+				.thenComparing(method -> method.key().descriptor());
 	}
 
 	private static List<String> referencedClassNames(IndexedMethod method) {
