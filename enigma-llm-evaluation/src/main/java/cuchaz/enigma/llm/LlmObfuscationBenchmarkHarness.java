@@ -577,11 +577,6 @@ public final class LlmObfuscationBenchmarkHarness {
 				suggested, alternatives, confidence, error, latencyMs, contextMode, codeIncluded, codeChars);
 	}
 
-	/**
-	 * The normalized decompiled body to append for the code arm, or {@code null} when the arm is off, the
-	 * target is not a METHOD/PARAMETER (FIELD/CLASS code is deferred), or the body cannot be decompiled/found.
-	 * For a PARAMETER the containing method's body is used (the symbol carries that method's name/descriptor).
-	 */
 	/** The arm label for a scored row. Distinguishes M+C (real code) from M++ (sterile length-control padding). */
 	private static String contextMode(boolean codeIncluded) {
 		if (codeIncluded) {
@@ -591,13 +586,23 @@ public final class LlmObfuscationBenchmarkHarness {
 		return CODE_CONTEXT ? "metadata_only(code-unavailable)" : "metadata_only";
 	}
 
+	/**
+	 * The normalized decompiled snippet to append for the code arm, or {@code null} when the arm is off, no
+	 * supported code snippet can be decompiled/found, or the target kind is still deferred. For METHOD and
+	 * PARAMETER this is the target/containing method body; for FIELD this is an inline decompiled initializer
+	 * declaration when Vineflower renders one. CLASS member-body context is still deferred until it has a
+	 * deterministic target-name-blind member selection policy.
+	 */
 	private static String codeSection(DecompiledMethodBodyProvider codeProvider, Track track,
 			GroundTruthSymbol symbol, EntryKey key) {
-		if (codeProvider == null || (key.kind() != EntryKind.METHOD && key.kind() != EntryKind.PARAMETER)) {
+		if (codeProvider == null || (key.kind() != EntryKind.METHOD
+				&& key.kind() != EntryKind.PARAMETER && key.kind() != EntryKind.FIELD)) {
 			return null;
 		}
 
-		Optional<String> raw = codeProvider.methodSource(symbol.obfOwner(), symbol.obfName(), symbol.obfDesc());
+		Optional<String> raw = key.kind() == EntryKind.FIELD
+				? codeProvider.fieldInitializerSource(symbol.obfOwner(), symbol.obfName())
+				: codeProvider.methodSource(symbol.obfOwner(), symbol.obfName(), symbol.obfDesc());
 
 		if (raw.isEmpty()) {
 			return null;

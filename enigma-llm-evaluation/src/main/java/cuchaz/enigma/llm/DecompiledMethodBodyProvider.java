@@ -55,6 +55,23 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 		return extractMethod(classSource.get(), obfMethodName, argumentCount(obfMethodDescriptor));
 	}
 
+	/**
+	 * The decompiled Java declaration of the target field when Vineflower renders an initializer on
+	 * the declaration itself, or empty if the owning class cannot be decompiled or the declaration has
+	 * no inline initializer. Constructor-assignment and use-site snippets are deliberately excluded:
+	 * they need a separate target-name-blind selection policy before they are suitable for benchmark
+	 * prompts.
+	 */
+	Optional<String> fieldInitializerSource(String obfOwnerInternalName, String obfFieldName) {
+		Optional<String> classSource = classSource(obfOwnerInternalName);
+
+		if (classSource.isEmpty()) {
+			return Optional.empty();
+		}
+
+		return extractFieldInitializer(classSource.get(), obfFieldName);
+	}
+
 	private Optional<String> classSource(String internalName) {
 		return this.classSourceCache.computeIfAbsent(internalName, name -> {
 			try {
@@ -160,6 +177,40 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 		return fallback;
 	}
 
+	private static Optional<String> extractFieldInitializer(String classText, String fieldName) {
+		String masked = maskLiterals(classText);
+		int from = 0;
+
+		while (true) {
+			int nameAt = masked.indexOf(fieldName, from);
+
+			if (nameAt < 0) {
+				return Optional.empty();
+			}
+
+			from = nameAt + fieldName.length();
+
+			if (!isIdentifierBoundary(masked, nameAt, fieldName.length()) || classBraceDepth(masked, nameAt) != 1) {
+				continue;
+			}
+
+			int statementStart = fieldStatementStart(masked, nameAt);
+			int statementEnd = fieldStatementEnd(masked, nameAt);
+
+			if (statementStart < 0 || statementEnd < 0) {
+				continue;
+			}
+
+			String maskedStatement = masked.substring(statementStart, statementEnd + 1);
+
+			if (maskedStatement.indexOf('=') < 0) {
+				continue;
+			}
+
+			return Optional.of(classText.substring(statementStart, statementEnd + 1).strip());
+		}
+	}
+
 	/** Walks back from the method name to the start of its signature line (after the previous statement). */
 	private static int signatureStart(String classText, int nameAt) {
 		int i = nameAt;
@@ -198,6 +249,63 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 		}
 
 		return i;
+	}
+
+	private static int fieldStatementStart(String text, int nameAt) {
+		int i = nameAt;
+
+		while (i > 0) {
+			char c = text.charAt(i - 1);
+
+			if (c == ';' || c == '{' || c == '}') {
+				return i;
+			}
+
+			i--;
+		}
+
+		return 0;
+	}
+
+	private static int fieldStatementEnd(String text, int nameAt) {
+		int parenDepth = 0;
+		int angleDepth = 0;
+
+		for (int i = nameAt; i < text.length(); i++) {
+			char c = text.charAt(i);
+
+			if (c == '(' || c == '[') {
+				parenDepth++;
+			} else if (c == ')' || c == ']') {
+				parenDepth = Math.max(0, parenDepth - 1);
+			} else if (c == '<') {
+				angleDepth++;
+			} else if (c == '>') {
+				angleDepth = Math.max(0, angleDepth - 1);
+			} else if (c == ';' && parenDepth == 0 && angleDepth == 0) {
+				return i;
+			} else if (c == '{' || c == '}') {
+				return -1;
+			}
+		}
+
+		return -1;
+	}
+
+	private static int classBraceDepth(String text, int index) {
+		int depth = 0;
+
+		for (int i = 0; i < index && i < text.length(); i++) {
+			char c = text.charAt(i);
+
+			if (c == '{') {
+				depth++;
+			} else if (c == '}') {
+				depth = Math.max(0, depth - 1);
+			}
+		}
+
+		return depth;
 	}
 
 	/**
@@ -404,6 +512,13 @@ final class DecompiledMethodBodyProvider implements AutoCloseable {
 
 	private static boolean isIdentifierPart(char c) {
 		return Character.isJavaIdentifierPart(c);
+	}
+
+	private static boolean isIdentifierBoundary(String text, int start, int length) {
+		char before = start > 0 ? text.charAt(start - 1) : ' ';
+		int afterIndex = start + length;
+		char after = afterIndex < text.length() ? text.charAt(afterIndex) : ' ';
+		return !isIdentifierPart(before) && before != '.' && !isIdentifierPart(after);
 	}
 
 	@Override
