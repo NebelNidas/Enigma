@@ -51,6 +51,7 @@ final class EvaluationReportTasks {
 			task.setDescription("Syntax-checks committed Python evaluation analysis/report scripts.");
 
 			List<File> scripts = List.of(
+					evaluationScript(project, "aggregate_fresh_mc.py"),
 					evaluationScript(project, "aggregate_results.py"),
 					evaluationScript(project, "analyze_backend_matrix.py"),
 					evaluationScript(project, "compare_frontier_semantic_judges.py"),

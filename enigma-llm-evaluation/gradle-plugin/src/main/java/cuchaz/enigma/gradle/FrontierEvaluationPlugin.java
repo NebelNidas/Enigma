@@ -11,6 +11,7 @@ public final class FrontierEvaluationPlugin implements Plugin<Project> {
 		HarnessJavaExecTasks.register(project);
 		PromptBatchTasks.register(project);
 		FrontierTasks.register(project);
+		FreshMinecraftTasks.register(project);
 		EvaluationReportTasks.register(project);
 		EvaluationShellTasks.register(project);
 	}
